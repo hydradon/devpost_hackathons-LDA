@@ -11,6 +11,15 @@ import scrapy
 class DevpostItem(scrapy.Item):
     # define the fields for your item here like:
     project_name = scrapy.Field()
+    project_url = scrapy.Field()
     num_likes = scrapy.Field()
-    num_comments = scrapy.Field()
-    pass
+    num_cmts = scrapy.Field()
+    is_winner = scrapy.Field()
+    software_url = scrapy.Field()
+    hackathon_urls = scrapy.Field()
+    hackathon_names = scrapy.Field()
+    win_titles = scrapy.Field()
+    build_with = scrapy.Field()
+    author = scrapy.Field()
+    author_url = scrapy.Field()
+    desc_len = scrapy.Field()
