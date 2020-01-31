@@ -26,15 +26,14 @@ class SoftwareSpider(scrapy.Spider):
             yield item
 
         #crawl next page
-        # next_page = response.css('.next_page ::attr(href)').extract_first()
-        # if next_page:
-        #     next_page_url = response.urljoin(next_page)
-        #     print("Found url: {}".format(next_page_url))
-        #     # input("Press to continue...")
-        #     yield scrapy.Request(
-        #         next_page_url,
-        #         callback=self.parse
-        #     )
+        next_page = response.css('.next_page ::attr(href)').extract_first()
+        if next_page:
+            next_page_url = response.urljoin(next_page)
+            print("Found url: {}".format(next_page_url))
+            yield scrapy.Request(
+                next_page_url,
+                callback=self.parse
+            )
 
     def scrape(self, response):
         
@@ -47,7 +46,6 @@ class SoftwareSpider(scrapy.Spider):
             item['num_cmts'] = project.css('.comment-count ::text').extract()[1].strip()
             item['is_winner'] = len(project.css('.winner').extract()) == 1
 
-            # yield item
             request = scrapy.Request(item['project_url'], callback=self.get_project_details)
             request.meta['item'] = item
 

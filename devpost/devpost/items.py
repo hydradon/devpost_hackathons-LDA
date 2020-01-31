@@ -14,12 +14,17 @@ class DevpostItem(scrapy.Item):
     project_url = scrapy.Field()
     num_likes = scrapy.Field()
     num_cmts = scrapy.Field()
-    is_winner = scrapy.Field()
+    
     software_url = scrapy.Field()
-    hackathon_urls = scrapy.Field()
-    hackathon_names = scrapy.Field()
-    win_titles = scrapy.Field()
     build_with = scrapy.Field()
+    desc_len = scrapy.Field()
+
     author = scrapy.Field()
     author_url = scrapy.Field()
-    desc_len = scrapy.Field()
+
+    hackathon_urls = scrapy.Field()
+    hackathon_names = scrapy.Field()
+    hackathon_status = scrapy.Field()
+
+    is_winner = scrapy.Field()
+    win_titles = scrapy.Field()
