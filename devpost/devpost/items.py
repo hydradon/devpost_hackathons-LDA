@@ -17,7 +17,9 @@ class DevpostItem(scrapy.Item):
     
     software_url = scrapy.Field()
     build_with = scrapy.Field()
+    summary_len = scrapy.Field()
     desc_len = scrapy.Field()
+    num_imgs = scrapy.Field()
 
     author = scrapy.Field()
     author_url = scrapy.Field()

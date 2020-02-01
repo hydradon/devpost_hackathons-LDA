@@ -17,9 +17,9 @@ class SoftwareSpider(scrapy.Spider):
     )
 
     name = 'software'
+    base_url = 'https://www.devpost.com'
     allowed_domains = ['devpost.com']
-    base_url = 'https://devpost.com'
-    start_urls = ['https://devpost.com/software/trending/']
+    start_urls = [base_url + '/software/trending/']
 
     def parse(self, response):
         for item in self.scrape(response):
@@ -30,8 +30,9 @@ class SoftwareSpider(scrapy.Spider):
         if next_page:
             next_page_url = response.urljoin(next_page)
             print("Found url: {}".format(next_page_url))
+        
             yield scrapy.Request(
-                next_page_url,
+                next_page_url, 
                 callback=self.parse
             )
 
@@ -48,7 +49,6 @@ class SoftwareSpider(scrapy.Spider):
 
             request = scrapy.Request(item['project_url'], callback=self.get_project_details)
             request.meta['item'] = item
-
             yield request
 
     def get_project_details(self, response):
@@ -63,7 +63,6 @@ class SoftwareSpider(scrapy.Spider):
         author_element = response.css(".software-team-member .user-profile-link")
         item['author'] = "||".join(author_element.css("::text").extract())
         item['author_url'] = "||".join(author_element.css("::attr(href)").extract()[::2])
-
 
         # Extract all venues this app is submitted to
         venues = response.css(".software-list-content")
@@ -81,7 +80,9 @@ class SoftwareSpider(scrapy.Spider):
         item['hackathon_names'] = "||".join(hackathon_names)
         item['win_titles'] = "||".join(win_titles)
 
-        description = response.xpath(".//*[@id='app-details-left']/div[2]")
+        description = response.xpath(".//*[@id='app-details-left']/div[not(@id)]")
         item['desc_len'] = len("".join(description.css("*::text").extract()).replace("\n", ""))
+        item['summary_len'] = len(response.xpath(".//*[@id='app-title']/following-sibling::p/text()").extract_first().strip())
+        item['num_imgs'] = len(response.css("#gallery img").extract())
 
         yield item
