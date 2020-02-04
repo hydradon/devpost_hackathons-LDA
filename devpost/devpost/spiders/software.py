@@ -82,7 +82,7 @@ class SoftwareSpider(scrapy.Spider):
 
         description = response.xpath(".//*[@id='app-details-left']/div[not(@id)]")
         item['desc_len'] = len("".join(description.css("*::text").extract()).replace("\n", ""))
-        item['summary_len'] = len(response.xpath(".//*[@id='app-title']/following-sibling::p/text()").extract_first().strip())
+        item['summary_len'] = len(response.xpath(".//*[@id='app-title']/following-sibling::p/text()").extract_first(default = "").strip())
         item['num_imgs'] = len(response.css("#gallery img").extract())
 
         yield item
