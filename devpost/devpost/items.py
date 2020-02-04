@@ -20,13 +20,13 @@ class DevpostItem(scrapy.Item):
     summary_len = scrapy.Field()
     desc_len = scrapy.Field()
     num_imgs = scrapy.Field()
+    start_date = scrapy.Field()
 
     author = scrapy.Field()
     author_url = scrapy.Field()
 
     hackathon_urls = scrapy.Field()
     hackathon_names = scrapy.Field()
-    hackathon_status = scrapy.Field()
 
     is_winner = scrapy.Field()
     win_titles = scrapy.Field()
