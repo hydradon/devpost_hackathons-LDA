@@ -53,7 +53,7 @@ class HackathonSpider(scrapy.Spider):
             item['total_prize_value'] = prize_value[1].replace(",", "")
         
         item['num_participants'] = int(re.findall(r'\d+', response.xpath(".//a[@href='/participants']/text()").extract_first(default = "0"))[0])
-        # yield item
+     
         # Scrape hackathon end date
         request = scrapy.Request(item['url'] + 'submissions/search?sort=recent', callback=self.get_submission_page)
         request.meta['item'] = item
