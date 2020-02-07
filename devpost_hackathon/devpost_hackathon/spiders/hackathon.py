@@ -69,12 +69,17 @@ class HackathonSpider(scrapy.Spider):
 
         item['latest_submission_url'] = latest_submission.xpath("./a/@href").extract_first(default = "")
 
-        request = scrapy.Request(item['latest_submission_url'], callback=self.retrieve_latest_submission_date)
-        request.meta['item'] = item
-        yield request
+        if item['latest_submission_url']:
+            request = scrapy.Request(item['latest_submission_url'], callback=self.retrieve_latest_submission_date)
+            request.meta['item'] = item
+            yield request
+        else:
+            self.log("This hackaton has no submissions!", level=logging.INFO)
+            item['latest_submission_date'] = "1970-01-01T00:00:00-05:00"
+            yield item
         
     def retrieve_latest_submission_date(self, response):
         item = response.meta['item']
 
-        item['latest_submission_date'] =  response.css(".software-updates .author .timeago::attr(datetime)").extract_first(default = "")
+        item['latest_submission_date'] =  response.css(".software-updates .author .timeago::attr(datetime)").extract_first(default = "1970-01-01T00:00:00-05:00")
         yield item

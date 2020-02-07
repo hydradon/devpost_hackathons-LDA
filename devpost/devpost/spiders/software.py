@@ -11,7 +11,7 @@ class SoftwareSpider(scrapy.Spider):
     observer = twisted_log.PythonLoggingObserver()
     observer.start()
 
-     # Allow URL with underscore to be crawled. For ex https://dj_pale.itch.io/unknown-grounds
+    # Allow URL with underscore to be crawled. For ex https://dj_pale.itch.io/unknown-grounds
     idna.idnadata.codepoint_classes['PVALID'] = tuple(
         sorted(list(idna.idnadata.codepoint_classes['PVALID']) + [0x5f0000005f])
     )
