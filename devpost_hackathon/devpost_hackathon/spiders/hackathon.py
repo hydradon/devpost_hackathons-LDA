@@ -28,7 +28,7 @@ class HackathonSpider(scrapy.Spider):
     grandParentDir = os.path.dirname(parentDir)
     greatGrandParentDir = os.path.dirname(grandParentDir)
 
-    df = pd.read_csv(os.path.join(greatGrandParentDir + "\\dataset", 'all_project.csv'))
+    df = pd.read_csv(os.path.join(greatGrandParentDir + "/dataset", 'all_project_cleaned.csv'))
     df.dropna(subset=['hackathon_urls'], inplace=True)
     # start_urls = ['https://ubclhd19.devpost.com/', 
     #              'https://alexaisp.devpost.com/']
