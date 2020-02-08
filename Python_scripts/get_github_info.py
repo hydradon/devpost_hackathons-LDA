@@ -32,7 +32,7 @@ github_sleeptime = 2.5
 # GitLab
 GL_URL = "https://gitlab.com/api/v4/projects"
 gl_head = {'Authorization': 'Bearer ee1PrQS7GNJaokkruo5n'}
-gitlab_sleeptime = 1
+gitlab_sleeptime = 0.5
 
 
 json_res = requests.get(url = GH_URL + "/rate_limit", headers=gh_head).json()
