@@ -3,6 +3,7 @@ import pandas as pd
 import time
 import os
 import json
+import csv
 
 all_projects = pd.read_csv("../dataset/all_project_cleaned.csv")
 # print("{} total softwares.".format(len(all_projects)))
@@ -40,6 +41,7 @@ print("Current limit: " + str(json_res['resources']['core']['remaining']))
 
 num_inaccessible_github_repos = 0
 num_inaccessible_gitlab_repos = 0
+repo_groups = {}
 
 for i, row in all_projects.iterrows():
     if pd.isna(row['software_url']):
@@ -50,6 +52,11 @@ for i, row in all_projects.iterrows():
         if "github.com" in url: #NOTE GitHub rate limit is 5000 per hour (or 83 per minute)
             print("Found github link {} for project {}.".format(url, row['project_name']))
             url_comp = url.split("/")
+
+            if len(url_comp) < 5:
+                repo_groups[row['project_url']] = url
+                continue
+
             user = url_comp[3]
             repo = url_comp[4]
             print("Username: " + user + ". Github repo: " + repo)
@@ -97,6 +104,10 @@ for i, row in all_projects.iterrows():
             # Contributors: https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab/repository/contributors
             print("Found gitlab link {} for project {}.".format(url, row['project_name']))
             url_comp = url.split("/")
+            if len(url_comp) < 5:
+                repo_groups[row['project_url']] = url
+                continue
+
             user = url_comp[3]
             repo = url_comp[4]
             print("Username: " + user + ". Github repo: " + repo)
@@ -138,9 +149,19 @@ for i, row in all_projects.iterrows():
 # print("Number of inaccessible Github repos: {}.".format(num_inaccessible_github_repos))
 # print("Number of inaccessible Gitlab repos: {}.".format(num_inaccessible_gitlab_repos))
 
-# Write to file
-# output = "./dataset/all_project_temp_with_github_info.csv"
-# if os.path.exists(output):
-#     os.remove(output)
+# Write repo group url to file
+output = "repo_group.csv"
+header = ["project_url", "repo_group_url"]
 
-# all_projects.to_csv(output, encoding='utf-8-sig', index=False)
+if os.path.exists(output):
+    os.remove(output)
+
+with open(output, 'w', encoding='utf-8-sig', newline='') as f:  # Just use 'w' mode in 3.x
+    writer = csv.DictWriter(f, fieldnames=header)
+
+    writer.writeheader()
+    for key in repo_groups:
+        writer.writerow({"project_url": key, 
+                         'repo_group_url': repo_groups[key]})
+
+f.close()
