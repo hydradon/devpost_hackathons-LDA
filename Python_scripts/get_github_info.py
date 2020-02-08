@@ -4,8 +4,8 @@ import time
 import os
 import json
 
-all_projects = pd.read_csv("../dataset/all_project_temp_Copy.csv")
-print("{} total softwares.".format(len(all_projects)))
+all_projects = pd.read_csv("../dataset/all_project_cleaned.csv")
+# print("{} total softwares.".format(len(all_projects)))
 
 all_projects.dropna(subset=['hackathon_urls'], inplace=True)
 print("{} softwares submitted to a hackathon.".format(len(all_projects)))
@@ -32,7 +32,7 @@ github_sleeptime = 2.5
 # GitLab
 GL_URL = "https://gitlab.com/api/v4/projects"
 gl_head = {'Authorization': 'Bearer ee1PrQS7GNJaokkruo5n'}
-gitlab_sleeptime = 0.5
+gitlab_sleeptime = 1
 
 
 json_res = requests.get(url = GH_URL + "/rate_limit", headers=gh_head).json()

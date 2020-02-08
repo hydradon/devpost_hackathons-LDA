@@ -63,7 +63,11 @@ class HackathonSpider(scrapy.Spider):
     def get_submission_page(self, response):
         item = response.meta['item']
 
-        latest_submission = response.css('*[data-software-id]')[0]
+        latest_submission = response.css('*[data-software-id]')
+        if not latest_submission:
+            yield item
+            return
+
         self.log("Latest submission to hackathon " + item['url'] + 
                 " is: " + latest_submission.css('::attr(data-software-id)').extract_first(default = ""))
 

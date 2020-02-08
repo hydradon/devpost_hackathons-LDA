@@ -12,11 +12,7 @@ df_apps.dropna(subset=['hackathon_urls'], inplace=True)
 # drop hackathons that have not ended at the moment
 df_hackathons = df_hackathons[df_hackathons.is_ended == True]
 
-# retain games that are submitted to hackathon that have ended
-ended_hackathon_urls = df_hackathons.url.tolist()
-print(len(ended_hackathon_urls))
-temp = df_apps['hackathon_urls'].str.split('\|+', expand=True).stack().isin(ended_hackathon_urls).groupby(level=0).all()
-df_apps = df_apps[temp]
+# retain games t
 
 # Get later hackathon end date
 
