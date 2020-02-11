@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'devpost.spiders'
 
 #Export as CSV Feed
 FEED_FORMAT = "csv"
-FEED_URI = "../dataset/all_project.csv"
+FEED_URI = "../dataset/all_projects_raw.csv"
 FEED_EXPORT_ENCODING = "utf-8-sig"
 
 

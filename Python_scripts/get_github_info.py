@@ -5,10 +5,9 @@ import os
 import json
 import csv
 
-all_projects = pd.read_csv("../dataset/all_project_cleaned.csv")
-# print("{} total softwares.".format(len(all_projects)))
-
-all_projects.dropna(subset=['hackathon_urls'], inplace=True)
+# all_projects = pd.read_csv("../dataset/all_projects_cleaned.csv")
+all_projects = pd.read_csv("../dataset/all_project_ended_hack_with_git_repo.csv")
+# all_projects.dropna(subset=['hackathon_urls'], inplace=True)
 print("{} softwares submitted to a hackathon.".format(len(all_projects)))
 
 
@@ -17,6 +16,10 @@ all_projects.dropna(subset=['software_url'], inplace=True)
 all_projects = all_projects[all_projects.software_url.str.contains("github.com") | all_projects.software_url.str.contains("gitlab.com")]
 print("{} softwares that provide github/gitlab links.".format(len(all_projects)))
 
+
+unique_git_link = [git_url for git_url in all_projects['software_url'].str.split("\|\|").explode().drop_duplicates().tolist() if "github.com" in git_url or "gitlab.com" in git_url]
+print(unique_git_link)
+print("{} unique github/gitlab links.".format(len(unique_git_link)))
 # exit()
 # input("Test")
 # all_hackathons = pd.read_csv("./dataset/all_hackathons_temp.csv")
@@ -28,7 +31,7 @@ print("{} softwares that provide github/gitlab links.".format(len(all_projects))
 GH_URL = "https://api.github.com"
 gh_head = {'Authorization': 'Bearer 44de7e8a01fff075e09e1714b47e57dbff17ed07',
            'Accept'       : 'application/vnd.github.v3+json'}
-github_sleeptime = 2.5
+github_sleeptime = 2.0
 
 # GitLab
 GL_URL = "https://gitlab.com/api/v4/projects"
@@ -80,7 +83,7 @@ for i, row in all_projects.iterrows():
 
                 response = requests.get(url = target_url, headers=gh_head)
 
-                if response:
+                if response.status_code == 200:
                     json_res = response.json()
 
                     json_file_name = "../githubdata/{}/{}_{}_{}_{}.json".format(what, user, repo, "github", what)
@@ -110,7 +113,7 @@ for i, row in all_projects.iterrows():
 
             user = url_comp[3]
             repo = url_comp[4]
-            print("Username: " + user + ". Github repo: " + repo)
+            print("Username: " + user + ". Gitlab repo: " + repo)
 
             api_param = {
                 "issues"       : "issues?scope=all",
@@ -129,7 +132,7 @@ for i, row in all_projects.iterrows():
 
                 response = requests.get(url = target_url, headers=gl_head)
                 # input("Here...")
-                if response:
+                if response.status_code == 200:
                     json_res = response.json()
 
                     json_file_name = "../gitlabdata/{}/{}_{}_{}_{}.json".format(what, user, repo, "gitlab", what)

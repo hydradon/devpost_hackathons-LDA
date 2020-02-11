@@ -16,7 +16,7 @@ NEWSPIDER_MODULE = 'devpost_hackathon.spiders'
 
 #Export as CSV Feed
 FEED_FORMAT = "csv"
-FEED_URI = "../dataset/all_hackathons.csv"
+FEED_URI = "../dataset/all_hackathons_raw.csv"
 FEED_EXPORT_ENCODING = "utf-8-sig"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
