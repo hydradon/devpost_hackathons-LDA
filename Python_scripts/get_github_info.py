@@ -6,7 +6,8 @@ import json
 import csv
 
 # all_projects = pd.read_csv("../dataset/all_projects_cleaned.csv")
-all_projects = pd.read_csv("../dataset/all_project_ended_hack_with_git_repo.csv")
+# all_projects = pd.read_csv("../dataset/all_project_ended_hack_with_git_repo.csv")
+all_projects = pd.read_csv("./fix.csv")
 # all_projects.dropna(subset=['hackathon_urls'], inplace=True)
 print("{} softwares submitted to a hackathon.".format(len(all_projects)))
 
@@ -16,11 +17,21 @@ all_projects.dropna(subset=['software_url'], inplace=True)
 all_projects = all_projects[all_projects.software_url.str.contains("github.com") | all_projects.software_url.str.contains("gitlab.com")]
 print("{} softwares that provide github/gitlab links.".format(len(all_projects)))
 
+# Take half
+# x = 0
+# y = len(all_projects)/2
+# z = len(all_projects)
+# all_projects.drop(all_projects.loc[y:z].index, inplace=True)
+# all_projects.to_csv("second_half.csv", encoding='utf-8-sig', index=False)
+
+# print(all_projects)
+# exit()
 
 unique_git_link = [git_url for git_url in all_projects['software_url'].str.split("\|\|").explode().drop_duplicates().tolist() if "github.com" in git_url or "gitlab.com" in git_url]
-print(unique_git_link)
+# print(unique_git_link)
 print("{} unique github/gitlab links.".format(len(unique_git_link)))
 # exit()
+
 # input("Test")
 # all_hackathons = pd.read_csv("./dataset/all_hackathons_temp.csv")
 # print("{} total hackathons.".format(len(all_hackathons)))
@@ -31,12 +42,12 @@ print("{} unique github/gitlab links.".format(len(unique_git_link)))
 GH_URL = "https://api.github.com"
 gh_head = {'Authorization': 'Bearer 44de7e8a01fff075e09e1714b47e57dbff17ed07',
            'Accept'       : 'application/vnd.github.v3+json'}
-github_sleeptime = 2.0
+github_sleeptime = 0.9
 
 # GitLab
 GL_URL = "https://gitlab.com/api/v4/projects"
 gl_head = {'Authorization': 'Bearer ee1PrQS7GNJaokkruo5n'}
-gitlab_sleeptime = 0.5
+gitlab_sleeptime = 0.3
 
 
 json_res = requests.get(url = GH_URL + "/rate_limit", headers=gh_head).json()
@@ -61,7 +72,7 @@ for i, row in all_projects.iterrows():
                 continue
 
             user = url_comp[3]
-            repo = url_comp[4]
+            repo = url_comp[4].split("#")[0]
             print("Username: " + user + ". Github repo: " + repo)
             
             # Overall information: GH_URL + "/repos/{user}/{repo_name}"
@@ -153,18 +164,20 @@ for i, row in all_projects.iterrows():
 # print("Number of inaccessible Gitlab repos: {}.".format(num_inaccessible_gitlab_repos))
 
 # Write repo group url to file
-output = "repo_group.csv"
-header = ["project_url", "repo_group_url"]
 
-if os.path.exists(output):
-    os.remove(output)
+if repo_groups:
+    output = "repo_group.csv"
+    header = ["project_url", "repo_group_url"]
 
-with open(output, 'w', encoding='utf-8-sig', newline='') as f:  # Just use 'w' mode in 3.x
-    writer = csv.DictWriter(f, fieldnames=header)
+    if os.path.exists(output):
+        os.remove(output)
 
-    writer.writeheader()
-    for key in repo_groups:
-        writer.writerow({"project_url": key, 
-                         'repo_group_url': repo_groups[key]})
+    with open(output, 'w', encoding='utf-8-sig', newline='') as f:  # Just use 'w' mode in 3.x
+        writer = csv.DictWriter(f, fieldnames=header)
 
-f.close()
+        writer.writeheader()
+        for key in repo_groups:
+            writer.writerow({"project_url": key, 
+                            'repo_group_url': repo_groups[key]})
+
+    f.close()
