@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for devpost_proj_desc project
+# Scrapy settings for devpost_app_page project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,15 +9,11 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'devpost_proj_desc'
+BOT_NAME = 'devpost_app_page'
 
-SPIDER_MODULES = ['devpost_proj_desc.spiders']
-NEWSPIDER_MODULE = 'devpost_proj_desc.spiders'
+SPIDER_MODULES = ['devpost_app_page.spiders']
+NEWSPIDER_MODULE = 'devpost_app_page.spiders'
 
-#Export as CSV Feed
-FEED_FORMAT = "csv"
-FEED_URI = "../dataset/proj_description_raw.csv"
-FEED_EXPORT_ENCODING = "utf-8-sig"
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Vu N. Quang - researcher (ngocquan@ualberta.ca)'
@@ -51,13 +47,13 @@ CONCURRENT_REQUESTS_PER_IP = 1
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'devpost_proj_desc.middlewares.DevpostProjDescSpiderMiddleware': 543,
+#    'devpost_app_page.middlewares.DevpostAppPageSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'devpost_proj_desc.middlewares.DevpostProjDescDownloaderMiddleware': 543,
+#    'devpost_app_page.middlewares.DevpostAppPageDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -69,7 +65,7 @@ CONCURRENT_REQUESTS_PER_IP = 1
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 #ITEM_PIPELINES = {
-#    'devpost_proj_desc.pipelines.DevpostProjDescPipeline': 300,
+#    'devpost_app_page.pipelines.DevpostAppPagePipeline': 300,
 #}
 
 # Enable and configure the AutoThrottle extension (disabled by default)

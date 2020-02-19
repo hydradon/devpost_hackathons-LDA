@@ -25,9 +25,9 @@ class ProjDescSpider(scrapy.Spider):
     data_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     df = pd.read_csv(os.path.join(data_dir + "/dataset", 'all_project_ended_hack.csv'))
     start_urls = df["project_url"].tolist()
-    start_urls = ["https://devpost.com/software/cowgary",
-                  "https://devpost.com/software/n-c-hoa-kich-d-c"
-                 ]
+    # start_urls = ["https://devpost.com/software/cowgary",
+    #               "https://devpost.com/software/n-c-hoa-kich-d-c"
+    #              ]
     print(len(start_urls))
 
     def parse(self, response):
