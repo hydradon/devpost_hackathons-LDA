@@ -26,8 +26,8 @@ class AppPageSpider(scrapy.Spider):
     df = pd.read_csv(os.path.join(data_dir + "/dataset", 'all_project_ended_hack.csv'))
     start_urls = df["project_url"].tolist()
 
-    start_urls = ["https://devpost.com/software/cowgary",
-                  "https://devpost.com/software/n-c-hoa-kich-d-c"
+    start_urls = ["https://devpost.com/software/aurorabot",
+                  "https://devpost.com/software/iwam"
                  ]
 
     print(len(start_urls))

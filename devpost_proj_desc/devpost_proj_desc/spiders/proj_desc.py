@@ -25,8 +25,10 @@ class ProjDescSpider(scrapy.Spider):
     data_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     df = pd.read_csv(os.path.join(data_dir + "/dataset", 'all_project_ended_hack.csv'))
     start_urls = df["project_url"].tolist()
-    # start_urls = ["https://devpost.com/software/cowgary",
-    #               "https://devpost.com/software/n-c-hoa-kich-d-c"
+    # start_urls = [
+    #               "https://devpost.com/software/cowgary",
+    #               "https://devpost.com/software/n-c-hoa-kich-d-c",
+    #               "https://devpost.com/software/radardishes"
     #              ]
     print(len(start_urls))
 
@@ -52,7 +54,7 @@ class ProjDescSpider(scrapy.Spider):
             section_text = []
             for sibling in e:
                 if sibling.xpath("name()").extract_first(default = "") == "p":
-                    section_text.append(sibling.css("::text").extract_first(default = ""))
+                    section_text.append(sibling.css("::text").extract_first(default = "").replace("\n", " "))
                 else:
                     break
 
