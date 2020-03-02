@@ -165,6 +165,7 @@ texts = data_lemmatized
 # Term Document Frequency
 corpus = [id2word.doc2bow(text) for text in texts]
 
+
 # Build Mallet LDA model
 from gensim.models.wrappers import LdaMallet
 os.environ['MALLET_HOME'] = 'D:\Research\hackathon-devpost\Python_scripts\mallet-2.0.8'
