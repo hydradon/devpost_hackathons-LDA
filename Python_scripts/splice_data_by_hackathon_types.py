@@ -3,15 +3,18 @@ import os
 import math
 from natsort import index_natsorted, order_by_index
 
+
+# Reading github info
+
 num_topic = 25
-section = 6
+section = 1
 text_map = [
-        "txt_inspiration",
-        "txt_what_it_does",
-        "txt_how_we_built", # How we built it, How I built it
+        # "txt_inspiration",
+        # "txt_what_it_does",
+        # "txt_how_we_built", # How we built it, How I built it
         "txt_challenges",
-        "txt_accomplishment",
-        "txt_what_we_learned",
+        # "txt_accomplishment",
+        # "txt_what_we_learned",
         "txt_whats_next"]
 
 
@@ -35,7 +38,7 @@ hackathons = pd.read_csv("../dataset/hackathons_top_bot_20.csv", encoding="utf-8
 # bottom_20_hackathons.insert(len(bottom_20_hackathons.columns), 
 #                         'popular',
 #                         pd.Series("No", index=bottom_20_hackathons.index))
-# # Combine
+# Combine
 # final_hackathons = pd.concat([top_20_hackathons, bottom_20_hackathons])
 
 hackathon_type = {}
@@ -53,7 +56,7 @@ for i, row in topic_doc.iterrows():
     topic_doc.loc[i, 'hackathon_type'] = hackathon_type.get(row["Hackathon_Url"], "None")
 
 
-# TODO combined with git info:
+# Combined with git info:
 project_git_info = pd.read_csv("../dataset/all_project_with_git_info.csv", encoding="utf-8-sig")
 project_git_info.drop(columns = ["build_with", "desc_len", "author", "win_titles", "is_winner", "summary_len", "project_name",
                                 "author_url", "num_likes", "num_imgs", "num_cmts", "start_date", "latest_hackathon_end_date",

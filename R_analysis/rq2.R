@@ -109,3 +109,12 @@ summary(winning_project$num_issues_post_hack)
 summary(non_winning_project$num_issues_post_hack)
 
 
+
+
+
+
+
+
+
+
+

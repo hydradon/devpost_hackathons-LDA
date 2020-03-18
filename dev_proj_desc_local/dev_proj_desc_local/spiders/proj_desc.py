@@ -25,7 +25,7 @@ class ProjDescSpider(scrapy.Spider):
     files = [f for f in glob.glob(project_dir + "/raw_html_text/*.html", recursive=True)]
     start_urls = ["file:///" + f for f in files]
     
-    # start_urls ["file:///D:\\Research\\hackathon-devpost/raw_html_text\\_getthere.html"]
+    start_urls ["file:///D:\\Research\\hackathon-devpost/raw_html_text\\epsilon.html"]
     # start_urls = start_urls[:100]
     print(len(start_urls))
     # exit()
