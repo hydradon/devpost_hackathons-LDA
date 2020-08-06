@@ -1,0 +1,169 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The atomic swap protocol allows two parties to exchange assets on two different blockchain in a securely manner such that either the ownership of assets are both changed or both would remain the same.
+                </p>
+                <p>
+                    The protocol is detailed below:
+                </p>
+                <p>
+                    Party A, Party B, Note that contract cA and contract cB may be on separate blockchain.
+                </p>
+                <ol>
+                    <li>
+                        Party A, Locally, generate secret s and its hash h = hash(s).
+                    </li>
+                    <li>
+                        Party A, talk to blockchain, create contract cA with h, sender A, recipient B.
+                    </li>
+                    <li>
+                        Party A, talk to blockchain, send funds to the contract.
+                    </li>
+                    <li>
+                        Party A, through internet, tell Party B: h and address of the created Contract cA
+                    </li>
+                    <li>
+                        Party B, talk to blockchain, make sure the contract cA is created with h, recipient B and if the fund is enough.
+                    </li>
+                    <li>
+                        Party B, talk to blockchain, create contract cB with h, sender B, recipient A.
+                    </li>
+                    <li>
+                        Party B, talk to blockchain, sends funds to the contract.
+                    </li>
+                    <li>
+                        Party B, through internet, tell Party A the address of the created Contract cB.
+                    </li>
+                    <li>
+                        Party A, talk to blockchain, make sure the contract cB is created with h, recipient A and if the fund is enough.
+                    </li>
+                    <li>
+                        Party A, claims fund by submitting secret s to contract cB.
+                    </li>
+                    <li>
+                        Party B, claims fund by submitting secret s to contract cA.
+                    </li>
+                </ol>
+                <p>
+                    If either party does not confirm, then funds are returned.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The project consists of 3 main parts:
+                </p>
+                <ol>
+                    <li>
+                        The smart contract on Ethereum
+                    </li>
+                    <li>
+                        The smart contract on Aion
+                    </li>
+                    <li>
+                        An interface that connects to both blockchain.
+                    </li>
+                </ol>
+                <p>
+                    For users to have a better experience, 
+all transaction and queries to the blockchains, including deploying smart contracts during the protocol, will go through the two Wallets and would thus minimize users' hassle of managing keys.
+                </p>
+                <p>
+                    We built the interface such that the users will not need to know how to deploy the contract to run the protocol.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The main issues we ran into were with integrating the two systems of the two separate blockchains and realizing that things that work for one may not work for the other. For example, we were stuck for a while on how to generate ABI from our AVM code, however there is no ABI generator currently.
+                </p>
+                <p>
+                    Secondly, we failed to deploy contracts programmatically with the latest version of web3.js. We later found out that this seems to be a known issue on the 1.0.0 pre-release, and decided to roll back to older version of web3.js.
+                </p>
+                <p>
+                    Lastly, a few hours before the deadline, the aion testnet went down.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud to have completed a set of smart contracts that would work exactly as our specification, along with an user interface that hides the contract deployment process from the user within the timeframe of the hackathon and despite the obstacles we have faced.
+                </p>
+                <p>
+                    Team members: Martinet Lee, Dmitrii Strizhkov, Jarrod Servilla
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aion
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aiwa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            metamask
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            web3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jcserv/ethuoft2019" rel="nofollow" target="_blank" title="https://github.com/jcserv/ethuoft2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

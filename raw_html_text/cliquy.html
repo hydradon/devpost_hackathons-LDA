@@ -1,0 +1,748 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="801466" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/801/466/datas/original.jpeg">
+                            <img alt="Cliquey &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/801/466/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The
+                    <em>
+                        Kotti Classic
+                    </em>
+                    and
+                    <em>
+                        G&ouml;rli
+                    </em>
+                    testnets running different implementations of the
+                    <em>
+                        Clique
+                    </em>
+                    engine got stuck multiple times due to minor issues discovered. These issues were partially addressed on the mono-client
+                    <em>
+                        Rinkeby
+                    </em>
+                    network by optimizing the Geth code.
+                </p>
+                <p>
+                    However, optimizations across multiple clients should be adequately specified and discussed. This working document is a result of a couple of months testing and running cross-client
+                    <em>
+                        Clique
+                    </em>
+                    networks, especially with the feedback gathered by several Pantheon, Nethermind, Parity Ethereum, and Geth engineers on different channels.
+                </p>
+                <p>
+                    The overall goal is to simplify the setup and configuration of proof-of-authority networks, ensure testnets avoid getting stuck and mimicking mainnet conditions.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <strong>
+                        Cliquey
+                    </strong>
+                    is the second iteration of the
+                    <em>
+                        Clique
+                    </em>
+                    proof-of-authority consensus protocol, previously discussed as
+                    <em>
+                        "Clique v2"
+                    </em>
+                    . It comes with some usability and stability optimizations gained from creating the
+                    <em>
+                        G&ouml;rli
+                    </em>
+                    and
+                    <em>
+                        Kotti Classic
+                    </em>
+                    cross-client proof-of-authority networks that were implemented in Geth, Parity Ethereum, Pantheon, Nethermind, and various other clients.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    This section specifies the
+                    <strong>
+                        Cliquey
+                    </strong>
+                    proof-of-authority engine. To quickly understand the differences from
+                    <em>
+                        Clique
+                    </em>
+                    , please refer to the
+                    <em>
+                        Rationale
+                    </em>
+                    further below.
+                </p>
+                <h3>
+                    Constants
+                </h3>
+                <p>
+                    We define the following constants:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            <code>
+                                EPOCH_LENGTH
+                            </code>
+                        </strong>
+                        : The number of blocks after which to checkpoint and reset the pending votes. It is suggested to remain analogous to the mainnet
+                        <code>
+                            ethash
+                        </code>
+                        proof-of-work epoch (
+                        <code>
+                            30_000
+                        </code>
+                        ).
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                BLOCK_PERIOD
+                            </code>
+                        </strong>
+                        : The minimum difference between two consecutive block's timestamps. It is suggested to remain analogous to the mainnet
+                        <code>
+                            ethash
+                        </code>
+                        proof-of-work block time target (
+                        <code>
+                            15
+                        </code>
+                        seconds).
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                EXTRA_VANITY
+                            </code>
+                        </strong>
+                        : The fixed number of extra-data prefix bytes reserved for signer
+                        <em>
+                            vanity
+                        </em>
+                        . It is suggested to retain the current extra-data allowance and use (
+                        <code>
+                            32
+                        </code>
+                        bytes).
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                EXTRA_SEAL
+                            </code>
+                        </strong>
+                        : The fixed number of extra-data suffix bytes reserved for signer seal:
+                        <code>
+                            65 bytes
+                        </code>
+                        fixed as signatures are based on the standard
+                        <code>
+                            secp256k1
+                        </code>
+                        curve.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                NONCE_AUTH
+                            </code>
+                        </strong>
+                        : Magic nonce number
+                        <code>
+                            0xffffffffffffffff
+                        </code>
+                        to vote on adding a new signer.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                NONCE_DROP
+                            </code>
+                        </strong>
+                        : Magic nonce number
+                        <code>
+                            0x0000000000000000
+                        </code>
+                        to vote on removing a signer.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                UNCLE_HASH
+                            </code>
+                        </strong>
+                        : Always
+                        <code>
+                            Keccak256(RLP([]))
+                        </code>
+                        as uncles are meaningless outside of proof-of-work.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                DIFF_NOTURN
+                            </code>
+                        </strong>
+                        : Block score (difficulty) for blocks containing out-of-turn signatures. It should be set to
+                        <code>
+                            1
+                        </code>
+                        since it just needs to be an arbitrary baseline constant.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                DIFF_INTURN
+                            </code>
+                        </strong>
+                        : Block score (difficulty) for blocks containing in-turn signatures. It should be
+                        <code>
+                            3
+                        </code>
+                        to show preference over out-of-turn signatures.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                MIN_WAIT
+                            </code>
+                        </strong>
+                        : The minimum time to wait for an out-of-turn block to be published. It is suggested to set it to
+                        <code>
+                            BLOCK_PERIOD / 2
+                        </code>
+                        .
+                    </li>
+                </ul>
+                <p>
+                    We also define the following per-block constants:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            <code>
+                                BLOCK_NUMBER
+                            </code>
+                        </strong>
+                        : The block height in the chain, where the height of the genesis is block
+                        <code>
+                            0
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                SIGNER_COUNT
+                            </code>
+                        </strong>
+                        : The number of authorized signers valid at a particular instance in the chain.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                SIGNER_INDEX
+                            </code>
+                        </strong>
+                        : The index of the block signer in the sorted list of currently authorized signers.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                SIGNER_LIMIT
+                            </code>
+                        </strong>
+                        : The number of signers required to govern the list of authorities. It must be
+                        <code>
+                            floor(SIGNER_COUNT / 2) + 1
+                        </code>
+                        to enforce majority consensus on a proof-of-authority chain.
+                    </li>
+                </ul>
+                <p>
+                    We repurpose the
+                    <code>
+                        ethash
+                    </code>
+                    header fields as follows:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            <code>
+                                beneficiary
+                            </code>
+                        </strong>
+                        : The address to propose modifying the list of authorized signers with.
+                        <ul>
+                            <li>
+                                Should be filled with zeroes normally, modified only while voting.
+                            </li>
+                            <li>
+                                Arbitrary values are permitted nonetheless (even meaningless ones such as voting out non-signers) to avoid extra complexity in implementations around voting mechanics.
+                            </li>
+                            <li>
+                                It
+                                <strong>
+                                    must
+                                </strong>
+                                be filled with zeroes on checkpoint (i.e., epoch transition) blocks.
+                            </li>
+                            <li>
+                                Transaction execution
+                                <strong>
+                                    must
+                                </strong>
+                                use the actual block signer (see
+                                <code>
+                                    extraData
+                                </code>
+                                ) for the
+                                <code>
+                                    COINBASE
+                                </code>
+                                opcode.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                nonce
+                            </code>
+                        </strong>
+                        : The signer proposal regarding the account defined by the
+                        <code>
+                            beneficiary
+                        </code>
+                        field.
+                        <ul>
+                            <li>
+                                It should be
+                                <strong>
+                                    <code>
+                                        NONCE_DROP
+                                    </code>
+                                </strong>
+                                to propose deauthorizing
+                                <code>
+                                    beneficiary
+                                </code>
+                                as an existing signer.
+                            </li>
+                            <li>
+                                It should be
+                                <strong>
+                                    <code>
+                                        NONCE_AUTH
+                                    </code>
+                                </strong>
+                                to propose authorizing
+                                <code>
+                                    beneficiary
+                                </code>
+                                as a new signer.
+                            </li>
+                            <li>
+                                It
+                                <strong>
+                                    must
+                                </strong>
+                                be filled with zeroes on checkpoint (i.e., on epoch transition) blocks.
+                            </li>
+                            <li>
+                                It
+                                <strong>
+                                    must
+                                </strong>
+                                not take up any other value apart from the two above.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                extraData
+                            </code>
+                        </strong>
+                        : Combined field for signer vanity, checkpointing and signer signatures.
+                        <ul>
+                            <li>
+                                The first
+                                <strong>
+                                    <code>
+                                        EXTRA_VANITY
+                                    </code>
+                                </strong>
+                                fixed bytes may contain arbitrary signer vanity data.
+                            </li>
+                            <li>
+                                The last
+                                <strong>
+                                    <code>
+                                        EXTRA_SEAL
+                                    </code>
+                                </strong>
+                                fixed bytes are the signer's signature sealing the header.
+                            </li>
+                            <li>
+                                Checkpoint blocks
+                                <strong>
+                                    must
+                                </strong>
+                                contain a list of signers (
+                                <code>
+                                    SIGNER_COUNT*20
+                                </code>
+                                bytes) in between,
+                                <strong>
+                                    omitted
+                                </strong>
+                                otherwise.
+                            </li>
+                            <li>
+                                The list of signers in checkpoint block extra-data sections
+                                <strong>
+                                    must
+                                </strong>
+                                be sorted in ascending order.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                mixHash
+                            </code>
+                        </strong>
+                        : Reserved for fork protection logic, similar to the extra-data during the DAO.
+                        <ul>
+                            <li>
+                                It
+                                <strong>
+                                    must
+                                </strong>
+                                be filled with zeroes during regular operation.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                ommersHash
+                            </code>
+                        </strong>
+                        : It
+                        <strong>
+                            must
+                        </strong>
+                        be
+                        <strong>
+                            <code>
+                                UNCLE_HASH
+                            </code>
+                        </strong>
+                        as uncles are meaningless outside of proof-of-work.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                timestamp
+                            </code>
+                        </strong>
+                        : It
+                        <strong>
+                            must
+                        </strong>
+                        be greater than the parent timestamp.
+                    </li>
+                    <li>
+                        <strong>
+                            <code>
+                                difficulty
+                            </code>
+                        </strong>
+                        : It contains the standalone score of the block to derive the quality of a chain.
+                        <ul>
+                            <li>
+                                It
+                                <strong>
+                                    must
+                                </strong>
+                                be
+                                <strong>
+                                    <code>
+                                        DIFF_NOTURN
+                                    </code>
+                                </strong>
+                                if
+                                <code>
+                                    BLOCK_NUMBER % SIGNER_COUNT != SIGNER_INDEX
+                                </code>
+                            </li>
+                            <li>
+                                It
+                                <strong>
+                                    must
+                                </strong>
+                                be
+                                <strong>
+                                    <code>
+                                        DIFF_INTURN
+                                    </code>
+                                </strong>
+                                if
+                                <code>
+                                    BLOCK_NUMBER % SIGNER_COUNT == SIGNER_INDEX
+                                </code>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>
+                    Validator List
+                </h3>
+                <p>
+                    The
+                    <em>
+                        initial
+                    </em>
+                    validator list can be specified in the configuration at genesis, i.e., by appending it to the Clique config in Geth:
+                </p>
+                <pre class="language-json"><code>"clique":{
+        "period": 15,
+  "epoch": 30000,
+  "validators": [
+  "0x7d577a597b2742b498cb5cf0c26cdcd726d39e6e",
+  "0x82a978b3f5962a5b0957d9ee9eef472ee55b42f1"
+  ]
+}
+</code></pre>
+                <p>
+                    By using this list, for convenience, the
+                    <code>
+                        extraData
+                    </code>
+                    field of the genesis block only has to contain the 32 bytes of
+                    <strong>
+                        <code>
+                            EXTRA_VANITY
+                        </code>
+                    </strong>
+                    . The client automatically converts and appends the list of signers to the block
+                    <code>
+                        0
+                    </code>
+                    extra-data as specified in EIP-225 at checkpoint blocks (appending
+                    <code>
+                        SIGNER_COUNT*20
+                    </code>
+                    bytes).
+                </p>
+                <h3>
+                    Sealing
+                </h3>
+                <p>
+                    For a detailed specification of the block authorization logic, please refer to EIP-225 by honoring the constants defined above. However, the following changes should be highlighted:
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            Each singer is
+                            <strong>
+                                allowed to sign any number of consecutive blocks
+                            </strong>
+                            . The order is not fixed, but in-turn signing weighs more (
+                            <strong>
+                                <code>
+                                    DIFF_INTURN
+                                </code>
+                            </strong>
+                            ) than out-of-turn one (
+                            <strong>
+                                <code>
+                                    DIFF_NOTURN
+                                </code>
+                            </strong>
+                            ). In case an out-of-turn block is received, an
+                            <strong>
+                                in-turn signer should continue to publish their block
+                            </strong>
+                            to ensure the chain always prefers in-turn blocks in any case. This strategy prevents in-turn validators from being hindered from publishing their block and potential network halting.
+                        </p>
+                        <ul>
+                            <li>
+                                If a signer is allowed to sign a block, i.e., is on the authorized list:
+                            </li>
+                            <li>
+                                Calculate the Gaussian random signing time of the next block:
+                                <code>
+                                    parent_timestamp + BLOCK_PERIOD + r
+                                </code>
+                                , where
+                                <code>
+                                    r
+                                </code>
+                                is a uniform random value in
+                                <code>
+                                    rand(-BLOCK_PERIOD/4, BLOCK_PERIOD/4)
+                                </code>
+                                .
+                            </li>
+                            <li>
+                                If the signer is in-turn, wait for the exact time to arrive, sign and broadcast immediately.
+                            </li>
+                            <li>
+                                If the signer is out-of-turn, delay signing by
+                                <code>
+                                    MIN_WAIT + rand(0, SIGNER_COUNT * 500ms)
+                                </code>
+                                .
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    This strategy will always ensure that an in-turn signer has a
+                    <strong>
+                        substantial advantage
+                    </strong>
+                    to sign and propagate versus the out-of-turn signers.
+                </p>
+                <h3>
+                    Voting
+                </h3>
+                <p>
+                    The voting logic is unchanged and can be adapted straight from EIP-225.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The following changes were introduced over Clique EIP-225 and should be discussed briefly.
+                </p>
+                <ul>
+                    <li>
+                        Cliquey introduces a
+                        <strong>
+                            <code>
+                                MIN_WAIT
+                            </code>
+                        </strong>
+                        period for out-of-turn block to be published which is not present for Clique. This addresses the issue of out-of-turn blocks often getting pushed into the network too fast causing a lot of short reorganizations and in some rare cases causing the network to come to a halt. By holding back out-of-turn blocks, Cliquey allows in-turn validators to seal blocks even under non-optimal network conditions, such as high network latency or validators with unsynchronized clocks.
+                    </li>
+                    <li>
+                        To further strengthen the role of in-turn blocks, an authority should continue to publish in-turn blocks even if an out-of-turn block was already received on the network. This prevents in-turn validators being hindered from publishing their block and potential network problems, such as reorganizations or the network getting stuck.
+                    </li>
+                    <li>
+                        Additionally, the
+                        <strong>
+                            <code>
+                                DIFF_INTURN
+                            </code>
+                        </strong>
+                        was increased from
+                        <code>
+                            2
+                        </code>
+                        to
+                        <code>
+                            3
+                        </code>
+                        to avoid situations where two different chain heads have the same total difficulty. This prevents the network from getting stuck by making in-turn blocks significantly more
+                        <em>
+                            heavy
+                        </em>
+                        than out-of-turn blocks.
+                    </li>
+                    <li>
+                        The
+                        <strong>
+                            <code>
+                                SIGNER_LIMIT
+                            </code>
+                        </strong>
+                        was removed from block sealing logic and is only required for voting. This allows the network to continue sealing blocks even if all but one of the validators are offline. The voting governance is not affected and still requires signer majority.
+                    </li>
+                    <li>
+                        The block period should be less strict and slightly randomized to mimic mainnet conditions. Therefore, it is slightly randomized in the uniform range of
+                        <code>
+                            [-BLOCK_PERIOD/4, BLOCK_PERIOD/4]
+                        </code>
+                        . With this, the average block time will still hover around
+                        <strong>
+                            <code>
+                                BLOCK_PERIOD
+                            </code>
+                        </strong>
+                        .
+                    </li>
+                    <li>
+                        The block time-stamp no longer requires to be greater than the parent block time plus the
+                        <strong>
+                            <code>
+                                BLOCK_PERIOD
+                            </code>
+                        </strong>
+                        . We propose a simple sanity check on the time-stamp to be greater than the parent time stamp to be sufficient here.
+                    </li>
+                </ul>
+                <p>
+                    Finally, without changing any consensus logic, we propose the ability to specify an initial list of validators at genesis configuration without tampering with the
+                    <code>
+                        extraData
+                    </code>
+                    .
+                </p>
+                <h2>
+                    What's next for Cliquey
+                </h2>
+                <p>
+                    Implementing the specification in Geth and Parity Ethereum and hardforking G&ouml;rli and Kotti Classic testnets to upgrade for Cliquey.
+                </p>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ethereum/EIPs/pull/1955" rel="nofollow" target="_blank" title="https://github.com/ethereum/EIPs/pull/1955">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

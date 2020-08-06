@@ -1,0 +1,241 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="537419" data-title="A fellow hacker experiencing the VR " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/419/datas/original.jpg">
+                            <img alt="24 - Internet of Followers (IoF) &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/419/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A fellow hacker experiencing the VR
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="537420" data-title="A fellow hacker experiencing the VR" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/420/datas/original.jpg">
+                            <img alt="24 - Internet of Followers (IoF) &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/420/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A fellow hacker experiencing the VR
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As users of the Twitter platform, we were very interested in the way that different communities form and interact. When users cluster into these communities, content is shared between them naturally through different transmissions. Thus, visualizing this information and ultimately seeing how posts are transmitted and spread throughout the network could lead to more information on how to prevent abuse of the system and ways to prevent targeted harassment campaigns.
+                </p>
+                <h2>
+                    What It Does
+                </h2>
+                <p>
+                    The IoF allows users to have an innovative VR experience which allows them to delve through the wide-reaching space of Twitter networks. Users will be able to walk firsthand through the follower network and see as clusters form as different users follow each other.
+                </p>
+                <h2>
+                    How We Built It
+                </h2>
+                <ul>
+                    <li>
+                        Concurrently worked on two parts of the code via a visualization building team and a data collection team
+                    </li>
+                    <li>
+                        Leveraged Git to merge code from the two teams
+                    </li>
+                    <li>
+                        Utilized Tweepy (Twitter API) to gather data from Twitter and write it to a JSON file
+                    </li>
+                    <li>
+                        Used Unity to develop the visualization code
+                    </li>
+                </ul>
+                <h2>
+                    Challenges We Ran Into
+                </h2>
+                <ul>
+                    <li>
+                        First experience with Twitter API to collect the data
+                    </li>
+                    <li>
+                        Ran out of API calls during testing
+                    </li>
+                    <li>
+                        First experience with Oculus Rift equipment for VR applications
+                    </li>
+                    <li>
+                        Oculus Rift does not work with laptops or any of the computers in the labs
+                    </li>
+                    <li>
+                        Developing an algorithm for optimal node placement
+                    </li>
+                    <li>
+                        Conveying the difference between following a user and being followed by a user
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments That We're Proud Of
+                </h2>
+                <ul>
+                    <li>
+                        Working together as a cohesive unit
+                    </li>
+                    <li>
+                        Completing the project and all stretch goals
+                    </li>
+                    <li>
+                        Developing an algorithm for the optimal node placement
+                    </li>
+                </ul>
+                <pre class="language-c-sharp"><code>// Calculate the force on each vertex
+float c1 = 2f;
+float c2 = 1f;
+float c3 = 1f;
+float c4 = 0.1f;
+
+foreach (var elem in nodes)
+{
+// Calculate the force on each node
+Vector3 force = Vector3.zero;
+
+foreach (var other in nodes)
+{
+if (!elem.Key.Equals(other.Key))
+{
+if (connections.ContainsKey(new Pair&lt;string, string&gt;(elem.Key, other.Key)) || connections.ContainsKey(new Pair&lt;string, string&gt;(other.Key, elem.Key)))
+{
+force += (other.Value.model.transform.position - elem.Value.model.transform.position).normalized * c1 * Mathf.Log10(Vector3.Distance(elem.Value.model.transform.position, other.Value.model.transform.position) / c2);
+}
+else
+{
+force -= (other.Value.model.transform.position - elem.Value.model.transform.position).normalized * c3 / (elem.Value.model.transform.position - other.Value.model.transform.position).sqrMagnitude;
+}
+}
+}
+
+// move the vertex c4 * (force on vertex)
+force *= c4;
+elem.Value.model.transform.position += force;
+}
+
+// Fix edges
+foreach (var edge in connections)
+{
+edge.Value.GetComponent&lt;LineRenderer&gt;().SetPositions(new Vector3[] { nodes[edge.Key.First].model.transform.position, nodes[edge.Key.Second].model.transform.position });
+}
+</code></pre>
+                <h2>
+                    What We Learned
+                </h2>
+                <ul>
+                    <li>
+                        How to effectively work with new team members of different skill levels in a collaborative environment
+                    </li>
+                    <li>
+                        Effective management of Twitter API
+                    </li>
+                    <li>
+                        Several optimal node placement algorithms
+                    </li>
+                </ul>
+                <h2>
+                    What's Next For Internet of Followers (IoF)
+                </h2>
+                <ul>
+                    <li>
+                        Simulation of the posting of a tweet to see how it is transmitted throughout the network
+                    </li>
+                    <li>
+                        Functionality of dragging user nodes to focus on different parts of the network
+                    </li>
+                    <li>
+                        Selecting the user focus of the graph
+                    </li>
+                    <li>
+                        Ability to hover over users on the graph to view more data
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            .tech
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/oculus">
+                                oculus
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/joshua-friede/Internet-of-Followers" rel="nofollow" target="_blank" title="https://github.com/joshua-friede/Internet-of-Followers">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://twittvr.tech/" rel="nofollow" target="_blank" title="http://twittvr.tech/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                twittvr.tech
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

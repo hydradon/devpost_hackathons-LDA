@@ -1,0 +1,180 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/WT6KZ5i81jU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="691432" data-title="Serverless execution architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/691/432/datas/original.png">
+                            <img alt="Serverless Video Stabilizer &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/691/432/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Serverless execution architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My main inspiration was to create a universalizable application that would still be useful to a large number of people on the AWS Serverless Application Repo. Video stabilization seemed like a good choice: it could be used from anywhere from large media companies stabilizing camera footage to charitable organizations fighting human trafficking to process evidence.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    When a user uploads a video to an S3 bucket, it triggers an AWS Lambda function that downloads them to the ephemeral storage in AWS Lambda and uses a
+                    <a href="https://github.com/RobRoseKnows/python_video_stab" rel="nofollow">
+                        trimmed down version
+                    </a>
+                    of the vidstab Python package which uses OpenCV to stabilize videos based on a
+                    <a href="http://nghiaho.com/?p=2093" rel="nofollow">
+                        blog post
+                    </a>
+                    written by Nghia Ho. It then saves the stabilized video to the output bucket using the same key it was uploaded with.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used the AWS Lambda Python 3 execution environment to run the code in the Lambda function and a modified version of the
+                    <code>
+                        vidstab
+                    </code>
+                    package. I modified the package to remove its dependency on
+                    <code>
+                        matplotlib
+                    </code>
+                    and
+                    <code>
+                        progress
+                    </code>
+                    . I was hoping to be able to get the code package small enough that it could be edited inline in the AWS Lambda console, but unfortunately OpenCV is a very big code base.
+                </p>
+                <p>
+                    I used the Serverless Application Model to define and package the model for the Serverless Application Repo. The SAM Template defines several different customization options that affect the outputted video: the algorithm used for keypoint detection, and what to do with the border around the video. I also made the output and input buckets separate so that it could be integrated into a longer video processing pipeline.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Some of the SAR errors were confusing, but thankfully the folks in Slack were extremely helpful in debugging applications. I also was unable to edit the function using the AWS Lambda inline editor, which meant rapid iteration on this application was harder.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Making an easily generalizable application that's live on the AWS SAR!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Learned
+                    <strong>
+                        a lot
+                    </strong>
+                    about serverless applications and how to work with AWS.
+                </p>
+                <h2>
+                    What's next for Serverless Video Stabilizer
+                </h2>
+                <p>
+                    I could add to the SAM template in order to restrict execution to when video files under 240MB are uploaded to the bucket. I also would like to experiment with different architectures in order to allow bigger video files to be processed. The
+                    <code>
+                        vidstab
+                    </code>
+                    repo has support for stabilizing streams of video, which I could potentially use in the future to stabilize videos on the fly.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sam
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:932998628582:applications~video-stabilization" rel="nofollow" target="_blank" title="https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:932998628582:applications~video-stabilization">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                serverlessrepo.aws.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/RobRoseKnows/serverless-repo/tree/master/stabVideo" rel="nofollow" target="_blank" title="https://github.com/RobRoseKnows/serverless-repo/tree/master/stabVideo">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

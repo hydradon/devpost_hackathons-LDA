@@ -1,0 +1,271 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="435496" data-title="collage cats hats and windmills" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/435/496/datas/original.jpeg">
+                            <img alt="lolChat &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/435/496/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                collage cats hats and windmills
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="435624" data-title="collage cats cats cats" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/435/624/datas/original.jpeg">
+                            <img alt="lolChat &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/435/624/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                collage cats cats cats
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As we were driving to this hackathon, we came up with some criteria for this project:
+                </p>
+                <ol>
+                    <li>
+                        No sentiment analysis
+                    </li>
+                    <li>
+                        It had to be dumb
+                    </li>
+                    <li>
+                        Cat facts
+                    </li>
+                </ol>
+                <p>
+                    And thus, lolChat was born.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    LolChat is an SMS chatbot with lots of features! Text anything you want to (661) 347-1343. Here are some things you can say:
+                </p>
+                <ul>
+                    <li>
+                        "fact": responds with a random cat fact
+                    </li>
+                    <li>
+                        "newfact" + your_new_fact: adds a new fact to the fact database
+                    </li>
+                    <li>
+                        "lastfact": sends you the last fact entered into the database
+                    </li>
+                    <li>
+                        "poem" + author_name: responds with a randomly generated poem in the style of the specified term. Current supported terms include "darwin", "warren", "alice", "carroll", "plato", "bella", "bard", "bee", "Don Quixote",  and "america".
+                    </li>
+                    <li>
+                        "collage" + search_terms: creates a collage of all your search terms and sends it back to you
+                    </li>
+                    <li>
+                        "word cloud": responds with a word cloud ;)
+                    </li>
+                    <li>
+                        "dog": don't even try this one
+                    </li>
+                    <li>
+                        "helpme": sends you a list of things you can do
+                    </li>
+                </ul>
+                <p>
+                    Alternatively, you can start a conversation with Ron Obvious, our smart-ish chat bot! Text anything other than the above terms and he'll respond.
+                </p>
+                <p>
+                    Some things I like to text it:
+                </p>
+                <ul>
+                    <li>
+                        "collage goat goat goat goat"
+                    </li>
+                    <li>
+                        "poem alice"
+                    </li>
+                    <li>
+                        "poem darwin"
+                    </li>
+                    <li>
+                        "poem bella"
+                    </li>
+                    <li>
+                        "poem bard"
+                    </li>
+                    <li>
+                        "dog"
+                    </li>
+                    <li>
+                        "fact"
+                    </li>
+                    <li>
+                        "collage college trees mountain cat"
+                    </li>
+                    <li>
+                        "collage house mouse louse grouse"
+                    </li>
+                    <li>
+                        "word cloud"
+                    </li>
+                    <li>
+                        "What's up?"
+                    </li>
+                    <li>
+                        "Do you like robots?"
+                    </li>
+                </ul>
+                <p>
+                    Poetry example (Twilight):
+But can you he was clearly beginning
+I turned to disappear.
+                    <br>
+                    Like you to believe to be satisfied with winning
+Working relationships are better motivated by fear.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Everything is called from the main flask app when texts come in through Twilio. Feature integration is very easy because of this, as all you need to do is write some helper function in another file, add the route in the Flask app, and bam! You're ready to go.
+                </p>
+                <p>
+                    All of the features work in different ways (like they should), but the general idea is that we tokenize the user's text to pull out the noun keywords, and then use those words to determine the response to the user. If they want a collage created, we find some images and stitch them together to make a pretty picture. If they want a poem, they get a poem generated by the term they send us.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Integrating everything was a challenge, especially with how the Flask app for Twilio integration had to be deployed to Heroku. Heroku doesn't work well with Python libraries that depend on C, so we had to create a custom buildpack for our app in order to support the Python Imaging Library (PIL). This took much longer than it should have. Working with PIL was no walk in the park, either.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Getting all this stuff to work together, especially on Heroku, was a challenge. We're especially proud of how lolChat is available to anyone with a cell phone
+                    <em>
+                        right now!
+                    </em>
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Heroku does some things well, other things not so much.
+                    </li>
+                    <li>
+                        Sleeping at hackathons is so much better than not sleeping at hackathons.
+                    </li>
+                    <li>
+                        Goats
+                    </li>
+                    <li>
+                        Deploy early and often.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for lolChat
+                </h2>
+                <p>
+                    More features! Generated youtube haikus? Performing Google's deep dream algorithm on the generated images? Automatically texting you random cat facts ever 2.57 minutes with no way to cancel? The possibilities are endless!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            chatterbot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/cloudinary">
+                                cloudinary
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pattern
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pillow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rhymeless
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/hannahtwiggsmith/PaintMeAPicture" rel="nofollow" target="_blank" title="https://github.com/hannahtwiggsmith/PaintMeAPicture">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

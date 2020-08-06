@@ -1,0 +1,107 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/xMDvCyigF1U?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    During last year I published many Alexa skills. Every time building skill model and Lambda logic related to executing conversation dialogue take long time and effort while most of time should be spent in building the new business logic. Although there is a lot of  useful Alexa templates exist that speed up building skill. But after skill has been certified, if you want to make any small change in model or logic you will need to create new skill version or change in lambda logic which isn't save specially that skill is now public and all users can try it.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    So I need a Skill template that use a generic model with Lambda function contains a generic logic to produce the user experience I need while implementing the new idea or business.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    So I decide to move all logic to database. Now database is controlled what the paragraph that Alexa will say now and what is expected answer from user and based on user answer what next paragraph will be and what will happen if user give wrong answer. What will be displayed in Cards (title, content, images). Which SSML tags I need to use in each paragraph, do I need to add a sound file in this paragraph. 
+All this moved to database then I built an engine in lambda function that can read such information from database and act accordingly. Plus building a generic skill model that return all Alexa default intent and if there is any custom intent user add.
+So each paragraph in conversation dialogue (I called dialogue  a 'story') will be has a row in database (I called paragraph a 'story part'). Lambda function load this part and act accordingly based on this part information
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I want skill to be dynamic and not to move in one direction only, so that user doesn't feel bored from same dialogue happen every time. So I modified engine to support branches, so now and based on user answer (or user select different options) the conversation will be totally changed.
+                    <br>
+                    Then I want to make content more dynamic without the user intervention. So I support that each skill will has many stories and each story will has many story parts. Once skill new session started, Lambda will pick a random story and start communicate with user.So every time user visit the skill he will find a different dialogue and inside the story and based on user selection he will find different paragraphs 
+This make skill very dynamic even after publishing it as developer can easily add/delete/modify content (story or story parts)
+                </p>
+                <p>
+                    You can use this template from AWS Serverless Application Repository:
+                    <a href="https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:962622311275:applications%7EAlexa-Nodejs-Dynamic-Content" rel="nofollow">
+                        https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:962622311275:applications~Alexa-Nodejs-Dynamic-Content
+                    </a>
+                </p>
+                <h2>
+                    What's next for Control Alexa content and behavior through database
+                </h2>
+                <p>
+                    I want to support the new Alexa slot types such 'SearchQuery'
+I want to support new features to support Alexa devices with display
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-dynamodb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-sam
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mrahman4/AlexaSamTemplate" rel="nofollow" target="_blank" title="https://github.com/mrahman4/AlexaSamTemplate">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

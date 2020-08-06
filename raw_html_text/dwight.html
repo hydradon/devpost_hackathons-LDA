@@ -1,0 +1,219 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/TIv9get7aqA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Above demo video contains integration with Spotify.
+                    <a href="https://www.youtube.com/playlist?list=PLQcGlLJQrlIAZ6Rh2gptL7n-dF749-2C4" rel="nofollow">
+                        Here is full demo playlist
+                    </a>
+                </h2>
+                <h4>
+                    Dwight vs Google Assistant
+                </h4>
+                <p>
+                    <img alt="Dwight vs Google" data-canonical-url="https://raw.githubusercontent.com/mohitmun/dwightassistant/master/dvsg.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--G2sPUjI---/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/mohitmun/dwightassistant/master/dvsg.gif">
+                </p>
+                <h4>
+                    Spotify
+                </h4>
+                <p>
+                    <img alt="Spotify" data-canonical-url="https://raw.githubusercontent.com/mohitmun/dwightassistant/master/spot2.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--Kb5X9m6---/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/mohitmun/dwightassistant/master/spot2.gif">
+                </p>
+                <h4>
+                    Gmail
+                </h4>
+                <p>
+                    <img alt="Gmail" data-canonical-url="https://raw.githubusercontent.com/mohitmun/dwightassistant/master/gmail2.gif" src="https://res.cloudinary.com/devpost/image/fetch/s---tVaiSUc--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/mohitmun/dwightassistant/master/gmail2.gif">
+                </p>
+                <h4>
+                    Uber
+                </h4>
+                <p>
+                    <img alt="Uber" data-canonical-url="https://raw.githubusercontent.com/mohitmun/dwightassistant/master/uber.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--W9il0s7C--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/mohitmun/dwightassistant/master/uber.gif">
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    For a few years now I&rsquo;ve been working on nifty and novelty service automations using IFTTT. The idea to use one platform to connect multiple services that I use frequently has always appealed to me and when I found out about AWS Lex&rsquo;s powerful platform I had to try it out!
+                </p>
+                <p>
+                    To utilise the platform to its zenith I wanted to add as many services as I can and make it as productive as possible. While making the app, I was reminded of Dwight, an assistant in the popular show The Office and given how my use case fits his job description, I christened my app on his name.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Dwight is a chatbot assistant that helps you connect to multiple services by adding them via OAuth. The services that I have added for now are:
+                </p>
+                <p>
+                    Gmail : Access your mailbox through commands like "Show my unread emails", "Whats last starred mail", "Show mails after 17 july", "Show all emails sent by projjol", Send, forward, reply and other actions on mail
+                </p>
+                <p>
+                    Spotify : Developing this skill was really fun and now I can control my music on Spotify via this new skill. I can search for new music. I can also play specific songs and artists using this skill
+                </p>
+                <p>
+                    Uber: Travelling takes an important part of our day and organising this is efficiently is a major concern for me. Using this skill I can now book an Uber and constantly view the current prices.
+                </p>
+                <h3>
+                    Key Features
+                </h3>
+                <ol>
+                    <li>
+                        One command and deploy whole stack to AWS. It leverages boto3 client to create/edit/update/delete resources in AWS
+                    </li>
+                    <li>
+                        Highly extendable architecture. Its extremely easy to add new services which uses Oauth to give access to user data
+                    </li>
+                    <li>
+                        Search mails by keywords, time, name of user who sent it, unread, starred etc
+                    </li>
+                    <li>
+                        Play music by artist name, track name and album. All player actions like play, pause etc
+                    </li>
+                    <li>
+                        Keep context between channels. Support you are chatting with Dwight on Facebook and you switch to Dwight slack, It will remember your last conversation and continue it
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    I started reading docs about Lex and Lambda. Then I picked best three services I wanted to integrate. I chose Uber, Gmail and spotify as I use them extensively. One by one reading their docs, I integrated it to Lex. All of them supports Oauth2 so I came with simple architecture which supports all and also extendable in future.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One of the biggest challenge was to get Oauth credentials into system. I finally got idea to use APIGateway to set cookie in user browser and redirect to consent page, after that authorization code is passed to lambda by passing initially set cookie(hence mapping same eariler user) and saving all details to dynamodb
+One major hurdle was to get used to the AWS ecosystem as I was working on it for the first time. A good deal of my time was spent learning the ins and outs of the system and how to use it efficiently
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    I'm not much acquainted AWS, but during this hackathon I learned Lambda, Lex, API gateway and Dynamodb. This was best opportunity to learn more about AWS. I'm also a ruby person so shifting from ruby to python was good learning experience too.
+                </p>
+                <h2>
+                    What's next for Dwight
+                </h2>
+                <p>
+                    I have integrated limited services and limited APIs in each integration. As we integrated more services and APIs this will be much powerful.
+I'm planning to maintain this project, any many more servies like Google drive, Youtube, Reddit, Facebook, Twitter, Google Maps etc.
+For Gmail integration, push notification for incoming mails
+Letting user interact with bot using speech
+Developer mode - Dynamic add/modify lex models through boto3 client.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/gmail">
+                                gmail
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/oauth">
+                                oauth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/spotify">
+                                spotify
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/uber">
+                                uber
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.messenger.com/t/112395952738436" rel="nofollow" target="_blank" title="https://www.messenger.com/t/112395952738436">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.messenger.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/mohitmun/dwightassistant/" rel="nofollow" target="_blank" title="https://github.com/mohitmun/dwightassistant/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

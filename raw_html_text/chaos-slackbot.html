@@ -1,0 +1,556 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/288CbOxoiOo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="415514" data-title="Architecture diagram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/514/datas/original.jpg">
+                            <img alt="Chaos Slackbot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/514/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architecture diagram
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416152" data-title="Sample messages analysed by Chaos bot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/152/datas/original.jpg">
+                            <img alt="Chaos Slackbot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/152/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Sample messages analysed by Chaos bot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    <img alt="Icon" data-canonical-url="https://raw.github.com/shinesolutions/chaos-slackbot/master/icon.png" src="https://res.cloudinary.com/devpost/image/fetch/s--aQnA82iG--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.github.com/shinesolutions/chaos-slackbot/master/icon.png">
+                </p>
+                <p>
+                    <a href="http://travis-ci.org/shinesolutions/chaos-slackbot" rel="nofollow">
+                        <img alt="Build Status" data-canonical-url="https://img.shields.io/travis/shinesolutions/chaos-slackbot.svg" src="https://res.cloudinary.com/devpost/image/fetch/s--lhs1mOag--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://img.shields.io/travis/shinesolutions/chaos-slackbot.svg">
+                    </a>
+                </p>
+                <h2>
+                    Chaos Slackbot
+                </h2>
+                <p>
+                    Chaos is a
+                    <a href="http://martinfowler.com/articles/serverless.html" rel="nofollow">
+                        serverless
+                    </a>
+                    <a href="https://www.wired.com/2015/08/slack-overrun-bots-friendly-wonderful-bots/" rel="nofollow">
+                        Slack bot
+                    </a>
+                    for randomly terminating EC2 instance from
+                    <a href="http://docs.aws.amazon.com/autoscaling/latest/userguide/AutoScalingGroup.html" rel="nofollow">
+                        Auto Scaling Groups
+                    </a>
+                    whitelist.
+                </p>
+                <p>
+                    It's inspired by
+                    <a href="https://github.com/Netflix/SimianArmy/wiki/Chaos-Monkey" rel="nofollow">
+                        Chaos Monkey
+                    </a>
+                    , but the randomness is determined by what the chatters are talking about on a Slack channel. The bot wouldn't know up front what the humans will be saying and when they will say it, that's natural randomness we're taking advantage of.
+                </p>
+                <p>
+                    Here's an example of a conversation between Bruce Wayne and Tony Stark on a Slack channel, which messages are analysed by Chaos bot, and are used to determine whether to terminate a random EC2 instance.
+                </p>
+                <p>
+                    <a href="https://raw.github.com/shinesolutions/chaos-slackbot/master/docs/sample_interaction.jpg" rel="nofollow">
+                        <img alt="Sample Interaction Screenshot" data-canonical-url="https://raw.github.com/shinesolutions/chaos-slackbot/master/docs/sample_interaction.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--t8JASTJK--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.github.com/shinesolutions/chaos-slackbot/master/docs/sample_interaction.jpg">
+                    </a>
+                </p>
+                <h2>
+                    Architecture
+                </h2>
+                <p>
+                    Chaos has two components, a bot that's configured on Slack, and a piece of infrastructure on
+                    <a href="https://aws.amazon.com/" rel="nofollow">
+                        AWS
+                    </a>
+                    .
+                </p>
+                <p>
+                    The bot is a Slack
+                    <a href="https://api.slack.com/outgoing-webhooks" rel="nofollow">
+                        outgoing webhook
+                    </a>
+                    custom integration.
+                </p>
+                <p>
+                    The infrastructure on AWS is a Lambda function that receives POST requests from the Slack bot via an API Gateway, it parses the messages using a simple natural language processing
+                    <a href="https://www.npmjs.com/package/speakeasy-nlp" rel="nofollow">
+                        speakeasy-nlp
+                    </a>
+                    package, those messages will then be used to determine whether to terminate a random EC2 instance from the specified Auto Scaling Groups.
+                </p>
+                <p>
+                    Chaos currently supports a mode called
+                    <code>
+                        sentiment
+                    </code>
+                    , which processes the messages based on positive/negative sentiment using speakeasy-nlp. It is easy to introduce new modes in the future for other processing algorithm(s).
+                </p>
+                <p>
+                    <a href="https://raw.github.com/shinesolutions/chaos-slackbot/master/docs/architecture.jpg" rel="nofollow">
+                        <img alt="Architecture Diagram" data-canonical-url="https://raw.github.com/shinesolutions/chaos-slackbot/master/docs/architecture.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--nHhCJA-Y--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.github.com/shinesolutions/chaos-slackbot/master/docs/architecture.jpg">
+                    </a>
+                </p>
+                <h2>
+                    Installation
+                </h2>
+                <p>
+                    There are two parts to install, the bot on Slack, and the infrastructure on AWS.
+                </p>
+                <p>
+                    Let's install the bot first by creating a Slack outgoing webhook custom integration.
+                </p>
+                <ol>
+                    <li>
+                        Go to your Slack account's custom integrations page at
+                        <code>
+                            https://account.slack.com/apps/manage/custom-integrations
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        The page will show the available custom integrations. Click on
+                        <strong>
+                            Outgoing WebHooks
+                        </strong>
+                        link.
+                    </li>
+                    <li>
+                        Click
+                        <strong>
+                            Add Configuration
+                        </strong>
+                        button.
+                    </li>
+                    <li>
+                        Click
+                        <strong>
+                            Add Outgoing WebHooks integration
+                        </strong>
+                        button.
+                    </li>
+                    <li>
+                        Fill in the integration settings:
+                        <ul>
+                            <li>
+                                <strong>
+                                    Channel
+                                </strong>
+                                : select the channel where you want the bot to be running on, pick a channel with many users, e.g. #general
+                            </li>
+                            <li>
+                                <strong>
+                                    Trigger Word(s)
+                                </strong>
+                                : leave this empty because we want to consume all messages
+                            </li>
+                            <li>
+                                <strong>
+                                    URL(s)
+                                </strong>
+                                : leave this empty for now, we'll go back to this option after the infrastructure is built.
+                            </li>
+                            <li>
+                                <strong>
+                                    Token
+                                </strong>
+                                : Slack will generate the token for you, this token will be configured in Lambda function.
+                            </li>
+                            <li>
+                                <strong>
+                                    Descriptive Label
+                                </strong>
+                                : description for this custom integration, e.g.
+                                <strong>
+                                    Chaos Outgoing WebHook
+                                </strong>
+                            </li>
+                            <li>
+                                <strong>
+                                    Customize Name
+                                </strong>
+                                : the name of your bot, e.g.
+                                <strong>
+                                    Chaos
+                                </strong>
+                            </li>
+                            <li>
+                                <strong>
+                                    Customize Icon
+                                </strong>
+                                : upload Chaos
+                                <a href="https://raw.githubusercontent.com/shinesolutions/chaos-slackbot/master/icon.png" rel="nofollow">
+                                    astro monkey icon
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Click
+                        <strong>
+                            Save Settings
+                        </strong>
+                        button.
+                    </li>
+                </ol>
+                <p>
+                    Next, the second part is to create the infrastructure on AWS.
+                </p>
+                <ol>
+                    <li>
+                        <a href="https://nodejs.org/en/download/package-manager/" rel="nofollow">
+                            Install node.js
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Set up
+                        <a href="https://serverless.com/framework/docs/providers/aws/setup/" rel="nofollow">
+                            AWS credential
+                        </a>
+                        , to be used by
+                        <a href="https://serverless.com/" rel="nofollow">
+                            Serverless framework
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Clone the repository:
+                        <code>
+                            git clone https://github.com/shinesolutions/chaos-slackbot
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Configure the Slack token from the outgoing webhook custom integration settings in
+                        <code>
+                            conf/config.json
+                        </code>
+                        . Add the token to
+                        <code>
+                            allowedTokens
+                        </code>
+                        array property.
+                    </li>
+                    <li>
+                        Configure the Auto Scaling Group names in
+                        <code>
+                            conf/config.json
+                        </code>
+                        to
+                        <code>
+                            autoScalingGroupNames
+                        </code>
+                        array property. (TODO: move this to SimpleDB so this can be programatically configured outside of Chaos Slackbot)
+                    </li>
+                    <li>
+                        Install tools and dependencies:
+                        <code>
+                            make tools deps
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Build the Lambda function and API Gateway:
+                        <code>
+                            make deploy
+                        </code>
+                        . The output of this command will show a POST endpoint, e.g.
+                        <code>
+                            https://id.execute-api.us-east-1.amazonaws.com/prod/handle
+                        </code>
+                    </li>
+                    <li>
+                        Return to the Slack Outgoing WebHook custom integration settings page, and copy paste the POST endpoint from the command output to
+                        <strong>
+                            URL(s)
+                        </strong>
+                        setting, then click
+                        <strong>
+                            Save Settings
+                        </strong>
+                        button.
+                    </li>
+                </ol>
+                <h2>
+                    Usage
+                </h2>
+                <ol>
+                    <li>
+                        Have the users join the Slack channel configured in the bot setting, e.g. #general .
+                    </li>
+                    <li>
+                        Chaos bot will start consuming the messages from that channel, and when the algorithm hits, it will terminate a random EC2 instance.
+                    </li>
+                </ol>
+                <h2>
+                    Configuration
+                </h2>
+                <p>
+                    Chaos Slack bot Lambda function can be configured in
+                    <a href="https://github.com/shinesolutions/sitechecker-slackbot/blob/master/conf/config.json" rel="nofollow">
+                        conf/config.json
+                    </a>
+                    .
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                allowedTokens
+                            </td>
+                            <td>
+                                An array of allowed Slack tokens. If any is specified, then only incoming requests with that token are accepted. If left empty, then all incoming requests are accepted.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                mode
+                            </td>
+                            <td>
+                                Chaos mode to determine message processing rule, currently only supports
+                                <code>
+                                    sentiment
+                                </code>
+                                .
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                ignoredUserNames
+                            </td>
+                            <td>
+                                An array of Slack usernames to be ignored, at the very least you want to ignore
+                                <code>
+                                    slackbot
+                                </code>
+                                .
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                controlledStartHour
+                            </td>
+                            <td>
+                                Start hour of the day when Chaos bot is allowed to terminate EC2 instance. Valid value: 0 to 24.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                controlledEndHour
+                            </td>
+                            <td>
+                                End hour of the day when Chaos bot is no longer allowed to terminate EC2 instance. Valid value: 0 to 24.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                timezone
+                            </td>
+                            <td>
+                                Timezone for controlledStartHour and controlledEndHour. Use
+                                <a href="http://momentjs.com/timezone/" rel="nofollow">
+                                    Moment Timezone
+                                </a>
+                                to find valid timezone values.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                terminationLimit
+                            </td>
+                            <td>
+                                The number of message hits before Chaos terminates a random EC2 instance. The specified mode determines how a message hit is calculated.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                autoScalingGroupNames
+                            </td>
+                            <td>
+                                An array of whitelisted Auto Scaling Group names. EC2 instances that belong to these Auto Scaling Groups are candidates for termination.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                simpleDBDomainName
+                            </td>
+                            <td>
+                                The name of SimpleDB database domain.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>
+                    Development
+                </h2>
+                <p>
+                    Install
+                    <a href="https://serverless.com/" rel="nofollow">
+                        Serverless
+                    </a>
+                    framework and other tools:
+                </p>
+                <pre class="language-nolang"><code>make tools
+</code></pre>
+                <p>
+                    Download library dependencies:
+                </p>
+                <pre class="language-nolang"><code>make deps
+</code></pre>
+                <p>
+                    Build the infrastructure with default prod stage:
+                </p>
+                <pre class="language-nolang"><code>make deploy
+</code></pre>
+                <p>
+                    Remove the infrastructure with default prod stage:
+                </p>
+                <pre class="language-nolang"><code>make remove
+</code></pre>
+                <p>
+                    Specify custom stage:
+                </p>
+                <pre class="language-nolang"><code>STAGE=dev make deps deploy remove
+</code></pre>
+                <h2>
+                    Colophon
+                </h2>
+                <p>
+                    Chaos Slackbot astro monkey icon made by
+                    <a href="http://www.flaticon.com/authors/madebyoliver" rel="nofollow">
+                        Madebyoliver
+                    </a>
+                    from
+                    <a href="http://www.flaticon.com" rel="nofollow">
+                        www.flaticon.com
+                    </a>
+                    is licensed by
+                    <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+                        CC 3.0 BY
+                    </a>
+                </p>
+                <p>
+                    <a href="https://www.youtube.com/watch?v=q5w5VX4tAD4" rel="nofollow">
+                        Demo video
+                    </a>
+                    background music
+                    <a href="https://www.youtube.com/watch?v=q5w5VX4tAD4" rel="nofollow">
+                        Epic and Dark Electronic Music - Welcome to Chaos (Copyright and Royalty Free) by Ross Bugden
+                    </a>
+                    .
+                </p>
+                <p>
+                    This project is a submission to
+                    <a href="https://awschatbot.devpost.com/" rel="nofollow">
+                        AWS Serverless Chatbot Hackathon 2016
+                    </a>
+                    - with self-imposed 24-hour total time limit scattered across several days/nights.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/slack">
+                                slack
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/shinesolutions/chaos-slackbot" rel="nofollow" target="_blank" title="https://github.com/shinesolutions/chaos-slackbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

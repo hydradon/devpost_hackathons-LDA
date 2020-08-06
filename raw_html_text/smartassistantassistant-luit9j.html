@@ -1,0 +1,202 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    SmartAssistantAssistant
+                </h1>
+                <p>
+                    A unified API for creating Alexa Skills and Google Actions
+                </p>
+                <h2>
+                    Overview
+                </h2>
+                <p>
+                    <a href="https://www.smartassistantsquared.org/" rel="nofollow">
+                        SmartAssistantAssistant
+                    </a>
+                    (SAA) is a racket library/language.
+It is technically three languages:
+                    <strong>
+                        <em>
+                            saa-alexa-json
+                        </em>
+                    </strong>
+                    ,
+                    <strong>
+                        <em>
+                            saa-google-json
+                        </em>
+                    </strong>
+                    and
+                    <strong>
+                        <em>
+                            saa-server
+                        </em>
+                    </strong>
+                    .
+                </p>
+                <p>
+                    <strong>
+                        <em>
+                            saa-alexa-json
+                        </em>
+                    </strong>
+                    and
+                    <strong>
+                        <em>
+                            saa-google-json
+                        </em>
+                    </strong>
+                    generate different json, but are written exactly the same way while
+                    <strong>
+                        <em>
+                            saa-server
+                        </em>
+                    </strong>
+                    is used to create a server which can handle requests from either Amazon Alexa or Google Home.
+To get your code to compile on the other, simply switch the #lang. 
+No other code changes required!
+                </p>
+                <h2>
+                    How to use
+                </h2>
+                <p>
+                    Write your saa-alexa-json or saa-google-json file for your desired skill/action. Then complete a saa-server file to implement.
+                </p>
+                <p>
+                    <strong>
+                        saa-alexa-json and saa-google-json
+                    </strong>
+                    The first important line is your #lang. You can define this as either. In this example, I use Alexa.
+                </p>
+                <pre class="language-nolang"><code>#lang s-exp "saa-alexa-json.rkt"
+</code></pre>
+                <p>
+                    You need a manifest, a fulfillment, an action, and an app. 
+The manifest defines the app's description (name, description, etc.)
+The fulfillment points the listener (
+                    <code>
+                        action
+                    </code>
+                    ) to the funtional backend.
+The action defines what the app should listen for.
+The app defines the entire app.
+                </p>
+                <p>
+                    A sample declaration for a manifest might be:
+                </p>
+                <pre class="language-nolang"><code>(define/manifest shoe-manifest
+        (display-name "Shoes")
+  (invocation-name "shoes")
+  (long-description "Orders shoes.")
+  (voice-name "male_1")
+  (sample-invocation
+  "Buy me shoes"
+  "Purchase shoes")
+  (require actions.capabilities.AUDIO_OUTPUT)
+  (require actions.capabilities.AUDIO_INPUT))
+</code></pre>
+                <p>
+                    Likewise, sample declarations for a fulfillment, an action and an app (respectively) will look like:
+                </p>
+                <pre class="language-nolang"><code> (define/fulfillment shoe-app "shoe-app"
+        (url "https://shoe.example.com/shoe-app")
+  (headers #:key1 "value1"
+  #:key2 "value2")
+  (api-version 2))
+</code></pre>
+                <pre class="language-nolang"><code> (define/action shoe-main "MAIN"
+        (intent actions.intent.MAIN)
+  (fulfillment shoe-app))
+(define/action shoe-buy "BUY"
+(intent (com.example.shoe.BUY (: color SchemaOrg_Color))
+(trigger (query-pattern "find some $SchemaOrg_Color:color sneakers")
+(query-pattern "buy some blue suede shoes")
+(query-pattern "get running shoes")))
+(fulfillment shoe-app))
+</code></pre>
+                <pre class="language-nolang"><code> (define/app shoe
+        #:main shoe-main
+  (manifest shoe-manifest)
+  (actions shoe-buy)
+  (conversations
+  shoe-app))
+</code></pre>
+                <h2>
+                    Credit
+                </h2>
+                <p>
+                    This project was created for
+                    <a href="https://www.nwhacks.io/" rel="nofollow">
+                        nwHacks 2018
+                    </a>
+                    with project members:
+                </p>
+                <p>
+                    Brendan Murphy -
+                    <a href="https://github.com/Shamrock-Frost" rel="nofollow">
+                        github
+                    </a>
+                </p>
+                <p>
+                    Hazel Pearson -
+                    <a href="https://github.com/trixiecatsrule" rel="nofollow">
+                        github
+                    </a>
+                </p>
+                <p>
+                    Leonardo Walcher -
+                    <a href="https://github.com/leonardow97" rel="nofollow">
+                        github
+                    </a>
+                </p>
+                <p>
+                    Samuel Young -
+                    <a href="https://github.com/young438" rel="nofollow">
+                        github
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            racket
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.smartassistantsquared.org" rel="nofollow" target="_blank" title="https://www.smartassistantsquared.org">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.smartassistantsquared.org
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Shamrock-Frost/SmartAssistantAssistant" rel="nofollow" target="_blank" title="https://github.com/Shamrock-Frost/SmartAssistantAssistant">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

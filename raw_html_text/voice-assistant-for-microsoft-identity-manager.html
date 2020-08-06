@@ -1,0 +1,384 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/SKzqzNE_bPo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="661645" data-title="Voice Assistant Power BI Dashboard" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/661/645/datas/original.png">
+                            <img alt="Voice Assistant for Microsoft Identity Manager  &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/661/645/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Voice Assistant Power BI Dashboard
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Submission Presentation
+                </h2>
+                <p>
+                    <a href="https://gitpitch.com/darrenjrobinson/MIM-VoiceAssistant/presentation" rel="nofollow">
+                        CLICK HERE for the Voice Assistant for Microsoft Identity Manager Hackathon Submission Presentation
+                    </a>
+                </p>
+                <h2>
+                    Introduction
+                </h2>
+                <p>
+                    As an IT Service Desk or IT Admin how many times a day do you receive queries about users&rsquo; status, entitlements, applications and other simple queries? These queries can come from the user but are also often from a user&rsquo;s Manager or peer. Depending on the context of the query any number of different tools/consoles are then required to find the answer, or even escalation of the query to the owner of a specific application/service/system. 
+What if you could use a Voice Assistant to query a repository that held a superset of information about a user including their status, entitlements and access? A repository such as Microsoft Identity Manager that through its connectors has knowledge of a user in disparate heterogenous environments. All without having to train IT Support staff on yet another console/service and even more important without exposing unnecessary or restricted information.
+                </p>
+                <p>
+                    Examples:
+                </p>
+                <ul>
+                    <li>
+                        Does Dwayne Johnson have an Office365 mailbox and if so what their email address is?
+                    </li>
+                    <li>
+                        Does Jerry Seinfeld have an Active Directory account and if so what is their LoginID?
+                    </li>
+                    <li>
+                        Does the employee Tiger Woods have an expiry date and if so what is their End Date?
+                    </li>
+                    <li>
+                        Is the Active Directory account for Tom Cruise enabled?
+                    </li>
+                </ul>
+                <h2>
+                    Solution Overview
+                </h2>
+                <p>
+                    My Voice Assistant for Microsoft Identity Manager is an Azure IoT Business Solution that I&rsquo;ve designed and built using Azure IoT, Azure Cognitive Services, Azure Serverless Services and other Azure Services along with Microsoft Identity Manager that empowers IT Support staff to query Microsoft Identity Manager for common IT Service Desk, IT Admin requests.
+                </p>
+                <p>
+                    <img alt="Alt text" data-canonical-url="https://i1.wp.com/blog.darrenjrobinson.com/wp-content/uploads/2018/07/Identity-Manager-integration-with-Cognitive-Services-and-IoT-Hub-4x3.png" src="https://res.cloudinary.com/devpost/image/fetch/s--vMb7SVIn--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i1.wp.com/blog.darrenjrobinson.com/wp-content/uploads/2018/07/Identity-Manager-integration-with-Cognitive-Services-and-IoT-Hub-4x3.png">
+                </p>
+                <ol>
+                    <li>
+                        The IT Support Staff member speaks to the Voice Assistant using a wake word and gets a "Yes" response from the Voice Assistant. They then speak their request (e.g. Does the user Dwayne Johnson have a mailbox)
+                    </li>
+                    <li>
+                        The Voice Assistant takes the spoken request and submits it to Azure Cognitive Services Speech to Text to convert the request to text.
+                    </li>
+                    <li>
+                        The Voice Assistant then submits the request to an Azure Function that takes the request and;
+(3a) sends the request to Cognitive Services Language Understanding Intelligent Service which identifies the Entity (User) and Entitlement (Mailbox) and returns it to the Function;
+(3b) which then queries Microsoft Identity Manager (via Azure API Management and the Lithnet Rest API for MIM) for the User and returns the user record to the Function; which then identifies the value for the entitlement being queried (mailbox) and generates the response text which is returned to the Voice Assistant
+                    </li>
+                    <li>
+                        The Voice Assistant takes the response text and submits it to Azure Cognitive Services Text to Speech to turn the response into audio
+                    </li>
+                    <li>
+                        The Voice Assistant speaks the response to the IT Support Staff Member
+                    </li>
+                    <li>
+                        The Voice Assistant sends a summary of the interaction to IoT Hub which sends it to Stream Analytics and logs it to Azure Table Storage as well as sending it to Power BI which displays Analytics of the use of the Voice Assistant.
+                        <br>
+                    </li>
+                </ol>
+                <h2>
+                    Built With
+                </h2>
+                <p>
+                    <strong>
+                        IoT Device
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        OpenWRT on Seeed Studio Respeaker Core 1.0
+                    </li>
+                    <li>
+                        Python 2.7
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Azure Services
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        IoT Device &amp; IoT Hub
+                    </li>
+                    <li>
+                        IoT Event Hub
+                    </li>
+                    <li>
+                        Azure Functions
+                    </li>
+                    <li>
+                        PowerShell
+                    </li>
+                    <li>
+                        Managed Service Identity
+                    </li>
+                    <li>
+                        Azure Key Vault
+                    </li>
+                    <li>
+                        Azure Cognitive Services - Speech to Text
+                    </li>
+                    <li>
+                        Azure Cognitive Services - Language Understanding Intelligent Service
+                    </li>
+                    <li>
+                        Azure Cognitive Services - Text to Speech
+                    </li>
+                    <li>
+                        Azure API Management
+                    </li>
+                    <li>
+                        Azure Table Storage
+                    </li>
+                    <li>
+                        Power BI
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Microsoft Identity Manager
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        Microsoft Identity Manager 2016 SP1
+                    </li>
+                    <li>
+                        Lithnet MIM Service REST API
+                    </li>
+                </ul>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The Hackathon to use Azure IoT and Serverless functionality was the catalyst for me to build this project. Last year I built a WebApp version that allowed a Service Desk or IT Admin to search for a person and get a report on that uses metadata from Microsoft Identity Manager. The natural extension is therefore to use spoken word to query and have the result spoken back. 
+It also provided me with the impetus to learn how to use and integrate a number of new Azure Services I previously hadn&rsquo;t used.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The IoT Device listens for the Wake Word (Lithnet) and takes a spoken query and converts it to text using Azure Cognitive Services, then uses Azure Language Understanding Intelligent Service (LUIS) to identify an Entity (Person) and an Entitlement (e.g. Mailbox, Active Directory). It then queries Microsoft Identity Manager (via Azure API Management and the Lithnet Microsoft Identity Manager REST API Service) to find the queried Entity before finally providing an audio response for the queried entitlement and logging the event into Table Storage and Power BI via Azure IoT Hub.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    After architecting a high level conceptual solution, I started investigating the elements of the solution I didn&rsquo;t have previous exposure too. I started with Cognitive Services and used PowerShell and Invoke-RestMethod to formulate my web requests to integrate with the services and perform the necessary functions. I then designed my custom LUIS Model to take phrases and identify the entity and the entitlement. 
+When I had working solutions for Speech to Text, Text to Speech, and LUIS I translated the necessary initiation piece to Python (Speech to Text) and got it working from my IoT Device. I then configured Azure API Management to front end the Lithnet Microsoft Identity Manager REST API Service. 
+I translated the LUIS and Microsoft Identity Manager (via API Mgmt) queries into a Webhook Azure PowerShell Function. The Azure Function utilises Managed Service Identity and Azure Key Vault for the necessary credentials. 
+Next I converted the Text to Speech PowerShell script to Python to return an audio stream of the query response that is then spoken back to the requester.
+The final piece was to log each request and response to Azure Table Storage and Power BI via IoT Hub for Auditing and Reporting functions.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    There were many challenges in this project. Some of the more challenging ones that took way longer than I anticipated were;
+                </p>
+                <ul>
+                    <li>
+                        Developing a LUIS Model for the types of queries and intents that I wanted to be recognised
+                    </li>
+                    <li>
+                        Getting Device to Cloud IoT Messages from the IoT Hub through to Table Storage and Power BI. Lots of reading and lots of failures until a configuration on the Event Hub saw everything fire up.
+                    </li>
+                    <li>
+                        Working with the available memory on the Respeaker Core embedded Linux device and the version of Python offered meant that I had many failed attempts with different Python Libs to be able to send Web Requests to Azure with the differing payloads and authentication methods
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments I&rsquo;m proud of
+                </h2>
+                <p>
+                    I&rsquo;m very proud of the entire end-to-end solution. As an experienced Identity Architect I&rsquo;ve built many Identity Management solutions for customers over the last 20 years. The concept of being able to talk to an Identity Management backend and have it talk back to me still amazes me even though I&rsquo;ve been working on this for a couple of months. 
+Approaching the crazy concept initially I thought my ability to actually build it was low. After working through a high-level solution and breaking it down into functional components and then working through them individually my confidence grew and I built a working solution.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Building this project exposed me to numerous Azure Services that I hadn&rsquo;t previously used as well as using some services in different ways. New services I leveraged and got my first exposure to are;
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            Azure Cognitive Services
+                        </strong>
+                        Speech to Text - Used to convert the voice query to text before being submitted to LUIS
+                    </li>
+                    <li>
+                        <strong>
+                            Azure Cognitive Services
+                        </strong>
+                        Text to Speech - Used to take the search query result and convert it to Speech to be spoken back to the requestor
+                    </li>
+                    <li>
+                        <strong>
+                            Azure Cognitive Services
+                        </strong>
+                        LUIS &ndash; (Language Understanding Intelligent Service) used to identify the entity to query and the entitlement to evaluate
+                    </li>
+                    <li>
+                        <strong>
+                            Azure Event Hub
+                        </strong>
+                        - Sending IoT Device to Cloud messages through he IoT Hub to Event Hub to Stream Analytics.
+                    </li>
+                    <li>
+                        <strong>
+                            Azure Stream Analytics
+                        </strong>
+                        - Taking the Device to Cloud Messages and outputting to Table Storage and Power BI
+                    </li>
+                    <li>
+                        <strong>
+                            Azure Table Storage
+                        </strong>
+                        - Storing events for auditing/reporting
+                    </li>
+                    <li>
+                        <strong>
+                            Azure API Management
+                        </strong>
+                        - Integration of Lithnet MIM Service REST API
+                    </li>
+                    <li>
+                        <strong>
+                            Python
+                        </strong>
+                        - This was my first ever use of Python. The Python script on the IoT Device listens for the Wake-Up Word and interfaces with Azure Cognitive Services for Speech to Text and Text to Speech along with the Azure Function
+                    </li>
+                </ul>
+                <h2>
+                    What&rsquo;s next for the project
+                </h2>
+                <p>
+                    The project is currently essentially read-only. The information that can be retrieved and the pre-requisites to make it available mean that it doesn&rsquo;t consider context or authorisation. 
+I&rsquo;d love to implement voice-based authentication into the solution so that the speaker/requestor is identified by their voice pattern (using Azure Cognitive Services Speaker Identification API) and authenticated to Azure Active Directory. Based on the authorisation level of the user higher privileged requests can be initiated. (e.g. Disable User David Bowie, or Create a new user account for Colin Furze). 
+I&rsquo;d also like to enable the solution using Azure Bot Services. The way the solution has been designed allows for this. This would replace the need for a device to speak too, and provide an easier implementation path for the Authentication and Authorisation functions. The Bot could also be enabled via Skype for Business/Microsoft Teams.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-api-management
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-cognitive-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure-iot-suite">
+                                azure-iot-suite
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-key-vault
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-language-understanding-intelligent-service
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lithnet-mim-service-rest-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-identity-manager
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            openwrt
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            power-bi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            powershell
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/darrenjrobinson/MIM-VoiceAssistant" rel="nofollow" target="_blank" title="https://github.com/darrenjrobinson/MIM-VoiceAssistant">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://gitpitch.com/darrenjrobinson/MIM-VoiceAssistant/presentation" rel="nofollow" target="_blank" title="https://gitpitch.com/darrenjrobinson/MIM-VoiceAssistant/presentation">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                gitpitch.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

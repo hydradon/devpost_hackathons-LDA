@@ -1,0 +1,106 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Developers sometimes spend a significant amount of time searching StackOverflow to find a fix for a code error that turned out to be a relatively simple (and solvable) problem. Why not automate that search process to find the optimal solution, and have it implemented within the code without any human intervention?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Including a small JavaScript file in your web code to override the
+                    <code>
+                        window.onerror
+                    </code>
+                    browser function will reroute uncaught exceptions to a locally running node.js web server. From there, a GET request is made to StackOverflow's
+                    <a href="https://api.stackexchange.com/docs/search" rel="nofollow">
+                        API to search for questions
+                    </a>
+                    (sorted by highest vote count) where the error message exists in the question title. The answers to each question are then extracted, and if answer content can be converted to instructions including where to make changes to the code, those changes will be made.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used JavaScript, with node.js running on the backend with the Express web server, and a custom function to override the browser's default
+                    <code>
+                        window.onerror
+                    </code>
+                    in order to make the GET request. I utilized Node's
+                    <code>
+                        fs
+                    </code>
+                    module to edit files on the computer.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Making the request to StackOverflow's API endpoint proved to be difficult. In the browser and from Postman the result was a perfectly fine JSON object containing relevant questions and their URLs. But from node.js when printing the response body I got output that looked like this:
+                    <a href="http://i.imgur.com/FrC6bdH.png" rel="nofollow">
+                        http://i.imgur.com/FrC6bdH.png
+                    </a>
+                    Hinal from the Clarifai booth was a lifesaver in helping me figure out how to fix that. It turns out all I needed to do was include
+                    <code>
+                        gzip: true,
+                    </code>
+                    as part of the request headers.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm proud of not attempting to incorporate any of the sponsor companies' APIs just to be eligible for their prizes, because that would have caused unnecessary complexity and distracted me from achieving the main goal.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned how to accept http requests from web pages that are being accessed from
+                    <code>
+                        file://
+                    </code>
+                    origins, so that there is no need to serve it over localhost.
+                </p>
+                <h2>
+                    What's next for CodeCorrect
+                </h2>
+                <p>
+                    Expand the scope of errors for which it can find and implement appropriate solutions. This can be done by making extensions/integrations for popular IDEs, and searching other sites in addition to StackOverflow.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            stackoverflow-api
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

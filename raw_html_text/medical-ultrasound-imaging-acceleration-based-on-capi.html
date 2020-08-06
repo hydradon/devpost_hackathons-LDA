@@ -1,0 +1,210 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/l7oc2ncwzBk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="405767" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/405/767/datas/original.jpg">
+                            <img alt="Medical Ultrasound Imaging Acceleration Based on CAPI &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/405/767/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="405939" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/405/939/datas/original.png">
+                            <img alt="Medical Ultrasound Imaging Acceleration Based on CAPI &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/405/939/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Delay-and-sum(DAS) algorithm is a widespread algorithm used in various typical applications, such as medical ultrasound imaging, radar signal emission and reception, and antenna directional signal formation. It is not a typical computationally demanding algorithm, but under new circumstance, for example medical imaging cloud service, its calculation speed should be increased so as to meet the cloud network communication speed requirements. The conventional cloud infrastructures using central processing units as prime computing resources are not adequate for the fast image formation process. Therefore, SuperVessel cloud accelerated with heterogeneous field-programmable gate arrays was used as the implementation platform for the parallel delay-and-sum algorithm in this design.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This design is used for accelerating DAS algorithm with CAPI acceleration core on SuperVessel platform. And the computing speed of the SuperVessel heterogeneous implementation is 22 times faster than the algorithm implementation on a central processing unit, which also includes the data transferring time. Therefore we can use this high speed implementation for medical imaging cloud service.
+                </p>
+                <p>
+                    <a href="https://www.dropbox.com/sh/261scqkmpgv3ymm/AACj4HcbQmNqc37vu3sYua8xa?dl=0" rel="nofollow">
+                        Here
+                    </a>
+                    is the design source code with its CAPI accelerator.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The Design block diagram of FPGA implementation for parallel DAS algorithm is shown in below figure.
+                </p>
+                <p>
+                    <img alt="big.block.chart2.png" data-canonical-url="http://ww1.sinaimg.cn/large/006y8lVagw1f740rkufk0j312f0uz0yh.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--Zn_BTkpU--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://ww1.sinaimg.cn/large/006y8lVagw1f740rkufk0j312f0uz0yh.jpg">
+                </p>
+                <p>
+                    As seen from this figure, the FPGA implementation consists of five parts: input data splitter, loop of RowsCount generator, signal selector, summation, and output data controller.
+                </p>
+                <p>
+                    In our design, each echo signal dataset contains 8388608 single float numbers. And transferring dataset from DDR to BRAM in our design takes a lot of time, about 10.9 ms. Furthermore, calculation processing takes much more less time, which just takes 76160 cycles. Detailed time information is shown in follow table:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                data transferring
+                            </th>
+                            <th>
+                                Calculation
+                            </th>
+                            <th>
+                                total
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                10.9 ms
+                            </td>
+                            <td>
+                                0.3 ms
+                            </td>
+                            <td>
+                                11.2 ms
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    However, calculation of the same image by using CPU takes about 246 ms. In other word our design is quite quick.
+                </p>
+                <p>
+                    We also make a simple demonstration to verify that our design can be used in medical cloud calculation, which is shown in follow figure:
+                </p>
+                <p>
+                    <img alt="16:27:44.jpg" data-canonical-url="http://ww4.sinaimg.cn/large/006y8mN6jw1f7ap4gv66xj30n30hymzq.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--Xi8tJJWX--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://ww4.sinaimg.cn/large/006y8mN6jw1f7ap4gv66xj30n30hymzq.jpg">
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Firstly, because of the lack of the documents on how to use CAPI interface and SuperVessel platform, we have spent a lot of time to try to do right thing.
+                </p>
+                <p>
+                    Then, the debugging of CAPI programming is fairly difficult. However, after several trials, we have learned a good debug method. Firstly we finished basic modules with unit tests, then we assembled these modules step by step, and did appropriate correction.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    In this design, we have archived a acceleration core of DAS algorithm on SuperVessel platform, and we have got almost
+                    <em>
+                        22
+                    </em>
+                    times speedup compered with C implementation on a central processing unit, which includes data transferring time.
+                </p>
+                <p>
+                    Then, we have developed a useful method on debugging CAPI acceleration core, and successfully finished our design depended on this method.
+                </p>
+                <p>
+                    Finally, because of this design, we have won the first prize of IBM-Xilinx First Heterogeneous Computing Contest.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    In this design, I have learned these:
+                </p>
+                <ol>
+                    <li>
+                        how to use CAPI interface
+                    </li>
+                    <li>
+                        how to construct a acceleration core on FPGA
+                    </li>
+                    <li>
+                        how to use SuperVessel platform
+                    </li>
+                    <li>
+                        how to debug in CAPI implementation
+                    </li>
+                    <li>
+                        how to test and verify design
+                    </li>
+                </ol>
+                <h2>
+                    What's next for Medical Ultrasound Imaging Acceleration Based on CAPI
+                </h2>
+                <p>
+                    We will continue to optimize current acceleration core design on resource usage and clock speed. And we are going to implement the acceleration core of synthetic aperture imaging algorithm on CAPI FPGA of SuperVessel platform in the near future.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            capi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            verilog
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.dropbox.com/sh/261scqkmpgv3ymm/AACj4HcbQmNqc37vu3sYua8xa?dl=0" rel="nofollow" target="_blank" title="https://www.dropbox.com/sh/261scqkmpgv3ymm/AACj4HcbQmNqc37vu3sYua8xa?dl=0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.dropbox.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,258 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/d09KIwT768k?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Translator Slackbot
+                </h1>
+                <p>
+                    The Translator Slackbot translates messages between users' languages in
+real time. The Slackbot is useful for teams that transcend native language
+boundaries.
+                </p>
+                <p>
+                    Translation services are provided by the Google Translate API.
+                </p>
+                <h2>
+                    Features
+                </h2>
+                <ul>
+                    <li>
+                        choose different languages per Slack channel
+                    </li>
+                    <li>
+                        auto-detects the source language and skips it in translated messages
+                    </li>
+                    <li>
+                        if authorized, modifies translated message with the corresponding translations
+                    </li>
+                    <li>
+                        if not authorized, posts translations as the bot user
+                    </li>
+                </ul>
+                <h2>
+                    Add to Your Slack Team
+                </h2>
+                <p>
+                    <a href="https://slack.com/oauth/authorize?scope=commands,bot,chat:write:user,chat:write:bot&amp;client_id=76454819904.83569102723" rel="nofollow">
+                        <img alt="Add to Slack" data-canonical-url="https://platform.slack-edge.com/img/add_to_slack.png" src="https://res.cloudinary.com/devpost/image/fetch/s--m-tDiTb---/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://platform.slack-edge.com/img/add_to_slack.png">
+                    </a>
+                </p>
+                <p>
+                    Any team member can authorize the bot and allow it to modify their messags.
+                </p>
+                <p>
+                    This is prototype code so it might not be available all the time.
+                </p>
+                <p>
+                    After you add it to your team, invite the bot to a channel with
+                    <strong>
+                        /invite @borges
+                    </strong>
+                    .
+You will need to present your Google Translate API credentials using the
+                    <strong>
+                        /borges configure
+                    </strong>
+                    command only once per Slack team.
+                </p>
+                <h2>
+                    Implementation
+                </h2>
+                <p>
+                    The iplementation is in Java and uses
+                    <strong>
+                        AWS Lambda
+                    </strong>
+                    ,
+                    <strong>
+                        AWS API Gateway
+                    </strong>
+                    ,
+                    <strong>
+                        AWS DynamoDB
+                    </strong>
+                    ,
+                    <strong>
+                        AWS S3
+                    </strong>
+                    , and
+                    <strong>
+                        AWS Route53
+                    </strong>
+                    along with
+                    <strong>
+                        Google Translate API
+                    </strong>
+                    .  Notice that
+EC2 is not on the list. This application does not reqire any dedicated VM. All
+logic is implemented in Lambda.
+                </p>
+                <p>
+                    There are three handlers, one each for the OAuth flow, Slack events, and Slack slash
+commands.
+                </p>
+                <h2>
+                    Status
+                </h2>
+                <p>
+                    This is prototype all the way. Most of the time spent developing this application was
+experimenting with the Lambda, API Gateway and Slack services and getting them to play
+nicely together. So you will see a lot of duplicate logic and refactoring opportunities
+in the source. Since it wasn't test driven, it needs to be redesigned using TDD to make
+it production-ready.  Depending on the feedback I get, I will decide whether to
+productionalize it.
+                </p>
+                <h2>
+                    Run it Yourself
+                </h2>
+                <p>
+                    All the code to deploy to AWS is in the deploy sub-project. Be sure
+to configure your workstation with the necessary AWS credentials. The easiest way to
+do that is with the AWS CLI
+                    <code>
+                        aws configure
+                    </code>
+                    command.
+                </p>
+                <p>
+                    You may have to mess with a code path and the domain name to get it running for yourself
+but in broad strokes, run the main methods from these classes:
+                </p>
+                <ul>
+                    <li>
+                        DeployDatabase#main
+                        <em>
+                            provision a DynamoDB table
+                        </em>
+                    </li>
+                    <li>
+                        DeployCommandHandler#main
+                        <em>
+                            provision the Lambda Function and API Gateway for handling slash commands
+                        </em>
+                    </li>
+                    <li>
+                        DeployEventHandler#main
+                        <em>
+                            provision the Lambda Function and API Gateway for handling Slack events
+                        </em>
+                    </li>
+                    <li>
+                        DeployOauthHandler#main
+                        <em>
+                            provision the Lambda Funcation and API Gateway for the OAuth flows
+                        </em>
+                    </li>
+                    <li>
+                        DeployWebsite#main
+                        <em>
+                            provision bucket and Route53 domain, and upload web pages
+                        </em>
+                    </li>
+                </ul>
+                <p>
+                    Enjoy
+                </p>
+                <p>
+                    Icon made by Freepik (
+                    <a href="http://www.freepik.com/" rel="nofollow">
+                        http://www.freepik.com/
+                    </a>
+                    ) from
+                    <a href="http://www.flaticon.com" rel="nofollow">
+                        www.flaticon.com
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dynamodb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-translate">
+                                google-translate
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            route53
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/aztecrex/java-translatebot" rel="nofollow" target="_blank" title="https://github.com/aztecrex/java-translatebot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

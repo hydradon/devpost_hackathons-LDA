@@ -1,0 +1,260 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/d7q3EXBOapY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="283399" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/283/399/datas/original.png">
+                            <img alt="Friendship API &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/283/399/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="283401" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/283/401/datas/original.png">
+                            <img alt="Friendship API &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/283/401/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    <a href="http://friendshipapi.com" rel="nofollow">
+                        Friendship API
+                    </a>
+                    solves a problem that I have: I am just terrible at staying in touch with my friends via email.
+This is a shame: email is really a great tool for keeping in touch.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Friendship API works like this: it uses
+                    <a href="http://context.io" rel="nofollow">
+                        ContextIO
+                    </a>
+                    to look at people you interact with, filter out what looks like spam and business email, and send you a weekly email reminding you that you owe a person an email.
+                </p>
+                <p>
+                    There's no account or password to manage: the weekly emails contain action links to ignore certain people in the future, generate another reminder, and cancel your subscription.
+Hence, I use the term "email application".
+                </p>
+                <p>
+                    There's also very little storage we have to do: basically, we keep track of email addresses of people who sign up, their ContextIO tokens, what recommendations we send out, and a list of email addresses that the people want to ignore.
+If they cancel their subscription, we revoke our ContextIO tokens.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    How does one go about writing an app like this after getting the idea and setting
+aside a spare weekend? Well, here's the process I followed at least:
+                </p>
+                <ol>
+                    <li>
+                        Outline in your head (or write down) the features that you need to launch with.
+                    </li>
+                    <li>
+                        Talk it over with someone.
+                    </li>
+                    <li>
+                        Sign up for all of the accounts you might need and don't already have (in this case, the ContextIO developer account).
+                    </li>
+                    <li>
+                        Write a simple program to prove that the hard things are possible: in this case, that is reasonable to use ContextIO to get the data we need, and then to generate sensible recommendations.
+                    </li>
+                    <li>
+                        Use Celery to make the program calls asynchronous.
+                    </li>
+                    <li>
+                        Write a simple Flask app that calls into that program.
+                    </li>
+                    <li>
+                        Use
+                        <a href="http://requestb.in/" rel="nofollow">
+                            RequestBin
+                        </a>
+                        to capture the ContextIO callback, so you know how to capture the authentication token when someone signs in.
+                    </li>
+                    <li>
+                        Write the Flask endpoints to generate a ContextIO signup session, and the Flask endpoint to capture the ContextIO callback information, and process based on that.
+                    </li>
+                    <li>
+                        Hook up the recommendation function to send out an email.
+                    </li>
+                    <li>
+                        Write a barebones web page that calls out to your web site.
+                    </li>
+                    <li>
+                        Setup hosting for everything.
+                    </li>
+                    <li>
+                        Have someone who isn't you test out the flow.
+                    </li>
+                    <li>
+                        Write the rest of the functions for your bare minimum features.
+                    </li>
+                    <li>
+                        Theme the static site.
+                    </li>
+                </ol>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The most annoying challenge I had was that gunicorn, the application launcher for Python applications at Heroku, uses forking to launch workers. SQLAlchemy (really, the underlying Postgres driver) handles this poorly, since it will then try to share connections amongst multiple processes, which crashes the application.
+                </p>
+                <p>
+                    The next biggest challenge was probably configuring Celery. Celery is a little tricky configure
+so that the web app can easily submit jobs that are handled by the background workers,
+and getting this all working on Heroku.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I really like the fact that there are no accounts and no passwords.
+I hate managing accounts and passwords, and designing an app that uses
+neither is a little... different.
+                </p>
+                <p>
+                    I'm also proud that this seems to make good recommendations with a fairly simple filtering algorithm.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        ContextIO makes my life a lot easier if I want to integrate with people's email. :)
+                    </li>
+                    <li>
+                        Celery rocks (this is the first time I've used it in production).
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Friendship API
+                </h2>
+                <ul>
+                    <li>
+                        Suggest topics of conversation. We could pick topics randomly, or we could try to analyze past emails, perhaps.
+                    </li>
+                    <li>
+                        Better recommendations. There's still a lot of work that could be done to improve recommendations:
+                        <ul>
+                            <li>
+                                Using past recommendations to influence future recommendations.
+                            </li>
+                            <li>
+                                Adjusting the metric used to pick who to recommend.
+                            </li>
+                            <li>
+                                More advanced filters to differentiate business, spam, and friendship conversations.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Adjusting the frequency of recommendations. It's currently hardcoded to one week per email.
+                    </li>
+                    <li>
+                        Better-looking recommendation emails.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/celery">
+                                celery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mailgun">
+                                mailgun
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sqlalchemy">
+                                sqlalchemy
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://friendshipapi.com" rel="nofollow" target="_blank" title="http://friendshipapi.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                friendshipapi.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

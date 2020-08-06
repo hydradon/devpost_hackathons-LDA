@@ -1,0 +1,189 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="906005" data-title="Out of sample Meme" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/906/005/datas/original.jpg">
+                            <img alt="Memefly &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/906/005/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Out of sample Meme
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="906007" data-title="In Sample Meme" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/906/007/datas/original.jpg">
+                            <img alt="Memefly &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/906/007/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                In Sample Meme
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="906006" data-title="Network Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/906/006/datas/original.png">
+                            <img alt="Memefly &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/906/006/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Network Architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Inspired by
+                    <a href="https://arxiv.org/abs/1411.4555" rel="nofollow">
+                        Show and Tell: A Neural Image Caption Generator
+                    </a>
+                    and
+                    <a href="https://arxiv.org/abs/1806.04510" rel="nofollow">
+                        Dank Learning: Generating Memes Using Deep Neural Networks
+                    </a>
+                    , we decide to explore the ideas of creative work with image-captioning using deep neural networks.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our app generates meme text based on an image input using our trained Tensorflow Keras model. The model endpoint is deployed both locally and on AWS Sagemaker. After the text for an image is generated, we send it to our Twitter app on the front end to integrate and annotate the image with the text and post it to Twitter. We are hoping to gauge the quality of the generated meme once we have enough followers.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We scrapped both images and texts from various different websites such as Imgflip, Reddit, Google/Bing images search, etc and store them in an S3 bucket on AWS. We scrubbed the input text out of foreign languages and obscenities and we ended up with 108 images and around 200 memes per image.
+                </p>
+                <p>
+                    We built our
+                    <em>
+                        par injected meme generation
+                    </em>
+                    model using Tensorflow Keras with built with the following architecture.
+                    <img alt="architecture" data-canonical-url="https://github.com/memefly/memefly-ml/blob/master/assets/par_inject_model.png" src="https://res.cloudinary.com/devpost/image/fetch/s--hr_Cldi6--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/memefly/memefly-ml/blob/master/assets/par_inject_model.png">
+                    . We used pre-trained InceptionV3 weights with
+                    <code>
+                        globalaveragepooling2d
+                    </code>
+                    to encode the preprocessed images into an image vector. We used an embedding layer to encode the training text data into text embedding. Then we combine both the text and image embedding together and use a GRU layer as the decoder.
+                </p>
+                <p>
+                    At evaluation time, we only use an image embedding encoder and GRU decoder. We used beam-search to return the top 5 best memes generated to achieve variations to our model outputs.
+                </p>
+                <p>
+                    We design and tune the models on our local machine with NVidia GTX 10x0 GPU and then on an AWS p3.2xlarge (NVidia V100) Sagemaker instance for our final training.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Typical NLP tasks are one-to-one or one-to-few mappings and use metrics such as BLEU/ROGUE scores. But for our creative work, we have one-to-hundreds mapping. There are no good quantitative metrics for determining the quality of the output text. As a brute force method, we checkpoint and save our model every 10 epochs, generate text from in-sample images, and determine the quality of the output with human evaluation. To scale this up, we decided to use our Twitter frontend to gather qualitative feedback.
+                </p>
+                <p>
+                    The second challenge we ran into is to figure out a way to generate different memes each time we feed in the same image. The idea is simple: to tell a story from an image, people do not tell the same story verbatim every time they see the same picture. We tried two different methods. First, we tried to add gaussian noise to the input images. We tried random noise in the range of 1-20%. The result was not as well as expected; it made multiple different in-sample memes images generate the same text. Then, we tried and settled with beam-search with a beam size of 5. We found that the top 5 texts generated usually have pretty close scores with each other due to the wide diversity of our 'reference' texts.
+                </p>
+                <p>
+                    One other major challenge we ran into is the inference speed budget for our AI meme generator. Originally, we deployed both the encoder model and the decoder model together with the REST API endpoint. While it works fine, the inference speed is quite slow at almost half a minute per beam search with the endpoint crashing. We found that increasing the endpoint compute power alleviate that somewhat at a great monetary cost. We also tried to separate out the model serving from the API endpoint to take advantage of Tensorflow Serving's speed and batch inferencing. While that works great, the monetary cost of using either AWS ECS or EKS greatly exceeded our compute budget.  At the end, we opt to serve batch-transformed images and texts to fit our compute budget.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to work around our extremely limited budget to train a large image-to-text encoder-decoder model. We were especially proud of the memes that it can generate and all the engineering decisions we made to make the model/app work in real-time.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    If we knew what we know now, we might have gone with Tensorflow 2.0 framework from the getgo for more flexibility to try out different models. And separate out model serving endpoints with the app API endpoints early on in the process.
+                </p>
+                <h2>
+                    What's next for Memefly
+                </h2>
+                <p>
+                    We intend to keep on iterating on the models and data to better understand creative works using deep learning. Further, we will be posting AI-generated memes on
+                    <a href="https://twitter.com/memefly2" rel="nofollow">
+                        @memefly2
+                    </a>
+                    and use the replies, retweets, and likes to gauge the quality of the meme.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twitter">
+                                twitter
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/memefly/memefly-ml" rel="nofollow" target="_blank" title="https://github.com/memefly/memefly-ml">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

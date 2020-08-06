@@ -1,0 +1,312 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Primary code
+                </h2>
+                <p>
+                    package com.example.reko.reko;
+                </p>
+                <p>
+                    import android.support.v7.app.AppCompatActivity;
+                </p>
+                <p>
+                    import android.app.Activity;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.SurfaceView;
+import android.view.WindowManager;
+import android.widget.TextView;
+                </p>
+                <p>
+                    import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.DMatch;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
+import org.opencv.core.MatOfDMatch;
+import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.Scalar;
+import org.opencv.features2d.DescriptorExtractor;
+import org.opencv.features2d.DescriptorMatcher;
+import org.opencv.features2d.FeatureDetector;
+import org.opencv.features2d.Features2d;
+import org.opencv.imgproc.Imgproc;
+                </p>
+                <p>
+                    import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+                </p>
+                <p>
+                    public class MainActivity extends Activity implements CameraBridgeViewBase.CvCameraViewListener2 {
+                </p>
+                <pre class="language-nolang"><code>private static final String TAG = "OCVSample::Activity";
+private int w, h;
+private CameraBridgeViewBase mOpenCvCameraView;
+TextView tvName;
+Scalar RED = new Scalar(255, 0, 0);
+Scalar GREEN = new Scalar(0, 255, 0);
+FeatureDetector detector;
+DescriptorExtractor descriptor;
+DescriptorMatcher matcher;
+Mat descriptors2,descriptors1;
+Mat img1;
+MatOfKeyPoint keypoints1,keypoints2;
+
+static {
+if (!OpenCVLoader.initDebug())
+Log.d("ERROR", "Unable to load OpenCV");
+else
+Log.d("SUCCESS", "OpenCV loaded");
+}
+
+private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
+@Override
+public void onManagerConnected(int status) {
+switch (status) {
+case LoaderCallbackInterface.SUCCESS: {
+Log.i(TAG, "OpenCV loaded successfully");
+mOpenCvCameraView.enableView();
+try {
+initializeOpenCVDependencies();
+} catch (IOException e) {
+e.printStackTrace();
+}
+}
+break;
+default: {
+super.onManagerConnected(status);
+}
+break;
+}
+}
+};
+
+private void initializeOpenCVDependencies() throws IOException {
+mOpenCvCameraView.enableView();
+detector = FeatureDetector.create(FeatureDetector.ORB);
+descriptor = DescriptorExtractor.create(DescriptorExtractor.ORB);
+matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+img1 = new Mat();
+AssetManager assetManager = getAssets();
+InputStream istr = assetManager.open("a.jpeg");
+Bitmap bitmap = BitmapFactory.decodeStream(istr);
+Utils.bitmapToMat(bitmap, img1);
+Imgproc.cvtColor(img1, img1, Imgproc.COLOR_RGB2GRAY);
+img1.convertTo(img1, 0); //converting the image to match with the type of the cameras image
+descriptors1 = new Mat();
+keypoints1 = new MatOfKeyPoint();
+detector.detect(img1, keypoints1);
+descriptor.compute(img1, keypoints1, descriptors1);
+
+}
+
+
+public MainActivity() {
+
+Log.i(TAG, "Instantiated new " + this.getClass());
+}
+
+/**
+ * Called when the activity is first created.
+ */
+@Override
+public void onCreate(Bundle savedInstanceState) {
+
+Log.i(TAG, "called onCreate");
+super.onCreate(savedInstanceState);
+getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+setContentView(R.layout.layout);
+mOpenCvCameraView = (CameraBridgeViewBase) findViewById(R.id.tutorial1_activity_java_surface_view);
+mOpenCvCameraView.setVisibility(SurfaceView.VISIBLE);
+mOpenCvCameraView.setCvCameraViewListener(this);
+tvName = (TextView) findViewById(R.id.text1);
+
+}
+
+@Override
+public void onPause() {
+super.onPause();
+if (mOpenCvCameraView != null)
+mOpenCvCameraView.disableView();
+}
+
+@Override
+public void onResume() {
+super.onResume();
+if (!OpenCVLoader.initDebug()) {
+Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+} else {
+Log.d(TAG, "OpenCV library found inside package. Using it!");
+mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+}
+}
+
+public void onDestroy() {
+super.onDestroy();
+if (mOpenCvCameraView != null)
+mOpenCvCameraView.disableView();
+}
+
+public void onCameraViewStarted(int width, int height) {
+w = width;
+h = height;
+}
+
+public void onCameraViewStopped() {
+}
+
+public Mat recognize(Mat aInputFrame) {
+
+Imgproc.cvtColor(aInputFrame, aInputFrame, Imgproc.COLOR_RGB2GRAY);
+descriptors2 = new Mat();
+keypoints2 = new MatOfKeyPoint();
+detector.detect(aInputFrame, keypoints2);
+descriptor.compute(aInputFrame, keypoints2, descriptors2);
+
+// Matching
+MatOfDMatch matches = new MatOfDMatch();
+if (img1.type() == aInputFrame.type()) {
+matcher.match(descriptors1, descriptors2, matches);
+} else {
+return aInputFrame;
+}
+List&lt;DMatch&gt; matchesList = matches.toList();
+
+Double max_dist = 0.0;
+Double min_dist = 100.0;
+
+for (int i = 0; i &lt; matchesList.size(); i++) {
+Double dist = (double) matchesList.get(i).distance;
+if (dist &lt; min_dist)
+min_dist = dist;
+if (dist &gt; max_dist)
+max_dist = dist;
+}
+
+LinkedList&lt;DMatch&gt; good_matches = new LinkedList&lt;DMatch&gt;();
+for (int i = 0; i &lt; matchesList.size(); i++) {
+if (matchesList.get(i).distance &lt;= (1.5 * min_dist))
+good_matches.addLast(matchesList.get(i));
+}
+
+MatOfDMatch goodMatches = new MatOfDMatch();
+goodMatches.fromList(good_matches);
+Mat outputImg = new Mat();
+MatOfByte drawnMatches = new MatOfByte();
+if (aInputFrame.empty() || aInputFrame.cols() &lt; 1 || aInputFrame.rows() &lt; 1) {
+return aInputFrame;
+}
+Features2d.drawMatches(img1, keypoints1, aInputFrame, keypoints2, goodMatches, outputImg, GREEN, RED, drawnMatches, Features2d.NOT_DRAW_SINGLE_POINTS);
+Imgproc.resize(outputImg, outputImg, aInputFrame.size());
+
+return outputImg;
+}
+
+public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+return recognize(inputFrame.rgba());
+
+}
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                </p>
+                <pre class="language-nolang"><code>&lt;org.opencv.android.JavaCameraView
+                android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:visibility="gone"
+    android:screenOrientation="portrait"
+    android:id="@+id/tutorial1_activity_java_surface_view"
+    opencv:show_fps="true"
+    opencv:camera_id="any"
+    android:layout_below="@+id/text1"/&gt;
+&lt;TextView
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:gravity="center"
+android:id="@+id/text1"
+android:text="test"
+android:textStyle="bold"
+android:textColor="#ff00ff"
+android:background="#00ff00"
+android:textColorHighlight="#000000"
+android:textIsSelectable="true"
+android:textSize="32sp"
+/&gt;
+</code></pre>
+                <p>
+                </p>
+                <h2>
+                    Interface
+                </h2>
+                <p>
+                    buildscript {
+                </p>
+                <pre class="language-nolang"><code>repositories {
+                google()
+    jcenter()
+}
+dependencies {
+classpath 'com.android.tools.build:gradle:3.2.1'
+
+
+// NOTE: Do not place your application dependencies here; they belong
+// in the individual module build.gradle files
+}
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    allprojects {
+    repositories {
+    google()
+    jcenter()
+    }
+}
+                </p>
+                <p>
+                    task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

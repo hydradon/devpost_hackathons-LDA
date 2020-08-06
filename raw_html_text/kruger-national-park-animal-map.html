@@ -1,0 +1,149 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="550270" data-title="An ostrich's location in Kruger National Park" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/270/datas/original.png">
+                            <img alt="Map My Game &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/270/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                An ostrich's location in Kruger National Park
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="550260" data-title="Giraffes being misclassified" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/260/datas/original.jpg">
+                            <img alt="Map My Game &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/260/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Giraffes being misclassified
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Our Team mate Hannah has recently come back from a trip to South Africa, where she was fortunate enough to visit Kruger National Park, one of the best safari parks in the world. Whilst there she observed that the best way to know where the animals in the park were, was via a whatsapp group! Hannah thought there had to be a better way of using the locations embedded in images to confirm sightings and locations of the Big 5.
+                </p>
+                <p>
+                    In addition, Hannah has recently been working with scientists that tracks animals around the serengeti using camera traps and citizen scientists to identify the animals. This is a long process that requires thousands of hours of researchers time and volunteers time to create and process the data. We think there is a quicker way of doing this.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <em>
+                        Map My Game
+                    </em>
+                    gathers all the images taken within a game reserve, using the geolocation boundaries of the reserves.
+Passes the images through ImageNet (a state of the art ML image recognition model) and outputs a label of what is actually in the image. This was an important step as often the tags and captions are broad, pretentious and misleading and so they could not be reliably used to inform labels. 
+Plots points on a map, showing the location of the picture, a preview and a label of the animal. 
+Allows a user to check boxes to show only the locations of specific animals in the reserve.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We set a bounding box for the extents of the Kruger national park. Used this mask with the Flickr API to find all of the images taken in the park over a set period of time. This then created a database with the image location, URL and title. We passed the images through a pre trained model of inception V3 using Keras with tensorflow backend in python and assigned the label to each case in the database. The locations were then plotted on a map using leaflet, after transforming the image recognition results by grouping similar animals together and filtering images where our model had estimated a low probability of correctness.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <h3>
+                    Instagram!
+                </h3>
+                <p>
+                    We initially set out to collect the images from instagram, as this is the best source of uptodate  geotagged images around on the web. It turns out that Instagram had a photo map feature that it killed in mid 2016. So we realised that we were trying to reverse engineer that but just for the mapping of animals. Their API made itself particularly difficult when trying to get the images for this purpose, there is a 10 day turnaround time for access to images for this purpose. 
+This meant we had to change our source of images, to flickr, the next best solution. There are not as many images available and they are less current, but they never the less allow us to showcase the use of this site, when instagram allows us access we will simply have a bigger set of images to pool from.
+                </p>
+                <h3>
+                    Giraffes = arabian camels
+                </h3>
+                <p>
+                    In validating the imagenet predictions, we encountered a few funny quirks. Namely the pretty much categorical failure of the model to identify Giraffes! The most common misidentification in the model, confused giraffes and arabian camels. We think this is because of the lack of examples of &ldquo;non-whole&rdquo; giraffes in our data set. By this we mean that our images of giraffes do not contain the full body of a giraffe, instead only the neck or head of the giraffes were present.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    The google inception model on ImageNet data is amazing and has excellent accuracy. 
+Instagram has a very restrictive API
+Conner is great at all things
+Learned to use leaflet
+                </p>
+                <h2>
+                    What's next for Kruger National Park Animal Map
+                </h2>
+                <p>
+                    Get approval for full use of the Instagram API to get a larger dataset of images for use on the app
+Create a way to submit your own photos direct to map
+Block images of Rhinos to prevent poaching
+Transferable to other animals parks and other classifiable things.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/connorlanigan/krugernationalpark" rel="nofollow" target="_blank" title="https://github.com/connorlanigan/krugernationalpark">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://mapmygame.org" rel="nofollow" target="_blank" title="http://mapmygame.org">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                mapmygame.org
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,230 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    It's spooky season and everyone is terrified that the neighbor's peky kids will steal all their candy! With
+                    <strong>
+                        RU You?
+                    </strong>
+                    however, we can protect our
+                    <em>
+                        kit kats
+                    </em>
+                    ,
+                    <em>
+                        twix'
+                    </em>
+                    ,
+                    <em>
+                        skittles
+                    </em>
+                    <em>
+                        and
+                    </em>
+                    <em>
+                        M&amp;M's
+                    </em>
+                    from little Joshie's prying hands. Our invention helps you dispense candy only once per cheeky Annie.
+                </p>
+                <p>
+                    On a serious note, packages being stolen from doorsteps is a very common occurrence and we wanted to solve this problem in a cheap, efficient and easy-to-use way. This inspired our creation,
+                    <em>
+                        RU You?
+                    </em>
+                    .
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <strong>
+                        RU You?
+                    </strong>
+                    uses the
+                    <strong>
+                        Qualcomm Dragonboard 410c
+                    </strong>
+                    to take an image of the person trying to gain access. At the same time, we use Google Cloud's
+                    <strong>
+                        Google Storage API
+                    </strong>
+                    to maintain a database of faces that is used to determine whether a person is allowed to access it or not. This classification is carried out by multiple image analysis API's such as: the
+                    <strong>
+                        Google Vision API
+                    </strong>
+                    , the
+                    <strong>
+                        Clarifai API
+                    </strong>
+                    and
+                    <strong>
+                        OpenCV
+                    </strong>
+                    . The current image is compared with those in the database and the resultant score determines the course of action to be taken by the Dragonboard.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Our approach consisted of two main components: Software and Hardware.
+                </p>
+                <p>
+                    <strong>
+                        Hardware
+                    </strong>
+                </p>
+                <p>
+                    The hardware workflow for RU You? can be summarized by the following:
+                </p>
+                <p>
+                    Dragonboard touch sensor ==&gt; Webcam initiated ==&gt; Base64 encoding ==&gt; POST request ==&gt; POST response Analysis ==&gt; Control Servo
+                </p>
+                <p>
+                    <strong>
+                        Software
+                    </strong>
+                </p>
+                <p>
+                    The software workflow for RU You? can be summarized by the following:
+                </p>
+                <p>
+                    Image Processing on Dragonboard ==&gt; POST request to Flask server ==&gt; Scale image using OpenCV ==&gt; Google Cloud Vision face detection and cropping ==&gt; Query Google Cloud Storage database ==&gt; Compare similarity using Clarifai API ==&gt; Return response to Dragonboard and update Google Storage database ==&gt; Control Servo
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We faced an onslaught of challenges with both the software as well as the hardware components of this project.
+                </p>
+                <ul>
+                    <li>
+                        To begin with, the first Dragonboard that we used had a faulty network adapter and sapped away at 3+ hours of valuable time.
+                    </li>
+                    <li>
+                        The connectors to the Dragonboard differed from the standard Arduino connectors and had to be specifically requested.
+                    </li>
+                    <li>
+                        The libraries installed onto the Dragonboard to take pictures produced corrupted images. This was solved by turning saturation down to produce a greyscale image and cropping out the upper glitchy portion.
+                    </li>
+                    <li>
+                        Retrieving stored data from Google Cloud Storage had us experiment with various features of the Google Cloud Platform's beta features.
+                    </li>
+                    <li>
+                        Google Cloud Functions involved a very complex and involved authorization process when it came to hosting code and retrieving URL's from the Google Cloud Storage database. Our
+                        <em>
+                            eventual
+                        </em>
+                        workaround involved creating a Flask server and hosting it using ngrok/localtunnel as an endpoint. All communication between the Dragonboard and Google Cloud was done with this server as the middleman.
+                    </li>
+                    <li>
+                        We had to figure out a way to communicate the images from the webcam to the GCP. Ultimately, the images were communicated using base64 encoding and POST request.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are extremely proud that we were able to integrate so many API's together! The hardware-software communication was definitely a challenge and we think that our solution was innovative and efficient.
+                </p>
+                <p>
+                    One of our biggest accomplishments is definitely mastering such a large tech stack in such a short amount of time, especially everything we worked with was a novel concept for each of us. Not only were we able effectively make use of these individual components but also create communication channels between them.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    What didn't we learn? Almost every API, hardware component, analysis that we used we had to
+                    <em>
+                        learn
+                    </em>
+                    during HackRU Fall '18!
+                </p>
+                <p>
+                    We also learnt that alot of people are mad about having their candy stolen on Halloween Night!
+                </p>
+                <h2>
+                    What's next for RU You?
+                </h2>
+                <p>
+                    We hope to extend this prototype to more applications and take advantage of it's potential for social good. This project can definitely be extended to security applications, storage applications, etc. We see this project reaching new heights in the near future!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/clarifai">
+                                clarifai
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dragonboard
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Joshssiegel/RU-You" rel="nofollow" target="_blank" title="https://github.com/Joshssiegel/RU-You">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

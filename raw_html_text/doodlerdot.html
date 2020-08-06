@@ -1,0 +1,164 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Team Members
+                </h2>
+                <ul>
+                    <li>
+                        Ryan Tang (127)
+                    </li>
+                    <li>
+                        Kee Wan Ting (125)
+                    </li>
+                    <li>
+                        Chew Jing Wei (143)
+                    </li>
+                </ul>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to make something that can make convert any kind of image into sketches because we saw a video of a Youtuber borrowing an industrial robot arm to draw out Christmas Cards in an automated fashion. Also, it happened to be found in our team member's own box of project ideas as well, so being able to strike that off was nice.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It takes in a
+                    <code>
+                        .svg
+                    </code>
+                    image in Processing, and then processes it to be doodled out by the robot. It opens the possibility of being able to print out a small digital image into a much larger one.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <h3>
+                    Hardware
+                </h3>
+                <p>
+                    For the hardware, we assembled a 2 wheel drive robot with a caster wheel on an acrylic chassis. To control the motors in 2 directions, we used a L298N Motor Controller.
+                </p>
+                <p>
+                    For sending the paths parsed from the SVG files, we use a Raspberry Pi to parse the SVG file into paths for the robot, then send the paths over Serial to an Arduino. However, due to insufficient voltage and battery capacity, we decided to move all the motor controls onto the Raspberry Pi.
+                </p>
+                <p>
+                    After we managed to control the motors using the Raspberry Pi, we realize that calibrating the motors was very difficult without any feedback or knowledge about the robot's position, thus we tried to interface a MPU6050 Gyroscope and Accelerometer with the RPi over the I2C bus. Using a Gyroscope would eliminate the voltage regulating issues that caused discrepancies in the fine movements of the robot. However, after interfacing, we realized that we were not able to get reliable gyroscope position data from the sensor.
+                </p>
+                <p>
+                    In a last attempt to obtain a reliable feedback loop for the robot, we interfaced an RPi Sense Hat. In order to fit both the external GPIO pins, we wired the necessary pins from the Sense Hat individually to a breadboard and then to the RPi. Using it's onboard gyroscope data, easier interfacing made turns of the robot more precise.
+                </p>
+                <p>
+                    The robot motors are currently powered with 4 x AA Batteries and the Raspberry Pi is powered by a 5V Power Bank.
+                </p>
+                <h3>
+                    Software
+                </h3>
+                <p>
+                    We forked a project from a blog which created a mechanical hand which can draw out SVG images.
+                </p>
+                <p>
+                    So, we inherited the methods for parsing the SVG file and for performing interpolation on the Bezier curves found inside it to obtain the pixels.
+                </p>
+                <p>
+                    However, we had to convert the pixels generated from the SVG into vectors for drawing, and further process it into relative angle and magnitude for the robot to move to for each stroke.
+                </p>
+                <p>
+                    Finally, a separate program had to be written to read the angles and magnitudes generated and process it to be sent as signals for activating and deactivating the bot's motors.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        There were numerous hardware hiccups
+                    </li>
+                    <li>
+                        It was tedious to figure out the formulas for converting the vectors into their relative angles and magnitude for drawing.
+                    </li>
+                    <li>
+                        Filtering the vectors generated from the image such that they are not too small nor is their angle from the previous vector too small.
+                    </li>
+                    <li>
+                        Being unable to work using the MPU6050 accelerometer and gyroscope alone for determining the robot's current angle of direction.
+                    </li>
+                    <li>
+                        Finding out that we did not have enough electrical power for running both an Arduino and Raspberry Pi on the bot.
+                    </li>
+                    <li>
+                        Debugging the Sensehat for operation on the RPi
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        The fact that we did not give up even though the robot was unable to turn precisely at specified angles initially.
+                    </li>
+                    <li>
+                        Whole team being able to stay awake until 8am the next day
+                    </li>
+                    <li>
+                        Being able to draw a decent bunny at the very end
+                    </li>
+                    <li>
+                        Being able to debug every unexpected hardware issue we faced thus far, such as broken wires, inadequate power supply, whether to use a supplementary Arduino for controlling the bot.
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Importance of a rotary encoder DC motor
+                    </li>
+                    <li>
+                        How to parse SVG files
+                    </li>
+                    <li>
+                        Techniques to improve performance, such as image downsampling
+                    </li>
+                </ul>
+                <h2>
+                    What's next for DoodlerBot
+                </h2>
+                <p>
+                    With better accuracy and scaling, this can be implemented for personal use whenever someone needs to display an extremely large image on the physical space. Examples include environment landscaping and printing for large public displays.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/processing">
+                                processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

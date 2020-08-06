@@ -1,0 +1,271 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/249933767?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="582900" data-title="Time traveller" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/582/900/datas/original.png">
+                            <img alt="Time Traveller &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/582/900/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Time traveller
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="583902" data-title="Time traveller" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/902/datas/original.jpg">
+                            <img alt="Time Traveller &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/902/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Time traveller
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I mixed a couple of things that I liked when I was young. 
+The first is gamebook. A gamebook is a book in which the reader participates in the story by making choices. I felt really immersed in the gamebook's story. The narrative was different than a normal book because more engaging and more direct.
+The second is the dream I had to meet some important person from the past that actually made the history.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The player will travel in a precise year in the past, meeting some of the most influent persons of the world's history.
+The player can meet people like Albert Einstein, George Washington, and many others.
+The mission is to help them to shape the future as we already know.
+                </p>
+                <p>
+                    "Alexa, launch time traveler" to open the game.
+                    <br>
+                    "start a travel" to list the available travels and start an adventure.
+                </p>
+                <h3>
+                    Structure of a single game
+                </h3>
+                <p>
+                    The game consists of 5 questions related to the life and works of a specific character. One or Two questions can be related to an event from the same period or a topic connected to the character. For instance, in the Einstein game, there is a question about Newton and a math question.
+                </p>
+                <p>
+                    Initially, every user can play with the same set of initial "travels". When a travel is completed another one will "unlocked" randomly from a hidden list.
+                </p>
+                <p>
+                    <strong>
+                        The experience is always different
+                    </strong>
+                    because the new travels are randomly selected. Every user will experience a different game.
+                </p>
+                <p>
+                    <strong>
+                        Easter eggs
+                    </strong>
+                    . The hidden list can contain easter eggs as play with a character from a famous book or novel as Ulysses.
+                </p>
+                <p>
+                    <strong>
+                        You can resume the game
+                    </strong>
+                    . If the player doesn't reply or the skill goes in timeout at the second opening the system will prompt a resume message. The progress is saved in a DynamoDB table.
+                </p>
+                <h3>
+                    Structure of a single question
+                </h3>
+                <p>
+                    Each game's question has an intro and the actual question.
+                    <br>
+                    The intro is narrated by the character's voice created with
+                    <a href="https://aws.amazon.com/polly/getting-started/" rel="nofollow">
+                        Amazon Polly
+                    </a>
+                    .  The question is prompted with the Alexa's voice.
+                    <br>
+                    For instance, you can hear George Washington saying one of his famous quote: "The Constitution is the guide which I never will abandon" or hear the voice of Einstein with a German accent.
+                </p>
+                <h3>
+                    Engagement
+                </h3>
+                <p>
+                    Each "unlocked travel" has a code.
+                    <br>
+                    As explained before, games are randomly "unlocked" so, each player will have different games and different codes.
+With "lists my codes" the player can hear the travel's codes.
+                    <br>
+                    With "insert a code" the player can insert a code and unlock another travel.
+                    <br>
+                    The above logic promotes code sharing between friends from the beginning.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I have created an "Alexa skill game framework" to handle a generic question/answer game.
+I used NodeJS, the ask cli and I covered the basic functionalities with unit tests.
+                </p>
+                <p>
+                    Games can be loaded uploading a config file either in JS Array, JSON or CSV format.
+I.e.
+                    <br>
+                    Game:
+                </p>
+                <pre class="language-nolang"><code>  id: '1',
+        name: 'Albert Einstein',
+  intro: '1905, Bern. Mission: Help Einstein to get his memory back and complete one of his biggest theory.',
+  hidden: false
+</code></pre>
+                <p>
+                    Questions:
+                </p>
+                <pre class="language-nolang"><code>{
+        id: 1,
+  questId: '1',
+  intro: '&lt;audio src="https://URL" /&gt;',
+  question: 'Show Einstein you like math. 1, 2, 5 are? Say 1 for odd numbers, 2 for primary numbers, 3 for even number ',
+  answer: '2',
+  ifCorrectGoTo: '2',
+  ifWrongGoTo: '3',
+},
+{
+id: 2,
+questId: '1',
+intro: '&lt;audio src="https://AUDIO.mp3" /&gt;',
+question: '.......',
+answer: '1',
+ifCorrectGoTo: 'END',
+ifWrongGoTo: '5',
+}
+</code></pre>
+                <p>
+                    Each question can be described as a node of a binary tree. 
+The answer can be right or wrong (true/false, 1/0) the second question is prompted based on the answer (can be the same question or another question).
+For instance, in the above question with questId: 1, if the user will answer correctly the question with Id 2 will be prompted; question with Id 3 otherwise.
+                    <br>
+                    The reserved word 'END' is used to mark the game as completed.
+                    <br>
+                    The framework is super flexible and allows different endings based on the user journey.
+                </p>
+                <p>
+                    For my skill, I have decided to go for 5 questions per game and be focused on historical matters.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The biggest challenge was to create the Polly speech with accents. At the beginning I was thinking to make an async call to Amazon Polly and output the speech on the fly, then for safety reason, I decided to pre-render the audio and store the mp3 files on S3 bucket.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud of the
+                    <a href="https://github.com/niklongstone/alexa-game-framework" rel="nofollow">
+                        "Alexa game framework"
+                    </a>
+                    I've built and I have decided to make it publicly available as open source project. The framework as enough level of abstraction from the game topic and can be used in many other situations, it's a good base to speed up development of trivia games or Q/A adventure games.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned to better handle the audio and to normalize the volume accordingly. I even partially automate the process via a series of Python scripts.
+                </p>
+                <h2>
+                    What's next for Time Traveller
+                </h2>
+                <ul>
+                    <li>
+                        One of the ideas was to ask for the player's name (I didn't finish to implement). Having the player's name could let the "famous character" to address the player by his/her name having even better custom experience.
+                    </li>
+                    <li>
+                        Another idea was to grab the user's location and start the mission in a different year but at the same day, same time and same weather condition. So, Alexa could say: "1964 in a cold New York's night". With location could also be possible to "unlock" travels based on the state's history or even unlock a travel based on the current date (i.e. Independence Day).
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/gp/product/B078LRLY2R" rel="nofollow" target="_blank" title="https://www.amazon.com/gp/product/B078LRLY2R">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/niklongstone/alexa-game-framework" rel="nofollow" target="_blank" title="https://github.com/niklongstone/alexa-game-framework">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

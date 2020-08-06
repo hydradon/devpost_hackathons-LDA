@@ -1,0 +1,224 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/JgQGHOEIM14?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="414037" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/414/037/datas/original.png">
+                            <img alt="Repo Info &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/414/037/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="414038" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/414/038/datas/original.png">
+                            <img alt="Repo Info &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/414/038/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="414039" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/414/039/datas/original.png">
+                            <img alt="Repo Info &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/414/039/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I wanted to play around with Amazon Lambda, Slack, and the libraries.io API. This was an excellent chance to combine all 3.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Health Check for Github Libraries - Identify strengths and weaknesses of public Github libraries without leaving Slack.
+Pulls information about any Public Github library linked in Slack from the Github API / Libraries.io API, and posts an overview of the data in
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I started by typing into the Lambda console directly in the browser, and got a basic slack bot working, but soon needed to include npm libraries, and wanted better version control. Claudia.js provides all these things so I adapted the code to run in that framework (although not using the claudia-bot-builder library as it didn't seem to support the Slack Events API).
+                </p>
+                <p>
+                    The bot itself runs on AWS Lambda, the OAuth authentication works using API Gateway &amp; redirects, the tokens are stored in DynamoDB and even the website is a static website hosted on S3, so there are no EC2 servers required at all for any step of the process!
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Slack has a lot of documentation (which is good), but there are so many different APIs and methods of integrating that it took me a long time to figure out exactly which flow &amp; APIs were needed to get the flow I wanted.
+                </p>
+                <p>
+                    It was difficult to get Lambda to respond to Slack's message within their 3 second deadline, and continue processing. In the end, I work around this limitation by calling a second lambda function from the first function so that the first function could return immediately, and the second function could continue to process in the background. (
+                    <a href="https://claudiajs.com/tutorials/slack-delayed-responses.html" rel="nofollow">
+                        https://claudiajs.com/tutorials/slack-delayed-responses.html
+                    </a>
+                    )
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    There are lots of tests (at least for the testable parts!)
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    How to use AWS Lambda &amp; integrate into Slack.
+                </p>
+                <h2>
+                    What's next for Repo Info
+                </h2>
+                <p>
+                    There's a lot of features I'd like to add:
+                </p>
+                <ul>
+                    <li>
+                        Package managers this repo is release on (eg. "available on npm, bower")
+                    </li>
+                    <li>
+                        Release Frequency
+                    </li>
+                    <li>
+                        Number of regular contributors (Bus count)
+                    </li>
+                    <li>
+                        Number of Transitive dependencies (how big is the dependency tree?)
+                    </li>
+                    <li>
+                        Issues / Pull requests closed / opened recently
+                    </li>
+                    <li>
+                        Transitive licensing issues?
+                    </li>
+                    <li>
+                        Github badges / shields: eg. Travis' "Build passing" or the "Dependencies up-to-date" etc. Just scrape the readme for these?
+                    </li>
+                    <li>
+                        Security issues? Known bad versions of dependencies? nodesecurity
+                    </li>
+                    <li>
+                        Avg. time to fix when a vulnerability becomes known?
+                    </li>
+                    <li>
+                        Score each area and colour it red/green in the Slack window with formatting
+                    </li>
+                    <li>
+                        Code-Climate score?
+                    </li>
+                    <li>
+                        Overall health rating? Some function of the above fields.
+                    </li>
+                    <li>
+                        A graph of health-ratings? A bad "red" dependency colours the tree that depends on it?
+                    </li>
+                    <li>
+                        "Star on Github" button
+                    </li>
+                    <li>
+                        Test coverage (integrate with travis?)
+                    </li>
+                    <li>
+                        Change colour of attachment sidebar by sending "color: #ff0000" in chat.postMessage. Red / orange / green for repo health.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            claudia
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/github">
+                                github
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            libraries.io
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://gitrepo.info" rel="nofollow" target="_blank" title="https://gitrepo.info">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                gitrepo.info
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

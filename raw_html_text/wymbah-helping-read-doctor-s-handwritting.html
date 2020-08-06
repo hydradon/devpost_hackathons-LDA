@@ -1,0 +1,191 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Thanks AI4good.ca for putting the need of ONG in front of us.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Handle tiny handwritten images of text written by medical field worker (doctor) in Congo
+                </p>
+                <ol>
+                    <li>
+                        Preprocess these images in grayscale and deblur them using
+                        <code>
+                            opencv-python
+                        </code>
+                    </li>
+                    <li>
+                        A
+                        <code>
+                            tensorflow
+                        </code>
+                        model (see images below) map images to text
+                    </li>
+                    <li>
+                        Post-process the image (sanitize) so that impossible case are not pushed to the end user
+3.1 For example, 2 consecutives commas or dots with a number are removed
+3.2 non-leading dashes are removed
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Using
+                    <code>
+                        tensorflow
+                    </code>
+                    . Inspiration:
+                    <a href="https://github.com/watsonyanghx/CNN_LSTM_CTC_Tensorflow#how-to-run" rel="nofollow">
+                        https://github.com/watsonyanghx/CNN_LSTM_CTC_Tensorflow#how-to-run
+                    </a>
+                    It's a CNN-LSTM-CTC implementation in Tensorflow.
+                </p>
+                <p>
+                    <em>
+                        Process description
+                    </em>
+                </p>
+                <ol>
+                    <li>
+                        Have a CNN with a small stride scan the whole image from left-to-right
+                    </li>
+                    <li>
+                        Pass the channels from the CNN, to an LSTM that further encode the meaning of each consecutive windows
+                    </li>
+                    <li>
+                        Pass the LSTM state to the final layers which handles deduping repeated character predictions from consecutive windows... and does it in a differentiable way ;-)
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    --&gt; Implementation was not easy: important to choose our starting point with care
+                </p>
+                <p>
+                    --&gt; The images were very small, preventing from boxing each character in a way that we could recognize the content of the box
+                </p>
+                <p>
+                    --&gt; The image were really faint, with a little bit of contrast magic this challenge was overcome.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Building on the recommendations of each other
+                    </li>
+                    <li>
+                        Got to learn about CNN-LSTM-CTC and implement it
+                    </li>
+                    <li>
+                        Our perseverance; it yielded a great leaderboard score of 84.67%
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Preprocessing of images, with opencv
+                    </li>
+                    <li>
+                        Goodness-of-fit for OCR of the CNN-LSTM-CTC architecture
+                    </li>
+                    <li>
+                        <p>
+                            Got to know new teammates
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Mask R-CNN expects larger images; so it's not a good solution for small images.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Importance of pivoting and choosing simple solutions
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    What's next for wymbah -- Helping read doctor's handwritting
+                </h2>
+                <ul>
+                    <li>
+                        Looking forward to help if it needs to be built on and deployed :-) 
+--&gt; really email us!
+                        <a href="mailto:alex.antoine.fortin@gmail.com" rel="nofollow">
+                            alex.antoine.fortin@gmail.com
+                        </a>
+                        <a href="mailto:ahc238@cornell.edu" rel="nofollow">
+                            ahc238@cornell.edu
+                        </a>
+                        <a href="mailto:benjamin.saintcyr@gmail.com" rel="nofollow">
+                            benjamin.saintcyr@gmail.com
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://bitbucket.org/gro-tekcubtib/mila-ctc-ocr/src/master/" rel="nofollow" target="_blank" title="https://bitbucket.org/gro-tekcubtib/mila-ctc-ocr/src/master/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

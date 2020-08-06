@@ -1,0 +1,183 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/ClkY0BvlC8Y?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="694595" data-title="screenshots" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/694/595/datas/original.jpg">
+                            <img alt="trAnSLate: American Sign Language Translator &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/694/595/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                screenshots
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="694606" data-title="portion of training set" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/694/606/datas/original.png">
+                            <img alt="trAnSLate: American Sign Language Translator &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/694/606/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                portion of training set
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    People are connected through language. There are hundreds of widely used languages in the world, and machine translation services such as Google Translate are doing a good job translating texts and speech. However, there is no support for American Sign Language, leaving millions of people behind.
+                </p>
+                <p>
+                    We do not want to leave people behind. Enter trAnSLate, a real time American Sign Language translator. It translates ASL signs it into English and reads them aloud in real time, enabling instant interpretation of the ASL.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Take our your phone, open the trAnSLate app, and hear ASL turn into words as our app does the heavy lifting.
+                </p>
+                <p>
+                    After hitting start, the app takes a picture and classifies it in 1.5 seconds. If no hand is detected, trAnSLate inserts a space and reads aloud the previous word. trAnSLate acts as a voice over for ASL. After ending the session, the app sends a text via Twilio to a desired phone number.
+                </p>
+                <p>
+                    <img alt="Mockup" data-canonical-url="https://i.imgur.com/MqofRYs.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--N5zokk3L--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/MqofRYs.jpg">
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The app is built using Node.js Expo, which takes an image and converts it into base64. The base64 string is then passed to Google Cloud Functions. The cloud functions call Cloud AutoML Vision, which classifies the image with a convolutional neural network trained from over 17,000 image collected during the 36 hours at MHacks. After the classification, the character is passed back to the app, which displays the characters on the screen.
+                </p>
+                <p>
+                    When it is time to call the Twilio API, the app invokes another Cloud Function, which invokes the Twilio API.
+                </p>
+                <p>
+                    <img alt="image" data-canonical-url="https://i.imgur.com/F26Nswc.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--048Q0Vcc--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/F26Nswc.jpg">
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We spent a long time setting up the development environment for Expo and only got it to work on one laptop.
+                </p>
+                <p>
+                    Additionally, training an effective machine learning model was challenging. Our first models were not able to detect signs in different backgrounds. To overcome background noise, we took moving videos of each sign against different backgrounds and extracted the frames as training data. In the end, we had about 800 training images for each letter in the alphabet.
+                </p>
+                <p>
+                    Moreover, working with Firebase Cloud Functions was extremely tedious. We ran into asynchronous JavaScript issues and had to implement a promise based solution. We also ran into compatibility issues programming in Node.js 6 and Node.js 8. In the end, we stuck with Node.js 6.
+                </p>
+                <p>
+                    <img alt="training set" data-canonical-url="https://i.imgur.com/mIepXwJ.png" src="https://res.cloudinary.com/devpost/image/fetch/s--j_DfcY0j--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/mIepXwJ.png">
+                    (training set)
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud that we kept steady progress and produced an impressive result. Despite the headaches, tired eyes, and dry lips, we pushed through to achieve what we set out to accomplish. Our most memorable moment is when our app finally worked at about 5 AM in the morning: "YESSS!"
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    It was our first time working with React Native Expo and AutoML Vision, which made the entire project a valuable learning experience. We learned to integrate various platforms and services together into an effective product. We also learned that Node.js is a pain to work with and writing good documentation is very important (we had to search through over 20 libraries to find one that supported converting images into base64 strings).
+                </p>
+                <h2>
+                    What's next for trAnSLate
+                </h2>
+                <p>
+                    We will expand our Machine Learning model from single images to a sequence of images to capture motion. By doing so, we will be able to accurate translate the entirety of ASL, including waving motions, into text.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            auto-ml
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cloud-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/expo-io">
+                                expo.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react-native">
+                                react-native
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/shadowninjazx/asl-translator" rel="nofollow" target="_blank" title="https://github.com/shadowninjazx/asl-translator">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

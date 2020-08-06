@@ -1,0 +1,131 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/132747421?byline=0&amp;portrait=0&amp;title=0" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Sonny Gray is on the mound. The twenty three year old underdog just came up from the minor league and is already taking on baseball&rsquo;s greatest pitchers. He put up two strikes on the batter. One last strike would seal the shutout, but a base hit would bring home the runner on third take the game to the bottom of the ninth.
+                </p>
+                <p>
+                    The stadium is roaring with excitement, but Sonny takes his time with the last pitch. He glances at the runner on third. His shoulders lift and fall as he takes a deep breath. He starts his windup and the crowd falls silent. He delivers.
+                </p>
+                <p>
+                    The ball floats right down the middle and just above the knees. It&rsquo;s an easy pitch, one that any major league player could rip across the field. The batter loads. He fires his bat down the middle and just above the knees. Nothing. No crack of the bat. No runner scores. The ball is in the dirt. It&rsquo;s the perfect 12-6 curveball. The home plate umpire punches the batter out and that&rsquo;s the game.
+                </p>
+                <p>
+                    That account was all fictional, but moments just like it happen all the time in baseball. I've always wondered how you can get an edge on the pitcher. Is there a way to know what kind of ball he's going to throw? For this project,  I wanted to take that same idea and connect fans with players in a more intimate way. What if you could step inside the mind of your favorite pitchers? You would know exactly what they're thinking. You would be able to share the feeling of sending a four-seam right by unsuspecting batters or dropping a curveball right under their bats.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    Here's how to use it and how it all works:
+While your watching the game, You can open up the app and enter in the current "situation." The situation includes factors that pitchers account for when they're pitching such as the count, runners on base and the score. All of this information is easily accessible on live TV or at the ball game. Once you hit the predict button, the algorithm will compute the most likely pitch that the pitcher will throw based on those factors. BUT, this isn't some trite little computation.
+The whole thing is based on one machine learning technique which I describe below in the challenges section. There are two main components to the technique. The first is the training component and the second is the classifying component. The training component happens all behind the scenes. Seriously. It doesn't even happen in the back end. It happens before deployment. MLB publishes what they call "Gameday" data online. Gameday data contains every pitch, every foul ball, every visit to the mound, and every sunflower seed (okay maybe not sunflower seeds) in every single modern day MLB game. All in XML format. So the training phase is all about gathering, organizing, and processing that data to determine what is relevant to a pitcher. Then the machine learning comes in when you have to associate "inputs" with "outputs." The point is to devise a generative function that will represent the data that you have trained the machine learning classifier to associate.
+You can then move into classifying phase, the easy part, where you are passing other inputs that the classifier hasn't seen and the classifier is producing some reasonable outputs according to that function. So in this case, our inputs are the situation, and the classifier is giving us outputs which are information about a pitch that will happen in the future.
+                </p>
+                <p>
+                    It's no where near perfect as I've realized over the course of the project that pitchers are very unpredictable.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The primary challenge was actually building the machine learning algorithm. I decided to use the same technique that powers driverless cars and Google's very recent "AI Dreams," which is a neural network. Since there weren't any pre-built architectures that I knew of that were both flexible and powerful, I had to build my own, which was an enormous task of sifting through online books, research papers, code and a slew of math. I decided to base mine off of Michael Nielsen's, which worked very well. I incorporated many features that made it's API more user friendly and flexible. I thought it may be helpful for other developers who are in my position, so I uploaded it to PyPI under the name "neuralpy" about a week ago. To my surprise, it actually started to gain a little bit of traction and I realized I had very little documentation or instruction posted. So I had to furiously write up documentation which set this hackathon project back a few days. The whole point of neuralpy was to make applying machine learning easier, but just maintaining the package on PyPI took up all my time anyway. So that backfired but at least other developers can use it now.
+                </p>
+                <p>
+                    I also had a hard time with feature selection because it is important to include a lot of other data such as the last two pitches and the last at bat when considering what kind of pitch a pitcher will throw. The downside of including that data is that it's difficult for the users to input all that data for one pitch. So I had to find a balance between convenience and accuracy of the machine learning model.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm really proud of the research that I've done for this project. Most of the hours that I put into this project were just reading and old-fashioned pencil and paper. Doing that much research and planning is something that I've never really done before for a project that involved coding so I'm really proud to have stuck with it and actually completed it.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Aside from the immense amount of information about machine learning and math, I learned some life lessons from this project. The first is that when it comes to doing research, there's no handbook. There are very few people who are looking out for you. It's not like learning how to program where there are so many people and resources. It's overwhelming to dive right in and it's really easy to just give up and say "This is too hard. Maybe I'll try it some other time." I learned to just keep my goal in mind and remind myself that someone has done original research on this stuff so I shouldn't be impossible to learn it secondhand.
+                </p>
+                <h2>
+                    What's next for SideRetired
+                </h2>
+                <p>
+                    More pitchers. Currently Sonny Gray is the only pitcher available. Unfortunately, the process of training classifiers for new pitchers is long and tedious. Lots of times even after training, the classifiers are bogus and can't be used for any practical purpose. I hope to find a way of expediting this process to allow more variety for users. Obviously not everyone is a Sonny Gray fan. Another aspect that I want to improve on is the UI. It works, but it's a little clumsy and there's not much feedback for users. Error handling is a big thing for SideRetired because so much bad data can be passed to the classifier unintentionally.
+I also intend to expand this idea for a more enterprise-oriented market. The limitation with general consumers is that it's hard to input all the data as I've mentioned before. In fact there are may key factors that are left out of the inputs that would be useful for a better model. It would be easier to incorporate these features with enterprises as has more opportunity to automatize the input process.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-app-engine">
+                                google-app-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mlb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://sideretired-998.appspot.com/" rel="nofollow" target="_blank" title="http://sideretired-998.appspot.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                sideretired-998.appspot.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

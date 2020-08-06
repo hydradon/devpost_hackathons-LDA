@@ -1,0 +1,270 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/KyluwD4Z7n8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My partner runs a non for profit animal rescue group who specialise in taking in foster animals and ensuring they are re-homed by families who will be able to love and care for them. One of the problems that is noticeable when spending any time in these groups is that the organisation can be very up in the air and disjointed.
+                </p>
+                <p>
+                    The problem I wanted to try to solve is that one where rescue volunteers and soon to be new owners should be able to seamlessly interact with the public database of animals currently in our care.
+                </p>
+                <h2>
+                    Try it
+                </h2>
+                <p>
+                    WA Animals Adoption is an Alexa skill that processes requests about Adoption, animal traits and location and returns this data in a friendly manner via Alexa. Some of the supported Intents are:
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            <strong>
+                                Alexa
+                            </strong>
+                            ,
+                            <em>
+                                Open WA Animals Adoption and
+                            </em>
+                            tell me about
+                            <code>
+                                Felix
+                            </code>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Alexa
+                            </strong>
+                            ,
+                            <em>
+                                Open WA Animals Adoption and
+                            </em>
+                            find whether
+                            <code>
+                                Frankie
+                            </code>
+                            has been adopted
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Alexa
+                            </strong>
+                            ,
+                            <em>
+                                Open WA Animals Adoption and
+                            </em>
+                            tell me how to adopt
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Alexa
+                            </strong>
+                            ,
+                            <em>
+                                Open WA Animals Adoption and
+                            </em>
+                            tell me where
+                            <code>
+                                Frankie
+                            </code>
+                            can be adopted from
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Alexa
+                            </strong>
+                            ,
+                            <em>
+                                Open WA Animals Adoption
+                            </em>
+                        </p>
+                        <ul>
+                            <li>
+                                Is
+                                <code>
+                                    Julia
+                                </code>
+                                vaccinated?
+                            </li>
+                            <li>
+                                has
+                                <code>
+                                    Sam
+                                </code>
+                                been desexed?
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One of the early challenges I faced was trying to poll the DynamoDB table using fields that weren't primary partition keys. It took me a little while to get my head around a schema that would work as both an easy way to pull via Alexa, and also be robust enough to function as a good data structure moving forward.
+                </p>
+                <p>
+                    <img alt="DynamoDB Table" data-canonical-url="https://raw.githubusercontent.com/t04glovern/waanimals-alexa/master/db/img/dynamodb-import.png" src="https://res.cloudinary.com/devpost/image/fetch/s--tKex3n_X--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/waanimals-alexa/master/db/img/dynamodb-import.png">
+                </p>
+                <p>
+                    While I'm not sold on this structure long term, it does work currently; however there's a bunch of interesting work I will be doing moving forward.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm really happy with out the conversational nature of Alexa works because of some smart
+                    <code>
+                        if / else
+                    </code>
+                    statements. It allows Alexa to change the way she approaches responses and make them seem more fluid based on the outcomes of a particular line.
+                </p>
+                <pre class="language-javascript"><code>
+if (vaccinated) {
+response += " is Vaccinated, "
+} else {
+response += " is not Vaccinated yet, "
+}
+if (microchipped) {
+response += "has been Microchipped, "
+} else {
+response += "has not been Microchipped, "
+}
+if (desexed) {
+response += "and has been desexed. "
+} else {
+response += "and needs to be desexed. "
+}
+if (children) {
+if (desexed) {
+response += name + " is also good with children!"
+} else if (!desexed) {
+response += name + " is however very good with children!"
+}
+}
+</code></pre>
+                <p>
+                    An example of this can be seen in the following lines:
+                </p>
+                <ul>
+                    <li>
+                        Felix is vaccinated, has been microchipped and has been desexed.
+                        <strong>
+                            Felix is also good with children!
+                        </strong>
+                    </li>
+                    <li>
+                        Frankie is not vaccinated yet, has not been microchipped and needs to be desexed.
+                        <strong>
+                            Frankie is however very good with children.
+                        </strong>
+                    </li>
+                </ul>
+                <p>
+                    The final line is dynamic based on the final if statement, so that the overall flow of the sentence works better when we have an all negative reply.
+                </p>
+                <h2>
+                    What's next?
+                </h2>
+                <p>
+                    There's a bunch of things I want to continue to build into this skill:
+                </p>
+                <ul>
+                    <li>
+                        Correct the schema so the primary key isn't the Animal Names
+                    </li>
+                    <li>
+                        Use the
+                        <code>
+                            ask-sdk
+                        </code>
+                        integration with DynamoDB directly
+                    </li>
+                    <li>
+                        Migrate production database to DynamoDB after schema is corrected
+                    </li>
+                    <li>
+                        Make use of Alexa cards
+                    </li>
+                    <li>
+                        On-boarding of new Animals to the system via the Skill for authorised users.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cloudformation
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/t04glovern/waanimals-alexa" rel="nofollow" target="_blank" title="https://github.com/t04glovern/waanimals-alexa">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

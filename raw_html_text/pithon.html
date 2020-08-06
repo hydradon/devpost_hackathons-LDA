@@ -1,0 +1,138 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Why the name?
+                </h2>
+                <p>
+                    I'm not creative when it comes to names.
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Python is my favorite language. In my free time, I dig around through the default cpython interpreter source and every now and then make my own edits to it for fun. This is one of those edits.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    You can store valid python code in an image without actually changing the image, and now run the image as if it were the python code.
+                </p>
+                <p>
+                    Example:
+                </p>
+                <pre class="language-python"><code>$ python -p myimage.png hello_world.py  # Just prints hello world
+
+# myimage.png can now be run as a python script
+$ python myimage.png
+Hello world
+
+# Additionally, the image has no visible changes to it and looks the same as it did before
+</code></pre>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Using an image editing library in C, I embed individual bits of the original source code into pixels in the original image. These bits are then extracted from the image when executing it. (Essentially stenanography.) This was implemented in C since the default python interpreter is written in C. The default interpreter was also edited enough to support accepting images as concealing data in those images.
+                </p>
+                <h2>
+                    Algorithm Used
+                </h2>
+                <p>
+                    The actual algorithm used for concealing data within the images is pretty simple, but can also be changed easily to support other, more complex algorithms. The default one is hiding every two bits in the two least significant bits of the R value in each sequential pixel. For this, the number of bits can be increased or decreased at the cost of altering the image more or not having enough room to store the original code.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        C (not C++) has a very limited number of image processing libraries (at least that I know of). As of now, only pngs are supported.
+                    </li>
+                    <li>
+                        The image that will have the code stored in it must be large enough to actually store the code.
+                    </li>
+                    <li>
+                        Supporting all the features of python while still being able to run an image
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        Edited the cpython interpreter, the tool that is in charge of evaluating one of the most popular languages in the world.
+                    </li>
+                    <li>
+                        Did this all by myself
+                    </li>
+                    <li>
+                        Glad that I know my C as well as my python
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        The source code for cpython is very bulky
+                    </li>
+                    <li>
+                        There are a limited number of image processing programs in C
+                    </li>
+                </ul>
+                <h2>
+                    What's next for PiThon
+                </h2>
+                <ul>
+                    <li>
+                        The only thing that I have tested for and have not had time to solve yet was being able to use frameworks that exist within a virtual environment in the picture. I am able to import functions/classes from other files given that the image is in the same directory as them or they are also located on the PYTHONPATH.
+                    </li>
+                    <li>
+                        Implement other algorithms for concealing images
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/PiJoules/image-exe" rel="nofollow" target="_blank" title="https://github.com/PiJoules/image-exe">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

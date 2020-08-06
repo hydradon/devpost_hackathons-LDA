@@ -1,0 +1,204 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Most model-mapping solutions for dynamic schema (Core Data, Realm,
+                    <a href="https://github.com/jsonmodel/jsonmodel" rel="nofollow">
+                        JSONModel
+                    </a>
+                    ) involve relying on
+                    <code>
+                        dynamic
+                    </code>
+                    bridgeable properties. The problem is this limits the supported property types: we could only use types that are bridgeable to Objective-C. We want a full-Swift solution so we can register custom property types such as
+                    <code>
+                        URL
+                    </code>
+                    s,
+                    <code>
+                        UIImage
+                    </code>
+                    s, etc.
+                </p>
+                <p>
+                    The techniques (tricks? black magic?) used to implement this can be used to improve any kind of dynamic models such as
+                    <code>
+                        NSUserDefaults
+                    </code>
+                    , JSON dictionaries, Core Data, Realm objects, etc.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The presentation will showcase a Playground file that implements a way to ensure the following:
+                </p>
+                <ul>
+                    <li>
+                        type-safe attributes (i.e. compile error when values of wrong type are assigned)
+                    </li>
+                    <li>
+                        to avoid reliance on dynamic properties which restricts data types to just ObjC-bridgeable types (i.e. support other encodable types such as
+                        <code>
+                            URL
+                        </code>
+                        s,
+                        <code>
+                            UIImage
+                        </code>
+                        s, etc)
+                    </li>
+                    <li>
+                        to provide type-aware keypaths (for potential magical type-aware query predicates)
+                    </li>
+                    <li>
+                        to compile-time check on as many mistakes as possible (e.g. not allowing subclass keypaths on a baseclass, or forgetting important overrides on a subclass)
+                    </li>
+                </ul>
+                <p>
+                    But due to time constraints on the hackathon, I focused on Core Data models because with the current implementation we can skip making
+                    <em>
+                        xcdatamodeld
+                    </em>
+                    files for models, which is a huge practical application.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <ul>
+                    <li>
+                        Xcode 8.3 beta Playground
+                    </li>
+                    <li>
+                        Mainly with clever usage of Swift protocols, generics, and class inheritance magic.
+                    </li>
+                    <li>
+                        Does it involve reflection? A little, but not in the way you'd think.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Not enough time to provide a demo app, sorry :(
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Here's an idea of how the models would look:
+                </p>
+                <pre class="language-swift"><code>class Bird: BaseObject {
+                let species = DString("species")
+}
+class Mascot: Bird {
+let nickname = DOptionalString("nickname")
+let year = DInt("year", default: 2017)
+}
+</code></pre>
+                <p>
+                    Type-safe attributes work well (i.e. compile error when values of wrong type are assigned)
+                </p>
+                <pre class="language-swift"><code>let mascot = Mascot()
+mascot.nickname .= "Riko"
+// mascot.nickname .= 2017 // COMPILE ERROR!
+
+let nickname: String = .&amp;mascot.nickname// "Riko"
+// let number: Int = .&amp;mascot.nickname  // COMPILE ERROR!
+</code></pre>
+                <p>
+                    If you still need to resort to keyPath access, you can do that too. Safely
+                </p>
+                <pre class="language-swift"><code>let keyPath = Mascot.keyPath { $0.nickname } // "name"
+// let keyPath = Bird.keyPath { $0.nickname } // COMPILER ERROR (class Bird doesn't know about Mascot's property)
+</code></pre>
+                <p>
+                    The property types are aware of their parent class, which means we can create type-aware predicates
+                </p>
+                <pre class="language-swift"><code>let predicate: NSPredicate = (Mascot.meta.nickname == "Riko") // OK
+// let predicate: NSPredicate = (Bird.meta.nickname == 1) // COMPILER ERROR
+</code></pre>
+                <h1>
+                    What's next
+                </h1>
+                <p>
+                    The technique produced can be used in other dynamic models as well, not just Core Data:
+                </p>
+                <ul>
+                    <li>
+                        JSON
+                    </li>
+                    <li>
+                        NSUserDefaults
+                    </li>
+                    <li>
+                        Realm
+                    </li>
+                    <li>
+                        Cloud key-value data (e.g. Firebase)
+                    </li>
+                </ul>
+                <p>
+                    Also, as long as following methods of
+                    <code>
+                        ValueProtocol
+                    </code>
+                </p>
+                <pre class="language-swift"><code>    func encode() -&gt; Any
+                static func decode(_ any: Any) -&gt; Self
+</code></pre>
+                <p>
+                    is implemented by a type, that type can be supported as well.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/core-data">
+                                core-data
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            swift-3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/xcode">
+                                xcode
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://gist.github.com/JohnEstropia/0547bce1a7b2cb076a9e2817eaa4a4f9" rel="nofollow" target="_blank" title="https://gist.github.com/JohnEstropia/0547bce1a7b2cb076a9e2817eaa4a4f9">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                gist.github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

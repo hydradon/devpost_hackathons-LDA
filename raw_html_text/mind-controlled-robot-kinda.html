@@ -1,0 +1,181 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="913572" data-title="Radyga the hexapod" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/572/datas/original.jpg">
+                            <img alt="Mind-controlled robot (kinda) &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/572/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Radyga the hexapod
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="913236" data-title="Electrode placement" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/236/datas/original.jpg">
+                            <img alt="Mind-controlled robot (kinda) &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/236/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Electrode placement
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="913597" data-title="Normalized EMG data, orange spikes denote flexed muscle" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/597/datas/original.png">
+                            <img alt="Mind-controlled robot (kinda) &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/597/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Normalized EMG data, orange spikes denote flexed muscle
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="913399" data-title="Preprocessed EMG data" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/399/datas/original.png">
+                            <img alt="Mind-controlled robot (kinda) &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/913/399/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Preprocessed EMG data
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    In a not-so-distant future we will be surrounded by robots. How do would a human interact with them and tell them what to do? There're many ways, for example by using visual clues or speech commands. However, a more exciting and effective way is to send commands to a robot directly from a human brain.
+                </p>
+                <p>
+                    We used muscle activity as a proxy for brain impulses. When you flex a muscle, there's a potential field created in the area near to the muscle. We measured that potential field, processed the signal, classified 4 different types of action and used them to remotely steer a spider robot.
+                </p>
+                <p>
+                    As a result, depending on how an operator moves their hand, the robot will either move forward, turn or stay still. The signal processing algorithm generalizes well between different people after a quick automated calibration.
+                </p>
+                <p>
+                    We're really prod of the result, because at the beginning of the project it wasn't clear at all whether the whole thing worked out. At the end it works quite reliably and you can actually use your hand as a controller for the robot. Come talk to us to see it yourself!
+                </p>
+                <p>
+                    Along the way we learned a bunch of things:
+                </p>
+                <ul>
+                    <li>
+                        Electrode placement is extremely important. If placed incorrectly, you can't separate cleanly between different hand gestures
+                        <ul>
+                            <li>
+                                There can be interference from the wires themselves, a simple hack is to twist them.
+                            </li>
+                            <li>
+                                Try the simplest possible algorithm first, we managed to classify signals by simple moving average and double-thresholding.
+                            </li>
+                            <li>
+                                Bugs are usually also simple. Don't do any assumption about which part of your system is working reliably, make hypotheses and try to verify them in order of simplicity.
+                            </li>
+                            <li>
+                                Bluetooth is unrealiable, electrodes can dry out, batteries discharge. Therefore having test that can verify that a single part of your system is working is very important. E.g. controlling robot without EMG, visualizing EMG without the robot etc.
+                            </li>
+                            <li>
+                                No premature optimisation. Write unoptimized code, see if there're bottlenecks, optimize those
+                            </li>
+                            <li>
+                                Robot control is hard.
+                            </li>
+                            <li>
+                                A system is as weak as its weakest link. Identify those and try to make them more robust. E.g. in our case, one EMG sensor was better than the other, the signal from one muscle was stronger than the other. We combined better sensor with weaker muscle.
+                            </li>
+                            <li>
+                                Hardware projects are hard, especially during the hackathon. You can download a missing library, switch to another one if you discovered a bug. Whereas malfunctioning hardware is a show-stopper. Invest time upfront to make sure you hardware setup is as good as possible and then hope for the best.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bitalino">
+                                bitalino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raspberry
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://photos.app.goo.gl/TAkYs8wyNmfcwjAA6" rel="nofollow" target="_blank" title="https://photos.app.goo.gl/TAkYs8wyNmfcwjAA6">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                photos.app.goo.gl
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://photos.app.goo.gl/7em8nBG1raZFmTRN6" rel="nofollow" target="_blank" title="https://photos.app.goo.gl/7em8nBG1raZFmTRN6">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                photos.app.goo.gl
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

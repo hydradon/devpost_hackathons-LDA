@@ -1,0 +1,145 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Today I run a large discord bot
+If I wanted to deploy through a CI pipeline with the login rate limits and restart times to users I could only push code 10 times a day.
+We wanted to fix that, along with increasing reliability.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our system uses a Kubernetes cluster to connect shards to discord, basically many small clients that each process a portion of the events.
+Those events then get ingested into Solace which handles distributing them to workers.
+Workers can be upgraded without discord even noticing.
+Workers are assigned the task of keeping the state of everything happening in the chat client up to date in Redis, allowing any of the scripts written to perform actions for the user fast and reliable access to up to date state.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    First we made a mono-repo and helper libraries, such as a wrapper around tho solace api.
+Then we wrote event ingest and event processing code to ingest the events into solace and process them into Redis
+Then we deployed to the google cloud, using Kubernetes to allow us to easily run multiple instances of the services in parallel.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    JS client library for solace provided a challenge in implementation within our requirements
+Debugging in a distributed cloud based environment provides a unique set of challenges and we ended up spending more time than we would have like building new containers and testing them.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We got everything to run in the google cloud on Kubernetes or using managed services, not having to manage a single server or other than once for debugging type a bash command.
+The automatic shard management that assigns shards which servers to take care of is also neat.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a ton about distributed event systems and google cloud.
+It's hard to convey the amount of knowledge gained but basically we are now both confident using google cloud's Kubernetes / MemoryStore / Cloud Build / Registry.
+We also learned a ton about solace as an event distribution / messaging system in specific. How to use it, how to debug distributed event systems in a time efficient manner and more!
+                </p>
+                <h2>
+                    What's next for DDiscord
+                </h2>
+                <p>
+                    Next up is finding a way we can afford to keep running it. The google cloud is not cheap. 
+Probably spinning up our own Kubernetes cluster with something like Rancher and some old server hardware and using something like circleCI / gitlab for our builds.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ci
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            docker-registry
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            eris
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/kubernetes">
+                                kubernetes
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raincache
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            snowtransfer
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            solace
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/macdja38/ddiscord" rel="nofollow" target="_blank" title="https://github.com/macdja38/ddiscord">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

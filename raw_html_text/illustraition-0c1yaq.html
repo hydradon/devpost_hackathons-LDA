@@ -1,0 +1,247 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/eCXV2vXYP9s?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="716774" data-title="schematic for illustrAItion" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/716/774/datas/original.png">
+                            <img alt="illustrAItion &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/716/774/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                schematic for illustrAItion
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    What is illustrAItion?
+                </h2>
+                <p>
+                    Have you ever had this great story that only lacked for illustrations, but were missing the will or desire to draw something? Despair no more, for we bring you
+                    <strong>
+                        illustrAItion
+                    </strong>
+                    , the AI-informed web tool for generating illustrations automatically. Simply enter the phrase you want to be sketched, and
+                    <strong>
+                        illustrAItion
+                    </strong>
+                    will assemble a matching picture from doodles generated as part of the Google QuickDraw experiment.
+                    <strong>
+                        illustraAItion
+                    </strong>
+                    currently support two languages, Chinese and English.
+                </p>
+                <h2>
+                    How It Works
+                </h2>
+                <h3>
+                    Doodle Data
+                </h3>
+                <p>
+                    <strong>
+                        illustrAItion
+                    </strong>
+                    is built on the back of a database assembled from doodles submitted via the Google Quick, Draw! game (
+                    <code>
+                        https://quickdraw.withgoogle.com/
+                    </code>
+                    ). For this game, people are instructed to (quickly) draw the word that the game displays on the screen. The drawings were previously curated using a convolutional neural network to identify the best examples of each word, resulting in 340,000 high-quality (
+                    <em>
+                        or at least recognizable...
+                    </em>
+                    ) doodles, each matched to their word.
+                    <strong>
+                        N.B.
+                    </strong>
+                    We do not consider the generation of this database part of
+                    <strong>
+                        illustrAItion
+                    </strong>
+                    , since it predates Vandyhacks V, and can be used for many other things as well.
+                </p>
+                <h3>
+                    Frontend
+                </h3>
+                <p>
+                    We built the frontend of
+                    <strong>
+                        illustrAItion
+                    </strong>
+                    using the React JavaSript Library (
+                    <code>
+                        https://reactjs.org/
+                    </code>
+                    ). It consists of a text box to enter your phrase, and a display area where the drawing is displayed. The drawing is animated using SVG paths assembled from the doodle database by the backend.
+                </p>
+                <h3>
+                    Backend
+                </h3>
+                <p>
+                    The input and ouput of the API call is processed using the Django Python Library (
+                    <code>
+                        https://www.djangoproject.com/
+                    </code>
+                    ). The typed phrase is processed into pairs of words connected by a positional preposition using either NLTK (
+                    <code>
+                        https://www.nltk.org/
+                    </code>
+                    ) or SpaCy (
+                    <code>
+                        https://spacy.io/
+                    </code>
+                    ). It then checks to make sure there is a drawing of each word in the doodle database. In the absence of one, it uses the Gensim library to fetch the most similar word. Once the individual drawing are pulled from the database in the form of SVG paths, these are combined such that the individual drawings are arranged to reflect the positional preposition connecting them. This combined path is then returned to the frontend for display.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        The spatial arrangement of more than two drawings (solved!)
+                    </li>
+                    <li>
+                        Converting NLP-generated trees to a more usable format (solved!)
+                    </li>
+                    <li>
+                        Support Chinese text inpu (solved!)
+                    </li>
+                    <li>
+                        Animating the drawing stroke by stroke (unsolved)
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        We got a lot done this weekend, which is surprising given our complete lack of background in this area
+                    </li>
+                    <li>
+                        The current product looks like we imagined it
+                    </li>
+                    <li>
+                        We implemented bonus drawings hiding in the database!
+                    </li>
+                    <li>
+                        Each other
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        None of us knew anything about web development before planning this project
+                    </li>
+                    <li>
+                        We had not used natural language processing before either
+                    </li>
+                    <li>
+                        We learned the details of how SVGs work and how to generate them
+                    </li>
+                </ul>
+                <h2>
+                    What's Next?
+                </h2>
+                <ul>
+                    <li>
+                        Support more languages
+                    </li>
+                    <li>
+                        Resize the objects for a better spatial arrangement
+                    </li>
+                    <li>
+                        Amazon Alexa voice-to-text-to-doodle
+                    </li>
+                    <li>
+                        Style transformation of the drawing to your favourite artistic style
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nltk">
+                                nltk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            spacy
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/lingchen42/illustrAItion" rel="nofollow" target="_blank" title="https://github.com/lingchen42/illustrAItion">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

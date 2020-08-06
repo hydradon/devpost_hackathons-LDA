@@ -1,0 +1,114 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Original question
+                </h2>
+                <p>
+                    "Imagine you have a circle of people and you go around the circle removing every second person until one person is left.
+                </p>
+                <p>
+                    If you have 3 people in the circle, then the 3rd person will be the last one remaining.
+If you have 4 people then the 1st person will be the last one remaining.
+If you have 11 people then the 7th person will be the one remaining.
+                </p>
+                <p>
+                    If you have N people in the circle, who will be the last one remaining?
+                </p>
+                <p>
+                    Please formulate your answer as a general solution and not as an algorithm that simulates the problem."
+                </p>
+                <h2>
+                    Logical analysis
+                </h2>
+                <p>
+                    Tested manually the process for several N to get a feel for the problem.
+                </p>
+                <p>
+                    Always the first to go are the even-numbered people. This will bring the group to half of the original size and continue like this (removing half of the people on each pass) until a single person is left.
+                </p>
+                <p>
+                    The order would be something like this: 1 1 3 1 3 5 7 1 3 5 7 9...
+                </p>
+                <p>
+                    The number of the last person resets back to 1 every time that N hits a range of a new power of 2 (meaning it will need an additional pass through the circle) and then cycles through the odd-numbered people until the next power of 2 is reached.
+                </p>
+                <h2>
+                    Solution
+                </h2>
+                <ul>
+                    <li>
+                        N - number of people
+                    </li>
+                    <li>
+                        L - number of the last person who will remain
+                    </li>
+                    <li>
+                        P - highest power of 2 which fits in N
+                    </li>
+                    <li>
+                        A - number of additional people between P and N
+                    </li>
+                </ul>
+                <p>
+                    As I mentioned above, if N is a power of 2, then A is 0 and L will be 1. Considering this we can look at the problem from another angle: after A people have been removed we will have a circle of P people and the first one in this circle (the person next to the Ath which was removed) will be L.
+                </p>
+                <p>
+                    This first pass only eliminates the even-numbered people so the last one standing will be 2A + 1.
+                </p>
+                <p>
+                    This brings us to:
+                </p>
+                <ul>
+                    <li>
+                        N = P + A
+                    </li>
+                    <li>
+                        P = 2
+                        <sup>
+                            | log
+                            <sub>
+                                2
+                            </sub>
+                            N |
+                        </sup>
+                    </li>
+                    <li>
+                        L = 2 A + 1
+                    </li>
+                </ul>
+                <p>
+                    So the general solution would be this single equation:
+                </p>
+                <ul>
+                    <li>
+                        L = 2 (N - 2
+                        <sup>
+                            | log
+                            <sub>
+                                2
+                            </sub>
+                            N |
+                        </sup>
+                        ) + 1
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            math
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

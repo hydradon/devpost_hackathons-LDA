@@ -1,0 +1,100 @@
+[
+    {
+        "url": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/comments/231297797",
+        "pull_request_review_id": 172239049,
+        "id": 231297797,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIzMTI5Nzc5Nw==",
+        "diff_hunk": "@@ -47,6 +46,7 @@ class PandaCashCore {\n       const ring = KeyRing.fromPrivate(deriveSomething.privateKey);\n       const account = {};\n \n+      account.address = ring.getAddress('string', 'regtest');",
+        "path": "lib/pandacash-core/index.js",
+        "position": 49,
+        "original_position": 17,
+        "commit_id": "21c55923b2ec58f6832e8f36619c4cab1d0c21cc",
+        "original_commit_id": "21c55923b2ec58f6832e8f36619c4cab1d0c21cc",
+        "user": {
+            "login": "rkalis",
+            "id": 9142187,
+            "node_id": "MDQ6VXNlcjkxNDIxODc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/9142187?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/rkalis",
+            "html_url": "https://github.com/rkalis",
+            "followers_url": "https://api.github.com/users/rkalis/followers",
+            "following_url": "https://api.github.com/users/rkalis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/rkalis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/rkalis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/rkalis/subscriptions",
+            "organizations_url": "https://api.github.com/users/rkalis/orgs",
+            "repos_url": "https://api.github.com/users/rkalis/repos",
+            "events_url": "https://api.github.com/users/rkalis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/rkalis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I added this to get the address for the private key.",
+        "created_at": "2018-11-06T21:22:57Z",
+        "updated_at": "2018-11-06T21:22:58Z",
+        "html_url": "https://github.com/panda-suite/pandacash-cli/pull/1#discussion_r231297797",
+        "pull_request_url": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/comments/231297797"
+            },
+            "html": {
+                "href": "https://github.com/panda-suite/pandacash-cli/pull/1#discussion_r231297797"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/comments/231298375",
+        "pull_request_review_id": 172239719,
+        "id": 231298375,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIzMTI5ODM3NQ==",
+        "diff_hunk": "@@ -99,47 +95,24 @@ class PandaCashCore {\n \n   async seedAccounts() {\n     this.opts.enableLogs && console.log('Seeding accounts');\n+\n     let oldAddresses = [];\n \n-    return new Promise((resolve, reject) => {\n-      async.eachSeries(this.accounts, (account, cb) => {\n-        async.waterfall([\n-          (cb) => {\n-            this.walletNodeRPC.importprivkey(\n-              account.privateKeyWIF\n-            ).then(() => cb(), cb);\n-          },\n-          (cb) => {\n-            this.walletNodeRPC.getaddressesbyaccount(\n-              \"default\"\n-            ).then(addresses => {\n-              // no better way to get the new address?\n-              account.address = addresses.find(_ => oldAddresses.indexOf(_) === -1);\n-\n-              oldAddresses = addresses;\n-\n-              cb();\n-            }, cb)\n-          }, (cb) => {\n-            this.nodeRPC.generatetoaddress(10, account.address)\n-            .then (() => cb(), cb);\n-          }\n-        ], cb)\n-      }, async err => {\n-        this.opts.enableLogs && console.log('Advancing blockchain to enable spending');\n-\n-        try {\n-          await this.nodeRPC.generatetoaddress(\n-            500,\n-            this.accounts[0].address\n-          );\n-        } catch (err) {\n-          console.error(err);\n-        }\n-\n-        return resolve();\n-      });\n-    })\n+    for (let i = 0; i < this.accounts.length; i++) {\n+      await this.walletNodeRPC.importprivkey(this.accounts[i].privateKeyWIF);\n+\n+      const addresses = await this.walletNodeRPC.getaddressesbyaccount(\"default\")\n+\n+      this.accounts[i].address = addresses.find(_ => oldAddresses.indexOf(_) === -1);",
+        "path": "lib/pandacash-core/index.js",
+        "position": 106,
+        "original_position": 117,
+        "commit_id": "21c55923b2ec58f6832e8f36619c4cab1d0c21cc",
+        "original_commit_id": "21c55923b2ec58f6832e8f36619c4cab1d0c21cc",
+        "user": {
+            "login": "rkalis",
+            "id": 9142187,
+            "node_id": "MDQ6VXNlcjkxNDIxODc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/9142187?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/rkalis",
+            "html_url": "https://github.com/rkalis",
+            "followers_url": "https://api.github.com/users/rkalis/followers",
+            "following_url": "https://api.github.com/users/rkalis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/rkalis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/rkalis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/rkalis/subscriptions",
+            "organizations_url": "https://api.github.com/users/rkalis/orgs",
+            "repos_url": "https://api.github.com/users/rkalis/repos",
+            "events_url": "https://api.github.com/users/rkalis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/rkalis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "See comment at line 49.\r\n\r\nI found that the addresses that were found using this method didn't match the private keys that we generated.\r\nIn other words if I did dumpprivkey for the generated addresses, I got a different private key than the ones we generated. With the method I added in line 49, it did work as expected.",
+        "created_at": "2018-11-06T21:24:40Z",
+        "updated_at": "2018-11-06T21:25:09Z",
+        "html_url": "https://github.com/panda-suite/pandacash-cli/pull/1#discussion_r231298375",
+        "pull_request_url": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/comments/231298375"
+            },
+            "html": {
+                "href": "https://github.com/panda-suite/pandacash-cli/pull/1#discussion_r231298375"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/panda-suite/pandacash-cli/pulls/1"
+            }
+        }
+    }
+]

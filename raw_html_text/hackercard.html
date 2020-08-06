@@ -1,0 +1,180 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to give people a tool to share their Devpost profiles on other websites. This way developers can get credit for their work off of Devpost, not just on it.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Hacker cards show a hacker's name, follower and following count, and the project count. They also link to a hacker's Devpost profile page.
+                </p>
+                <p>
+                    From a technical perspective, the custom web component (the
+                    <code>
+                        &lt;hacker-tile&gt;
+                    </code>
+                    element) begins by rendering the template defined in the HTML file that is imported (
+                    <code>
+                        hacker-card.html
+                    </code>
+                    ) and binds the template to properties of the webcomponent. Next, the component takes the
+                    <code>
+                        user-name
+                    </code>
+                    attribute and makes an AJAX request to the Unofficial API Endpoint for user profiles at
+                    <code>
+                        https://iii3mdppm7.execute-api.us-east-1.amazonaws.com/prod/UserPortfolioEndpoint/&lt;user-name&gt;
+                    </code>
+                    . Once the JSON is returned, the data contained in the element is updated and the Polymer bindings go to work rendering the changes.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We decided we wanted to use Google's Polymer. The HackerCard itself is defined in it's own HTML file that a client can load in and then a custom web component becomes available on the page. You can embed a hacker card in just 3 lines of code. This makes it portable and flexible.
+                </p>
+                <pre class="language-markup"><code>&lt;script src="components/bower_components/webcomponentsjs/webcomponents-lite.min.js"&gt;&lt;/script&gt;
+&lt;link rel="import" href="hacker-card.html"&gt;
+&lt;hacker-tile user-name="MGerrior"&gt;&lt;/hacker-tile&gt;
+</code></pre>
+                <p>
+                    <img alt="hacker-tile" data-canonical-url="http://i.imgur.com/x3fo176.png" src="https://res.cloudinary.com/devpost/image/fetch/s--NoXayCwE--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/x3fo176.png">
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The Polymer documentation isn't
+                    <em>
+                        great
+                    </em>
+                    . It took us a while to figure out the required dependencies, and how we should include them in relation to the polyfill. Installing the dependencies was also a bit of a pain, it would be cool if they were hosted on their own CDN. We had some dependencies installed via bower, some installed via NPM, etc.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    It's semantically expressive to just have a
+                    <code>
+                        &lt;hacker-tile&gt;
+                    </code>
+                    tag that you can just put onto your site. The fact that we were able to go from not knowing Polymer to actually having a real working application is pretty cool.
+                </p>
+                <h2>
+                    What we've learned
+                </h2>
+                <p>
+                    While building these Hacker Cards we learned quite a few of the core components of Polymer including component properties and data binding. We also learned that vertically aligning html elements is pretty much more difficult than learning an entirely new framework.
+                </p>
+                <h2>
+                    What's next for HackerCard
+                </h2>
+                <p>
+                    We would actually have to test it out on different browsers. We are worried about the CSS from the page changing the look and feel of the actual hacker card. We'd also need to actually deploy the HTML fragment somewhere so that others can import it via the
+                    <code>
+                        &lt;link&gt;
+                    </code>
+                    tag into their pages, right now everything is just done locally. Ideally we'd also be able to develop some sort of loading state for the component, as right now it will just render the template without having any data binded to the template.
+                </p>
+                <p>
+                    We also need to spend more time thinking about dependencies and how users will acquire them. Right now the
+                    <code>
+                        hacker-card.html
+                    </code>
+                    fragment uses
+                    <code>
+                        superagent
+                    </code>
+                    for AJAX requests, which defines a global
+                    <code>
+                        request
+                    </code>
+                    object on the window which we would ideally prefer not to do on other user's websites.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/git">
+                                git
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/github">
+                                github
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/polymer">
+                                polymer
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            superagent
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            web-components
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/challengepost/hacker_card" rel="nofollow" target="_blank" title="https://github.com/challengepost/hacker_card">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

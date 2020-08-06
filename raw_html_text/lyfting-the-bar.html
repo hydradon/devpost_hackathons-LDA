@@ -1,0 +1,114 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Drunk driving causes a major strain on the society, government, and the private sector.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Create a solidified process to enable bartenders to effectively provide free and safe rides to potential drunk drivers.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We aggregated data using the Google Places API and open data banks. Using dynamically generated HTTP requests, we converted a set of varying locations across the GTA into a connected bidirectional weighted graph of bars residing in the area. Using the complete graph, we leveraged Kruskal's algorithm to extract a minimum spanning tree. Of the remaining edges, we used the bisector to calculate the average distance to the nearest bar. Given the average distance, we were able to calculate an estimated cost of ordering a Lyft ride, which was used throughout the case.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The varying urban density across the GTA led to an extremely high standard deviation. To address this issue, we took multiple sample points and applied cohort analysis to make meaningful conclusions from the data.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The Google places API returns a JSON object with the bar's latitude and longitude, however this did not provide meaningful data regarding the distance between the nodes. To actually obtain distance data, we had to determine an efficient and optimized algorithm that runs in O(1) complexity. We found
+                    <a href="https://en.wikipedia.org/wiki/Haversine_formula" rel="nofollow">
+                        Haversine formula
+                    </a>
+                    .
+                </p>
+                <pre class="language-javascript"><code>distanceFrom(other) {
+        const RADIUS = 6371e3;
+  const {lat: lat1, lng: lng1} = this.location;
+  const {lat: lat2, lng: lng2} = other.location;
+
+  const phi1 = lat1.toRadians();
+  const phi2 = lat2.toRadians();
+  const deltaP = (lat2 - lat1).toRadians();
+  const deltaL = (lng2 - lng1).toRadians();
+
+  const a = Math.sin(deltaP / 2)**2 + Math.cos(phi1) * Math.cos(phi2) * Math.sin(deltaL / 2)**2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return RADIUS * c;
+}
+</code></pre>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Coming from a lack of data background, we never fully appreciated the power of data. However, this project revealed the true importance of data analysis. We were able to deconstruct a problem, find relevant data and metrics, and create an actionable solution based on the data.
+                </p>
+                <h2>
+                    What's next for Lyfting the Bar
+                </h2>
+                <p>
+                    pitching to lyft.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            minimum-spanning-tree
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/maaslalani/BarLyft" rel="nofollow" target="_blank" title="https://github.com/maaslalani/BarLyft">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,172 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We've made some good progress in implementing CD practices and tools, but wanted to ensure we were capturing metrics regarding our builds, deployments, issue tracking, etc. so we could understand if we were measuring real progress in delivering more features faster. Our vision is that these metrics would be reviewed in situations such as sprint retrospectives and executive reporting.
+                </p>
+                <p>
+                    We found that individual tools had some reporting on their individual functions, but we wanted to demonstrate how we could collect cross-tool metrics (in this case our issue tracking, build, and deployment tools) that are all part of our continuous delivery pipeline so we can understand our true delivery velocity.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    There are two components
+                </p>
+                <ol>
+                    <li>
+                        data collection: collects issue, build, and deployment information from JIRA and Bamboo
+                    </li>
+                    <li>
+                        reporting: we created a dashboard that shows the following charts:
+                        <ol>
+                            <li>
+                                Chart that shows total number of issues in each release, broken down by features and bugs. Objective is that given a fixed release period, say a two week sprint, your future releases will see an increase in the number of features, and decrease in the number of production bugs, as your CD process matures.
+                            </li>
+                        </ol>
+                    </li>
+                </ol>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    We used Atlassian Cloud's JIRA, Bitbucket, and Bamboo products to setup our issue tracking, source code management, build, test, and deployment. We chose this stack due to its integrated feature set and API and its comprehensive coverage of the software delivery process - plus it's SaaS so it's easy to provision!
+                </p>
+                <p>
+                    After setting up a basic build/test/deploy process in Bamboo for a java web app with three different environments (DEV, QA, PROD), deploying to AWS Elastic Beanstalk environment, we are able to capture metrics based on the build ID in Bamboo, which we have tied to the issue IDs in JIRA that are referenced in the git commit messages in Bitbucket.
+                </p>
+                <p>
+                    We created a standalone java app that connects to JIRA and Bamboo using their REST APIs and traverses the necessary information and outputs a CSV file in the format expected by our charting spreadsheet.
+                </p>
+                <p>
+                    The Bamboo dashboard link shows our build dashboard, with links to deployments (see us for password)
+                </p>
+                <p>
+                    The spreadsheet shows the collected data and chart.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Unsuccessfully trying to connect to RDS database cost us significant time, and we punted on this and decided on collecting/importing from a csv file. Clearly we could have imported directly into DB and have our charting tool connect directly to that DB, but firewall issues won out and we were content to use Google Sheets.
+                </p>
+                <p>
+                    We started to use Pentaho but ended up going with Google Spreadsheets as it made it simple to combine the data in the same place as our charts.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Rethinking design on the fly multiple times throughout the day!
+Ability to call and connect multiple APIs (issue, build, deploy) and synergize them into a meaningful view that will result in demonstrating the value of CD
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <h2>
+                    What's next for !DevStOps
+                </h2>
+                <p>
+                    Given more time, we would automate our script into the build/deployment process so that data insertion into the spreadsheet/DB happens in real-time as each build and/or deployment is performed. Currently our data ETL is run as a standalone process.
+There were some more metrics we wanted to capture/display as well.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/beanstalk">
+                                beanstalk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bitbucket">
+                                bitbucket
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-spreadsheets">
+                                google-spreadsheets
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jira">
+                                jira
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/project-bamboo">
+                                project-bamboo
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://bowling-prod.elasticbeanstalk.com/" rel="nofollow" target="_blank" title="http://bowling-prod.elasticbeanstalk.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bowling-prod.elasticbeanstalk.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://bitbucket.org/NeilHunt1/cdhacks-metrics-collection" rel="nofollow" target="_blank" title="https://bitbucket.org/NeilHunt1/cdhacks-metrics-collection">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://computech.jira.com/builds/browse/BOWL-CDP" rel="nofollow" target="_blank" title="https://computech.jira.com/builds/browse/BOWL-CDP">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                computech.jira.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

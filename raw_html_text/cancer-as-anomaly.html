@@ -1,0 +1,153 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/EQcIS1ap3xM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="837508" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/837/508/datas/original.PNG">
+                            <img alt="Cancer as Anomaly &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/837/508/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3>
+                    Note: This development is a comparison study, not recommended for its medical use
+                </h3>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    To diagnose cancer, doctors need to analyze a suspicious tissue to know if it is malignant or not. State of the art machine learning methods can help with this task by learning discriminatory rules from data labeled by experts. But the lack of enough malignant tissue data and the lack of understanding about cancer represents a limitation for cancer detection using discriminatory methods. For this reason, in this project, I present an anomaly detection approach for breast cancer detection.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In the project, I predict breast cancer from histopathology images using both discriminatory (Azure Custom Vision) and anomaly detection (own developed architecture) AI methods. The breast cancer detection service is offered as a web app for both prediction approaches. The discriminatory AI approach has a +90% accuracy while the anomaly detection AI-based approach has a 73% accuracy. It is important to note that the discriminatory approach is trained from both benign and malignant tissue images while the anomaly detection AI-based approach is exclusively trained on benign data.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I had the idea of detecting malignant breast cancer from healthy tissue data. The reason for this is that common discriminatory AI approaches such as CNNs (Convolutional Neural Networks) used for classification tasks, has a limitation on the quantity of data for training tasks; as well, cancer is still not well understood. On the other side, autoencoders overcome these limitations since can be trained with only benign images. The data that I used for the development was requested to the authors of this paper:
+                </p>
+                <blockquote>
+                    <p>
+                        Spanhol, Fabio A., et al. "A dataset for breast cancer histopathological image classification." IEEE Transactions on Biomedical Engineering 63.7 (2015): 1455-1462.
+                    </p>
+                </blockquote>
+                <p>
+                    For the first anomaly detection approach, I tried using the Azure Machine Learning Studio service for PCA anomaly detection, here I used the images pixels data as input columns. After having no success in those tasks I decided to try an autoencoder neural network architecture. I used Keras to build a model that includes convolutional, pooling and upscaling layers. The main idea of this approach is to train an autoencoder with benign images for their reconstruction while measuring the reconstruction error. Below is an image of how the autoencoder approach works.
+                </p>
+                <p>
+                    <img alt="picture" data-canonical-url="http://cancer-as-anomaly.hcanales.com/images/autoencoder.PNG" src="https://res.cloudinary.com/devpost/image/fetch/s--5LW8WsGe--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://cancer-as-anomaly.hcanales.com/images/autoencoder.PNG">
+                </p>
+                <p>
+                    The hypothesis is that the autoencoder model will not be able to properly reconstruct a malignant image sample and a reconstruction error threshold can be used for classification purposes. For the training tasks, I used the Azure Machine Learning service where I designed multiple screening experiments. These experiments included training operation with grayscale, color and different zoom images. Multiple autoencoder architectures were tested for the developments including autoencoders for image completion and transfer learning approaches. An idea of the efforts invested in this development is exemplified in the image below.
+                </p>
+                <p>
+                    <img alt="picture" data-canonical-url="http://cancer-as-anomaly.hcanales.com/images/CancerDetectionTrials.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--WQNAwh2G--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://cancer-as-anomaly.hcanales.com/images/CancerDetectionTrials.gif">
+                </p>
+                <p>
+                    On the other side, I used Azure Cognitive Custom Vision services to implement a images classification model. For this task, I uploaded a sample of the same images used in the autoencoder approach. Finally, I deployed both approaches to build an example WebApp built with Vue.JS where you can perform breast cancer anomaly detection (not intended for its medical usage). Below is an image of how this application works.
+                </p>
+                <p>
+                    <img alt="picture" data-canonical-url="http://cancer-as-anomaly.hcanales.com/images/CancerDetection.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--hpu-f9UL--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://cancer-as-anomaly.hcanales.com/images/CancerDetection.gif">
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I faced multiple challenges especially on how to evaluate the reconstruction error of the trained autoencoders. As the reconstruction error is a probability distribution, I decided to test different data distribution properties such as the mean, kurtosis, skewness, sum of absolute error, etc. Depending on the architecture the best performance was reflected on different properties until finally, the sum of the absolute error has shown the best performance. Another challenge was to leverage the available free credits in the Azure Machine Learning service for model training since I needed to test multiple configurations.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud of achieving a good accuracy in the anomaly detection results and revealing understandable reconstruction errors in malignant histopathologies. Below is shown the performance of the best model achieved so far.
+                </p>
+                <p>
+                    <img alt="picture" data-canonical-url="http://cancer-as-anomaly.hcanales.com/images/single_best_model_400x_0x0.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--DzgWLlVj--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://cancer-as-anomaly.hcanales.com/images/single_best_model_400x_0x0.jpg">
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about how easy is to organize machine learning experiments in the Azure Machine Learning service - it is easy to follow a scientific method on the proposed interface. As well I learned a lot about autoencoders architecture design and the factors that influence their learning.
+                </p>
+                <h2>
+                    What's next for Cancer as Anomaly
+                </h2>
+                <p>
+                    I would like to use Azure AutoML for hyperparameters optimization and contact other universities or research centers to implement the Cancer as Anomaly developments on other types of cancer.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vuejs
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://cancer-as-anomaly.hcanales.com/" rel="nofollow" target="_blank" title="http://cancer-as-anomaly.hcanales.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                cancer-as-anomaly.hcanales.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

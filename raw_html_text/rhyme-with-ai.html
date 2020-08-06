@@ -1,0 +1,386 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-gif-player="true" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/905/638/datas/original.gif">
+                            <img alt="Rhyme With AI &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/905/638/datas/gallery.jpg">
+                        </a>
+                        <span class="gif-tag">
+                            GIF
+                        </span>
+                        <a class="gif-play">
+                            <i class="fas fa-play">
+                            </i>
+                        </a>
+                        <p>
+                            <i>
+                                demo
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    App
+                </h1>
+                <p>
+                    Thanks for reading our submission! :-)
+                </p>
+                <p>
+                    Try our app
+                    <a href="https://rhyme-with-ai.appspot.com" rel="nofollow">
+                        here
+                    </a>
+                    .
+                </p>
+                <p>
+                    Read our blog
+                    <a href="https://blog.godatadriven.com/rhyme-with-ai" rel="nofollow">
+                        here
+                    </a>
+                    (it is also pasted below).
+                </p>
+                <p>
+                    Our code can be found
+                    <a href="https://github.com/godatadriven/rhyme-with-ai" rel="nofollow">
+                        here
+                    </a>
+                    .
+                </p>
+                <h1>
+                    Summary
+                </h1>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Modern deep learning language models have been used to create text generators. For example:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://talktotransformer.com/" rel="nofollow">
+                            Talk to transformer
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://transformer.huggingface.co/" rel="nofollow">
+                            Write with transformer
+                        </a>
+                    </li>
+                </ul>
+                <p>
+                    While these projects create free form text, we wanted to explore text generation under specific constraints. Rhymes are a great use case for this as provides us with a very visible constraint. Christmas is a great time to make a rhyme generator because many people write poems for their loved ones.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our app provides people who want to write a poem with rhyme inspiration.
+                </p>
+                <p>
+                    The user writes a prompt and then receives multiple full rhyming sentences.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We were able to build this project in only a few days by building on top of some great services:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://streamlit.io/" rel="nofollow">
+                            Streamlit
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://huggingface.co/transformers/index.html" rel="nofollow">
+                            Hugging Face
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://cloud.google.com/appengine/" rel="nofollow">
+                            Google App Engine
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.datamuse.com/api/" rel="nofollow">
+                            Data muse rhyme word api
+                        </a>
+                    </li>
+                </ul>
+                <p>
+                    Our generative algorithm works as follow:
+                </p>
+                <ul>
+                    <li>
+                        We have a BERT Masked Language Model
+                    </li>
+                    <li>
+                        We find a rhyming word to the user prompt sentence's last word
+                    </li>
+                    <li>
+                        We create a placeholder second sentence "[MASK] [MASK] ... [MASK] [RHYME-WORD]"
+                    </li>
+                    <li>
+                        Our (Markov Chain Monte Carlo) algorithm then improves this sentence:
+                        <ul>
+                            <li>
+                                Choose a random token of the sentence
+                            </li>
+                            <li>
+                                Replace it with [MASK]
+                            </li>
+                            <li>
+                                Let Bert Mask Language Model predict how well each token in the vocabulary would fit there
+                            </li>
+                            <li>
+                                Randomly choose a token according to those predict probabilities
+                            </li>
+                            <li>
+                                Repeat
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Our original goal was to generate complete poems. However, we soon found out that:
+                </p>
+                <ol>
+                    <li>
+                        With only one starting sentence the quality of the generated poems is too low, and the runtime was too slow.
+                    </li>
+                    <li>
+                        Users are not looking for a fully generated text; they don't want to outsource writing a poem to an algorithm. People want to make personal poems for their friends and family, for that they need
+                        <strong>
+                            inspiration
+                        </strong>
+                        .
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are most proud of how we turned a weakness into a strength. The weakness was the slow speed of the generative algorithm. The strength is that every step is fun to look at and can inspire the writer with new ideas.
+                </p>
+                <p>
+                    Second we are proud of how we accomplished this project in such a short time. In only three days we built this project from start to finish. This was possible due to the great tools available to us: streamlit, hugging face transformers, google cloud app engine and the datamuse rhyme api.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Constraints are opportunities to be turned into strengths.
+                    </li>
+                    <li>
+                        Bert's masked language modeling task is great fun for text generation with constraints.
+                    </li>
+                    <li>
+                        A bunch of small tweaks can really improve the quality of generated text.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Rhyme With AI
+                </h2>
+                <h3>
+                    Narrow view:
+                </h3>
+                <p>
+                    We believe our service can be useful to revise draft poems. Think: A sort of
+                    <a href="hemingwayapp.com" rel="nofollow">
+                        hemingwayapp.com
+                    </a>
+                    for poetry and lyrics. We'd need to add one component that identifies the sentence most in need of being revised.
+                </p>
+                <h3>
+                    Broader view:
+                </h3>
+                <p>
+                    While poetry is a fun use case, and has a very explicit constraint (rhyme). We believe there are real world use cases that can leverage our way of working. Many domain specific texts follow a clear script. An editor which can help revise these sentences or suggest next sentences can be very helpful. Potential applications include: job advertisements, news articles, and academic papers.
+                </p>
+                <h1>
+                    Blog
+                </h1>
+                <p>
+                    <em>
+                        The season's upon us, it's that time of year;
+                    </em>
+                    <em>
+                        Creating Christmas rhymes instills in us great fear!
+                    </em>
+                    <em>
+                        Luckily, pre-trained neural networks are easy to apply.
+                    </em>
+                    <em>
+                        With great pride we introduce our new assistant: Rhyme with AI.
+                    </em>
+                </p>
+                <p>
+                    NLP's ImageNet moment may have arrived in 2018, but the ecosystem around NLP models really has matured in 2019. Many of these models (BERT, GPT-2, Transformer-XL, DistilBERT, etc.) are easy to use for your use cases. Our service uses BERT to help us with our (Christmas) rhymes.
+                </p>
+                <p>
+                    Language modeling helps state-of-the-art models understand languages before solving tasks like sentiment analysis or translation. Masking, where the model tries to predict a word that is hidden from a sentence, is one of BERT's innovations. We can use it to help us rhyme by rephrasing rhyming as a task to predict missing words.
+                </p>
+                <p>
+                    <img alt="bert" data-canonical-url="https://blog.godatadriven.com/images/rhyme-with-ai/BERT-language-modeling-masked-lm.png" src="https://res.cloudinary.com/devpost/image/fetch/s--Ob1b1wVb--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://blog.godatadriven.com/images/rhyme-with-ai/BERT-language-modeling-masked-lm.png">
+                    <em>
+                        Predicting masked tokens is one of BERT's language modelling techniques.
+                    </em>
+                    Source: "
+                    <a href="http://jalammar.github.io/illustrated-bert/" rel="nofollow">
+                        The Illustrated BERT, ELMo, and co.
+                    </a>
+                    "
+                </p>
+                <p>
+                    Our problem involves multiple masks: we know the first sentence and the last word of the second sentence.
+For instance:
+                </p>
+                <p>
+                    <code>
+                        Santa delivers gifts by sleigh
+                    </code>
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            ... [MASK] [MASK] [MASK] [MASK] [MASK] [MASK] [MASK] [MASK] day
+                        </code>
+                    </li>
+                </ul>
+                <p>
+                    Inspired by
+                    <a href="https://arxiv.org/abs/1902.04094" rel="nofollow">
+                        BERT has a Mouth, and It Must Speak
+                    </a>
+                    , we first let BERT fill in the
+                    <code>
+                        [MASK]
+                    </code>
+                    's and then randomly sample new tokens.
+Some example rhymes from our model:
+                </p>
+                <p>
+                    <code>
+                        Santa delivers gifts by sleigh
+                    </code>
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            ... and drinks and celebrates his wedding day
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            ... dressed as preacher and nurse they say
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            ... or bicycle if he has to pay
+                        </code>
+                    </li>
+                </ul>
+                <p>
+                    This already looks pretty good, but we need a solution that people can use!
+                </p>
+                <p>
+                    Rhyme-with-AI
+                </p>
+                <p>
+                    Luckily, creating an end-to-end machine learning solution is fairly simple.
+The
+                    <a href="https://www.datamuse.com/api/" rel="nofollow">
+                        Datamuse API
+                    </a>
+                    gives back rhyme words, BERT is available via
+                    <a href="https://huggingface.co/" rel="nofollow">
+                        huggingface
+                    </a>
+                    and creating an app is no sweat with
+                    <a href="https://streamlit.io/" rel="nofollow">
+                        streamlit
+                    </a>
+                    .
+Put it all together in a Docker container and a hosted solution is one command away with
+                    <a href="https://cloud.google.com/appengine/" rel="nofollow">
+                        Google App Engine
+                    </a>
+                    .
+                </p>
+                <p>
+                    A few days well spent for us will hopefully save you a lot of pain.
+Check out or code on
+                    <a href="https://github.com/godatadriven/rhyme-with-ai" rel="nofollow">
+                        GitHub
+                    </a>
+                    or try our solution at
+                    <a href="https://gdd.li/rhyme" rel="nofollow">
+                        Rhyme with AI
+                    </a>
+                    !
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            appengine
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            huggingface
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            streamlit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://rhyme-with-ai.appspot.com" rel="nofollow" target="_blank" title="https://rhyme-with-ai.appspot.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                rhyme-with-ai.appspot.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

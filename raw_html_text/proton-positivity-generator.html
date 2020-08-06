@@ -1,0 +1,200 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/C5I7C1meqjQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="464554" data-title="This is our mascot, Proton!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/464/554/datas/original.png">
+                            <img alt="Proton Positivity Generator &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/464/554/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                This is our mascot, Proton!
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="464553" data-title="She spins while thinking about what you said, and changes expressions (not pictured)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/464/553/datas/original.png">
+                            <img alt="Proton Positivity Generator &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/464/553/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                She spins while thinking about what you said, and changes expressions (not pictured)
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Our project fits in with both the Health and Education themes of HackDavis: the compliment generator reduces stress and improves mental health of the user with positive comments, while the fact generator uses Reddit to find the most surprising/interesting trending facts.
+                </p>
+                <p>
+                    We were inspired to get the training data for our compliment generator from Reddit and Twitter, because those two platforms are normally viewed as the most toxic social media platforms. We thought that if we could use their content and turn it into something positive, it might inspire users to spread positivity and combat harassment on those sites.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our project is an Alexa-integrated web app that has two major functionalities:
+                </p>
+                <p>
+                    When the user expresses that they are unhappy, asks about their appearance, or asks for a compliment, Alexa responds with several unique compliments generated with a Markov chain.
+                </p>
+                <p>
+                    When the user asks to learn something new, Alexa responds with an interesting fact from /r/todayilearned.
+A main highlight of our project is that our user interface is not an Echo device; instead, we implemented our own interface, created a mascot, and designed a smooth and immersive user experience based around that.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We worked on the project in four phases: acquiring training data, implementing Markov chain for compliment generation, integrating with Amazon Voice Service/Amazon Alexa, implementing a front-end interface.
+                </p>
+                <p>
+                    <strong>
+                        Training Data:
+                    </strong>
+                    The training data was collected from two different sources using Python: Compliments were collected from the Twitter account @TheNiceBot (using Twitter API and Twython) and the Subreddits (using Reddit API and PRAW) /r/toastme and /r/freecompliments. Facts were gathered from /r/todayilearned. Scripts were written to filter out inappropriate or excessively specific content, and we ended up with a set of 938 compliments and 762 interesting facts.
+                </p>
+                <p>
+                    <strong>
+                        Markov Chain:
+                    </strong>
+                    We initially tested the feasibility of various key lengths for the Markov chain using an implementation we wrote in Python. The Markov chain uses the training data to generate text, in our case compliments, using a probability table. We decided that a key length of three words resulted in an acceptably low occurrence of error/incoherence in generated compliments (approx. 15-20%). We then re-implemented it in Javascript to use in our Lambda function for AWS.
+                </p>
+                <p>
+                    <strong>
+                        Alexa:
+                    </strong>
+                    We programmed Alexa with a new skill named &ldquo;Compbot&rdquo; to understand when the user wants a compliment or a fact. Example utterances include: &ldquo;I want to learn something new,&rdquo; &ldquo;I&rsquo;m feeling down today,&rdquo; or &ldquo;Give me a compliment.&rdquo; 
+The back-end was written in NodeJS and depending on intent, either generates a response of five compliments or responds with a random fact.
+                </p>
+                <p>
+                    <strong>
+                        Front-End Interface:
+                    </strong>
+                    We used a NodeJS library called alexa-voice-service, to help with integrating our interface with Amazon Voice Service. We created a cute mascot based off of one of the logos associated with Amazon Alexa, and animated it on a canvas to respond to user input.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Since we weren&rsquo;t able to acquire an Echo from the hardware lab, one challenge was creating an aesthetic interface that worked with Alexa. This was implemented as a front-end website that had a cute, interactive mascot.
+                </p>
+                <p>
+                    We also wanted to avoid using the words &ldquo;Alexa, tell Compbot&rdquo; in every command, as that was immersion-breaking. The problem of the immersion-breaking wake command was solved using client-side Javascript; we researched audio encoding and processing techniques and appended our verbal commands to a pre-recorded &ldquo;Alexa, tell Compbot&rdquo; before sending requests to AVS.
+                </p>
+                <p>
+                    The biggest challenge we encountered while implementing the aforementioned solution was our unfamiliarity with audio encoding formats and how requests to AVS worked in the context of the NodeJS library that we were using. This required hours of research and several implementations before we were able to process the audio successfully without causing a noticeable delay for the user.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We&rsquo;re proud of implementing our own voice control interface for Alexa, and for improving the user experience of using Alexa by eliminating the wake command and adding a mascot.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    This was our first time working with many of these technologies. We learned a lot about Alexa, Amazon Voice Services, and audio processing and encoding. We were also surprised with how effective Markov text generation was. In addition, we realized the importance of user experience.
+                </p>
+                <h2>
+                    What's next for Proton Positivity Generator
+                </h2>
+                <p>
+                    Short-term goals: Getting live posts from /r/todayilearned. Create a set of data to use to generate original, coherent jokes.
+                </p>
+                <p>
+                    Long-term goals: Applying recurrent neural networks to improve the coherence of generated responses. Adding additional features and commands.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-voice-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            praw
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            twython
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/dbolya/CompBot" rel="nofollow" target="_blank" title="https://github.com/dbolya/CompBot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,336 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="752999" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/752/999/datas/original.png">
+                            <img alt="AdSight - Tracking Physical Ad Impressions &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/752/999/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    AdSight - Team Submission for nwHacks 2019
+                </h1>
+                <p>
+                    Contributors: Jacky Zhao, Gavin Lim, Viral Galaiya, Rishab Manocha
+                </p>
+                <h3>
+                    Problem
+                </h3>
+                <p>
+                    Physical ads are becoming more and more disadvantaged as more tools are being created for tracking impressions, demographics, and statistics for web traffic and adverstisements. The problem is because it is nearly impossible to measure the effectiveness of a physical ad. How can we measure and display these normally 'web-based' metrics for physical ads?
+                </p>
+                <h3>
+                    Proposal
+                </h3>
+                <ul>
+                    <li>
+                        Determine success of an advertisement based on number of people and duration it is looked at
+                    </li>
+                    <li>
+                        Have an interface to easily access demographic data and statistics
+                    </li>
+                    <li>
+                        Change advertisement based on demographic for virtual advertisement
+                    </li>
+                </ul>
+                <h3>
+                    Solution
+                </h3>
+                <p>
+                    Our solution comes in two main parts: software and hardware. We can describe out data flow as follows:
+                </p>
+                <ol>
+                    <li>
+                        <strong>
+                            Hardware - Raspberry Pi running Raspbian
+                        </strong>
+                        <ul>
+                            <li>
+                                Get images using OpenCV 2
+                            </li>
+                            <li>
+                                Running Haar-based Cascade filter with a pretrained dataset to check if people are in frame
+                            </li>
+                            <li>
+                                Uses two filters (side and front) to get more yaw coverage
+                            </li>
+                            <li>
+                                If a face is detected, begin saving images from camera to local at set intervals (500ms)
+                            </li>
+                            <li>
+                                Go to 2.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>
+                            Software - Azure API
+                        </strong>
+                        <ul>
+                            <li>
+                                Glob all images in local
+                            </li>
+                            <li>
+                                Grab head poses of all faces in image by submitting a POST request to MS Azure's Face Detect
+                            </li>
+                            <li>
+                                Check if unique face by running it against MS Azure Face List with FindSimilars
+                            </li>
+                            <li>
+                                If unique, append faceID to Face List
+                            </li>
+                            <li>
+                                Else update existing faceID entry in Face List
+                            </li>
+                            <li>
+                                Update attention timelines according to headpose
+                            </li>
+                            <li>
+                                Form person class to .JSON format
+                            </li>
+                            <li>
+                                POST .JSON to webservice (Go to 3.)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>
+                            Software - Front End
+                        </strong>
+                        <ul>
+                            <li>
+                                Add POSTed .JSON to SQLAlchemy DB
+                            </li>
+                            <li>
+                                Filter entries based on user-selected filters (age, gender, etc.)
+                            </li>
+                            <li>
+                                Built API for Querying and aggregating data using 16 parameters.
+                            </li>
+                            <li>
+                                Built a Web UI Dashboard for viewing the results on cloud.
+                            </li>
+                            <li>
+                                Built a Backend API for receiving post requests and saving data in the database.
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <h3>
+                    Challenges we ran into
+                </h3>
+                <ul>
+                    <li>
+                        Frame-rate and detection accuracy of the Cascade Network, worked around by reducing image feed resolution and eliminated frame drawing
+                    </li>
+                    <li>
+                        Initial configuration of RPi with OpenCV and Raspbian Stretch, took wayyy too long
+                    </li>
+                    <li>
+                        Optimizing processing speed of RPi when running detection algorithm (WiP)
+                    </li>
+                    <li>
+                        Reached Azure Vision API call limit multiple times. Switched from cross checking all predictions with all known IDs to using FaceList, drastically reducing API calls
+                    </li>
+                </ul>
+                <h3>
+                    Accomplishments that we're proud of
+                </h3>
+                <ul>
+                    <li>
+                        Implementing Harr feature-based cascade classifier for face detection
+                    </li>
+                    <li>
+                        Smoothly functioning transition from cascade to Azure Face API
+                    </li>
+                </ul>
+                <h3>
+                    What we learned
+                </h3>
+                <ul>
+                    <li>
+                        How cascade classifier works and harr feature-based classifier is generated
+                    </li>
+                    <li>
+                        How to implement OpenCV 3.0 using Python3 in Raspbian
+                    </li>
+                </ul>
+                <h3>
+                    What's next for AdSight
+                </h3>
+                <ul>
+                    <li>
+                        Optimize processing speed of RPi when running detection algorithm by implementing multi-threading (separate video capture and main thread)
+                    </li>
+                    <li>
+                        Further explore the possibilities of DialogFlow
+                    </li>
+                    <li>
+                        Optimize API calls
+                    </li>
+                </ul>
+                <h1>
+                    Rough Details
+                </h1>
+                <h3>
+                    Software
+                </h3>
+                <ol>
+                    <li>
+                        Microsoft Azure APIs Face API
+                        <ul>
+                            <li>
+                                Can use Face Verification to get ID:
+                                <a href="https://azure.microsoft.com/en-gb/services/cognitive-services/face/#verification" rel="nofollow">
+                                    Link
+                                </a>
+                            </li>
+                            <li>
+                                If Face ID is in pose where looking at camera for more than a designated period of time, count impression
+                            </li>
+                            <li>
+                                Uses RESTful API:
+                                <a href="https://docs.microsoft.com/en-gb/azure/cognitive-services/face/QuickStarts/Python" rel="nofollow">
+                                    Link
+                                </a>
+                            </li>
+                            <li>
+                                Get demographics
+                            </li>
+                            <li>
+                                Face API .ipynb example:
+                                <a href="https://hub.mybinder.org/user/microsoft-cogni-vices-notebooks-yyu0i5ow/notebooks/FaceAPI.ipynb" rel="nofollow">
+                                    Link
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Web App
+                        <ul>
+                            <li>
+                                Break down demographics of each ad per hour
+                            </li>
+                            <li>
+                                Web display
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <h3>
+                    Hardware
+                </h3>
+                <ol>
+                    <li>
+                        RPi Camera v2:
+                        <a href="https://www.raspberrypi.org/products/camera-module-v2/" rel="nofollow">
+                            Link
+                        </a>
+                    </li>
+                    <li>
+                        RPi Model 2B+
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rest-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            restful
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rpi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sqlalchemy">
+                                sqlalchemy
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jackyzha0/nwhacks2019" rel="nofollow" target="_blank" title="https://github.com/jackyzha0/nwhacks2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

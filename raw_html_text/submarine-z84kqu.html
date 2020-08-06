@@ -1,0 +1,233 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="865291" data-title="Captain: Are you ready kids? Kids: Aye Aye Captain. Captain: I can't hear you. Kids: AI Captain Captain: OHHHHHHH" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/865/291/datas/original.jpeg">
+                            <img alt="Captain Nemo &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/865/291/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Captain: Are you ready kids? Kids: Aye Aye Captain. Captain: I can't hear you. Kids: AI Captain Captain: OHHHHHHH
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="865767" data-title="The Submarine Diagram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/865/767/datas/original.jpg">
+                            <img alt="Captain Nemo &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/865/767/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The Submarine Diagram
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Captain Nemo
+                </h1>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Manipulating data on-chain is a difficult task: smart contracts should handle as little data as possible and perform only the bare minimum logical operations. Uploading off-chain data to a smart contract is therefore not an easy process.
+                </p>
+                <p>
+                    A possible solution is to use an Oracle, a trusted off-chain agent that feeds external data to the contract.
+                </p>
+                <p>
+                    We extend this concept and define a sort of oracle-on-steroids, that not only fetches data, but executes arbitrarily complex tasks and uploads the result. This oracle-on-steroids is a
+                    <a href="https://fetch.ai/" rel="nofollow">
+                        fetch.ai
+                    </a>
+                    agent,
+                    <a href="https://github.com/diffusioncon/Team-33" rel="nofollow">
+                        Captain Nemo
+                    </a>
+                    .
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Captain Nemo is a bridge between on-chain smart contracts, off-chain
+                    <a href="https://fetch.ai/" rel="nofollow">
+                        fetch.ai
+                    </a>
+                    agents and data on the
+                    <a href="https://oceanprotocol.com/" rel="nofollow">
+                        Ocean protocol
+                    </a>
+                    .
+                </p>
+                <p>
+                    The workflow is as follows:
+                </p>
+                <ol>
+                    <li>
+                        A smart contract creates a query request on the
+                        <code>
+                            Submarine.sol
+                        </code>
+                        smart contract (the Submarine), by calling the function
+                        <code>
+                            createQuery
+                        </code>
+                        . The parameters are the address of the target fetch.ai agent, the command he should run, the did of the ocean resource and the identifier of the callback function to be called after the result is received.
+                    </li>
+                    <li>
+                        The Submarine emits an event containing the query data
+                    </li>
+                    <li>
+                        The agent logs events emitted from the Submarine and checks whether there is a request targeting them.
+                    </li>
+                    <li>
+                        The agent processes the request by first fetching the data from the
+                        <a href="https://oceanprotocol.com/" rel="nofollow">
+                            Ocean protocol
+                        </a>
+                        . Then they execute the requested command on the data.
+                    </li>
+                    <li>
+                        The agent transmits the result to the Submarine.
+                    </li>
+                    <li>
+                        The Submarine calls the callback function on the original contract to set the result.
+                    </li>
+                </ol>
+                <p>
+                    As an example, the agent
+                    <code>
+                        nemo.py
+                    </code>
+                    (Nemo) fetches data from the Ocean protocol, applies a machine learning algorithm and outputs the result.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    <code>
+                        Submarine.sol
+                    </code>
+                    and
+                    <code>
+                        TestCase.sol
+                    </code>
+                    are two smart contracts written in solidity.
+                    <code>
+                        nemo.py
+                    </code>
+                    is an agent written in python with the
+                    <a href="https://fetch.ai/" rel="nofollow">
+                        fetch.ai
+                    </a>
+                    SDK.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Integrating all the various components from the different protocols has been the biggest challenge.
+                </p>
+                <h2>
+                    What's next for Captain Nemo
+                </h2>
+                <p>
+                    A first step for Captain Nemo would be to integrate a payment system, where agents get paid after they process their data and users can rank agents according to the quality of the result.
+                </p>
+                <p>
+                    A next step would be to integrate an agents market with a user interface, listing all agents addresses and possible commands. Users could then choose which agent best fits their needs and create queries accordingly.
+                </p>
+                <h2>
+                    Links
+                </h2>
+                <p>
+                    <code>
+                        Submarine.sol
+                    </code>
+                    is deployed on the
+                    <a href="https://nile.dev-ocean.com" rel="nofollow">
+                        Nile testnet
+                    </a>
+                    at
+                    <code>
+                        0x7d5158372BC13D1bA316b44B9002821BE46652F5
+                    </code>
+                    .
+                    <code>
+                        TestCase.sol
+                    </code>
+                    is deployed on the
+                    <a href="https://nile.dev-ocean.com" rel="nofollow">
+                        Nile testnet
+                    </a>
+                    at
+                    <code>
+                        0xb930AF9aDfe58029B135EA2949b591C46849de4c
+                    </code>
+                    .
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            fetch.ai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ocean
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/diffusioncon/Team-33" rel="nofollow" target="_blank" title="https://github.com/diffusioncon/Team-33">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,283 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Clemson University Fix It
+                </h1>
+                <p>
+                    This is a project for the CUHackIt Hackathon and we are also submitting for the cloud based project!
+                </p>
+                <p>
+                    An application where people in Clemson can go to report any feedback they have about the university. They can see issues with facilities
+like a broken light, broken water fountain and then report it to the University Facilities for maintaince through one single application.
+They could also use it to give feedback to the univerity for things like making a building more accessible by attaching an image and description
+about the issue and submitting it to the accessibility counsil for work.
+                </p>
+                <p>
+                    Currently the standard for submitting maintenance request to the University is long and tedious. The form is no easy to find online
+and there is a long set of directions on how to use it. We hope that CUFixIt can centralize request into one mobile application
+that is simple and easy to use.
+                </p>
+                <h1>
+                    Getting Started
+                </h1>
+                <p>
+                    We have developed a react-native mobile application for submitting the request to the university. Login to the add, upload or take a picture, add a description, select type of issue and description then you are ready to submit. Once someone has submitted a request the type of issue, building
+where the issue is, image they chose, and their user name will be submitted to the database. The application will then determine based off of 
+the building and type of issue who to contact and will email the contact for that issue type with all of the information.
+                </p>
+                <h1>
+                    CUFixIt API
+                </h1>
+                <p>
+                    This api is accessible through Amazon ECS at
+                    <a href="http://34.239.170.90:8002/" rel="nofollow">
+                        http://34.239.170.90:8002/
+                    </a>
+                    .
+Right now the api service sometimes shuts down and restarts. This does not have but a few seconds of downtime
+when it happens, but it makes the IP Address change. We could add some DNS resolution to make this not
+be an issue but we did not want to pay for a namespace yet for this project. I can check the new IP Address and
+keep it updated locally for the purpose of the demo.
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                HTTP request
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>
+                                    GET
+                                </strong>
+                                /
+                            </td>
+                            <td>
+                                returns a hello world to check on API connection
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>
+                                    GET
+                                </strong>
+                                /v1/getall
+                            </td>
+                            <td>
+                                returns a slice of all reuqest in the DB
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>
+                                    POST
+                                </strong>
+                                /v1/submit
+                            </td>
+                            <td>
+                                submits a request from the json body
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>
+                                    GET
+                                </strong>
+                                /v1/get/type/{type}
+                            </td>
+                            <td>
+                                returns a slice of all the request of type {type}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>
+                                    GET
+                                </strong>
+                                /v1/get/building/{building}
+                            </td>
+                            <td>
+                                returns a slice of all the request of building {building}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>
+                                    GET
+                                </strong>
+                                /v1/get/user/{user}
+                            </td>
+                            <td>
+                                returns a slice of all the request from user {user}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h1>
+                    CUFixIt Database
+                </h1>
+                <p>
+                    We have created a database using Postgresql that is being hosted using Amazon RDS. This database can be accessed from your local terminal or application,
+but it connected to our Amazon ECS instance so that the API can interact with the database.
+                </p>
+                <h1>
+                    CUFixIt Image Store
+                </h1>
+                <p>
+                    We have created an image store using Amazon S3 in order to store all of the images coming from our users request. When they submit a valid form the 
+image the selected or took is uploaded to S3 and the url or the location is stored into the DB.
+                </p>
+                <h1>
+                    Getting Started For Development
+                </h1>
+                <h2>
+                    API Development
+                </h2>
+                <p>
+                    Start the docker containers by running
+                    <code>
+                        docker-compose build
+                    </code>
+                    and then
+                    <code>
+                        docker-compose up
+                    </code>
+                    .
+                </p>
+                <h2>
+                    React Development
+                </h2>
+                <p>
+                    Start the react-native app by running
+                    <code>
+                        react-native run-ios
+                    </code>
+                    .
+                </p>
+                <h2>
+                    Tools Used
+                </h2>
+                <p>
+                    Golang 1.9
+Docker Container Image
+Postgresql
+Amazon Web Services
+RDS
+ECS
+Fargate
+EC2
+S3 
+React Native
+Node.js
+XCode
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-ecs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-rds-relational-database-service">
+                                amazon-rds-relational-database-service
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/objective-c">
+                                objective-c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            plpgsql
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mmcken3/cufixit" rel="nofollow" target="_blank" title="https://github.com/mmcken3/cufixit">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

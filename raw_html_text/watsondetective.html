@@ -1,0 +1,147 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    <em>
+                        This project was inspired by a simple fascination with the Watson API, in all of its complexity.
+                    </em>
+                    We found that the capabilities of the  Watson API were wide in scope, and incredibly responsive. We also shared a common cybersecurity interest, and endeavored to create a Watson conversation bot that could intelligently handle some aspects of a cyber investigation.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The Watson API is mostly leveraged using a LogParser Python object, which generates a running commentary of Watson's insights on the subject's emotions. Watson has a conversation workspace created with basic dialog focused on ascertaining if a user was on his (or her) computer during a given time-frame.
+                </p>
+                <p>
+                    If the user responds negatively, Watson attempts to backtrack and apply a different emotional setting. Continued hostility (to anomalous levels) results in an email being generated for the user that is managing Watson so a separate conversation can be struck up to acquire the information.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Watson is currently a pure-Python3 program that leverages the Watson SDK, as well as matplotlib's pyplot.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    <strong>
+                        Parsing Watson is hard!
+                    </strong>
+                    He provides a whole slew of information in JSON format, and most of the information we were looking for was deep within the JSON structure. Matplotlib also proved to be a difficult beast to handle.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    <strong>
+                        This code, specifically.
+                    </strong>
+                </p>
+                <p>
+                    `    def tone_report(self, text, tree=None):
+                    if not tree and tree != []:
+                    self.muse("acquiring tone")
+                    resp = self.tone_client.tone(text=text)
+                </p>
+                <pre class="language-nolang"><code>        tree = resp['document_tone']
+                                self.muse(tree)
+
+        # Check for warnings and print them if they exist.
+        if 'warnings' in resp and resp['warnings']:
+        self.muse(resp['warnings'])
+
+        if 'tone_id' in tree and 'score' in tree:
+        self.muse("yielding")
+        yield tree['tone_id'], tree['score']
+        for branch in tree:
+        if isinstance(tree[branch], list):
+        for twig in tree[branch]:
+        for name, percentage in self.tone_report(None, twig):
+        self.muse("recursive call")
+        yield name, percentage
+        else:
+        self.muse("not list")`
+</code></pre>
+                <p>
+                    It allows us to recursively search through a Tone Analytics dictionary and generate tuples that directly connect each emotion to its score.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    <strong>
+                        In short, the capabilities of Watson
+                    </strong>
+                </p>
+                <h2>
+                    What's next for WatsonDetective
+                </h2>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            matplotlib
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pyplot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            watson-conversation-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            watson-tone-analytics
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/theChuckTruck/WatsonDetective/blob/master/README.md" rel="nofollow" target="_blank" title="https://github.com/theChuckTruck/WatsonDetective/blob/master/README.md">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

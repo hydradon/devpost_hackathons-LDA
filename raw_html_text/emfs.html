@@ -1,0 +1,211 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="241579" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/579/datas/original.png">
+                            <img alt="emfs &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/579/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="241596" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/596/datas/original.png">
+                            <img alt="emfs &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/596/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="241601" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/601/datas/original.png">
+                            <img alt="emfs &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/601/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="241624" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/624/datas/original.png">
+                            <img alt="emfs &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/241/624/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Background
+                </h2>
+                <p>
+                    EMFS is inspired by the realization that many of today's cloud storage services charge your for a service that you
+                    <strong>
+                        already
+                    </strong>
+                    have, often at rates far above the market value of the storage itself. By leveraging email accounts as its medium of storage, EMFS solves a number of the problems that plague cloud storage providers. It eliminates the need for a custom user account for the storage service, as EMFS is entirely self-hosting and self-contained within the tree of their email inbox. EMFS can also utilize the revision control mechanisms of IMAP, further reducing the need for in-house syncing and collision mediation/resolution. Finally, EMFS is secured end-to-end by standard email encryption techniques like STARTTLS, again eliminating the need for a custom security/privacy system.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    EMFS stands for "EMail File System," as EMFS mimics a standard filesystem in its operation. From the user's perspective, EMFS is just another disk or directory on their system, as well as a web interface. As the user adds, modifies, or deletes files from the EMFS interface, the EMFS synchronization daemon fires file change events back to the EMFS core, which is responsible for applying the required change to the actual "filesystem" - the user's email account.
+                </p>
+                <p>
+                    File creation events:
+When a file is created, EMFS encodes it for storage on the email server, opens an IMAP connection, and writes the encoded file to the "EMFS" label as a new message. The subject of that message is the filename of the uploaded file, and the contents of the original file are steganographically included in the message. Once the IMAP message is created, the file can be propagated to every syncing client.
+                </p>
+                <p>
+                    File deletion events:
+When a file is deleted, its message on the IMAP server is simply marked with the "\Deleted" tag and the "EMFS" label is expunged. This can then be propagated to the clients.
+                </p>
+                <p>
+                    File modification events:
+When a file is modified, a secure SMTP connection is used to upload the modified, encoded version of the file. An IMAP connection then routes the modified file to the "EMFS" label, where it is merged with its like-named predecessor. Once the merge is complete, the predecessor is deleted and the new file is propagated.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    One of the biggest challenges with EMFS was reconciling the differences between IMAP's structure and the structure of an actual filesystem. IMAP identifies messages (files for EMFS's purposes) by UID, meaning that EMFS must create and maintain a table of UIDs to message subjects (filenames for EMFS's purposes) in order to retrieve the correct file and avoid clobbering others.
+                </p>
+                <p>
+                    Another big challenge was the implicit modification of messages by SMTP and IMAP during transaction, which caused problems for the formatting of plain-text files. This was solved by encoding all messages in base 64 on the IMAP server.
+                </p>
+                <h2>
+                    Accomplishments
+                </h2>
+                <p>
+                    The end result of EMFS is simple. With just a username and password for an email account from virtually
+                    <strong>
+                        any
+                    </strong>
+                    email provider a user can treat an email server as a personal cloud, storing arbitrary files without impeding the actual functionality of their email.
+                </p>
+                <h2>
+                    What's next for emfs
+                </h2>
+                <p>
+                    Right now, EMFS uses IMAP for server-side message negotiation. We intend to add POP3 support soon, allowing users to use POP3 accounts for cloud storage as well. EMFS also has a fully native FUSE client capable of mounting the email storage as a filesystem. That FUSE client is currently read-only, but write support is possible and will be added soon.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/curl">
+                                curl
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            email
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            imap
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            libcurl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            openssl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sinatra">
+                                sinatra
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            smtp
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/fcf634cbe8298176f7c576faed0e500a/emfs" rel="nofollow" target="_blank" title="https://github.com/fcf634cbe8298176f7c576faed0e500a/emfs">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/fcf634cbe8298176f7c576faed0e500a/emfs-website" rel="nofollow" target="_blank" title="https://github.com/fcf634cbe8298176f7c576faed0e500a/emfs-website">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

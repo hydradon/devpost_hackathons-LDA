@@ -1,0 +1,336 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/dae2u5sHFE8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="669940" data-title="IRIS" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/669/940/datas/original.jpg">
+                            <img alt="IRIS &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/669/940/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                IRIS
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="669941" data-title="Weighing Area" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/669/941/datas/original.jpg">
+                            <img alt="IRIS &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/669/941/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Weighing Area
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    While working with one of our customers we realized several manufacturing facilities lack a comprehensive indoor tracking, automation and control system. Most of the available solutions are GPS based, which is not a viable technology indoors. We realized that there is a definitive need for a location based solution that can track, automate and monitor indoor manufacturing facilities.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    IRIS is a complete indoor automation solution which uses BLE (Bluetooth Low Energy) Beacons and BLE Receivers to track movable assets inside an indoor facility.  Alongside tracking, IRIS aims at automating the different touch-points in a factory like entry and exit boom barriers, weighing scales and loading bays.
+                </p>
+                <p>
+                    IRIS also provides a comprehensive event view for the real time position and status of assets on a top view of the facility. The real time view obviously scores over a monitoring based on CCTV as it provides a detailed, qualitative and quantitative information like the weight measured, driver details of the truck, amount of finished good loaded, event history etc.
+                </p>
+                <p>
+                    Safety compliance is a major concern for manufacturing facility. There are not many automated ways for detecting non-compliance, thereby endangering the workers in the facility. IRIS uses  a live feed to detect anomalies based on pre-configured rules. A simple non compliance like not wearing a safety helmet is detected real time and an alarm is raised. This reduces the chances of accidents.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    There was no better way of demonstrating the solution than actually applying it to a scaled down version of a manufacturing facility.  The first step was to build a scaled down model of the facility with touch points that we could integrate and control electronically. Our scaled down model included functioning boom barriers, weighing scales, Unloading Bays, Parking Areas and Surveillance cameras.
+                </p>
+                <p>
+                    A boom barrier, for instance was created using a Servo motor and Ultrasonic Sensors connected to ESP 12E microcontroller. The boom barrier is actuated by commands sent over MQTT by a Raspberry Pi which doubles up as a BLE receiver and IoT Hub client. Each of these devices are registered in Azure's IoT Hub. 
+When a truck (tagged with a BLE beacon) approaches the boom barrier, a series of parameters are sent over to Azure for authentication. The data is validated and an Acknowledged/Not Acknowledged command is sent back to the BLE receiver. Based on the response, the boom barrier is opened. This principle is followed for the weighing scale and loading bay as well.
+The data captured by the device is passed on to the gateway which is then passed on to IoT Hub. IoT Hub is responsible for passing it on to Logic apps which is in responsible for processing, storing events and responding to the device with commands.
+                </p>
+                <p>
+                    The entire model as seen in the video was built using a combination of Actuators (motors), Sensors, Controllers and Raspberry Pis. The weighing scale used CZL 601 Load cell, HX 711 sensor connected to ESP8266 node MCU and the unloading bay used a water pump motor connected to motor driver L298N motor driver, all connected to an ESP 12E NodeMCU.
+                </p>
+                <p>
+                    We used toy trucks to model movable assets and proximity BLE Beacons for location tracking of the movable assets indoor. There were several components like the buildings, roads etc that were built for aesthetics and were not necessarily electronically controlled.
+                </p>
+                <p>
+                    The compliance was constructed using Deep Learning.
+A camera is connected to a Raspberry Pi which is running an object detection model based on Google's Mobilenet_SSD. Whenever a human is detected, the frame of the live video is sent over to Azure's CustomVision.
+Here, we trained a model to check if the input frame consists of a Helmet and Vest, which are two essential wearables for safety.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We became aware of the hackathon a few weeks before the deadline and naturally getting a working model built was a challenge. Right from procuring beacons and other electronics and putting it all together as a working model was challenging.
+                </p>
+                <p>
+                    We further ran into issues with interference from WiFi signals and other remote control based equipment which required adjustments in the receivers to siphon out the noise. While beacons are reasonably reliable as locating devices with significant distance between two beacons, in a scaled down model this was a challenge. The beacons had to be re-calibrated along with the receivers to sense two beacons a few centimeters apart.
+                </p>
+                <p>
+                    One significant challenge was to build a single script that would run on each of the Raspberry Pi's to make it a BLE receiver, communicate with Azure over MQTT and control other peripherals (boom barrier, weighing scale, loading bay) over a local MQTT network. We had to ensure that the Pi would be robust enough to handle the multiple data transactions, leaving no room for bugs or events that render the receiver in a locked down state.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to put together a fully integrated and functional solution in a short span of time. The scaled down model works as an excellent device to test how the solution could potentially function (or malfunction) in a real life scenario. Our ability to integrate the solution Azure IoT Hub end to end provided us the chance of using several components of Azure which made the back end integration reasonable seamless and simple for us. The client integration with Azure IoT Hub from Raspberry Pi can boast of being reasonably scalable and seamless.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Azure provides a comprehensive ecosystem to connect devices and automate processes. With IoT Hub, Service Bus, Logic Apps and Functions it is possible to configure a new use case in a matter of hours as against days with other conventional approaches.
+                </p>
+                <p>
+                    While BLE is a promising technology for indoor navigation elaborate care need to be taken to ensure that the beacons and receivers are properly calibrated and necessary algorithm has been put in place to weed out noise because of interference from other radio sources.
+                </p>
+                <h2>
+                    What's next for IRIS
+                </h2>
+                <p>
+                    We intend to continue the development of IRIS in a full fledged project to cater to the needs of the industry. At Integration Wizards (
+                    <a href="http://www.iwizardsolutions.com" rel="nofollow">
+                        www.iwizardsolutions.com
+                    </a>
+                    ) we have substantial experience deploying Industrial IoT solutions to several fortune 500 customers. We intend to make IRIS a part of our product portfolio through a sustained investment.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            16x2-lcd
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            angular-5
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-active-directory
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            charts.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/clarity">
+                                clarity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cosmos-db
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            customvision.ai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cz-601-load-cell
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            esp-12e-(nodemcu)
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            hc-sr04-ultrasonic-sensor
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            hx711-for-weigh-scale
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot-hub-and-client
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            logic-apps
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mosquitto-broker
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mosquitto-clients
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nvd3.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            paho-mqtt-for-raspberry-pi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            power-bi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pubsubclient-for-esp12e
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            python3.6
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raspberry-pi-3-model-b
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raspberry-pi-zero-w
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raspi-camera
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            service-bus
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            servo-motors
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sql-server
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow-1.10rc0
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            water-pump
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            wiring.h
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://iris.iwizardsolutions.com/" rel="nofollow" target="_blank" title="https://iris.iwizardsolutions.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                iris.iwizardsolutions.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://dineshfatehpuria@bitbucket.org/iwizweb/profactory.git" rel="nofollow" target="_blank" title="https://dineshfatehpuria@bitbucket.org/iwizweb/profactory.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://dineshfatehpuria@bitbucket.org/iwizweb/microservices.git" rel="nofollow" target="_blank" title="https://dineshfatehpuria@bitbucket.org/iwizweb/microservices.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://dineshfatehpuria@bitbucket.org/iwizweb/iris_compliance.git" rel="nofollow" target="_blank" title="https://dineshfatehpuria@bitbucket.org/iwizweb/iris_compliance.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://dineshfatehpuria@bitbucket.org/iwizweb/iris-bletracking.git" rel="nofollow" target="_blank" title="https://dineshfatehpuria@bitbucket.org/iwizweb/iris-bletracking.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

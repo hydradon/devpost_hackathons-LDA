@@ -1,0 +1,186 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/Jocbv-cDFu8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The information in social media is vast and diverse, enough to get confused about the real tendencies and sentiment around them. Marketing teams, politicians, entrepreneurs need to know what is the audience talking about around a subject. Even individuals need to know all the polarities around that matter to build their criteria and get free from fake news. For this reason, I created Social Media Monitor (SMM), a simple solution that lets you analyze, visualize and persist Twitter data built on top of MongoDB Atlas.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Social Media Monitor (SMM) uses tools from MongoDB Atlas to analyze, visualize and persist Twitter data. You need to set up a query to monitor on Twitter and SMM will recollect all the tweets about that subject in 2 minutes time lapses - you will be surprised about the traffic on Twitter, you can get thousands of tweets in an hour. SMM fetches statuses from Twitter using a Stitch Function and saves them to MongoDB to later visualize and analyze them using MongoDB Charts.
+                </p>
+                <p>
+                    In Figure 1 we can see how to start a monitor campaign. Let's say that we want to know more about Game of Thrones especially before Episode 3 of Season 8 (TwitterQuery: GoT+OR+gameofthrones+OR+forthethrone. The first step will be to go to the "Values and Secrets" section of the Stitch App and specify the TwitterQuery and TweetLanguage values. The Stitch App will need you to provide Twitter Consumer and Secret Keys and also your AWS credentials. Once your account. (Note: An AWS Lambda function has to be configured to call the geTweetsIntoDatabase Stitch function every 2 minutes).
+                </p>
+                <p>
+                    <img alt="Figure 1 - Game of Thrones Dashboard" data-canonical-url="https://www.dropbox.com/s/q4rnqadosywe3x6/GOTDashboardNewest.PNG?raw=1" src="https://res.cloudinary.com/devpost/image/fetch/s--uxoCsgy_--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://www.dropbox.com/s/q4rnqadosywe3x6/GOTDashboardNewest.PNG%3Fraw%3D1">
+                    <strong>
+                        Figure 1 - Game of Thrones Dashboard
+                    </strong>
+                </p>
+                <p>
+                    In the dashboard, we can see that in 12 hours we were able to get +134,000 tweets. Looking at some insights, we can see that the overall number of tweets was reduced as the Episode 3 premiere (at 20:00) was about to start. During the premiere decreased and just the other day started the grow again. If we look at the hashtags study, we see that besides the hashtags that contain our query, we find that many people are talking about: #AryaStarkl and #NotToday. Many of you who follow the series will understand this part.
+                </p>
+                <p>
+                    If we look at the words used in the tweets we realize that the conversation is about: tonight, Arya, stark, spoilers - and all of this makes sense. You know, Arya and the spoilers. We make this more interesting if we look at the keywords before and after the episode (Figure 2). For example, before the episode, they talk about "please do not die", during the episode most people are suffering, and after the episode, everyone is talking about Arya.
+                </p>
+                <p>
+                    <img alt="Figure 2 - Before, during and after the episode" data-canonical-url="https://www.dropbox.com/s/np8y03fpwlckiwc/DevpostMongoDB_before_during_after.png?raw=1" src="https://res.cloudinary.com/devpost/image/fetch/s--hdDHYTz1--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://www.dropbox.com/s/np8y03fpwlckiwc/DevpostMongoDB_before_during_after.png%3Fraw%3D1">
+                    <strong>
+                        Figure 2 - Words used in tweets before, during and after the Episode 3 Season 8 of Game of Thrones
+                    </strong>
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I developed SMM using MongoDB Atlas features such as a: MongoDB, Stitch Functions, Stitch Services, and MongoDB Charts. A brief description of the features of SMM are displayed below:
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            <strong>
+                                fetchTweets (Stitch function)
+                            </strong>
+                            : A function that fetches statuses using the Twitter Search API using a query that can be set from the Stitch App "Values and Secrets". The statuses retrieval process is executed within the MongoDB environment.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                getRecentAndPopularTweets (Stitch function)
+                            </strong>
+                            : This function calls the fetchTweets function using different parameters: Recent and Popular. By this way, we make to different API calls to Twitter to get both the most popular and the most recent tweets.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                getTweetsIntoDatabase (Stitch function)
+                            </strong>
+                            : This function put all the fetched tweets (recent and popular) into MongoDB. This function ensures that all fetched tweets regardless if they are repeated will be saved to the monitor-tweets collection in the database (to have a historical record of the tweet - retweets, likes, etc.) while only the newest version of the tweets will be saved in the newest-tweets collection.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                processTweets (Stitch function)
+                            </strong>
+                            : This function calls an AWS service in order to calculate the sentiment and keywords of the tweets.
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    SMM is designed to quickly set up a new query to follow a topic. Figure 2 shows how easy it is to set up a new monitoring project. You need to modify the Stitch App "Values and Secrets" with your original query and the new data will be saved into the database.
+                </p>
+                <p>
+                    <img alt="Figure 3 - How to set up a new dashboard" data-canonical-url="https://www.dropbox.com/s/pstf65ctk8jqc6x/DevpostMongoDB.png?raw=1" src="https://res.cloudinary.com/devpost/image/fetch/s--xMSj5OHr--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://www.dropbox.com/s/pstf65ctk8jqc6x/DevpostMongoDB.png%3Fraw%3D1">
+                    <strong>
+                        Figure 3 - How to set up a new dashboard
+                    </strong>
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I think the major challenge for me was to understand the data types when using MongoDB Stitch services. I took me some time to understand how the HTTP request returns binaries, and they need to be parsed to use them. It took me some time to realize how to implement an OAuth service for twitter authentication in a Stitch function - especially because Twitter asks you for a base64 binary to retrieve a Bearer token that is later used to make requests.
+                </p>
+                <p>
+                    Another challenge was to make a Stitch function recurrently. The solution was to set up an HTTP service in Stitch and open a webhook that will trigger the tweets retrieval and persistence process; this webhook then is called by a recurrent AWS Lambda function.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud of being able to set up a Stitch function that performs an OAuth for Twitter Search API. As well, I am pleased that thanks to this function, I can collect thousands of tweets about any subject to later analyze them using MongoDB Charts.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I am delighted that I learned about many MongoDB Atlas features. I learned how easy it is to set up a new database, a Stitch App and especially how easy it is to use MongoDB Charts visualize and analyze the data.
+                </p>
+                <h2>
+                    What's next for Social Media Monitor
+                </h2>
+                <p>
+                    As with any software development, there are plenty of features that can be implemented. One thing that I would like to implement is an AWS SNS service that will send a notification if something happens to the data after a quick analysis using a Stitch function. This will result in a real monitoring system based on MongoDB technology.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mongobd-atlas
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mongodb-dashboards
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mongodb-stitch
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://charts.mongodb.com/charts-socialmediamonitor-tpojv/dashboards/cdfca7b9-8333-4679-85a3-45df15826703" rel="nofollow" target="_blank" title="https://charts.mongodb.com/charts-socialmediamonitor-tpojv/dashboards/cdfca7b9-8333-4679-85a3-45df15826703">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                charts.mongodb.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

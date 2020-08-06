@@ -1,0 +1,137 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="920487" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/920/487/datas/original.jpeg">
+                            <img alt="CUFindIt &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/920/487/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In an effort to inspire more Clemson students to engage with historic landmarks around campus, we aimed to design a scavenger hunt that leads students through a series of clues.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    When arriving at a landmark, the user will go to the friendly UI designed at CUFindIt.tech . There is a link that directs the user to take a picture of the monument they believe the clue is pointing to. When the picture is taken, it is sent through the frontend server to an AWS EC2 instance hosting our pre-trained image classification model. That model will classify the image they have taken and send a response back to the user with the next clue.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The model was trained on Clemson's Palmetto Cluster. Due to the small dataset size, a transfer learning approach was taken. Google codelab's tensorflow-for-poets network, which has previously been trained to classify over 1000 different classes, was used as the initial network. This neural network was then retrained by adding features into the intermediate neurons that relate to our images, thus allowing a network to classify images of our different landmarks with higher accuracy without over-fitting the model to as high a degree.
+                </p>
+                <p>
+                    This trained classification model was then placed into an AWS EC2 instance and exposed to allow javascript Ajax requests. A series of servers were connected , including a React frontend server for a clean UI, that would pass the image file to the network and then pass a response back to the user. These servers were all contained in Docker containers and mounted alongside one another using Portainer container orchestration.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Docker is not always intuitive when it comes to connecting servers to one another, so data transfer from and then back to the user became a serious challenge. Furthermore, the model was difficult to train given so few training images. Using transfer learning was certainly better than training an entirely new network, however the network still faced the issue of overfitting. Lastly, iOS images are stored as .HEIC files, and these are incompatible with most linux distributions. Batch conversion was a difficult task.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Despite these challenges, we have been able to train our model to classify our images correctly between our 6 different landmarks that will be included in the scavenger hunt. This was a fascinating use of data as we were able to effectively train a model using small datasets by leveraging a pretrained model! We also were able to write a Python script to loop the user through the scavenger hunt, moving through a progression from one landmark to another. Finally, the networking tools used to connect the servers to the EC2 instance for data transfer have been extremely complex and we have managed to navigate through this while arriving at a functional product.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    This experience has taught us all a great deal about Machine Learning and dataset management, data transfer, networking, and Docker containerization.
+                </p>
+                <h2>
+                    What's next for CUFindIt
+                </h2>
+                <p>
+                    We hope to increase our dataset size to generate a better network for image classification.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://CUFindIt.tech" rel="nofollow" target="_blank" title="http://CUFindIt.tech">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                CUFindIt.tech
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://docs.google.com/presentation/d/1rLFNV3VFy3JcJqLbMJnPecoGCrsoZ4S2Ff6gz8FfJww/edit?usp=sharing" rel="nofollow" target="_blank" title="https://docs.google.com/presentation/d/1rLFNV3VFy3JcJqLbMJnPecoGCrsoZ4S2Ff6gz8FfJww/edit?usp=sharing">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                docs.google.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,219 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/176335215?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When working with StepNC data our team realized that our project could be adapted to use real machining data. MTConnect allows our simultation to be used in much more powerful ways. We envision our project being used in various commercial applications to provide real time monitoring of several machines from one location. Through the use of this software, the efficiency of the manufacturing industry could also be improved by up to or exceeding 15%. The MTConnect data correlates well with STEP-NC data which is our team's main inspiration.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    NC.js is an open source application designed to
+interpret StepNC data and create a simulation of the
+described workplan. NC.js has two options that allow
+the user to either drive the simulation from a StepNC file
+or instantiate a live viewing instance using a machine
+that streams MT-Connect data. NC.js utilizes
+MTConnect data from a live machine to drive a
+simulation of the machining tool. Then, through
+associative kinematics, a machine or fixture can be
+added to the simulation with correct movement in
+relation to the tools. Real time machining information
+can be easily compared to the expected result, allowing
+machining mistakes to be caught in process and
+corrected, with the eventual goal of mistakes being
+caught before they happen. The current application is also mobile friendly so that live
+machining simulations can even be viewed from anywhere by the people who need
+it most.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The current setup of the simulation is an Okuma OSP-P300 on a LAN with the NC.js server.
+The Okuma feeds the MTConnect data to the server which then parses and uses it to drive the
+simulation. MTConnect&rsquo;s &ldquo;PathPosition&rdquo; tag is used to drive the position of the tool during
+runtime, while the GCode block numbers allow us to determine the active working step and
+display toolpaths relevant to the current operation. We also use MTConnect to determine the
+feedrate of the tool. In the future we plan to compare it to the expected feedrate values for
+error analysis. The backend uses Node.js and the frontend uses React.js in order to parse the MTConnect and STEP data that is attached to the live server.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    NC.js has many parts that need to work together. Creating it requires learning the STEPNC library, Javascript, and understanding the machining process. If one part of the application breaks it affects every other component, making it hard to pinpoint the exact problem. This behavior requires everyone on the team to have an understanding the entire program in order to effectively add features or fix bugs. Adding an independent view of the geometry seems like an easy task, but required the way geometry is loaded to be refactored entirely. Another issue is that the underlying library is poorly documented and doesn&rsquo;t always behave as intended. This means that when a problem arises it is difficult to tell if it&rsquo;s a high-level issue, a low-level issue, or undocumented intended behavior.
+                </p>
+                <h2>
+                    Accomplishments that we are proud of
+                </h2>
+                <p>
+                    Seeing the activity of a machining tool in real time allows for levels of oversight not otherwise
+possible. NC.js enables supervision of an operation and confidence that tolerances are being
+met, without needing to be physically present for the machining of a part. Various tools can be
+used in the simulation in order to see if there will be any problems with a different size tool. A
+tool of the wrong size can be caught before machining begins by using the simulation
+environment to change what tool is being used on the machine.
+Because NC.js is designed to be web based it is possible for a part to be monitored anywhere
+in the world. The software could be used in a commercial setting to prove the effectiveness of
+newly developed tools or optimized toolpaths.
+The largest possible benefit is in the potential automation of machining. Automatically
+ensuring tolerances are being met could eliminate the need for human oversight.
+                </p>
+                <blockquote>
+                    <p>
+                        <img alt="Not Found" data-canonical-url="http://i.imgur.com/INrtuSj.png" src="https://res.cloudinary.com/devpost/image/fetch/s--FzCnRt4b--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/INrtuSj.png" title="Boxy1">
+                    </p>
+                </blockquote>
+                <p>
+                    Shown above in pink is some of the tolerance highlighting that is being done by NC.js as the Okuma is traversing each GCode operation. Tolerance highlighting will allow for the user to
+see which of the current tolerances shown on the sidebar applies to the current workingstep.
+The end goal is to allow the user to change these tolerances and then save those changes to
+a new file. These tolerances also allow for error checking throughout the application to make
+sure that all operations complete correctly.
+Another benefit is the ability to view the geometry ,at various steps in the workplan, in a
+separate pane. This will allow for STEP data to have 3D visualization that is before or after the
+current working step being machined.
+                </p>
+                <blockquote>
+                    <p>
+                        <img alt="Not Found" data-canonical-url="http://i.imgur.com/zvjQpwU.png" src="https://res.cloudinary.com/devpost/image/fetch/s--egzpZEc7--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/zvjQpwU.png" title="Moldy">
+                    </p>
+                </blockquote>
+                <p>
+                    The model shown above has annotations displayed throughout the model to show tolerances throughout the piece. The color data is also applied to the piece in order to give the user a better distinction between different parts of the scene. A workplan view is displayed on the sidebar to show the underlying workplan and all of the relevant workingsteps for each of the operations. The nested elements can be expanded to see the hierarchy of the workplan which is useful to machinists.
+                </p>
+                <blockquote>
+                    <p>
+                        <img alt="Not Found" data-canonical-url="http://i.imgur.com/cdYjswz.png" src="https://res.cloudinary.com/devpost/image/fetch/s--LFVdAbfg--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/cdYjswz.png" title="Impeller">
+                    </p>
+                </blockquote>
+                <p>
+                    The impeller model shown above has the bounding box of the tool and model highlighted. This box is used for many of the underlying rendering calculations. The impeller model also has some more intricate tolerances highlighted on the blades of the impeller which shows the potential of tolerance association with faces on a 3D model. The tools pane on the sidebar shows which tools are being used in the workplan.  Any tool that is defined within the workplan but isn't being used will be lowlighted in order to highlight important aspects to the user.
+                </p>
+                <blockquote>
+                    <p>
+                        <img alt="Not Found" data-canonical-url="http://i.imgur.com/s6mpMX9.png" src="https://res.cloudinary.com/devpost/image/fetch/s--ge08QbZc--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/s6mpMX9.png" title="Boxy2">
+                    </p>
+                </blockquote>
+                <p>
+                    The above shows the list of workingsteps, organized by setup. The simulation will pause in between each setup in order to simulate the need to change the orientation or tool of the machine. The toolpath is displayed and eventually a trace line to show any deviation will also be displayed.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    During development we learned a good deal about web design with React components, as well as how to transition our simulation from using a preset path to the tool locations given by MTConnect. By saving state information at higher levels we are able to propogate changes to all components in a timely fashion. This enables all our UI elements to run in sync without losing information between transitions. Understanding how to read the MTConnect data took some time but proved to be a worthwhile time investment. The richness of the data allowed us to easily display all the relevant information. In addition we also were able to get important experience working as a team on a large code base, especially in regards to using Git as a source control tool.
+                </p>
+                <h2>
+                    What's next for NC.js
+                </h2>
+                <p>
+                    Future features will focus on statistical analysis and automatic detection of machining faults.
+Features that are currently being worked on include:
+                </p>
+                <ul>
+                    <li>
+                        Tracing the path of a tool
+                    </li>
+                    <li>
+                        Providing automatic calculations to determine possible deviations, detecting faults
+before the entire part is machined incorrectly
+                    </li>
+                    <li>
+                        Comparing material removal to tolerances associated with each part face
+                    </li>
+                    <li>
+                        The ability for NC.js to make recommendations for feed rates and spindle speeds
+based on optimization algorithms
+                    </li>
+                    <li>
+                        Visually previewing tolerances, workpieces, and tools while the simulation continues in
+the background
+                    </li>
+                </ul>
+                <p>
+                    Further goals are to allow for tolerances to be added or removed from a model using the
+simulation. The end result can then be saved for future use with different tolerances than the
+original model. We also want to generate recommended changes to the workplan based on
+the differences between the simulation and the MTConnect data. These recommended
+changes would further optimize a model so that all tool wear and other costly activities can
+be limited.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            cadjs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mtconnect">
+                                mtconnect
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            steptoolsapi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            steptoolslibrary
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

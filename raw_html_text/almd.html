@@ -1,0 +1,227 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="355620" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/355/620/datas/original.png">
+                            <img alt="ALMD &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/355/620/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="355745" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/355/745/datas/original.jpg">
+                            <img alt="ALMD &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/355/745/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="355618" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/355/618/datas/original.png">
+                            <img alt="ALMD &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/355/618/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We were always interested in making a medical hack. When brainstorming, someone suggested a carpal tunnel corrective app. Initially we didn&rsquo;t know if this was feasible, but at Hacktech, we talked to some of the Microsoft representatives helped us flesh out some of the implementation details.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Poor hand position and wrist angle while typing put you in risk of carpal tunnel. Our app attaches a wearable accelerometer to the back of your hand while you type, and use this data to calculate the angle of your wrist. We then store this data in our SQL database for later access. Our website displays a live visualization of your wrist angle. With ALMD, frequent computer users can effortlessly monitor their wrist posture and reduce their risk of carpal tunnel.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    We attached an accelerometer to a Raspberry Pi running a headless Linux environment. A Python script reads the raw data and converts it into the angle from the horizontal plane. Every second, it uploads an average angle and associated time to our database over WiFi. For this portion of the hack, we sent the data directly to an Azure event hub, then to a stream analytics app which stored it in a SQL database.
+                </p>
+                <p>
+                    Meanwhile, we wrote our website backend with Django and used Azure Web Apps for hosting. Our front-end Javascript continuously polls an endpoint on our backend for the latest wrist angle. We used D3 to make a dynamic pie chart showing current wrist angle.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Overall, our largest challenge was that we learned a lot of new technologies for this hack, including accelerometers, the Raspberry Pi, Microsoft Azure, and D3.js. This meant we spent the first day reading documentation, asking mentors, and googling just to get our basic set-up working, and ran out of time to implement some of our planned features.
+                </p>
+                <p>
+                    Specific challenges we had were problems setting up the Raspberry Pi without a monitor, reading the accelerometer from the Pi, and setting up the Azure web app.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Even when nothing was working at all for the first half of the hackathon, which was very frustrating, we kept trying things and eventually fixed all our problems. We&rsquo;re also happy that we learned lots of new skills we can use at future hackathons!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned a lot of new things making our hack. No one had used a Raspberry Pi before, just other microcontrollers, so we learned how to access Raspberry Pi&rsquo;s pins. We also learned how to convert accelerometer output into actual angles. On the backend side, we how Azure hosting works and how to use stream analytics to insert into the database.
+                </p>
+                <h2>
+                    What's next for ALMD
+                </h2>
+                <p>
+                    One application for ALMD is helping researchers gather data about carpal tunnel. Our website would offer data analysis options for either a single user to look at their performance over time, or for researchers to view and analyze data collected by multiple users.
+                </p>
+                <p>
+                    We would also improve our wearable. One idea we had was using a light to notify the user if their wrist is at a bad angle. We also could add another accelerometer on a user&rsquo;s arm to calculate the exact angle of the wrist compared to the arm instead of just angle from the horizontal, which provides a more accurate indicator of carpal tunnel risk.
+                </p>
+                <ul>
+                    <li>
+                        user can look at graph of their performance over a period of time
+                    </li>
+                    <li>
+                        allow researchers to compare data for multiple users
+                    </li>
+                    <li>
+                        wearable includes LED or other notification if wrist posture is bad
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            adxl345
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/d3-js">
+                                d3.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sql">
+                                sql
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mimilei/almd" rel="nofollow" target="_blank" title="https://github.com/mimilei/almd">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://almondwebapp.azurewebsites.net/" rel="nofollow" target="_blank" title="http://almondwebapp.azurewebsites.net/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                almondwebapp.azurewebsites.net
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

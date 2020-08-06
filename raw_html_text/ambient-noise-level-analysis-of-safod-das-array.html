@@ -1,0 +1,155 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="631152" data-title="Fig1: An example of bad channel's PPSD results" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/152/datas/original.png">
+                            <img alt="Ambient Noise Level Analysis of SAFOD DAS array &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/152/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Fig1: An example of bad channel's PPSD results
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="631155" data-title="Fig2: An example of good channel's PPSD results" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/155/datas/original.png">
+                            <img alt="Ambient Noise Level Analysis of SAFOD DAS array &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/155/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Fig2: An example of good channel's PPSD results
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="631159" data-title="Earthquake data before bad trace removal" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/159/datas/original.png">
+                            <img alt="Ambient Noise Level Analysis of SAFOD DAS array &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/159/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Earthquake data before bad trace removal
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="631163" data-title="Earthquake data after bad trace removal" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/163/datas/original.png">
+                            <img alt="Ambient Noise Level Analysis of SAFOD DAS array &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/631/163/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Earthquake data after bad trace removal
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The main idea of the Distributed Acoustic Sensing (DAS) System at San Andrea Fault is to provide high-quality and densely recorded data for earthquake monitoring, source locating purpose. The Utility of seismic data can be greatly increased if noise level is removed.  A good qualification and understanding of noise levels is a first step at reducing noise level in seismic data.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In this study, we have three main objectives. First, we intend to employ a standard method (probabilistic power spectral densities [PPSD] method; McNamara and Buland, 2004) to calculate DAS ambient noise level for a direct comparison to the standard Seismological models (new low noise model [NLNM] and new high noise model [NHNM]; Peterson, 1993); Second, we utilize the PPSD results to differentiate good channels from bad channels using supervised learning method (support vector machine [SVM]); Third, we show the bad channel removal effect using an Earthquake recording as an example. Moreover, we compare the earthquake PPSD spectrum with the PPSD noise level to see the potential of event detection in the PPSD domain if time allows.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <h1>
+                    PPSD Method
+                </h1>
+                <p>
+                    The standard method for quantifying seismic background noise is to calculate the noise PSD. To have the seismometer results as a benchmark for understanding DAS noise level, we adopted the implementation of the PSD method described in Peterson (1993).
+                </p>
+                <p>
+                    Most of the time DAS records continuous data. For preprocessing, we parse continuous time series, for each DAS channel, into 10-minutes time series segments, overlapping by 50% and distributed continuously throughout the day. The point of overlapping time series segments is to reduce variance in the PSD estimate (Cooley and Tukey, 1965). In order to minimize long-period contamination, the data are transformed to a zero mean value such that any long-period linear trend is removed by the average slope method. If trends are not eliminated in the data, large distortions can occur in spectral processing by nullifying the estimation of low-frequency spectral quantities. To suppress side lobe leakage in the resulting FFT, a 10% cosine taper is applied to the ends of each truncated and detrended time series segment. Tapering the time series has the effect of smoothing the FFT and minimizing the effect of the discontinuity between the beginning and end of the time series. The time series variance reduction can be quantified by the ratio of the total power in the raw FFT to the total power in the smoothed filter (1.142857) and will be used to correct absolute power in the final spectrum (Bendat and Piersol, 1973).
+                </p>
+                <p>
+                    To estimate the true variation of noise at a given DAS channel, at each period slice, we calculate the probability distribution of DB values. We end up having PPSD results for all DAS channels. The PPSD we implemented follows the same standard as McNamara and Buland (2004) do for processing the seismometer data.
+                </p>
+                <h1>
+                    Picking good channels with SVM method
+                </h1>
+                <p>
+                    After we get PPSD noise level results, we found that good channels and bad channels tend to behave very different in the PPSD domain (See an example of a good channel&rsquo;s PPSD results and a bad channel&rsquo;s results in the following two figures). It occurs to us to take advantage of the difference to pick good channels.
+                </p>
+                <p>
+                    We transform the 2D results of the PPSD results for each channel to be a 1D vector as the feature. We manually labeled 900 hundreds channels as good or bad channels. We use 750 channels as the training set and the other 150 channels as the testing set to feed into the SVM algorithm. We end up having great accuracy: 1.00 for the training set, 0.99 for the cross validation results, 0.9621 for the testing-set results.
+                </p>
+                <h1>
+                    Bad channel removal in earthquake data
+                </h1>
+                <p>
+                    We are interested in learning how well the SVM method does on picking good channels. To inspect this, we use an earthquake data shown below as a testing example. From the comparison between the following two figures, we can see that SVM does a pretty decent job at removing the bad channels, especially at the two ends.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    First, the IO was very slow. And our code sometimes need optimization. The biggest challenge for us is the limited time for the project.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We gain a better understanding of the DAS noise level by comparing with the Seismometer's noise model using PPSD method. We can differentiate good channels and bad channels quantitatively by supervised learning of the PPSD results with a great accuracy. The PPSD results are potentially to detect earthquake data.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I've learned how to parallel my python code and how to set up a SVM problem.
+                </p>
+                <h2>
+                    What's next for Ambient Noise Level Analysis of SAFOD DAS array
+                </h2>
+                <p>
+                    The next step for our project is to use PPSD noise level results to find earthquake data.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            svm
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

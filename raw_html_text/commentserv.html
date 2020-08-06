@@ -1,0 +1,194 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I'm currently looking for a comment system for my blog, which is hosted on GitHub Pages. Disqus added advertisements to its free plans, making it a much worse experience. The best alternative to Disqus is
+                    <a href="https://posativ.org/isso/" rel="nofollow">
+                        isso
+                    </a>
+                    , but it doesn't support social logins. I thought it would be an interesting exercise to try to create a commenting server.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <code>
+                        commentserv
+                    </code>
+                    provides a server and rest API for comment hosting. It is
+                    <em>
+                        only
+                    </em>
+                    a server; it has no front end, because that is not its purpose.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I wrote the webapp in Scala with the following libraries:
+                </p>
+                <ul>
+                    <li>
+                        <a href="http://doc.akka.io/docs/akka-http/current/scala.html" rel="nofollow">
+                            Akka HTTP
+                        </a>
+                        for the HTTP server
+                    </li>
+                    <li>
+                        <a href="https://github.com/tpolecat/doobie" rel="nofollow">
+                            Doobie
+                        </a>
+                        for database
+                    </li>
+                    <li>
+                        <a href="https://typelevel.org/cats" rel="nofollow">
+                            cats
+                        </a>
+                        for functional programming abstractions
+                    </li>
+                    <li>
+                        <a href="https://github.com/functional-streams-for-scala/fs2" rel="nofollow">
+                            fs2
+                        </a>
+                        for purely functional IO
+                    </li>
+                    <li>
+                        <a href="http://www.lihaoyi.com/upickle-pprint/upickle/" rel="nofollow">
+                            upickle
+                        </a>
+                        for JSON serialization
+                    </li>
+                    <li>
+                        <a href="https://github.com/softwaremill/akka-http-session" rel="nofollow">
+                            akka-http-session
+                        </a>
+                        for session management
+                    </li>
+                </ul>
+                <p>
+                    Pure functions were used wherever possible.
+                </p>
+                <p>
+                    I used
+                    <code>
+                        docker-compose
+                    </code>
+                    to quickly get a PostgreSQL database running. I also added Redis,, but I never ended up using it.
+                </p>
+                <p>
+                    Total programming time is about 10 hours.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I ran into some strange Scala compiler bugs that prevented upickle from automatically generating serialization code. I had to write a small workaround, but it took me 30 minutes to figure out how.
+                </p>
+                <p>
+                    I couldn't figure out how to set up the flyway-db plugin for database migrations for about an hour. It turns out that the Java Postgres driver is
+                    <code>
+                        org.postgresql.Driver
+                    </code>
+                    and not
+                    <code>
+                        org.postgres.Driver
+                    </code>
+                    !
+                </p>
+                <p>
+                    Debugging the client took way too long because Firebug was deprecated. I didn't realize it until
+                    <code>
+                        console.log
+                    </code>
+                    stopped working.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        Having this program compile with no warnings and no errors
+                    </li>
+                    <li>
+                        Writing a free monad for Redis, but I never used it. I intended to use Redis for session caching, but I found that akka-http-session managed sessions nicely in memory.
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        Learning how to do purely functional database access
+                    </li>
+                    <li>
+                        How to use akka-http-sessions
+                    </li>
+                    <li>
+                        What foreign keys are in SQL
+                    </li>
+                </ul>
+                <h2>
+                    What's next for commentsrv
+                </h2>
+                <p>
+                    I'll probably rewrite it in Rust so it doesn't use so much memory. Also, I might switch the database from Postgres to SQLite (as isso's homepage states, "Because comments are not Big Data").
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            akka-http
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/postgresql">
+                                postgresql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scala">
+                                scala
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Technius/commentserv" rel="nofollow" target="_blank" title="https://github.com/Technius/commentserv">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

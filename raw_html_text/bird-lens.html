@@ -1,0 +1,194 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/usvcA2Ibajs?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    bird-lens
+                </h2>
+                <p>
+                    Ever wonder what birds stop by your feeder while you are away? Me too, so I pieced
+together a few AWS services that allow my DeepLens to do the work for me.
+                </p>
+                <h3>
+                    Demo Video
+                </h3>
+                <p>
+                    <a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=usvcA2Ibajs" rel="nofollow">
+                        <img alt="Demo Video" data-canonical-url="http://img.youtube.com/vi/usvcA2Ibajs/0.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--xHDNWdwP--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://img.youtube.com/vi/usvcA2Ibajs/0.jpg">
+                    </a>
+                </p>
+                <h3>
+                    Configuration
+                </h3>
+                <p>
+                    We've got a small bird feeder attached to our kitchen window, and we are often visited
+by small to medium sized birds. Here is a cute little bird who stopped by today.
+                </p>
+                <p>
+                    <img alt="Birdy" data-canonical-url="https://github.com/KevinMellott91/bird-lens/raw/master/pictures/bird_window.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--lMVp-SaI--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/KevinMellott91/bird-lens/raw/master/pictures/bird_window.jpg" title="Birdy">
+                </p>
+                <p>
+                    Seeing as the DeepLens requires a power source, this is a very convenient place
+to test the application. Note that this application can be extended to work out
+"in the wild" on any device running AWS Greengrass.
+                </p>
+                <p>
+                    <img alt="DeepLens Setup" data-canonical-url="https://github.com/KevinMellott91/bird-lens/raw/master/pictures/deeplens_setup_1.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--TFpZePTs--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/KevinMellott91/bird-lens/raw/master/pictures/deeplens_setup_1.jpg" title="DeepLens Setup">
+                    <br>
+                    <br>
+                    <img alt="DeepLens Setup" data-canonical-url="https://github.com/KevinMellott91/bird-lens/raw/master/pictures/deeplens_setup_2.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--H1Z44k-l--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/KevinMellott91/bird-lens/raw/master/pictures/deeplens_setup_2.jpg" title="DeepLens Setup">
+                </p>
+                <h3>
+                    What's it do?
+                </h3>
+                <p>
+                    The DeepLens is constantly running a local Lambda function (Lambda @ "Edge") that uses an
+inference model to determine whether or not a bird is in view. All of
+this can occur when connected or offline, thanks to the capabilities offered by
+AWS Greengrass and the ability for DeepLens to use pre-built predictive models.
+                </p>
+                <p>
+                    When the DeepLens detects a bird in the frame, it will store a picture of the
+bird on S3. It does so in a way that allows the Alexa app to access the picture.
+                </p>
+                <p>
+                    At any time, a person can say "Alexa, ask Bird Lens if any birds stopped by". At this point,
+the app will check to see if any birds were sighted that haven't already been shown to
+the user.
+                </p>
+                <p>
+                    <img alt="Alexa App" data-canonical-url="https://github.com/KevinMellott91/bird-lens/raw/master/pictures/alexa-app.png" src="https://res.cloudinary.com/devpost/image/fetch/s--Vj1k50CP--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/KevinMellott91/bird-lens/raw/master/pictures/alexa-app.png" title="Alexa App">
+                </p>
+                <h3>
+                    Technical Details
+                </h3>
+                <p>
+                    The object detection model being used is the standard one made available by AWS at
+                    <em>
+                        s3://deeplens-managed-resources/models/SSDresNet50
+                    </em>
+                    . I took the original object detection
+sample and forked it into a solution that checks solely for birds, and when it detects a
+bird then it uploads the picture to S3. This customized logic can be found within the
+                    <em>
+                        lens_watcher.py
+                    </em>
+                    file inside of the
+                    <em>
+                        deep-lens-lambda
+                    </em>
+                    Lambda function.
+                </p>
+                <p>
+                    You will also find a reference to the S3 bucket and path to which the picture will be stored. This location will be checked by the Alexa app found within the
+                    <em>
+                        alexa-app
+                    </em>
+                    code. The Alexa
+application is checking to see if any picture exists, and will display it if so.
+                </p>
+                <p>
+                    This application is a bit basic, but it did give me the ability to learn quite a bit about the DeepLens. Primarily, I learned how to integrate the entire AWS ecosystem into the Lambda edge function that runs on the actual device, via the Greengrass SDK.
+                </p>
+                <p>
+                    The primary area that I would like to learn more is around model customization and tuning within SageMaker. Specifically, I would like to learn how to train the object detection model based on actual pictures of birds at my feeder, so that it can learn about my specific use case.
+                </p>
+                <h3>
+                    Problems
+                </h3>
+                <p>
+                    When I ran the DeepLens model inference to attempt to detect a bird in my window, the
+model was unable to recognize the birds. However, when testing this object detection
+algorithm using different types of objects (such as "person" or "cat" or "dog"), those
+types of objects were all detected fine.
+                </p>
+                <p>
+                    I was able to get a picture of a bird to trigger my object detection logic, and used that
+for my hackathon submission. However, I would like to learn how to improve the object detection model's accuracy when detecting birds in the wild. This is something that I will be using
+SageMaker to learn in the future.
+                </p>
+                <h3>
+                    Roadmap
+                </h3>
+                <p>
+                    Here are some items that I considered doing, but ran out of time.
+                </p>
+                <ul>
+                    <li>
+                        Detect when a squirrel is in view, and send a SMS (text) notification. In case
+you aren't a bird watcher, squirrels are notorious for eating massive amounts
+of bird food.
+                    </li>
+                    <li>
+                        Use AWS Rekognition to annotate images with metadata information that can
+be detected by the service.
+                    </li>
+                    <li>
+                        Use AWS SageMaker to determine what species of bird is being viewed, and add
+that into the mix.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            deeplens
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

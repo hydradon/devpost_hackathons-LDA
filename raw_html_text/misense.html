@@ -1,0 +1,190 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="546015" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/546/015/datas/original.jpg">
+                            <img alt="MiSense &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/546/015/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="546016" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/546/016/datas/original.jpg">
+                            <img alt="MiSense &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/546/016/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="546104" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/546/104/datas/original.jpg">
+                            <img alt="MiSense &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/546/104/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    <strong>
+                        1/5 of traffic accidents are caused by drowsiness
+                    </strong>
+                    .  The National Highway Traffic Safety Administration estimates that between 56,000 and 100,000 crashes are the direct consequence of drowsiness resulting in more than 1500 fatalities and 71,000 injuries annually. All four of us are united by having experienced crashes due to sleepiness as passengers or as drivers and that's why we wanted to build a non-invasive human-computer interface that improves security on the road.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    MiSense is an
+                    <strong>
+                        earbud that measures brain activity
+                    </strong>
+                    (one-channel Electroencephalography /EEG) through one electrode placed in the ear. Thanks to wavelet analysis, it differentiates
+                    <strong>
+                        alertness and drowsiness stages
+                    </strong>
+                    and sends a music-alarm when detecting that the driver is drowsy to avoid an accident.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used the Neurosky Mindwave mobile one-channel EEG headset.
+We modified it so that the electrode is not placed on the forehead but inside the ear to make our device the least intrusive as possible. For the purpose of the early development we applied conductive paste on the electrode to improve the signal quality.
+The signals sent by the headset via bluetooth were captured and parsed to extract meaningful data (raw signal of EEG sampled each 2ms, plus computed EEG powers each second).
+                </p>
+                <p>
+                    We then conducted multiple experiments to capture the mental state signals associated with drowsiness (beginning of falling asleep - easy this weekend - and eyes closing) and alertness (playing video games, watching engaging media and eyes opened).
+                </p>
+                <p>
+                    All this data was gathered in a database that we analyzed with machine learning: we separated a train set and a test set and ran a Perceptron algorithm to classify between drowsy and alert stages, mainly based of the EEG Powers (delta, theta, alpha, beta, gamma).
+                </p>
+                <p>
+                    We eventually wrote a piece of code receiving in real time the data from the headset, testing it with the previous algorithm, and playing music if the drowsy state is detected for a few seconds.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Connecting the headset : finding the correct ports and setting baud rates took us a lot of time.
+                    </li>
+                    <li>
+                        Signal noise: when doing the first experiments to collect data, the hundred PCs and thousands of people around us in the stadium caused a lot of noise and the signals were unreadable. So we had to move to a room with none around to continue with our experiments.
+                    </li>
+                    <li>
+                        In-ear EEG : this is a very new area of research so we didn't find a lot of papers to help us filter and 
+analyse the data. This means we had to run a lot of experiments to bebing to understand it ourselves and build our database from scratch.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We ended up with a classifier of drowsiness/alertness stages from in-ear EEG data: we are only at 70% accuracy but considering that this is an entire new research area and that we based our algorithms only on data collected during the weekend, we are really proud of the result and hope it will have a tremendous impact on drivers' safety. We are confident we can improve it quickly with better data collection and optimisation of algorithms. We are also aware of the challenges coming due to the chocs and noise in the car.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Filtering in-ear EEG signals
+                    </li>
+                    <li>
+                        Conduct a machine learning project from scratch
+                    </li>
+                    <li>
+                        Spend a whole weekend awake with a passionate team :)
+                    </li>
+                </ul>
+                <h2>
+                    What's next for MiSense
+                </h2>
+                <ul>
+                    <li>
+                        Mechanical design of the earbud and iterations (3d-printing)
+                    </li>
+                    <li>
+                        PCB design
+                    </li>
+                    <li>
+                        Improving signal filtering and machine learning algorithm (regression to measure the level of drowsiness)
+                    </li>
+                    <li>
+                        Customer interviews with truck, bus and taxi driver + market analysis
+                    </li>
+                    <li>
+                        Road trip SF-LA hitchhiking to test our prototype ;)
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluetooth">
+                                bluetooth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/neurosky">
+                                neurosky
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

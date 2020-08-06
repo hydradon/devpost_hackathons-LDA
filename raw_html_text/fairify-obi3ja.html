@@ -1,0 +1,180 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/327579879?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="790040" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/040/datas/original.png">
+                            <img alt="Fairify &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/040/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="790387" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/387/datas/original.png">
+                            <img alt="Fairify &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/387/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="790386" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/386/datas/original.png">
+                            <img alt="Fairify &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/386/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Whereas traditional programs consist of lines of codes explicitly written by the programmer, machine learning programs are "written" in human unfriendly terms, such as the weights of a neural network. Since people don't fully understand these weights,  a programmer can unintentionally introduce bias into their algorithm simply by learning from an unknowingly biased dataset.
+                </p>
+                <p>
+                    If these weights could be reinterpreted in a meaningful way, the programmer could better understand what areas of her model could be improved.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Fairify is a command line utility and a companion iOS app that automatically de-biases word embeddings.
+                </p>
+                <p>
+                    Word embeddings are one of the most important ideas in natural language processing, and basically amount to vectorized representations of words. Intuitively, we can think of two words as having similar vectors if they share similar semantics (for example, "mother" and "mom".)
+                </p>
+                <p>
+                    Fairify takes in a user's word embedding model and runs it through 200+ analogy completion tasks that test for bias. For example, a user's model might complete the analogy brother : brilliant :: sister : ____ with the word "gorgeous". This might not be a good idea, as it encourages unhealthy stereotypes about intelligence. Fairify penalizes the algorithm by reducing its score.
+                </p>
+                <p>
+                    The biased words (and the analogy that uncovered their bias) is sent to the companion iOS app. From there, the user can simply press a "fix" button, and the utility will de-bias these words in the user's model using the de-biasing technique of Bolukbasi, et. al.
+                </p>
+                <p>
+                    A user might want to not just identify examples of bias in their model, but also understand the societal impact of bias in that word. For this reason, we used Taboola's API to help suggest sources of bias and find articles relevant to the type of bias demonstrated by that analogy. For example, a bias about immigrants might link to a trending article about the border wall.
+                </p>
+                <p>
+                    Once the user quits the command utility, the fixed model is automatically saved to disk.
+                </p>
+                <h2>
+                    How we built it &amp; challenges we ran into
+                </h2>
+                <p>
+                    There were two main challenges we had to tackle in developing Fairify:
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Identifying biased words in the user's model, and fixing them. To actually find the bias, we try analogies with words that typically have a biased connotation. To tell if an analogy is actually biased, we see how the relevant axis differs between examples. For example, when examining gender bias, we examine the gender axis and see how a given word differs on this axis. To correct this example, we essentially neutralize the gender axis for the biased example, therefore removing the gender bias from the words found in the analogy. There was a small learning curve regarding linear algebra when dealing with these 1000+ dimensional vectors.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Giving a visual representation to Fairify's examples of bias. We accomplished this in many ways throughout our UI design. One of the primary ways is by displaying 2D projections of relevant axises on the app. This way, once the user indicates they want to fix an instance of bias, they can visually see the vectors readjusted as Fairify removes the bias. Another way is through our Interactive Model feature. At any point in time, the user can run their own analogy and see what their current model would generate. This proved to be tedious as there were many synchronizing issues that came with this back and forth communication.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    What's next for Fairify
+                </h2>
+                <p>
+                    Categorizing bias. We would love to be able to give further metrics about the different kinds of bias that appear in the model. This would prove useful in being able to examine the exact problems in your dataset.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/taboola">
+                                taboola
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/TheMkrage/Fairify" rel="nofollow" target="_blank" title="https://github.com/TheMkrage/Fairify">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ishaangandhi/fairify" rel="nofollow" target="_blank" title="https://github.com/ishaangandhi/fairify">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

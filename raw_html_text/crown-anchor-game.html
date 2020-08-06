@@ -1,0 +1,250 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I am fairly new to programming and began learning Python 3 months ago. I learned the basics of lists, loops, parameters, etc, but had never integrated this all into one program. I've been meaning to do this but never had the time/focus to dedicate myself to starting/finishing a project of this scale. While the focus of the game doesn't fall under the categories for YHack, I wanted to build a simple program (preferably a game since they're fun) that would combine everything I've learned about Python.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The program allows the user to play the card game, Crown and Anchors.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Lots of trouble passing parameters and getting the program to continuously run.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Finishing it!
+                </p>
+                <h2>
+                    Where is it?
+                </h2>
+                <p>
+                    I've copied and pasted the code below, sorry if this is sketchy, I just don't want to put it on my GitHub yet!
+                </p>
+                <h2>
+                    MY SUBMISSION
+                </h2>
+                <pre class="language-nolang"><code>import random
+
+def main():
+
+Players = num_users() #collects the dictionary of players returned from num_users()
+UserBet = []
+for player, balance in Players.items():
+if balance &gt; 0:
+aUserBet = make_bets(player, balance)
+UserBet.append(aUserBet) #creates a list of dictionaries, with each dictionary being a bet a user made
+else:
+return False
+
+bigSlot = rand_slot() #collects the list of randomly generated slots from rand_slot()
+
+counting(UserBet, bigSlot) #calls the counting function
+
+occurances = counting(UserBet, bigSlot) #collects the list of the number of times each round a user's symbol bet matches what was generated in the random slot
+
+winnings = calculation_winnings(UserBet, Players, occurances) #collects the list of the amount each user won
+
+Players = calculation_players(UserBet, Players, occurances) #collects the Players dictionary with the updated user balance
+
+repeat(UserBet, Players, occurances, winnings, player, balance, bigSlot) #calls the repeat function which continually re-executes the program
+
+
+def num_users(): #determines the number of users playing
+try:
+Users = int(input("How many users are playing? "))
+while Users &gt; 5:
+Users = int(input("How many users are playing? (at most 5 can play) "))
+except ValueError:
+Users = int(input("How many users are playing? (enter an integer) "))
+while Users &gt; 5:
+Users = int(input("How many users are playing? (at most 5 can play) "))
+
+Players = {}
+for i in range(Users):
+Players["User " + str(i)] = 10 #for each number of users entered, creates a new object in a dictionary with the value 10
+return Players
+
+
+def make_bets(player, balance): #asks if user is participating this round and if so, asks which symbol they're betting on and how much money they're betting
+Participating = input("Would you like to bet this round? Enter 'Yes' or 'No'. ") #checks if they're participating in the round
+while Participating != 'Yes' and Participating != 'yes' and Participating != 'No' and Participating != 'no':
+Participating = input("Would you like to bet this round? Enter 'Yes' or 'No'. ")
+if Participating == "No" or Participating == "no":
+return
+else: #if they are participating, do the following
+
+bet = {}
+
+UserBetSy = True
+while UserBetSy == True: #collect the symbol they are betting on
+print('''Which symbol would you like bet on?
+hearts
+spades
+diamonds
+clubs
+crowns
+anchors''')
+UserBetSy = input("Enter full symbol in lowercase (e.g., 'hearts')\n")
+while UserBetSy != 'hearts' and UserBetSy != 'spades' and UserBetSy != 'diamonds' and UserBetSy != 'clubs' and UserBetSy != 'crowns' and UserBetSy != 'anchors':
+UserBetSy = input("Which symbol would you like bet on? Please choose only the available symbols and write in lowercase.\n")
+
+try:
+UserBetMo = int(input("How much money would you like to bet?\n")) #collect the amount of money they want to bet
+except ValueError:
+UserBetMo = int(input("How much money would you like to bet? (enter an integer)\n")) #catch if they don't enter an integer
+while UserBetMo &gt; balance:
+UserBetMo = int(input("How much money would you like to bet?\n")) #catch if they enter an amount larger that what's in their balance
+
+bet[UserBetSy] = UserBetMo #make a new dictionary object with the symbol they bet as the key and the amount bet as the value
+
+return bet
+
+
+def rand_slot(): #generates a random slot of symbols used in Crown &amp; Anchor
+options = ['hearts', 'spades', 'diamonds', 'clubs', 'crowns', 'anchors']
+slot1 = random.choice(options)
+slot2 = random.choice(options)
+slot3 = random.choice(options)
+bigSlot = [slot1, slot2, slot3] #creates the 3-symbol slot of randomly generated symbols
+print("The slot is", bigSlot, "\n")
+return bigSlot
+
+
+def counting(UserBet, bigSlot): #counts the number of times a user's bet equals the slot of random symbols generated
+occurances = []
+for i in range(len(UserBet)):
+if i == 'None':
+break
+else:
+for symbol, bet in UserBet[i].items():
+value = symbol
+counter = 0
+for j in range(len(bigSlot)):
+if value == bigSlot[j]: #checks the number of times each round a user's symbol bet matches what was generated in the random slot
+counter += 1
+continue
+else:
+continue
+occurances.append(counter) #creates a list of the number of times there was a match
+return occurances
+
+
+def calculation_winnings(UserBet, Players, occurances): #calculates how much each player won and what their new balance is, and prints this information
+winnings = []
+playerTurn = -1
+for player, balance in Players.items():
+playerTurn += 1 
+for symbol, amount in UserBet[playerTurn].items(): #iterates through the dictionary of players and list of dictionaries of each user's bet
+if occurances[playerTurn] == 0: #checks the number of times there was a match between the symbol bet and random slot generated
+win = occurances[playerTurn] * amount #creates a variable that collects how much money a user won
+balance -= amount
+print(player, "won", win)
+print(player, "has a balance of", balance, "\n")
+elif occurances[playerTurn] == 1:
+win = occurances[playerTurn] * amount
+balance += win
+print(player, "won", win)
+print(player, "has a balance of", balance, "\n")
+elif occurances[playerTurn] == 2:
+win = occurances[playerTurn] * amount
+balance += win
+print(player, "won", win)
+print(player, "has a balance of", balance, "\n")
+else:
+win = occurances[playerTurn] * amount
+balance += win
+print(player, "won", win)
+print(player, "has a balance of", balance, "\n")
+continue
+winnings.append(win) #appends the amount a user won to a list
+return winnings
+
+
+def calculation_players(UserBet, Players, occurances): #calculates how much the user won, uses this to change their balance and puts this new balance in place for the old balance, to allow an updated Players dictionary to be used throughout the program
+playerTurn = -1
+for player, balance in Players.items():
+playerTurn += 1 
+for symbol, amount in UserBet[playerTurn].items():
+if occurances[playerTurn] == 0:
+win = occurances[playerTurn] * amount
+balance -= amount #updates a user's balance based on the results of the last round
+elif occurances[playerTurn] == 1:
+win = occurances[playerTurn] * amount
+balance += win
+elif occurances[playerTurn] == 2:
+win = occurances[playerTurn] * amount
+balance += win
+else:
+win = occurances[playerTurn] * amount
+balance += win
+continue
+Players[player] = balance #updates the dictionary of containing each user and their balance
+return Players
+
+
+def read_file(Players, winnings, player, balance): #reads the user's winnings into a text file
+file = open("/Users/liamweld/Downloads/game.txt", "a") #opens a new file and appends the results from each round into the file
+Round = 0
+Round += 1
+for player, balance in Players.items():
+for i in range(len(winnings)):
+file.write(player) #writes the user to the file
+file.write(str(winnings[i])) #writes the user's winnings from the last round to the file
+break
+file.close()
+
+
+def repeat(UserBet, Players, occurances, winnings, player, balance, bigSlot): #asks the user if they want to quit the game and if not, continues playing the game
+EndGame = input("Enter any character if you want to continue playing. Enter 'Q' if you want to quit the game. ")
+if EndGame == 'Q' or EndGame == 'q':
+return
+else:
+UserBet = []
+for player, balance in Players.items():
+if balance &gt; 0:
+make_bets(player, balance)
+UserBet.append(newUserBet)
+else:
+return False
+rand_slot()
+counting(UserBet, bigSlot)
+calculation_winnings(UserBet, Players, occurances)
+calculation_players(UserBet, Players, occurances)
+read_file(Players, winnings, player, balance)
+
+repeat(UserBet, Players, occurances, winnings, player, balance, bigSlot) #continues executing the entire game until the user quits
+
+main()
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

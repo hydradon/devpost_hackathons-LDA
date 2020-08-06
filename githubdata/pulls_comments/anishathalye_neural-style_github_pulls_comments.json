@@ -1,0 +1,1480 @@
+[
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46732618",
+        "pull_request_review_id": null,
+        "id": 46732618,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ2NzMyNjE4",
+        "diff_hunk": "@@ -76,21 +84,31 @@ def main():\n                 content_image.shape[1] * width)), width)\n         content_image = scipy.misc.imresize(content_image, new_shape)\n     target_shape = content_image.shape\n-    style_image = scipy.misc.imresize(style_image, options.style_scale *\n-            target_shape[1] / style_image.shape[1])\n+    for i in range(0,num_styles):\n+        style_scale = STYLE_SCALE\n+        if options.style_scales != None:\n+            style_scale = options.style_scales[i]\n+        style_images[i] = scipy.misc.imresize(style_images[i], style_scale *\n+                target_shape[1] / style_images[i].shape[1])\n+\n+    style_blend_weights = options.style_blend_weights",
+        "path": "neural_style.py",
+        "position": 58,
+        "original_position": 59,
+        "commit_id": "2132fdb83a50945e2c081baab10eb249d87b62a8",
+        "original_commit_id": "8080684773ebdcda83ffb0938bf30829752b61e5",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Should these be normalized?\n",
+        "created_at": "2015-12-04T21:10:02Z",
+        "updated_at": "2015-12-05T17:55:20Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46732618",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/3",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46732618"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46732618"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/3"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46732823",
+        "pull_request_review_id": null,
+        "id": 46732823,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ2NzMyODIz",
+        "diff_hunk": "@@ -8,14 +8,18 @@\n CONTENT_LAYER = 'relu4_2'\n STYLE_LAYERS = ('relu1_1', 'relu2_1', 'relu3_1', 'relu4_1', 'relu5_1')\n \n-\n-def stylize(network, initial, content, style, iterations,\n-        content_weight, style_weight, tv_weight,\n+def stylize(network, initial, content, styles, iterations,\n+        content_weight, style_weight, style_blend_weights, tv_weight,\n         learning_rate, print_iterations=None, checkpoint_iterations=None):\n     shape = (1,) + content.shape\n-    style_shape = (1,) + style.shape\n+    style_shapes = []\n+    num_styles = len(styles)\n+    for i in range(0,num_styles):",
+        "path": "stylize.py",
+        "position": null,
+        "original_position": 14,
+        "commit_id": "2132fdb83a50945e2c081baab10eb249d87b62a8",
+        "original_commit_id": "8080684773ebdcda83ffb0938bf30829752b61e5",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Don't need the lower bound for the `range()` constructor.\nAlso, it's more Pythonic to iterate over the objects:\n\n``` python\nfor style in styles:\n    style_shapes.append((1,) + style.shape)\n```\n\nOr even more concise:\n\n``` python\nstyle_shapes = [(1,) + style.shape for style in styles]\n```\n",
+        "created_at": "2015-12-04T21:11:59Z",
+        "updated_at": "2015-12-05T17:55:20Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46732823",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/3",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46732823"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46732823"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/3"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46732855",
+        "pull_request_review_id": null,
+        "id": 46732855,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ2NzMyODU1",
+        "diff_hunk": "@@ -8,14 +8,18 @@\n CONTENT_LAYER = 'relu4_2'\n STYLE_LAYERS = ('relu1_1', 'relu2_1', 'relu3_1', 'relu4_1', 'relu5_1')\n \n-\n-def stylize(network, initial, content, style, iterations,\n-        content_weight, style_weight, tv_weight,\n+def stylize(network, initial, content, styles, iterations,\n+        content_weight, style_weight, style_blend_weights, tv_weight,\n         learning_rate, print_iterations=None, checkpoint_iterations=None):\n     shape = (1,) + content.shape\n-    style_shape = (1,) + style.shape\n+    style_shapes = []\n+    num_styles = len(styles)\n+    for i in range(0,num_styles):\n+        style_shapes.append((1,) + styles[i].shape)\n     content_features = {}\n-    style_features = {}\n+    style_features = []\n+    for i in range(0,num_styles):\n+        style_features.append({})",
+        "path": "stylize.py",
+        "position": null,
+        "original_position": 20,
+        "commit_id": "2132fdb83a50945e2c081baab10eb249d87b62a8",
+        "original_commit_id": "8080684773ebdcda83ffb0938bf30829752b61e5",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "``` python\nstyle_features = [{} for _ in styles]\n```\n",
+        "created_at": "2015-12-04T21:12:24Z",
+        "updated_at": "2015-12-05T17:55:20Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46732855",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/3",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46732855"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46732855"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/3"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46733030",
+        "pull_request_review_id": null,
+        "id": 46733030,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ2NzMzMDMw",
+        "diff_hunk": "@@ -54,17 +59,18 @@ def stylize(network, initial, content, style, iterations,\n                 net[CONTENT_LAYER] - content_features[CONTENT_LAYER]) /\n                 content_features[CONTENT_LAYER].size)\n         # style loss\n-        style_losses = []\n-        for style_layer in STYLE_LAYERS:\n-            layer = net[style_layer]\n-            _, height, width, number = map(lambda i: i.value, layer.get_shape())\n-            size = height * width * number\n-            feats = tf.reshape(layer, (-1, number))\n-            gram = tf.matmul(tf.transpose(feats), feats) / size\n-            style_gram = style_features[style_layer]\n-            style_losses.append(2 * tf.nn.l2_loss(gram - style_gram) /\n-                    style_gram.size)\n-        style_loss = style_weight * reduce(tf.add, style_losses)\n+        style_loss = 0\n+        for i in range(0,num_styles):",
+        "path": "stylize.py",
+        "position": null,
+        "original_position": 64,
+        "commit_id": "2132fdb83a50945e2c081baab10eb249d87b62a8",
+        "original_commit_id": "8080684773ebdcda83ffb0938bf30829752b61e5",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`range(len(styles))` (don't need lower bound)\n",
+        "created_at": "2015-12-04T21:14:14Z",
+        "updated_at": "2015-12-05T17:55:20Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46733030",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/3",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46733030"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46733030"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/3"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46733058",
+        "pull_request_review_id": null,
+        "id": 46733058,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ2NzMzMDU4",
+        "diff_hunk": "@@ -29,14 +33,15 @@ def stylize(network, initial, content, style, iterations,\n     # compute style features in feedforward mode\n     g = tf.Graph()\n     with g.as_default(), g.device('/cpu:0'), tf.Session() as sess:\n-        image = tf.placeholder('float', shape=style_shape)\n-        net, _ = vgg.net(network, image)\n-        style_pre = np.array([vgg.preprocess(style, mean_pixel)])\n-        for layer in STYLE_LAYERS:\n-            features = net[layer].eval(feed_dict={image: style_pre})\n-            features = np.reshape(features, (-1, features.shape[3]))\n-            gram = np.matmul(features.T, features) / features.size\n-            style_features[layer] = gram\n+        for i in range(0,num_styles):",
+        "path": "stylize.py",
+        "position": null,
+        "original_position": 36,
+        "commit_id": "2132fdb83a50945e2c081baab10eb249d87b62a8",
+        "original_commit_id": "8080684773ebdcda83ffb0938bf30829752b61e5",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`range(len(styles))` (don't need lower bound)\n",
+        "created_at": "2015-12-04T21:14:28Z",
+        "updated_at": "2015-12-05T17:55:20Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46733058",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/3",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46733058"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46733058"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/3"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46760389",
+        "pull_request_review_id": null,
+        "id": 46760389,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ2NzYwMzg5",
+        "diff_hunk": "@@ -76,21 +84,31 @@ def main():\n                 content_image.shape[1] * width)), width)\n         content_image = scipy.misc.imresize(content_image, new_shape)\n     target_shape = content_image.shape\n-    style_image = scipy.misc.imresize(style_image, options.style_scale *\n-            target_shape[1] / style_image.shape[1])\n+    for i in range(0,num_styles):\n+        style_scale = STYLE_SCALE\n+        if options.style_scales != None:\n+            style_scale = options.style_scales[i]\n+        style_images[i] = scipy.misc.imresize(style_images[i], style_scale *\n+                target_shape[1] / style_images[i].shape[1])\n+\n+    style_blend_weights = options.style_blend_weights",
+        "path": "neural_style.py",
+        "position": 58,
+        "original_position": 59,
+        "commit_id": "2132fdb83a50945e2c081baab10eb249d87b62a8",
+        "original_commit_id": "8080684773ebdcda83ffb0938bf30829752b61e5",
+        "user": {
+            "login": "ktsiegel",
+            "id": 3227974,
+            "node_id": "MDQ6VXNlcjMyMjc5NzQ=",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/3227974?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/ktsiegel",
+            "html_url": "https://github.com/ktsiegel",
+            "followers_url": "https://api.github.com/users/ktsiegel/followers",
+            "following_url": "https://api.github.com/users/ktsiegel/following{/other_user}",
+            "gists_url": "https://api.github.com/users/ktsiegel/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/ktsiegel/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/ktsiegel/subscriptions",
+            "organizations_url": "https://api.github.com/users/ktsiegel/orgs",
+            "repos_url": "https://api.github.com/users/ktsiegel/repos",
+            "events_url": "https://api.github.com/users/ktsiegel/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/ktsiegel/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "hmm..I was envisioning them passed in as normalized already, but I'll fix this so it auto-normalizes\n",
+        "created_at": "2015-12-05T17:01:41Z",
+        "updated_at": "2015-12-05T17:55:20Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46760389",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/3",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/46760389"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/3#discussion_r46760389"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/3"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/82822812",
+        "pull_request_review_id": 3702944,
+        "id": 82822812,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDgyODIyODEy",
+        "diff_hunk": "@@ -59,11 +59,11 @@ style blend weight of 0.2:\n \n ## Requirements\n \n-* TensorFlow\n-* SciPy\n-* Pillow\n-* NumPy\n-* [Pre-trained VGG network][net] (MD5 `8ee3263992981a1d26e73b3ca028a123`)\n+* [TensorFlow](https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html#download-and-setup)",
+        "path": "README.md",
+        "position": null,
+        "original_position": 9,
+        "commit_id": "d66597ed5392f4b68d3ac2870ce05dcfc0d07009",
+        "original_commit_id": "0556b4c1521a27cf423e571fa4fa076be2c4ec43",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Could we link to https://www.tensorflow.org/versions/master/get_started/os_setup.html#download-and-setup instead?\n",
+        "created_at": "2016-10-11T15:41:20Z",
+        "updated_at": "2016-10-12T00:03:28Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/34#discussion_r82822812",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/34",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/82822812"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/34#discussion_r82822812"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/34"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/82914705",
+        "pull_request_review_id": 3788717,
+        "id": 82914705,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDgyOTE0NzA1",
+        "diff_hunk": "@@ -59,11 +59,11 @@ style blend weight of 0.2:\n \n ## Requirements\n \n-* TensorFlow\n-* SciPy\n-* Pillow\n-* NumPy\n-* [Pre-trained VGG network][net] (MD5 `8ee3263992981a1d26e73b3ca028a123`)\n+* [TensorFlow](https://www.tensorflow.org/versions/r0.11/get_started/os_setup.html#download-and-setup)",
+        "path": "README.md",
+        "position": null,
+        "original_position": 9,
+        "commit_id": "d66597ed5392f4b68d3ac2870ce05dcfc0d07009",
+        "original_commit_id": "0556b4c1521a27cf423e571fa4fa076be2c4ec43",
+        "user": {
+            "login": "daj",
+            "id": 739125,
+            "node_id": "MDQ6VXNlcjczOTEyNQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/739125?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/daj",
+            "html_url": "https://github.com/daj",
+            "followers_url": "https://api.github.com/users/daj/followers",
+            "following_url": "https://api.github.com/users/daj/following{/other_user}",
+            "gists_url": "https://api.github.com/users/daj/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/daj/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/daj/subscriptions",
+            "organizations_url": "https://api.github.com/users/daj/orgs",
+            "repos_url": "https://api.github.com/users/daj/repos",
+            "events_url": "https://api.github.com/users/daj/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/daj/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Good catch, updated!\n",
+        "created_at": "2016-10-12T00:04:29Z",
+        "updated_at": "2016-10-12T00:04:29Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/34#discussion_r82914705",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/34",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/82914705"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/34#discussion_r82914705"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/34"
+            }
+        },
+        "in_reply_to_id": 82822812
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83290966",
+        "pull_request_review_id": 4145196,
+        "id": 83290966,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDgzMjkwOTY2",
+        "diff_hunk": "@@ -96,7 +96,12 @@ def stylize(network, initial, content, styles, iterations,\n         loss = content_loss + style_loss + tv_loss\n \n         # optimizer setup\n-        train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+\n+        def train_step(session = None ,iterations = 0):\n+            if optimizer == 'adam':\n+                tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+            elif optimizer == 'lbfgs':\n+                tf.contrib.opt.ScipyOptimizerInterface(loss, method='L-BFGS-B', options={'maxiter': iterations}).minimize(session)",
+        "path": "stylize.py",
+        "position": 19,
+        "original_position": 19,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "8d5e44cd2cce38dc7c375e060aed3c9884aa6061",
+        "user": {
+            "login": "petronny",
+            "id": 5357170,
+            "node_id": "MDQ6VXNlcjUzNTcxNzA=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/5357170?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/petronny",
+            "html_url": "https://github.com/petronny",
+            "followers_url": "https://api.github.com/users/petronny/followers",
+            "following_url": "https://api.github.com/users/petronny/following{/other_user}",
+            "gists_url": "https://api.github.com/users/petronny/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/petronny/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/petronny/subscriptions",
+            "organizations_url": "https://api.github.com/users/petronny/orgs",
+            "repos_url": "https://api.github.com/users/petronny/repos",
+            "events_url": "https://api.github.com/users/petronny/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/petronny/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "See more:  \n- https://github.com/tensorflow/tensorflow/issues/446\n- https://github.com/tensorflow/tensorflow/blob/master/tensorflow/contrib/opt/python/training/external_optimizer.py#L246\n",
+        "created_at": "2016-10-13T19:16:28Z",
+        "updated_at": "2016-10-13T19:37:14Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r83290966",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83290966"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r83290966"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83291881",
+        "pull_request_review_id": 4146046,
+        "id": 83291881,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDgzMjkxODgx",
+        "diff_hunk": "@@ -96,7 +96,12 @@ def stylize(network, initial, content, styles, iterations,\n         loss = content_loss + style_loss + tv_loss\n \n         # optimizer setup\n-        train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+\n+        def train_step(session = None ,iterations = 0):\n+            if optimizer == 'adam':\n+                tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+            elif optimizer == 'lbfgs':\n+                tf.contrib.opt.ScipyOptimizerInterface(loss, method='L-BFGS-B', options={'maxiter': iterations}).minimize(session)",
+        "path": "stylize.py",
+        "position": 19,
+        "original_position": 19,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "8d5e44cd2cce38dc7c375e060aed3c9884aa6061",
+        "user": {
+            "login": "petronny",
+            "id": 5357170,
+            "node_id": "MDQ6VXNlcjUzNTcxNzA=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/5357170?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/petronny",
+            "html_url": "https://github.com/petronny",
+            "followers_url": "https://api.github.com/users/petronny/followers",
+            "following_url": "https://api.github.com/users/petronny/following{/other_user}",
+            "gists_url": "https://api.github.com/users/petronny/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/petronny/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/petronny/subscriptions",
+            "organizations_url": "https://api.github.com/users/petronny/orgs",
+            "repos_url": "https://api.github.com/users/petronny/repos",
+            "events_url": "https://api.github.com/users/petronny/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/petronny/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "About `options={'maxiter': iterations}`:\nSetting `options={'maxiter': 1}` here and run the iterations in the \"adam way\" will run out of memory in the first 100 iterations on my GTX970. But run all the iterations in 1 time works fine. I guess somewhere of it is leaking memory.\n",
+        "created_at": "2016-10-13T19:21:38Z",
+        "updated_at": "2016-10-13T19:37:14Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r83291881",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83291881"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r83291881"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        },
+        "in_reply_to_id": 83290966
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83292708",
+        "pull_request_review_id": 4146840,
+        "id": 83292708,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDgzMjkyNzA4",
+        "diff_hunk": "@@ -111,20 +116,39 @@ def print_progress(i, last=False):\n         best = None\n         with tf.Session() as sess:\n             sess.run(tf.initialize_all_variables())\n-            for i in range(iterations):\n-                last_step = (i == iterations - 1)\n-                print_progress(i, last=last_step)\n-                train_step.run()\n-\n-                if (checkpoint_iterations and i % checkpoint_iterations == 0) or last_step:\n+            if optimizer == 'adam':\n+                for i in range(iterations):\n+                    last_step = (i == iterations - 1)\n+                    print_progress(i, last=last_step)\n+                    train_step()\n+\n+                    if (checkpoint_iterations and i % checkpoint_iterations == 0) or last_step:\n+                        this_loss = loss.eval()\n+                        if this_loss < best_loss:\n+                            best_loss = this_loss\n+                            best = image.eval()\n+                        yield (\n+                            (None if last_step else i),\n+                            vgg.unprocess(best.reshape(shape[1:]), mean_pixel)\n+                        )\n+            elif optimizer == 'lbfgs':\n+                if not checkpoint_iterations:",
+        "path": "stylize.py",
+        "position": 49,
+        "original_position": 49,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "8d5e44cd2cce38dc7c375e060aed3c9884aa6061",
+        "user": {
+            "login": "petronny",
+            "id": 5357170,
+            "node_id": "MDQ6VXNlcjUzNTcxNzA=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/5357170?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/petronny",
+            "html_url": "https://github.com/petronny",
+            "followers_url": "https://api.github.com/users/petronny/followers",
+            "following_url": "https://api.github.com/users/petronny/following{/other_user}",
+            "gists_url": "https://api.github.com/users/petronny/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/petronny/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/petronny/subscriptions",
+            "organizations_url": "https://api.github.com/users/petronny/orgs",
+            "repos_url": "https://api.github.com/users/petronny/repos",
+            "events_url": "https://api.github.com/users/petronny/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/petronny/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I used a different way to run the iterations due to the memory leaking problem.\nIt squashes the iterations to the next checkpoint.\n`print-iterations` is still working when `n * checkpoint_iterations % print-iterations == 0`\n",
+        "created_at": "2016-10-13T19:26:14Z",
+        "updated_at": "2016-10-13T19:37:14Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r83292708",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83292708"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r83292708"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84331603",
+        "pull_request_review_id": 5116065,
+        "id": 84331603,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg0MzMxNjAz",
+        "diff_hunk": "@@ -115,11 +118,14 @@ def main():\n         parser.error(\"To save intermediate images, the checkpoint output \"\n                      \"parameter must contain `%s` (e.g. `foo%s.jpg`)\")\n \n+    from stylize import stylize",
+        "path": "neural_style.py",
+        "position": 39,
+        "original_position": 39,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "any reason this has been moved here?\n",
+        "created_at": "2016-10-20T17:11:46Z",
+        "updated_at": "2016-10-20T17:16:59Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84331603",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84331603"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84331603"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84332315",
+        "pull_request_review_id": 5116065,
+        "id": 84332315,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg0MzMyMzE1",
+        "diff_hunk": "@@ -96,7 +96,12 @@ def stylize(network, initial, content, styles, iterations,\n         loss = content_loss + style_loss + tv_loss\n \n         # optimizer setup\n-        train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+\n+        def train_step(session = None ,iterations = 0):\n+            if optimizer == 'adam':\n+                tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+            elif optimizer == 'lbfgs':\n+                tf.contrib.opt.ScipyOptimizerInterface(loss, method='L-BFGS-B', options={'maxiter': iterations}).minimize(session)",
+        "path": "stylize.py",
+        "position": 19,
+        "original_position": 19,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "8d5e44cd2cce38dc7c375e060aed3c9884aa6061",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I haven't tried this specific thing, but this seems kind of odd.\n\nAlso, in general \u2013\u00a0LBFGS is a stateful optimization method. So doing 1 iteration of LBFGS N times vs doing N iterations of LBFGS once wouldn't produce the same results (because the former would essentially throw away the state every time). So we need a good way of doing `iterations` iterations while being able to probe at progress (print stuff / generate checkpoint images).\n",
+        "created_at": "2016-10-20T17:15:24Z",
+        "updated_at": "2016-10-20T17:16:59Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84332315",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84332315"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84332315"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        },
+        "in_reply_to_id": 83290966
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84332403",
+        "pull_request_review_id": 5116065,
+        "id": 84332403,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg0MzMyNDAz",
+        "diff_hunk": "@@ -96,7 +96,12 @@ def stylize(network, initial, content, styles, iterations,\n         loss = content_loss + style_loss + tv_loss\n \n         # optimizer setup\n-        train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)\n+\n+        def train_step(session = None ,iterations = 0):\n+            if optimizer == 'adam':",
+        "path": "stylize.py",
+        "position": 16,
+        "original_position": 16,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I tried `--optimizer adam` and this doesn't work.\n",
+        "created_at": "2016-10-20T17:15:49Z",
+        "updated_at": "2016-10-20T17:16:59Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84332403",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84332403"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84332403"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84332581",
+        "pull_request_review_id": 5116065,
+        "id": 84332581,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg0MzMyNTgx",
+        "diff_hunk": "@@ -111,20 +116,39 @@ def print_progress(i, last=False):\n         best = None\n         with tf.Session() as sess:\n             sess.run(tf.initialize_all_variables())\n-            for i in range(iterations):\n-                last_step = (i == iterations - 1)\n-                print_progress(i, last=last_step)\n-                train_step.run()\n-\n-                if (checkpoint_iterations and i % checkpoint_iterations == 0) or last_step:\n+            if optimizer == 'adam':\n+                for i in range(iterations):\n+                    last_step = (i == iterations - 1)\n+                    print_progress(i, last=last_step)\n+                    train_step()\n+\n+                    if (checkpoint_iterations and i % checkpoint_iterations == 0) or last_step:\n+                        this_loss = loss.eval()\n+                        if this_loss < best_loss:\n+                            best_loss = this_loss\n+                            best = image.eval()\n+                        yield (\n+                            (None if last_step else i),\n+                            vgg.unprocess(best.reshape(shape[1:]), mean_pixel)\n+                        )\n+            elif optimizer == 'lbfgs':\n+                if not checkpoint_iterations:",
+        "path": "stylize.py",
+        "position": 49,
+        "original_position": 49,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "8d5e44cd2cce38dc7c375e060aed3c9884aa6061",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Yeah\u2026 ideally, we'd investigate what's going on, and then hopefully we can get away with a much smaller diff to achieve the same effect.\n",
+        "created_at": "2016-10-20T17:16:38Z",
+        "updated_at": "2016-10-20T17:16:59Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84332581",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/84332581"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r84332581"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        },
+        "in_reply_to_id": 83292708
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85631477",
+        "pull_request_review_id": 6339710,
+        "id": 85631477,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg1NjMxNDc3",
+        "diff_hunk": "@@ -0,0 +1,21 @@\n+# From official Dockerfile: https://github.com/tensorflow/tensorflow/blob/d44d271c9da4d244ce4b2ffaf808adbe4cff759d/tensorflow/tools/docker/Dockerfile\n+FROM tensorflow/tensorflow:latest\n+\n+# install git add clone neural-style.git\n+RUN apt-get update\n+RUN apt-get install -y --no-install-recommends git\n+RUN git clone https://github.com/anishathalye/neural-style.git\n+\n+# Pillow dependences\n+RUN apt-get install -y libffi-dev libssl-dev libtiff5-dev libjpeg8-dev zlib1g-dev \\\n+    libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk\n+RUN pip install --trusted-host pypi.douban.com -i http://pypi.douban.com/simple/ -U pip\n+RUN pip install --trusted-host pypi.douban.com -i http://pypi.douban.com/simple/ -U Pillow\n+# RUN pip install --trusted-host pypi.douban.com -i http://pypi.douban.com/simple/ -U pyopenssl ndg-httpsclient pyasn1\n+\n+# Pre-trained network, too large, use local volume instead.\n+RUN apt-get install -y wget\n+#RUN wget http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat\n+#RUN mv imagenet-vgg-verydeep-19.mat neural-style\n+\n+CMD [\"/run_jupyter.sh\"]",
+        "path": "Dockerfile",
+        "position": 21,
+        "original_position": 21,
+        "commit_id": "f2b8988591301a8852106b25fe6db34f08948cfa",
+        "original_commit_id": "f2b8988591301a8852106b25fe6db34f08948cfa",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "did you not check this file into Git?\n",
+        "created_at": "2016-10-29T01:50:58Z",
+        "updated_at": "2016-10-29T01:53:15Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/40#discussion_r85631477",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/40",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85631477"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/40#discussion_r85631477"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/40"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85631501",
+        "pull_request_review_id": 6339710,
+        "id": 85631501,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg1NjMxNTAx",
+        "diff_hunk": "@@ -57,6 +57,33 @@ style blend weight of 0.2:\n ![input-style](examples/2-style1.jpg)\n ![input-style](examples/2-style2.jpg)\n \n+## Running in Docker(CPU only)\n+#### Docker build:\n+```\n+docker build -t docker_neural_style .\n+```\n+\n+#### Download Pre-trained imagenet-vgg-verydeep-19.mat in your computer\n+```\n+wget http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat\n+```\n+Store in /Users/you/ for example\n+\n+#### Docker run\n+```\n+docker run -it -p 8888:8888 -v /Users/you:/notebooks/neural-style-mat docker_neural_style\n+```\n+Then you can run neural-style code with jupyter notebook in http://localhost:8888/\n+\n+#### Docker run in command\n+```\n+docker run -it -p 8888:8888 -v /Users/you:/notebooks/neural-style-mat docker_neural_style /bin/bash\n+```\n+```\n+python neural_style.py --content examples/1-content.jpg --styles examples/1-style.jpg --output examples/myoutput.jpg --network ../neura\n+l-style-mat/imagenet-vgg-verydeep-19.mat",
+        "path": "README.md",
+        "position": 28,
+        "original_position": 28,
+        "commit_id": "f2b8988591301a8852106b25fe6db34f08948cfa",
+        "original_commit_id": "f2b8988591301a8852106b25fe6db34f08948cfa",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "accidental line break?\n",
+        "created_at": "2016-10-29T01:52:00Z",
+        "updated_at": "2016-10-29T01:53:15Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/40#discussion_r85631501",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/40",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85631501"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/40#discussion_r85631501"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/40"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85640777",
+        "pull_request_review_id": 6347838,
+        "id": 85640777,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg1NjQwNzc3",
+        "diff_hunk": "@@ -57,6 +57,33 @@ style blend weight of 0.2:\n ![input-style](examples/2-style1.jpg)\n ![input-style](examples/2-style2.jpg)\n \n+## Running in Docker(CPU only)\n+#### Docker build:\n+```\n+docker build -t docker_neural_style .\n+```\n+\n+#### Download Pre-trained imagenet-vgg-verydeep-19.mat in your computer\n+```\n+wget http://www.vlfeat.org/matconvnet/models/beta16/imagenet-vgg-verydeep-19.mat\n+```\n+Store in /Users/you/ for example\n+\n+#### Docker run\n+```\n+docker run -it -p 8888:8888 -v /Users/you:/notebooks/neural-style-mat docker_neural_style\n+```\n+Then you can run neural-style code with jupyter notebook in http://localhost:8888/\n+\n+#### Docker run in command\n+```\n+docker run -it -p 8888:8888 -v /Users/you:/notebooks/neural-style-mat docker_neural_style /bin/bash\n+```\n+```\n+python neural_style.py --content examples/1-content.jpg --styles examples/1-style.jpg --output examples/myoutput.jpg --network ../neura\n+l-style-mat/imagenet-vgg-verydeep-19.mat",
+        "path": "README.md",
+        "position": 28,
+        "original_position": 28,
+        "commit_id": "f2b8988591301a8852106b25fe6db34f08948cfa",
+        "original_commit_id": "f2b8988591301a8852106b25fe6db34f08948cfa",
+        "user": {
+            "login": "lijingpeng",
+            "id": 5182518,
+            "node_id": "MDQ6VXNlcjUxODI1MTg=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/5182518?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/lijingpeng",
+            "html_url": "https://github.com/lijingpeng",
+            "followers_url": "https://api.github.com/users/lijingpeng/followers",
+            "following_url": "https://api.github.com/users/lijingpeng/following{/other_user}",
+            "gists_url": "https://api.github.com/users/lijingpeng/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/lijingpeng/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/lijingpeng/subscriptions",
+            "organizations_url": "https://api.github.com/users/lijingpeng/orgs",
+            "repos_url": "https://api.github.com/users/lijingpeng/repos",
+            "events_url": "https://api.github.com/users/lijingpeng/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/lijingpeng/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this line break should be moved. it's a typo.\n",
+        "created_at": "2016-10-29T14:14:54Z",
+        "updated_at": "2016-10-29T14:14:54Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/40#discussion_r85640777",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/40",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85640777"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/40#discussion_r85640777"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/40"
+            }
+        },
+        "in_reply_to_id": 85631501
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85642439",
+        "pull_request_review_id": 6349282,
+        "id": 85642439,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg1NjQyNDM5",
+        "diff_hunk": "@@ -115,11 +118,14 @@ def main():\n         parser.error(\"To save intermediate images, the checkpoint output \"\n                      \"parameter must contain `%s` (e.g. `foo%s.jpg`)\")\n \n+    from stylize import stylize",
+        "path": "neural_style.py",
+        "position": 39,
+        "original_position": 39,
+        "commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "original_commit_id": "19b04792cc39d6dc6c5d7571d16952ddfa94f66b",
+        "user": {
+            "login": "petronny",
+            "id": 5357170,
+            "node_id": "MDQ6VXNlcjUzNTcxNzA=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/5357170?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/petronny",
+            "html_url": "https://github.com/petronny",
+            "followers_url": "https://api.github.com/users/petronny/followers",
+            "following_url": "https://api.github.com/users/petronny/following{/other_user}",
+            "gists_url": "https://api.github.com/users/petronny/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/petronny/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/petronny/subscriptions",
+            "organizations_url": "https://api.github.com/users/petronny/orgs",
+            "repos_url": "https://api.github.com/users/petronny/repos",
+            "events_url": "https://api.github.com/users/petronny/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/petronny/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "As I said,\n- b1ad968 is to prevent showing\n\n```\nI tensorflow/stream_executor/dso_loader.cc:116] successfully opened CUDA library libcublas.so locally\nI tensorflow/stream_executor/dso_loader.cc:116] successfully opened CUDA library libcudnn.so.5 locally\nI tensorflow/stream_executor/dso_loader.cc:116] successfully opened CUDA library libcufft.so locally\nI tensorflow/stream_executor/dso_loader.cc:116] successfully opened CUDA library libcuda.so.1 locally\nI tensorflow/stream_executor/dso_loader.cc:116] successfully opened CUDA library libcurand.so locally\n```\n\nwhen running `python neural_style.py --help`\n",
+        "created_at": "2016-10-29T15:21:26Z",
+        "updated_at": "2016-10-29T15:21:26Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/38#discussion_r85642439",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/38",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/85642439"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/38#discussion_r85642439"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/38"
+            }
+        },
+        "in_reply_to_id": 84331603
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83138792",
+        "pull_request_review_id": 3999249,
+        "id": 83138792,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDgzMTM4Nzky",
+        "diff_hunk": "@@ -19,7 +19,11 @@ seems to be around 3x slower than implementations using Torch.\n \n `python neural_style.py --content <content file> --styles <style file> --output <output file>`\n \n-(run `python neural_style.py --help` to see a list of all options)\n+Run `python neural_style.py --help` to see a list of all options.\n+\n+Use `--checkpoint-output` and `--checkpoint-iterations` to save checkpoint images.\n+\n+Use `--iterations` to change the number of iterations (default 1000).  1000 iterations take around 10 hours to run on a Mid 2013 Macbook Air for a 528\u00d7960 pixel content file.  ",
+        "path": "README.md",
+        "position": null,
+        "original_position": 9,
+        "commit_id": "890fe78e4ff30c489ae9cd9b423692b20f2153ea",
+        "original_commit_id": "9f9f9bbddc45be90cf6ebb1702b62c26b3033b4a",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Can we mention something about a GPU here? This program should really be run on a machine with a powerful GPU \ud83d\ude1b \n\nBenchmarking on a Maxwell Titan X or a Pascal Titan X seems like it would be good.\n",
+        "created_at": "2016-10-13T03:20:44Z",
+        "updated_at": "2016-11-06T19:00:27Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/36#discussion_r83138792",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/36",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/83138792"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/36#discussion_r83138792"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/36"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/86688820",
+        "pull_request_review_id": 7334901,
+        "id": 86688820,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDg2Njg4ODIw",
+        "diff_hunk": "@@ -19,7 +19,11 @@ seems to be around 3x slower than implementations using Torch.\n \n `python neural_style.py --content <content file> --styles <style file> --output <output file>`\n \n-(run `python neural_style.py --help` to see a list of all options)\n+Run `python neural_style.py --help` to see a list of all options.\n+\n+Use `--checkpoint-output` and `--checkpoint-iterations` to save checkpoint images.\n+\n+Use `--iterations` to change the number of iterations (default 1000).  For a 528\u00d7960 pixel content file, 1000 iterations take around 30 minutes to run on a GPU, or 10 hours on a Mid 2013 Macbook Air.",
+        "path": "README.md",
+        "position": null,
+        "original_position": 9,
+        "commit_id": "890fe78e4ff30c489ae9cd9b423692b20f2153ea",
+        "original_commit_id": "4b0ba223b0e4ad4fab2e6cd792a653c2b7282be0",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "It would be better to:\n- Use a more standard-sized content image (e.g. 512 x 512)\n- Benchmark on a specific GPU and mention which GPU it was (there's huge variance between GPUs)\n- Benchmark on a specific CPU and mention which CPU it was (rather than just the model of the computer, so people don't have to look it up)\n\nI did a quick benchmark, and for 1000 iterations on a 512x512 image, it takes:\n- 2.5 minutes on a GeForce GTX Titan X\n- 1.5 hours on an Intel Core i7-5930K\n",
+        "created_at": "2016-11-06T15:33:04Z",
+        "updated_at": "2016-11-06T19:00:27Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/36#discussion_r86688820",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/36",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/86688820"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/36#discussion_r86688820"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/36"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99473925",
+        "pull_request_review_id": 20155431,
+        "id": 99473925,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDczOTI1",
+        "diff_hunk": "@@ -69,9 +85,27 @@ def build_parser():\n     parser.add_argument('--learning-rate', type=float,\n             dest='learning_rate', help='learning rate (default %(default)s)',\n             metavar='LEARNING_RATE', default=LEARNING_RATE)\n+    parser.add_argument('--beta1', type=float,\n+            dest='beta1', help='Adam: beta1 parameter (default %(default)s)',\n+            metavar='BETA1', default=BETA1)\n+    parser.add_argument('--beta2', type=float,\n+            dest='beta2', help='Adam: beta2 parameter (default %(default)s)',\n+            metavar='BETA2', default=BETA2)\n+    parser.add_argument('--eps', type=float,\n+            dest='epsilon', help='Adam: epsilon parameter (default %(default)s)',\n+            metavar='EPSILON', default=EPSILON)\n     parser.add_argument('--initial',\n             dest='initial', help='initial image',\n             metavar='INITIAL')\n+    parser.add_argument('--initial-noiseblend', type=float,\n+            dest='initial_noiseblend', help='ratio of blending initial image with normalized noise (if no initial image specified, content image is used) (default %(default)s)',\n+            metavar='INITIAL_NOISEBLEND')\n+    parser.add_argument('--preserve-colors', type=int,",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 66,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Should be a boolean flag (see https://github.com/anishathalye/dotbot/blob/master/dotbot/cli.py#L15 for an example)",
+        "created_at": "2017-02-04T20:02:18Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99473925",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99473925"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99473925"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99473939",
+        "pull_request_review_id": 20155431,
+        "id": 99473939,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDczOTM5",
+        "diff_hunk": "@@ -10,15 +10,25 @@\n import math\n from argparse import ArgumentParser\n \n+from matplotlib import pyplot as plt",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I'd prefer to not add a dependency on matplotlib - is there any way to achieve the same effect without this?",
+        "created_at": "2017-02-04T20:03:20Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99473939",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99473939"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99473939"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474083",
+        "pull_request_review_id": 20155431,
+        "id": 99474083,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0MDgz",
+        "diff_hunk": "@@ -4,31 +4,32 @@\n import numpy as np\n import scipy.io\n \n+vgg19_layers = (",
+        "path": "vgg.py",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "make this a named constant like `VGG19_LAYERS`?",
+        "created_at": "2017-02-04T20:09:29Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474083",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474083"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474083"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474112",
+        "pull_request_review_id": 20155431,
+        "id": 99474112,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0MTEy",
+        "diff_hunk": "@@ -34,43 +34,71 @@ def stylize(network, initial, content, styles, iterations,\n     content_features = {}\n     style_features = [{} for _ in styles]\n \n+    vgg_weights, vgg_mean_pixel = vgg.load_net(network)\n+    \n+    layer_weight = 1.0\n+    STYLE_LAYERS_WEIGHTS = {}",
+        "path": "stylize.py",
+        "position": null,
+        "original_position": 32,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "use lower snake case `style_layer_weights` for local variables",
+        "created_at": "2017-02-04T20:10:44Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474112",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474112"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474112"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474125",
+        "pull_request_review_id": 20155431,
+        "id": 99474125,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0MTI1",
+        "diff_hunk": "@@ -10,15 +10,25 @@\n import math\n from argparse import ArgumentParser\n \n+from matplotlib import pyplot as plt\n+\n+import tensorflow as tf",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 6,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "remove tensorflow import",
+        "created_at": "2017-02-04T20:11:48Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474125",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474125"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474125"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474162",
+        "pull_request_review_id": 20155431,
+        "id": 99474162,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0MTYy",
+        "diff_hunk": "@@ -118,25 +161,49 @@ def main():\n     for iteration, image in stylize(\n         network=options.network,\n         initial=initial,\n+        initial_noiseblend=options.initial_noiseblend,\n         content=content_image,\n         styles=style_images,\n         iterations=options.iterations,\n         content_weight=options.content_weight,\n+        content_weight_blend=options.content_weight_blend,\n         style_weight=options.style_weight,\n+        style_layer_weight_exp=options.style_layer_weight_exp,\n         style_blend_weights=style_blend_weights,\n         tv_weight=options.tv_weight,\n         learning_rate=options.learning_rate,\n+        beta1=options.beta1,\n+        beta2=options.beta2,\n+        epsilon=options.epsilon,\n+        pooling=options.pooling,\n         print_iterations=options.print_iterations,\n         checkpoint_iterations=options.checkpoint_iterations\n     ):\n         output_file = None\n+        combined_rgb = image\n         if iteration is not None:\n             if options.checkpoint_output:\n                 output_file = options.checkpoint_output % iteration\n         else:\n+            if options.preserve_colors == 1:",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 119,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "do you think it makes sense to move all this logic into `stylize.py`? that's where most of the actual stylizing code is.",
+        "created_at": "2017-02-04T20:13:16Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474162",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474162"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474162"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474169",
+        "pull_request_review_id": 20155431,
+        "id": 99474169,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0MTY5",
+        "diff_hunk": "@@ -149,8 +216,41 @@ def imread(path):\n \n def imsave(path, img):\n     img = np.clip(img, 0, 255).astype(np.uint8)\n-    scipy.misc.imsave(path, img)\n+    plt.imsave(path, img)\n+\n+def rgb2yuv(rgb):",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 149,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "move into `stylize.py`?",
+        "created_at": "2017-02-04T20:13:28Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474169",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474169"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474169"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474583",
+        "pull_request_review_id": 20156016,
+        "id": 99474583,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0NTgz",
+        "diff_hunk": "@@ -10,15 +10,25 @@\n import math\n from argparse import ArgumentParser\n \n+from matplotlib import pyplot as plt",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "avoroshilov",
+            "id": 11299031,
+            "node_id": "MDQ6VXNlcjExMjk5MDMx",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/11299031?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/avoroshilov",
+            "html_url": "https://github.com/avoroshilov",
+            "followers_url": "https://api.github.com/users/avoroshilov/followers",
+            "following_url": "https://api.github.com/users/avoroshilov/following{/other_user}",
+            "gists_url": "https://api.github.com/users/avoroshilov/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/avoroshilov/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/avoroshilov/subscriptions",
+            "organizations_url": "https://api.github.com/users/avoroshilov/orgs",
+            "repos_url": "https://api.github.com/users/avoroshilov/repos",
+            "events_url": "https://api.github.com/users/avoroshilov/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/avoroshilov/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Tried googling setting JPEG quality in various imsave functions, but unfortunately didn't find any, I've tried imsave from several packages (I think **scipy**, **PIL** and **matplotlib**), and first two seem to have JPEG quality 65 (or 75? do not remember which of the two) by default, and not changeable. The later one seems to have quality 95 also not changeable, but this is a lot better overall.",
+        "created_at": "2017-02-04T20:32:41Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474583",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474583"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474583"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        },
+        "in_reply_to_id": 99473939
+    },
+    {
+        "url": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474601",
+        "pull_request_review_id": 20156033,
+        "id": 99474601,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDk5NDc0NjAx",
+        "diff_hunk": "@@ -10,15 +10,25 @@\n import math\n from argparse import ArgumentParser\n \n+from matplotlib import pyplot as plt",
+        "path": "neural_style.py",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "85c38702a50f4e198e8a863fdd545f6152942b3c",
+        "original_commit_id": "43ae64597d59cb7f188472f2e327f357c402b3de",
+        "user": {
+            "login": "anishathalye",
+            "id": 3526486,
+            "node_id": "MDQ6VXNlcjM1MjY0ODY=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/3526486?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/anishathalye",
+            "html_url": "https://github.com/anishathalye",
+            "followers_url": "https://api.github.com/users/anishathalye/followers",
+            "following_url": "https://api.github.com/users/anishathalye/following{/other_user}",
+            "gists_url": "https://api.github.com/users/anishathalye/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/anishathalye/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/anishathalye/subscriptions",
+            "organizations_url": "https://api.github.com/users/anishathalye/orgs",
+            "repos_url": "https://api.github.com/users/anishathalye/repos",
+            "events_url": "https://api.github.com/users/anishathalye/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/anishathalye/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "is the difference noticeable? (I didn't do a side-by-side comparison)",
+        "created_at": "2017-02-04T20:33:29Z",
+        "updated_at": "2017-02-04T22:25:22Z",
+        "html_url": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474601",
+        "pull_request_url": "https://api.github.com/repos/anishathalye/neural-style/pulls/50",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/comments/99474601"
+            },
+            "html": {
+                "href": "https://github.com/anishathalye/neural-style/pull/50#discussion_r99474601"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/anishathalye/neural-style/pulls/50"
+            }
+        },
+        "in_reply_to_id": 99473939
+    }
+]

@@ -1,0 +1,138 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/cunnLp3Ipi8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="693033" data-title='Our "logo".' href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/693/033/datas/original.png">
+                            <img alt="Super MIDIo Bros &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/693/033/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Our "logo".
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Super MIDIo Bros.
+                </h1>
+                <h2>
+                    Conception
+                </h2>
+                <p>
+                    Eashwar arrived to the hackathon after the other three members of the team had already settled into their spot (right next to the snack booth, conveniently). He had brought his MIDI keyboard with him since he came directly from a meeting for the Video Game Music Club at the University of Michigan (of which he is a leader). The brainstorming discussion we held started to revolve around the MIDI keyboard and what possible hacks there could be involving it. We settled on the idea of controlling Super Mario Bros. using a MIDI keyboard after Eashwar started playing the Mario theme on the keyboard.
+                </p>
+                <h2>
+                    The Beginning
+                </h2>
+                <p>
+                    The first thing we had to do was make sure we were able to read in the MIDI input from the keyboard. We experimented around with different libraries and even just directly reading from the USB buffer, but after some exploration we settled on using
+                    <code>
+                        pygame.midi
+                    </code>
+                    for our MIDI input. We also settled on
+                    <code>
+                        pyautogui
+                    </code>
+                    as the library to use to give Python the ability to manipulate the emulated NES game.
+                </p>
+                <h2>
+                    Biggest Roadblock
+                </h2>
+                <p>
+                    The most difficult challenge we faced was implementing multithreading into our hack. Since the
+                    <code>
+                        pyautogui
+                    </code>
+                    stuff would be holding down keyboard inputs for set amounts of time, we knew it would need to be its own subprocess. Initially, we tried to make the process an asynchronous call from our main MIDI parsing function, but that proved to be extremely confusing. Our next approach was to have the two processes as completely separate (launched separately by the command line), but communicating with each other through a
+                    <code>
+                        pickle
+                    </code>
+                    d file. This also was a troublesome approach as file I/O was difficult to deal with. Finally, we ended up using the
+                    <code>
+                        threading
+                    </code>
+                    and
+                    <code>
+                        queue
+                    </code>
+                    libraries to allow for easy communication between the two processes. This proved to be succesful.
+                </p>
+                <h2>
+                    The Piano GUI
+                </h2>
+                <p>
+                    The final element was the keyboard GUI that indicated to the user what notes on the piano they needed to press in order to play the melody. We conveniently used
+                    <code>
+                        pygame
+                    </code>
+                    to draw this UI. We also took advantage of the fact that the piano is a 12 note repeating scale to do some modular arithmetic and calculate where to draw the indicating rectangles.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/midi-js">
+                                midi.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pyautogui
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pygame">
+                                pygame
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/eashwar/super-midio-bros" rel="nofollow" target="_blank" title="https://github.com/eashwar/super-midio-bros">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

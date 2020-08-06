@@ -1,0 +1,285 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/uolweg_qVm4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    FR&Uuml;T
+                </h1>
+                <p>
+                    Full README:
+                    <a href="https://github.com/00111000/MS-Azure-AI-Hackathon-S19" rel="nofollow">
+                        https://github.com/00111000/MS-Azure-AI-Hackathon-S19
+                    </a>
+                </p>
+                <p>
+                    Contact:
+                    <a href="mailto:khesualdo.github@gmail.com" rel="nofollow">
+                        khesualdo.github@gmail.com
+                    </a>
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration comes from
+                    <a href="https://www.youtube.com/watch?v=sAiTuitN5b8&amp;t=253s" rel="nofollow">
+                        this
+                    </a>
+                    video. In the video it shows how hard the Border Service Officers work to protect the American wild life from illegal imports of produce.
+                </p>
+                <p>
+                    While, it is easy to spot rotten fruits, if the fruits are in perfect condition, the agent may or may not know if the fruit is allowed into the country. Also, it is definitely easy to identify common fruits, such as bananas or oranges, however, it is more difficult to identify more exotic fruits, such as cherimoyas, sweetsops, etc... It gets worse when fruits look very similar, for example - strawberry guavas and cranberries, lima and (large) limes or even unripe oranges.
+                </p>
+                <p>
+                    An agent may make a mistake by confiscating permitted items, in this case the people are negatively affected by having to pay a fine. On the other hand, an agent may make a mistake by not confiscating non-permitted items, in this case the entire country is negatively affected by having to pay an even bigger "fine" to treat unknown insects and plant diseases.
+                </p>
+                <h2>
+                    About
+                </h2>
+                <p>
+                    FR&Uuml;T could assist Border Service Officers in identifing different fruits, along with their attributes - such as fruit type, history, origin, as well as whether the fruit is allowed into the country.
+                </p>
+                <p>
+                    FR&Uuml;T could also be used by regular citizens during their shopping trips.
+                </p>
+                <h2>
+                    Run
+                </h2>
+                <p>
+                    Create a Function App resource on Azure portal
+                </p>
+                <ul>
+                    <li>
+                        Select
+                        <code>
+                            HTTP trigger
+                        </code>
+                        as type
+                    </li>
+                    <li>
+                        Copy code from
+                        <code>
+                            function.csx
+                        </code>
+                    </li>
+                    <li>
+                        Set
+                        <code>
+                            FUNCTION_URL
+                        </code>
+                        in
+                        <code>
+                            index.js
+                        </code>
+                    </li>
+                </ul>
+                <p>
+                    Go to
+                    <a href="https://www.customvision.ai" rel="nofollow">
+                        Custom Vision Portal
+                    </a>
+                    and create a new project
+                </p>
+                <ul>
+                    <li>
+                        Set
+                        <code>
+                            Project Type
+                        </code>
+                        as
+                        <code>
+                            Classification
+                        </code>
+                    </li>
+                    <li>
+                        Set
+                        <code>
+                            Classification Types
+                        </code>
+                        as
+                        <code>
+                            Multiclass
+                        </code>
+                    </li>
+                    <li>
+                        Set
+                        <code>
+                            Domains
+                        </code>
+                        as
+                        <code>
+                            Food
+                        </code>
+                    </li>
+                    <li>
+                        Set
+                        <code>
+                            COGNITIVE_URL
+                        </code>
+                        in
+                        <code>
+                            index.js
+                        </code>
+                        for image file (available after publishing the project)
+                    </li>
+                    <li>
+                        Set
+                        <code>
+                            COGNITIVE_KEY
+                        </code>
+                        in
+                        <code>
+                            index.js
+                        </code>
+                        (available after publishing the project)
+                    </li>
+                </ul>
+                <blockquote>
+                    <p>
+                        If you get the
+                        <code>
+                            We only support publishing to a prediction resource in the same region as the training resource the project resides in.
+                        </code>
+                        error, create a Custom Vision resource. Makes sure it is in the same region as all of your other resources.
+                        <a href="https://www.youtube.com/watch?v=Sw_Zkb7WFDA" rel="nofollow">
+                            Tutorial
+                        </a>
+                        on how to use the Custom Vision Portal.
+                    </p>
+                </blockquote>
+                <h4>
+                    Run Client
+                </h4>
+                <pre class="language-nolang"><code>&gt; cd /client
+&gt; http-server -c-1
+</code></pre>
+                <blockquote>
+                    <p>
+                        <a href="https://www.npmjs.com/package/http-server" rel="nofollow">
+                            http-server on npm
+                        </a>
+                    </p>
+                </blockquote>
+                <h4>
+                    Run Server
+                </h4>
+                <pre class="language-nolang"><code>&gt; cd /server
+&gt; node index.js
+</code></pre>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    Surprisingly the biggest challenge was capturing and then sending the image to the back-end. Working so closely with Base64 Encoding, Data URIs, as well as, byte arrays was new for me. I am glad I figured it out in the end!
+                </p>
+                <h2>
+                    Technologies
+                </h2>
+                <ul>
+                    <li>
+                        Azure Cognitive Services (Custom Vision API)
+                    </li>
+                    <li>
+                        Azure Functions
+                    </li>
+                    <li>
+                        HTML, CSS, JS
+                    </li>
+                    <li>
+                        NodeJS, ExpressJS
+                    </li>
+                    <li>
+                        <a href="https://www.kaggle.com/moltean/fruits" rel="nofollow">
+                            Fruits 360 Dataset
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            azure-cognitive-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-custom-vision
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/00111000/MS-Azure-AI-Hackathon-S19" rel="nofollow" target="_blank" title="https://github.com/00111000/MS-Azure-AI-Hackathon-S19">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

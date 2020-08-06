@@ -1,0 +1,308 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="389456" data-title="microservice-graph-dep" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/456/datas/original.png">
+                            <img alt="Hootsuite - Microservice Challenge - Vacuum &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/456/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                microservice-graph-dep
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3>
+                    About
+                </h3>
+                <hr>
+                <p>
+                    Vacuum is a REST API which allows you to understand the dependency graph of your microservices architecture.
+                </p>
+                <p>
+                    It is based on
+                    <a href="http://swagger.io/" rel="nofollow">
+                        Swagger.io
+                    </a>
+                    , you can just submit the URL of your swagger documentation
+and Vacuum will parse it and create the Service-Endpoint graph as you can see in the image bellow.
+                </p>
+                <p>
+                    <img alt="Service-Endpoint-Graph" data-canonical-url="graph-microservice-dependencies.png" src="https://res.cloudinary.com/devpost/image/fetch/s--vPsd6wi6--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/graph-microservice-dependencies.png">
+                </p>
+                <p>
+                    The
+                    <em>
+                        green
+                    </em>
+                    node is the service host name, captured from Swagger document, it represents the main node and is labeled as
+                    <code>
+                        Service
+                    </code>
+                    .
+                    <em>
+                        Blue
+                    </em>
+                    nodes are the service paths, also captured from Swagger spec, the nodes labeled as
+                    <code>
+                        Endpoint
+                    </code>
+                    and have the propety
+                    <code>
+                        path
+                    </code>
+                    which descrives its path on that service. Basically, the graph is composed by host names and paths.
+                </p>
+                <p>
+                    There is only one relationship between
+                    <code>
+                        Service
+                    </code>
+                    and
+                    <code>
+                        Endpoint
+                    </code>
+                    which is identified by the label
+                    <code>
+                        EXPOSES
+                    </code>
+                    . It represents all
+endpoints that are exposed for a given service swagger spec.
+                </p>
+                <p>
+                    Once you have created the Service-Endpoint graph you can adjust your microservices to send a request
+to Vacuum API.
+                </p>
+                <p>
+                    The request needs to inform the details about the call that your service A is sending to your service B.
+After that, Vacuum will create relationships between both services considering the path and http method in use.
+                </p>
+                <p>
+                    The relatioship between the Service rely on a request event with these details:
+                </p>
+                <ul>
+                    <li>
+                        origin_host: The service A host name which is firing the call to service B
+                    </li>
+                    <li>
+                        method: The HTTP method
+                    </li>
+                    <li>
+                        target_host: The service B host name
+                    </li>
+                    <li>
+                        target_path: The endpoint that service A is calling from service B
+                    </li>
+                </ul>
+                <h3>
+                    How I Built It
+                </h3>
+                <hr>
+                <ul>
+                    <li>
+                        Java 8, Spring-Boot, Neo4J, Swagger-Parser
+                    </li>
+                </ul>
+                <h3>
+                    Requirements:
+                </h3>
+                <hr>
+                <ul>
+                    <li>
+                        <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" rel="nofollow">
+                            JDK8
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://neo4j.com/download/" rel="nofollow">
+                            Neo4j Community 3.0.1
+                        </a>
+                    </li>
+                </ul>
+                <h3>
+                    Basic Usage
+                </h3>
+                <hr>
+                <h4>
+                    Creating a Service-Endpoint graph based on a Swagger URL
+                </h4>
+                <pre class="language-nolang"><code>POST &lt;host&gt;:8090/v1/microservices -H 'Content-Type: application/json' -d '{"swagger_url": "&lt;the_swagger_url&gt;"}'
+</code></pre>
+                <h4>
+                    Registering a call from service A to service B
+                </h4>
+                <pre class="language-nolang"><code>POST &lt;host&gt;:8090/v1/requests -H 'Content-Type: application/json' -d '{"origin_host": "api.uber.com", "method": "POST", "target_host": "petstore.swagger.io", "target_path": "/v2/user/login"}'
+</code></pre>
+                <h4>
+                    Registering another call from service A to service B
+                </h4>
+                <pre class="language-nolang"><code>POST &lt;host&gt;:8090/v1/requests -H 'Content-Type: application/json' -d '{"origin_host": "api.uber.com", "method": "DELETE", "target_host": "petstore.swagger.io", "target_path": "/v2/pet"}'
+</code></pre>
+                <h3>
+                    Sample Data
+                </h3>
+                <hr>
+                <p>
+                    Under
+                    <code>
+                        scripts
+                    </code>
+                    folder you will find the script
+                    <code>
+                        fetch_db.sh
+                    </code>
+                    , it will provide some sample data to populate Neo4J.
+It creates two graphs Service-Endpoint and add relatioships (
+                    <code>
+                        GET
+                    </code>
+                    ,
+                    <code>
+                        POST
+                    </code>
+                    ,
+                    <code>
+                        DELETE
+                    </code>
+                    ,
+                    <code>
+                        CALL
+                    </code>
+                    ) for
+                    <code>
+                        Service
+                    </code>
+                    nodes which represents call events between them.
+                </p>
+                <p>
+                    After you have executed the script you can open the Neo4J dashboard
+                    <a href="http://localhost:7474/browser/" rel="nofollow">
+                        http://localhost:7474/browser/
+                    </a>
+                    and execute this Cypher query to see all the entire graph:
+                    <code>
+                        MATCH p=()-[r:EXPOSES]-&gt;() RETURN p
+                    </code>
+                </p>
+                <h3>
+                    Basic Queries via Vacuum API
+                </h3>
+                <hr>
+                <h4>
+                    Get all microservice which contains term
+                    <code>
+                        user
+                    </code>
+                    in ther endpoints:
+                </h4>
+                <pre class="language-nolang"><code>GET &lt;host&gt;:8090/v1/microservices?path_term=user -H 'Content-Type: application/json'
+</code></pre>
+                <h4>
+                    Get all services which rely on service id
+                </h4>
+                <pre class="language-nolang"><code>GET &lt;host&gt;:8090/v1/microservices/b36e8649-e82e-4795-8ef6-c2d8eb3e6620/dependants -H 'Content-Type: application/json'
+</code></pre>
+                <p>
+                    The service id is generate and returned when you send a
+                    <code>
+                        POST /v1/microservices
+                    </code>
+                    with
+                    <code>
+                        swagger_url
+                    </code>
+                    as body param or you can checkout the
+                    <code>
+                        uuid
+                    </code>
+                    param on Neo4j dashboard if you have executed the
+                    <code>
+                        fetch_db.sh
+                    </code>
+                    .
+                </p>
+                <h3>
+                    TODO
+                </h3>
+                <hr>
+                <ul>
+                    <li>
+                        New queries
+                    </li>
+                    <li>
+                        Document Vacuum API with Swagger.io
+                    </li>
+                    <li>
+                        Authentication (API, Neo4J)
+                    </li>
+                    <li>
+                        Unit &amp; IT Tests
+                    </li>
+                    <li>
+                        Improve DDD
+                    </li>
+                    <li>
+                        Better DOCs
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/neo4j">
+                                neo4j
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            spring-boot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            swagger
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/fforbeck/vacuum" rel="nofollow" target="_blank" title="https://github.com/fforbeck/vacuum">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,112 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/QNp7-CON8zI?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Last summer I was coding with friends and came to notice that they each had a unique cadence in their typing. They both had a fairly similar speed but they were polarized with respect to how their time was distributed,  how and when they paused, and the mistakes they made. This inspired me to attempt to use typing style as a means to identify a user.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    TypeSecure builds a user profile based on how they type common dictionary words. This system can be run in the background and by pulling features from current typing it is able to identify if the system is being used by the main user or an unknown third party. In the latter case, the system will lock out the culprit and the user will receive a text alerting them about the event.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    TypeSecure is built completely in python, it uses the pywin32 libraries to grab key-presses and maintains a user identity as a dictionary of English words and their associated timing values. As typing occurs on the machine metrics are generated contrasting the current typing with past data and a decision is made regarding the authenticity of the user. In the event that the user is non-genuine they are locked out and an SMS message is sent to the user through the Twilio API.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The largest challenge in building a typing identification system was finding the correct data features to examine. When I first started out I came up with a variety of metrics and looked at how they compared across different people. In particular I first came up with a metric called fractional character error which looked at the time taken to type a character over the time taken to type the word as a whole. In theory this metric seemed ideal since it was insensitive to typing speed, focusing only on distribution. Alongside this metric, I came up with the idea of 'skew', as the difference between maximum and minimum character typing time as a means of measuring typing variance. In practice however I found these factors did not possess distinct enough information to identify the user and the best option was simply to sum the difference between the stored timing values and those currently being processed. This method is able to pick up on typing speed for specific word and character transitions without sacrificing information about timing distribution. A user and third party may have near identical typing speed but their typing style, and how they distribute their timing, will allow this method to distinguish between them.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        Providing a system to easily train, store, and analyze user typing identity
+                    </li>
+                    <li>
+                        Creating and testing metrics to distinguish users from an unknown third party
+                    </li>
+                    <li>
+                        Integrating with Windows  text-to-speech and the Twilio API to provide user alerts
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    The biggest takeaway I got from this project was in learning how to identify meaningful features within a dataset, and apply that in a practical setting. Along the way I gained experience with the Twilio API for handling SMS, the text-to-speech features provided by Windows 10, and Python's pickling system for object storage.
+                </p>
+                <h2>
+                    What's next for TypeSecure
+                </h2>
+                <p>
+                    The next step for TypeSecure is to take the key features identified by this project and feed them into a supervised learning algorithm such as Naive Bayes or a Support Vector Machine in order to provide greater accuracy in distinguishing between the user and third parties.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            text-to-speech
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/WyattWismer/TypeSecure" rel="nofollow" target="_blank" title="https://github.com/WyattWismer/TypeSecure">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

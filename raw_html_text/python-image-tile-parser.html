@@ -1,0 +1,150 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="857025" data-title="Example output" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/857/025/datas/original.png">
+                            <img alt="Python Image Hashing and Statistic Parsing &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/857/025/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Example output
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="857028" data-title="The world to parse" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/857/028/datas/original.png">
+                            <img alt="Python Image Hashing and Statistic Parsing &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/857/028/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The world to parse
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="856985" data-title="Two types of tiles with similar structure but different tints" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/856/985/datas/original.png">
+                            <img alt="Python Image Hashing and Statistic Parsing &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/856/985/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Two types of tiles with similar structure but different tints
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="856986" data-title='Multiple "grass" tiles appear to be the same, but have slight variations in pixels' href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/856/986/datas/original.png">
+                            <img alt="Python Image Hashing and Statistic Parsing &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/856/986/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Multiple "grass" tiles appear to be the same, but have slight variations in pixels
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    This program is a tool I wrote to help with a future project.
+The future project is a 2d, top-down video game as a way to explore procedural generation. My hope is to generate Legend of Zelda, Link's Awakening style worlds completely procedurally.
+                </p>
+                <h2>
+                    So, where does this python script come in?
+                </h2>
+                <p>
+                    The Legend of Zelda, Link's Awakening map are made of distinct 16x16 pixel tiles. 
+This script takes in screenshots of the existing world maps and calculates statistics for the individual 16x16 tiles, like how often a tile occurs, and probability of a specific tile type neighboring any other given tile type. For example, one can determine the odds a water tile is adjacent to a grass tile.
+                </p>
+                <h2>
+                    The Challenge of Hashing Images
+                </h2>
+                <p>
+                    Looping over an image to calculate stats isn't terribly hard. The challenge came from hashing images. Hashes are used to compare images very quickly. Two identical 16x16pixel tiles must hash to the same value. Two different tiles must hash to different values.
+                </p>
+                <p>
+                    While two tiles 16x16pixel tiles of the same type may appear to be identical, there are often slight variations between corresponding pixels. In other words, a pixel may not have the exact same RGB value of the same-location pixel on the other tile. These variations may be almost indistinguishable to the human eye, however a computer can easily spot the difference. For this project I needed similar looking tiles to hash to the same value, even if they had small differences.
+                </p>
+                <p>
+                    Thus, I implemented an image processing algorithm called 'difference hashing' to handle possible noise. (See
+                    <a href="https://www.hackerfactor.com/blog/index.php?/archives/529-Kind-of-Like-That.html" rel="nofollow">
+                        https://www.hackerfactor.com/blog/index.php?/archives/529-Kind-of-Like-That.html
+                    </a>
+                    for more info on difference hashing)
+                </p>
+                <p>
+                    Unfortunately, difference hashing brought forth a new problem. Some tiles look similar in structure, however have different tints. Difference hashing algorithms flag these tiles as the same. To counter this, I offset the difference hash by a factor of the tile's average pixel value (with a slight tolerance).
+                </p>
+                <h2>
+                    Future work
+                </h2>
+                <p>
+                    My next step is to parallelize this program. This should be fairly trivial, as the world can be divided among each processor, without changing the algorithm. After each processor runs, the statistics can be merged.
+I plan on using the statistics from many old-school Legend of Zelda maps to define the rules for my own game's world generation. I will seed the world with a few random tile types, then fill in the rest based on the most probable neighbor type.
+                </p>
+                <h2>
+                    References
+                </h2>
+                <p>
+                    Input images belong to Nintendo
+                </p>
+                <p>
+                    <a href="https://www.hackerfactor.com/blog/index.php?/archives/529-Kind-of-Like-That.html" rel="nofollow">
+                        https://www.hackerfactor.com/blog/index.php?/archives/529-Kind-of-Like-That.html
+                    </a>
+                    for an overview of image hashing algorithms
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

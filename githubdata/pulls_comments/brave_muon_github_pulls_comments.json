@@ -1,0 +1,1478 @@
+[
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/49333689",
+        "pull_request_review_id": null,
+        "id": 49333689,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ5MzMzNjg5",
+        "diff_hunk": "@@ -225,6 +226,42 @@ void App::OnLogin(LoginHandler* login_handler) {\n     login_handler->CancelAuth();\n }\n \n+bool App::CanCreateWindow(const GURL& opener_url,\n+                     const GURL& opener_top_level_frame_url,\n+                     const GURL& source_origin,\n+                     WindowContainerType container_type,\n+                     const GURL& target_url,\n+                     const content::Referrer& referrer,\n+                     WindowOpenDisposition disposition,\n+                     const blink::WebWindowFeatures& features,\n+                     bool user_gesture,\n+                     bool opener_suppressed,\n+                     content::ResourceContext* context,\n+                     int render_process_id,\n+                     int opener_render_view_id,\n+                     int opener_render_frame_id,\n+                     bool* no_javascript_access) {\n+  // just a reminder that we are on the IO thread\n+  // and need to be careful about v8 isolate usage\n+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);\n+\n+  *no_javascript_access = false;\n+\n+  if (container_type == WINDOW_CONTAINER_TYPE_BACKGROUND) {\n+    return true;\n+  }\n+\n+  // this will override allowpopups\n+  // we need some way to integerate\n+  // it so we can turn popup blocking\n+  // off if desired\n+  if (!user_gesture) {",
+        "path": "atom/browser/api/atom_api_app.cc",
+        "position": null,
+        "original_position": 41,
+        "commit_id": "58064872260cdec858e75c5f4737345a156b4833",
+        "original_commit_id": "af8c1dc73a44ac687c67cfb0ebb316cba3b922b2",
+        "user": {
+            "login": "bbondy",
+            "id": 831718,
+            "node_id": "MDQ6VXNlcjgzMTcxOA==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/831718?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bbondy",
+            "html_url": "https://github.com/bbondy",
+            "followers_url": "https://api.github.com/users/bbondy/followers",
+            "following_url": "https://api.github.com/users/bbondy/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bbondy/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bbondy/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bbondy/subscriptions",
+            "organizations_url": "https://api.github.com/users/bbondy/orgs",
+            "repos_url": "https://api.github.com/users/bbondy/repos",
+            "events_url": "https://api.github.com/users/bbondy/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bbondy/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Super minor nit: capital on first character of a comment and you can probably make this comment only span 2 lines and still stay under the char count. \n",
+        "created_at": "2016-01-11T15:30:37Z",
+        "updated_at": "2016-01-13T05:06:34Z",
+        "html_url": "https://github.com/brave/muon/pull/1#discussion_r49333689",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/49333689"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/1#discussion_r49333689"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/49333781",
+        "pull_request_review_id": null,
+        "id": 49333781,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ5MzMzNzgx",
+        "diff_hunk": "@@ -150,11 +155,28 @@ destroyGuest = (embedder, id) ->\n     delete reverseEmbedderElementsMap[id]\n     delete embedderElementsMap[key]\n \n+process.on 'ATOM_SHELL_GUEST_VIEW_MANAGER_TAB_OPEN', (event, args...) ->\n+  [url, frameName, disposition, options] = args\n+  event.sender.emit 'new-window', event, url, frameName, disposition, options\n+  if (event.sender.isGuest() and not event.sender.allowPopups) or event.defaultPrevented\n+    event.returnValue = null\n+  else\n+    event.returnValue = addGuest(event.sender, createWebContents(event.sender, options))\n+\n+process.on 'ATOM_SHELL_GUEST_VIEW_MANAGER_NEXT_INSTANCE_ID', (event) ->\n+  event.returnValue = getNextInstanceId event.sender\n+\n+process.on 'ATOM_SHELL_GUEST_VIEW_MANAGER_REGISTER_GUEST', (event, webContents, id) ->",
+        "path": "atom/browser/lib/guest-view-manager.coffee",
+        "position": 68,
+        "original_position": 49,
+        "commit_id": "58064872260cdec858e75c5f4737345a156b4833",
+        "original_commit_id": "af8c1dc73a44ac687c67cfb0ebb316cba3b922b2",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I should probably add some comments for these (register, add, create, attach)\n",
+        "created_at": "2016-01-11T15:31:11Z",
+        "updated_at": "2016-01-13T05:06:34Z",
+        "html_url": "https://github.com/brave/muon/pull/1#discussion_r49333781",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/1",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/49333781"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/1#discussion_r49333781"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/49333840",
+        "pull_request_review_id": null,
+        "id": 49333840,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ5MzMzODQw",
+        "diff_hunk": "@@ -323,16 +319,121 @@ bool WebContents::ShouldCreateWebContents(\n     const GURL& target_url,\n     const std::string& partition_id,\n     content::SessionStorageNamespace* session_storage_namespace) {\n-  if (type_ == BROWSER_WINDOW)\n-    Emit(\"-new-window\", target_url, frame_name, NEW_FOREGROUND_TAB);\n-  else\n-    Emit(\"new-window\", target_url, frame_name, NEW_FOREGROUND_TAB);\n+  return true;\n+}\n+\n+void WebContents::WebContentsCreated(content::WebContents* source_contents,\n+                                int opener_render_frame_id,\n+                                const std::string& frame_name,\n+                                const GURL& target_url,\n+                                content::WebContents* new_contents) {\n+  if (IsGuest()) {\n+    v8::Locker locker(isolate());\n+    v8::HandleScope handle_scope(isolate());\n+\n+    content::NavigationController::LoadURLParams load_url_params(target_url);\n+    // http://www.w3.org/TR/DOM-Level-2-HTML/html.html#ID-95229140\n+    load_url_params.referrer = content::Referrer(GetURL(),\n+                                              blink::WebReferrerPolicyAlways);\n+    load_url_params.transition_type = ui::PAGE_TRANSITION_LINK;\n+    load_url_params.should_replace_current_entry = true;\n+    load_url_params.is_renderer_initiated = true;\n+    load_url_params.should_clear_history_list = true;\n+    load_url_params.frame_name = frame_name;\n+    CreateFrom(isolate(), new_contents)->delayed_load_url_params_.reset(\n+      new content::NavigationController::LoadURLParams(load_url_params));\n+  } else {\n+    // we will never end up here, but someone else\n+    // using normal electron windows would I think\n+  }\n+}\n+\n+void WebContents::AddNewContents(content::WebContents* source,\n+                    content::WebContents* new_contents,\n+                    WindowOpenDisposition disposition,\n+                    const gfx::Rect& initial_rect,\n+                    bool user_gesture,\n+                    bool* was_blocked) {\n+  v8::Locker locker(isolate());\n+  v8::HandleScope handle_scope(isolate());\n+\n+  // set webPreferences\n+  base::DictionaryValue* web_preferences =\n+    WebContentsPreferences::FromWebContents(new_contents)->web_preferences();\n+  scoped_ptr<base::DictionaryValue> options(new base::DictionaryValue);\n+  options->Set(options::kWebPreferences, web_preferences->CreateDeepCopy());\n+\n+  if (disposition == NEW_FOREGROUND_TAB || disposition == NEW_BACKGROUND_TAB) {\n+    // fire off the tab open event\n+    auto window_open_event =\n+      v8::Local<v8::Object>::Cast(mate::Event::Create(isolate()).ToV8());\n+    mate::Dictionary(isolate(), window_open_event).Set(\"sender\",\n+                                                        GetWrapper(isolate()));\n+    node::Environment* env = node::Environment::GetCurrent(isolate());\n+    // the url will be set in ResumeLoadingCreatedWebContents\n+    mate::EmitEvent(isolate(),\n+                  env->process_object(),\n+                  \"ATOM_SHELL_GUEST_VIEW_MANAGER_TAB_OPEN\",\n+                  window_open_event,\n+                  \"about:blank\",\n+                  new_contents->GetMainFrame()->GetFrameName(),\n+                  disposition,\n+                  *options);\n+    return;\n+  }\n+\n+  if (disposition == NEW_POPUP || disposition == NEW_WINDOW) {\n+    // Set windowOptions\n+    scoped_ptr<base::DictionaryValue> browser_options(\n+                                                    new base::DictionaryValue);\n+    browser_options->SetInteger(\"height\", initial_rect.height());\n+    browser_options->SetInteger(\"width\", initial_rect.width());\n+    browser_options->SetInteger(\"x\", initial_rect.x());\n+    browser_options->SetInteger(\"y\", initial_rect.y());\n+    options->Set(\"windowOptions\", browser_options.Pass());\n+\n+    // fire off the window open event\n+    auto window_open_event = v8::Local<v8::Object>::Cast(\n+                                        mate::Event::Create(isolate()).ToV8());\n+    mate::Dictionary(isolate(), window_open_event).Set(\n+                                              \"sender\", GetWrapper(isolate()));\n+    node::Environment* env = node::Environment::GetCurrent(isolate());\n+    // the url will be set in ResumeLoadingCreatedWebContents\n+    mate::EmitEvent(isolate(), env->process_object(),\n+                  \"ATOM_SHELL_GUEST_WINDOW_MANAGER_WINDOW_OPEN\",\n+                  window_open_event,\n+                  \"about:blank\",\n+                  new_contents->GetMainFrame()->GetFrameName(),\n+                  *options);\n+    return;\n+  }\n+}\n+\n+bool WebContents::ShouldResumeRequestsForCreatedWindow() {\n+  // Always return false here since we need to defer loading the created\n+  // window until after we have attached a new delegate to the new webcontents\n+  // (which happens asynchronously).\n   return false;\n }\n \n+void WebContents::ResumeLoadingCreatedWebContents() {\n+  if (delayed_load_url_params_.get()) {\n+    GetWebContents()->GetController().LoadURLWithParams(\n+                                              *delayed_load_url_params_.get());\n+    delayed_load_url_params_.reset(nullptr);\n+  }\n+  // do we need this?\n+  // GetRenderViewHost()->GetProcess()->ResumeRequestsForView(route_id);\n+  // GetRenderViewHost()->GetProcess()->ResumeRequestsForView(\n+  //                                                       main_frame_route_id);",
+        "path": "atom/browser/api/atom_api_web_contents.cc",
+        "position": null,
+        "original_position": 234,
+        "commit_id": "58064872260cdec858e75c5f4737345a156b4833",
+        "original_commit_id": "af8c1dc73a44ac687c67cfb0ebb316cba3b922b2",
+        "user": {
+            "login": "bbondy",
+            "id": 831718,
+            "node_id": "MDQ6VXNlcjgzMTcxOA==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/831718?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bbondy",
+            "html_url": "https://github.com/bbondy",
+            "followers_url": "https://api.github.com/users/bbondy/followers",
+            "following_url": "https://api.github.com/users/bbondy/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bbondy/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bbondy/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bbondy/subscriptions",
+            "organizations_url": "https://api.github.com/users/bbondy/orgs",
+            "repos_url": "https://api.github.com/users/bbondy/repos",
+            "events_url": "https://api.github.com/users/bbondy/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bbondy/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "nit: Remove or find out if we actually need it.\n",
+        "created_at": "2016-01-11T15:31:39Z",
+        "updated_at": "2016-01-13T05:06:34Z",
+        "html_url": "https://github.com/brave/muon/pull/1#discussion_r49333840",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/49333840"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/1#discussion_r49333840"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/49333877",
+        "pull_request_review_id": null,
+        "id": 49333877,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ5MzMzODc3",
+        "diff_hunk": "@@ -101,6 +101,44 @@ AtomBrowserClient::AtomBrowserClient() : delegate_(nullptr) {\n AtomBrowserClient::~AtomBrowserClient() {\n }\n \n+bool AtomBrowserClient::CanCreateWindow(const GURL& opener_url,\n+                                      const GURL& opener_top_level_frame_url,\n+                                      const GURL& source_origin,\n+                                      WindowContainerType container_type,\n+                                      const GURL& target_url,\n+                                      const content::Referrer& referrer,\n+                                      WindowOpenDisposition disposition,\n+                                      const blink::WebWindowFeatures& features,\n+                                      bool user_gesture,\n+                                      bool opener_suppressed,\n+                                      content::ResourceContext* context,\n+                                      int render_process_id,\n+                                      int opener_render_view_id,\n+                                      int opener_render_frame_id,\n+                                      bool* no_javascript_access) {\n+  // do we need the delegate here?",
+        "path": "atom/browser/atom_browser_client.cc",
+        "position": null,
+        "original_position": 19,
+        "commit_id": "58064872260cdec858e75c5f4737345a156b4833",
+        "original_commit_id": "af8c1dc73a44ac687c67cfb0ebb316cba3b922b2",
+        "user": {
+            "login": "bbondy",
+            "id": 831718,
+            "node_id": "MDQ6VXNlcjgzMTcxOA==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/831718?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bbondy",
+            "html_url": "https://github.com/bbondy",
+            "followers_url": "https://api.github.com/users/bbondy/followers",
+            "following_url": "https://api.github.com/users/bbondy/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bbondy/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bbondy/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bbondy/subscriptions",
+            "organizations_url": "https://api.github.com/users/bbondy/orgs",
+            "repos_url": "https://api.github.com/users/bbondy/repos",
+            "events_url": "https://api.github.com/users/bbondy/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bbondy/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "nit: remove or find out if we actually need it here.\n",
+        "created_at": "2016-01-11T15:31:54Z",
+        "updated_at": "2016-01-13T05:06:34Z",
+        "html_url": "https://github.com/brave/muon/pull/1#discussion_r49333877",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/49333877"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/1#discussion_r49333877"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/49334080",
+        "pull_request_review_id": null,
+        "id": 49334080,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ5MzM0MDgw",
+        "diff_hunk": "@@ -1,4 +1,5 @@\n window.onload = ->\n+  # this is a major security hole I think if it's accessible on the page",
+        "path": "atom/renderer/lib/inspector.coffee",
+        "position": null,
+        "original_position": 2,
+        "commit_id": "58064872260cdec858e75c5f4737345a156b4833",
+        "original_commit_id": "af8c1dc73a44ac687c67cfb0ebb316cba3b922b2",
+        "user": {
+            "login": "bbondy",
+            "id": 831718,
+            "node_id": "MDQ6VXNlcjgzMTcxOA==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/831718?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bbondy",
+            "html_url": "https://github.com/bbondy",
+            "followers_url": "https://api.github.com/users/bbondy/followers",
+            "following_url": "https://api.github.com/users/bbondy/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bbondy/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bbondy/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bbondy/subscriptions",
+            "organizations_url": "https://api.github.com/users/bbondy/orgs",
+            "repos_url": "https://api.github.com/users/bbondy/repos",
+            "events_url": "https://api.github.com/users/bbondy/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bbondy/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Is this something we need to worry about?\n",
+        "created_at": "2016-01-11T15:33:15Z",
+        "updated_at": "2016-01-13T05:06:34Z",
+        "html_url": "https://github.com/brave/muon/pull/1#discussion_r49334080",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/49334080"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/1#discussion_r49334080"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/49335023",
+        "pull_request_review_id": null,
+        "id": 49335023,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDQ5MzM1MDIz",
+        "diff_hunk": "@@ -1,4 +1,5 @@\n window.onload = ->\n+  # this is a major security hole I think if it's accessible on the page",
+        "path": "atom/renderer/lib/inspector.coffee",
+        "position": null,
+        "original_position": 2,
+        "commit_id": "58064872260cdec858e75c5f4737345a156b4833",
+        "original_commit_id": "af8c1dc73a44ac687c67cfb0ebb316cba3b922b2",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I need to test to make sure the inspector is only available in the dev tools and not the page. If the page can access it then it's definitely something we need to worry about\n",
+        "created_at": "2016-01-11T15:40:31Z",
+        "updated_at": "2016-01-13T05:06:34Z",
+        "html_url": "https://github.com/brave/muon/pull/1#discussion_r49335023",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/1",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/49335023"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/1#discussion_r49335023"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/51359148",
+        "pull_request_review_id": null,
+        "id": 51359148,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDUxMzU5MTQ4",
+        "diff_hunk": "@@ -75,7 +77,15 @@ void WebFrame::RegisterElementResizeCallback(\n }\n \n void WebFrame::AttachGuest(int id) {\n+  // This is a workaround for a strange issue on windows with background tabs\n+  // libchromiumcontent doesn't appear to be making the check for\n+  // params.dispostion == NEW_BACKGROUND_TAB in WebContentsImpl\n+  // This results in the BrowserPluginGuest trying to access the native\n+  // window before it's actually ready. This hack works around that\n+  // by always delaying the access\n+  content::BrowserPluginManager::Get()->GetBrowserPlugin(id)->updateVisibility(false);",
+        "path": "atom/renderer/api/atom_api_web_frame.cc",
+        "position": 19,
+        "original_position": 19,
+        "commit_id": "2f6bd2f12e725a85f4f4f7a93197605b203fa8c2",
+        "original_commit_id": "2f6bd2f12e725a85f4f4f7a93197605b203fa8c2",
+        "user": {
+            "login": "bbondy",
+            "id": 831718,
+            "node_id": "MDQ6VXNlcjgzMTcxOA==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/831718?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bbondy",
+            "html_url": "https://github.com/bbondy",
+            "followers_url": "https://api.github.com/users/bbondy/followers",
+            "following_url": "https://api.github.com/users/bbondy/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bbondy/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bbondy/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bbondy/subscriptions",
+            "organizations_url": "https://api.github.com/users/bbondy/orgs",
+            "repos_url": "https://api.github.com/users/bbondy/repos",
+            "events_url": "https://api.github.com/users/bbondy/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bbondy/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Wow this was a strange one, nice job.  I don't think I've ever run into something like this but I've always compiled all of my own source on my projects and not used prebuilt stuff.\n",
+        "created_at": "2016-01-31T11:36:09Z",
+        "updated_at": "2016-01-31T11:36:09Z",
+        "html_url": "https://github.com/brave/muon/pull/7#discussion_r51359148",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/7",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/51359148"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/7#discussion_r51359148"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/70487954",
+        "pull_request_review_id": null,
+        "id": 70487954,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDcwNDg3OTU0",
+        "diff_hunk": "@@ -46,6 +46,12 @@ v8::Local<v8::Value> Converter<scoped_refptr<net::X509Certificate>>::ToV8(\n                                    encoded_data.size()).ToLocalChecked();\n   dict.Set(\"data\", buffer);\n   dict.Set(\"issuerName\", val->issuer().GetDisplayName());\n+  dict.Set(\"subjectName\", val->subject().GetDisplayName());\n+  dict.Set(\"serialNum\", val->serial_number());",
+        "path": "atom/common/native_mate_converters/net_converter.cc",
+        "position": null,
+        "original_position": 5,
+        "commit_id": "9307acafed3086b9136f2fd5d69f317197ecc425",
+        "original_commit_id": "2e3c32db699710fa4f9a808a08052c70f5de2a0a",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this looks good, but any special reason we are abbreviating this? If it matches up to something else that's great, but otherwise it seems like it could lead to unexpected null results\n",
+        "created_at": "2016-07-12T17:57:10Z",
+        "updated_at": "2016-07-13T14:05:41Z",
+        "html_url": "https://github.com/brave/muon/pull/25#discussion_r70487954",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/25",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/70487954"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/25#discussion_r70487954"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/25"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/70585775",
+        "pull_request_review_id": null,
+        "id": 70585775,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDcwNTg1Nzc1",
+        "diff_hunk": "@@ -46,6 +46,12 @@ v8::Local<v8::Value> Converter<scoped_refptr<net::X509Certificate>>::ToV8(\n                                    encoded_data.size()).ToLocalChecked();\n   dict.Set(\"data\", buffer);\n   dict.Set(\"issuerName\", val->issuer().GetDisplayName());\n+  dict.Set(\"subjectName\", val->subject().GetDisplayName());\n+  dict.Set(\"serialNum\", val->serial_number());",
+        "path": "atom/common/native_mate_converters/net_converter.cc",
+        "position": null,
+        "original_position": 5,
+        "commit_id": "9307acafed3086b9136f2fd5d69f317197ecc425",
+        "original_commit_id": "2e3c32db699710fa4f9a808a08052c70f5de2a0a",
+        "user": {
+            "login": "darkdh",
+            "id": 11330831,
+            "node_id": "MDQ6VXNlcjExMzMwODMx",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/11330831?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/darkdh",
+            "html_url": "https://github.com/darkdh",
+            "followers_url": "https://api.github.com/users/darkdh/followers",
+            "following_url": "https://api.github.com/users/darkdh/following{/other_user}",
+            "gists_url": "https://api.github.com/users/darkdh/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/darkdh/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/darkdh/subscriptions",
+            "organizations_url": "https://api.github.com/users/darkdh/orgs",
+            "repos_url": "https://api.github.com/users/darkdh/repos",
+            "events_url": "https://api.github.com/users/darkdh/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/darkdh/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Agreed. It would be better if we change it to `serialNumber`\n",
+        "created_at": "2016-07-13T08:42:12Z",
+        "updated_at": "2016-07-13T14:05:41Z",
+        "html_url": "https://github.com/brave/muon/pull/25#discussion_r70585775",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/25",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/70585775"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/25#discussion_r70585775"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/25"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75518799",
+        "pull_request_review_id": null,
+        "id": 75518799,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1NTE4Nzk5",
+        "diff_hunk": "@@ -143,6 +143,36 @@ bool ContentSettingsClient::allowDatabase(const WebString& name,\n   return allow;\n }\n \n+\n+void ContentSettingsClient::requestFileSystemAccessAsync(\n+        const WebContentSettingCallbacks& callbacks) {\n+  WebFrame* frame = render_frame()->GetWebFrame();\n+  WebContentSettingCallbacks permissionCallbacks(callbacks);\n+  if (frame->getSecurityOrigin().isUnique() ||\n+      frame->top()->getSecurityOrigin().isUnique()) {\n+      permissionCallbacks.doDeny();\n+      return;\n+  }\n+\n+  bool allow = true;\n+  GURL secondary_url(\n+      blink::WebStringToGURL(frame->getSecurityOrigin().toString()));\n+  if (content_settings_manager_->content_settings()) {\n+    allow =\n+        content_settings_manager_->GetSetting(\n+          GetOriginOrURL(frame),\n+          secondary_url,\n+          \"cookies\",",
+        "path": "atom/renderer/content_settings_client.cc",
+        "position": 23,
+        "original_position": 23,
+        "commit_id": "de678eee4fa301f16a7bb0d64d74222496193834",
+        "original_commit_id": "de678eee4fa301f16a7bb0d64d74222496193834",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "do we really want this to always be tied to cookies in electron or just tie the two settings together in browser-laptop? Seems like the latter would give us more flexibility\n",
+        "created_at": "2016-08-19T17:17:34Z",
+        "updated_at": "2016-08-19T17:17:34Z",
+        "html_url": "https://github.com/brave/muon/pull/42#discussion_r75518799",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/42",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75518799"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/42#discussion_r75518799"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/42"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75535745",
+        "pull_request_review_id": null,
+        "id": 75535745,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1NTM1NzQ1",
+        "diff_hunk": "@@ -143,6 +143,36 @@ bool ContentSettingsClient::allowDatabase(const WebString& name,\n   return allow;\n }\n \n+\n+void ContentSettingsClient::requestFileSystemAccessAsync(\n+        const WebContentSettingCallbacks& callbacks) {\n+  WebFrame* frame = render_frame()->GetWebFrame();\n+  WebContentSettingCallbacks permissionCallbacks(callbacks);\n+  if (frame->getSecurityOrigin().isUnique() ||\n+      frame->top()->getSecurityOrigin().isUnique()) {\n+      permissionCallbacks.doDeny();\n+      return;\n+  }\n+\n+  bool allow = true;\n+  GURL secondary_url(\n+      blink::WebStringToGURL(frame->getSecurityOrigin().toString()));\n+  if (content_settings_manager_->content_settings()) {\n+    allow =\n+        content_settings_manager_->GetSetting(\n+          GetOriginOrURL(frame),\n+          secondary_url,\n+          \"cookies\",",
+        "path": "atom/renderer/content_settings_client.cc",
+        "position": 23,
+        "original_position": 23,
+        "commit_id": "de678eee4fa301f16a7bb0d64d74222496193834",
+        "original_commit_id": "de678eee4fa301f16a7bb0d64d74222496193834",
+        "user": {
+            "login": "diracdeltas",
+            "id": 549654,
+            "node_id": "MDQ6VXNlcjU0OTY1NA==",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/549654?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/diracdeltas",
+            "html_url": "https://github.com/diracdeltas",
+            "followers_url": "https://api.github.com/users/diracdeltas/followers",
+            "following_url": "https://api.github.com/users/diracdeltas/following{/other_user}",
+            "gists_url": "https://api.github.com/users/diracdeltas/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/diracdeltas/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/diracdeltas/subscriptions",
+            "organizations_url": "https://api.github.com/users/diracdeltas/orgs",
+            "repos_url": "https://api.github.com/users/diracdeltas/repos",
+            "events_url": "https://api.github.com/users/diracdeltas/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/diracdeltas/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "i don't have a strong preference, but database and localstorage are tied to cookies, so this seems like it should be consistent with those\n",
+        "created_at": "2016-08-19T19:03:52Z",
+        "updated_at": "2016-08-19T19:03:52Z",
+        "html_url": "https://github.com/brave/muon/pull/42#discussion_r75535745",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/42",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75535745"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/42#discussion_r75535745"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/42"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75241702",
+        "pull_request_review_id": null,
+        "id": 75241702,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1MjQxNzAy",
+        "diff_hunk": "@@ -91,6 +100,22 @@ BraveBrowserContext::BraveBrowserContext(const std::string& partition,\n           base::Unretained(this)));\n #endif\n   }\n+\n+  base::FilePath user_dir;\n+  PathService::Get(brightray::DIR_USER_DATA, &user_dir);\n+  CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));\n+  web_database_ = new WebDatabaseService(user_dir.Append(kWebDataFilename),",
+        "path": "brave/browser/brave_browser_context.cc",
+        "position": null,
+        "original_position": 43,
+        "commit_id": "1e3574bca24cdc95745d420563fd859cb3d795d2",
+        "original_commit_id": "32235eb1801fa0d0a00893aef2f3a354d36afa18",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this path should have the partition name in it to avoid access from more than one browser context\n",
+        "created_at": "2016-08-18T02:51:41Z",
+        "updated_at": "2016-08-22T20:31:16Z",
+        "html_url": "https://github.com/brave/muon/pull/40#discussion_r75241702",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/40",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75241702"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/40#discussion_r75241702"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/40"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75247916",
+        "pull_request_review_id": null,
+        "id": 75247916,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1MjQ3OTE2",
+        "diff_hunk": "@@ -0,0 +1,247 @@\n+// Copyright (c) 2016 GitHub, Inc.\n+// Use of this source code is governed by the MIT license that can be\n+// found in the LICENSE file.\n+\n+#include \"atom/browser/autofill/atom_autofill_client.h\"\n+\n+#include <utility>\n+\n+#include \"atom/browser/autofill/personal_data_manager_factory.h\"\n+#include \"atom/browser/api/atom_api_web_contents.h\"\n+#include \"atom/common/native_mate_converters/string16_converter.h\"\n+#include \"base/bind.h\"\n+#include \"base/command_line.h\"\n+#include \"base/logging.h\"\n+#include \"base/memory/ptr_util.h\"\n+#include \"base/strings/utf_string_conversions.h\"\n+#include \"brave/browser/brave_browser_context.h\"\n+#include \"build/build_config.h\"\n+#include \"chrome/browser/profiles/incognito_helpers.h\"\n+#include \"components/autofill/content/browser/content_autofill_driver.h\"\n+#include \"components/autofill/content/browser/content_autofill_driver_factory.h\"\n+#include \"components/autofill/core/browser/popup_item_ids.h\"\n+#include \"components/autofill/core/browser/webdata/autofill_webdata_service.h\"\n+#include \"components/autofill/core/common/autofill_pref_names.h\"\n+#include \"components/prefs/pref_service.h\"\n+#include \"components/user_prefs/user_prefs.h\"\n+#include \"content/public/browser/browser_context.h\"\n+#include \"content/public/browser/render_frame_host.h\"\n+#include \"content/public/common/origin_util.h\"\n+#include \"native_mate/dictionary.h\"\n+\n+DEFINE_WEB_CONTENTS_USER_DATA_KEY(autofill::AtomAutofillClient);\n+\n+// stubs TODO - move to separate files\n+#include \"net/http/http_request_headers.h\"\n+namespace variations {\n+void AppendVariationHeaders(const GURL& url,\n+                            bool incognito,\n+                            bool uma_enabled,\n+                            net::HttpRequestHeaders* headers) {\n+}\n+}\n+\n+namespace rappor {\n+void SampleDomainAndRegistryFromGURL(RapporService* rappor_service,\n+                                     const std::string& metric,\n+                                     const GURL& gurl) {}\n+}  // namespace rappor\n+// end stubs\n+\n+namespace mate {\n+\n+template<>\n+struct Converter<autofill::Suggestion> {\n+  static v8::Local<v8::Value> ToV8(\n+    v8::Isolate* isolate, autofill::Suggestion val) {\n+    mate::Dictionary dict = mate::Dictionary::CreateEmpty(isolate);\n+    dict.Set(\"value\", val.value);\n+    dict.Set(\"frontend_id\", val.frontend_id);\n+    return dict.GetHandle();\n+  }\n+};\n+}  // namespace mate\n+\n+namespace autofill {\n+\n+AtomAutofillClient::AtomAutofillClient(content::WebContents* web_contents)\n+    : content::WebContentsObserver(web_contents),\n+      api_web_contents_(nullptr) {\n+  DCHECK(web_contents);\n+}\n+\n+AtomAutofillClient::~AtomAutofillClient() {\n+}\n+\n+void AtomAutofillClient::Initialize(atom::api::WebContents* api_web_contents) {\n+  api_web_contents_ = api_web_contents;\n+}\n+\n+void AtomAutofillClient::DidAcceptSuggestion(const std::string& value,\n+                                             int frontend_id,\n+                                             int index) {\n+  if (delegate_) {\n+    delegate_->DidAcceptSuggestion(base::UTF8ToUTF16(value), frontend_id,\n+                                   index);\n+  }\n+}\n+\n+PersonalDataManager* AtomAutofillClient::GetPersonalDataManager() {\n+  content::BrowserContext* context = web_contents()->GetBrowserContext();\n+  return PersonalDataManagerFactory::GetForBrowserContext(\n+        chrome::GetBrowserContextRedirectedInIncognito(context));",
+        "path": "atom/browser/autofill/atom_autofill_client.cc",
+        "position": null,
+        "original_position": 92,
+        "commit_id": "1e3574bca24cdc95745d420563fd859cb3d795d2",
+        "original_commit_id": "32235eb1801fa0d0a00893aef2f3a354d36afa18",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`GetBrowserContextRedirectedInIncognito` should be in the factory to ensure that the regular context is always returned from `GetForBrowserContext`\n",
+        "created_at": "2016-08-18T04:38:30Z",
+        "updated_at": "2016-08-22T20:31:16Z",
+        "html_url": "https://github.com/brave/muon/pull/40#discussion_r75247916",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/40",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75247916"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/40#discussion_r75247916"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/40"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75248172",
+        "pull_request_review_id": null,
+        "id": 75248172,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1MjQ4MTcy",
+        "diff_hunk": "@@ -91,6 +100,22 @@ BraveBrowserContext::BraveBrowserContext(const std::string& partition,\n           base::Unretained(this)));\n #endif\n   }\n+\n+  base::FilePath user_dir;\n+  PathService::Get(brightray::DIR_USER_DATA, &user_dir);\n+  CHECK(BrowserThread::CurrentlyOn(BrowserThread::UI));\n+  web_database_ = new WebDatabaseService(user_dir.Append(kWebDataFilename),\n+      BrowserThread::GetMessageLoopProxyForThread(BrowserThread::UI),\n+      BrowserThread::GetMessageLoopProxyForThread(BrowserThread::DB));\n+  web_database_->AddTable(base::WrapUnique(new autofill::AutofillTable));\n+  web_database_->LoadDatabase();\n+\n+  autofill_data_ = new autofill::AutofillWebDataService(\n+      web_database_,\n+      BrowserThread::GetMessageLoopProxyForThread(BrowserThread::UI),\n+      BrowserThread::GetMessageLoopProxyForThread(BrowserThread::DB),\n+      base::Bind(&DatabaseErrorCallback));\n+  autofill_data_->Init();",
+        "path": "brave/browser/brave_browser_context.cc",
+        "position": null,
+        "original_position": 54,
+        "commit_id": "1e3574bca24cdc95745d420563fd859cb3d795d2",
+        "original_commit_id": "32235eb1801fa0d0a00893aef2f3a354d36afa18",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "be sure to shut these down properly in the `BraveBrowserContext` destructor\n\n```\nautofill_data_->ShutdownOnUIThread();\nweb_database_->ShutdownDatabase();\n```\n",
+        "created_at": "2016-08-18T04:43:59Z",
+        "updated_at": "2016-08-22T20:31:16Z",
+        "html_url": "https://github.com/brave/muon/pull/40#discussion_r75248172",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/40",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75248172"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/40#discussion_r75248172"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/40"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75248868",
+        "pull_request_review_id": null,
+        "id": 75248868,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1MjQ4ODY4",
+        "diff_hunk": "@@ -353,6 +379,11 @@ BraveBrowserContext::CreateZoomLevelDelegate(const base::FilePath& partition_pat\n       ui_zoom::ZoomEventManager::GetForBrowserContext(this)->GetWeakPtr()));\n }\n \n+scoped_refptr<autofill::AutofillWebDataService>\n+BraveBrowserContext::GetAutofillWebdataService() {",
+        "path": "brave/browser/brave_browser_context.cc",
+        "position": 86,
+        "original_position": 71,
+        "commit_id": "1e3574bca24cdc95745d420563fd859cb3d795d2",
+        "original_commit_id": "32235eb1801fa0d0a00893aef2f3a354d36afa18",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "along with the comment above, I think this should always return the AutofillWebDataService created by the regular browser context. The autofill driver will not write autofill history to the database when it is used with an incognito profile\n",
+        "created_at": "2016-08-18T04:56:54Z",
+        "updated_at": "2016-08-22T20:31:16Z",
+        "html_url": "https://github.com/brave/muon/pull/40#discussion_r75248868",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/40",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75248868"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/40#discussion_r75248868"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/40"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/75799756",
+        "pull_request_review_id": null,
+        "id": 75799756,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc1Nzk5NzU2",
+        "diff_hunk": "@@ -143,6 +143,36 @@ bool ContentSettingsClient::allowDatabase(const WebString& name,\n   return allow;\n }\n \n+\n+void ContentSettingsClient::requestFileSystemAccessAsync(\n+        const WebContentSettingCallbacks& callbacks) {\n+  WebFrame* frame = render_frame()->GetWebFrame();\n+  WebContentSettingCallbacks permissionCallbacks(callbacks);\n+  if (frame->getSecurityOrigin().isUnique() ||\n+      frame->top()->getSecurityOrigin().isUnique()) {\n+      permissionCallbacks.doDeny();\n+      return;\n+  }\n+\n+  bool allow = true;\n+  GURL secondary_url(\n+      blink::WebStringToGURL(frame->getSecurityOrigin().toString()));\n+  if (content_settings_manager_->content_settings()) {\n+    allow =\n+        content_settings_manager_->GetSetting(\n+          GetOriginOrURL(frame),\n+          secondary_url,\n+          \"cookies\",",
+        "path": "atom/renderer/content_settings_client.cc",
+        "position": 23,
+        "original_position": 23,
+        "commit_id": "de678eee4fa301f16a7bb0d64d74222496193834",
+        "original_commit_id": "de678eee4fa301f16a7bb0d64d74222496193834",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "ok, didn't think this was as closely related because Chrome handles it separately, but that's fine if it always makes sense together\n",
+        "created_at": "2016-08-23T04:03:47Z",
+        "updated_at": "2016-08-23T04:03:47Z",
+        "html_url": "https://github.com/brave/muon/pull/42#discussion_r75799756",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/42",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/75799756"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/42#discussion_r75799756"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/42"
+            }
+        },
+        "in_reply_to_id": 75518799
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/76204617",
+        "pull_request_review_id": null,
+        "id": 76204617,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc2MjA0NjE3",
+        "diff_hunk": "@@ -50,6 +50,7 @@\n           '<(libchromiumcontent_dir)/signin_core_browser.lib',\n           '<(libchromiumcontent_dir)/signin_core_common.lib',\n           '<(libchromiumcontent_dir)/os_crypt.lib',\n+          'crypt32.lib',",
+        "path": "autofill.gypi",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "00d5a7083d5ff28bb5ad1a281cab6ee8fce7636e",
+        "original_commit_id": "cbef3beba278814309ab8cfceccbb5252b500011",
+        "user": {
+            "login": "darkdh",
+            "id": 11330831,
+            "node_id": "MDQ6VXNlcjExMzMwODMx",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/11330831?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/darkdh",
+            "html_url": "https://github.com/darkdh",
+            "followers_url": "https://api.github.com/users/darkdh/followers",
+            "following_url": "https://api.github.com/users/darkdh/following{/other_user}",
+            "gists_url": "https://api.github.com/users/darkdh/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/darkdh/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/darkdh/subscriptions",
+            "organizations_url": "https://api.github.com/users/darkdh/orgs",
+            "repos_url": "https://api.github.com/users/darkdh/repos",
+            "events_url": "https://api.github.com/users/darkdh/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/darkdh/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Could we use `-lcrypt32.lib` ?\n",
+        "created_at": "2016-08-25T08:54:29Z",
+        "updated_at": "2016-08-25T15:05:23Z",
+        "html_url": "https://github.com/brave/muon/pull/45#discussion_r76204617",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/45",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/76204617"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/45#discussion_r76204617"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/45"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/76255369",
+        "pull_request_review_id": null,
+        "id": 76255369,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc2MjU1MzY5",
+        "diff_hunk": "@@ -50,6 +50,7 @@\n           '<(libchromiumcontent_dir)/signin_core_browser.lib',\n           '<(libchromiumcontent_dir)/signin_core_common.lib',\n           '<(libchromiumcontent_dir)/os_crypt.lib',\n+          'crypt32.lib',",
+        "path": "autofill.gypi",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "00d5a7083d5ff28bb5ad1a281cab6ee8fce7636e",
+        "original_commit_id": "cbef3beba278814309ab8cfceccbb5252b500011",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I'm definitely not a VS expert and I couldn't find any good docs for it. It looks like the `-l` might actually be ignored, but maybe add for consistency.\n",
+        "created_at": "2016-08-25T14:37:26Z",
+        "updated_at": "2016-08-25T15:05:23Z",
+        "html_url": "https://github.com/brave/muon/pull/45#discussion_r76255369",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/45",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/76255369"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/45#discussion_r76255369"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/45"
+            }
+        },
+        "in_reply_to_id": 76204617
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/76256834",
+        "pull_request_review_id": null,
+        "id": 76256834,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc2MjU2ODM0",
+        "diff_hunk": "@@ -50,6 +50,7 @@\n           '<(libchromiumcontent_dir)/signin_core_browser.lib',\n           '<(libchromiumcontent_dir)/signin_core_common.lib',\n           '<(libchromiumcontent_dir)/os_crypt.lib',\n+          'crypt32.lib',",
+        "path": "autofill.gypi",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "00d5a7083d5ff28bb5ad1a281cab6ee8fce7636e",
+        "original_commit_id": "cbef3beba278814309ab8cfceccbb5252b500011",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@darkdh pointed out that both electron and chrome have the flag, so I think we should add it even if it isn't strictly necessary\n",
+        "created_at": "2016-08-25T14:44:13Z",
+        "updated_at": "2016-08-25T15:05:23Z",
+        "html_url": "https://github.com/brave/muon/pull/45#discussion_r76256834",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/45",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/76256834"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/45#discussion_r76256834"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/45"
+            }
+        },
+        "in_reply_to_id": 76204617
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/76258626",
+        "pull_request_review_id": null,
+        "id": 76258626,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc2MjU4NjI2",
+        "diff_hunk": "@@ -50,6 +50,7 @@\n           '<(libchromiumcontent_dir)/signin_core_browser.lib',\n           '<(libchromiumcontent_dir)/signin_core_common.lib',\n           '<(libchromiumcontent_dir)/os_crypt.lib',\n+          'crypt32.lib',",
+        "path": "autofill.gypi",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "00d5a7083d5ff28bb5ad1a281cab6ee8fce7636e",
+        "original_commit_id": "cbef3beba278814309ab8cfceccbb5252b500011",
+        "user": {
+            "login": "darkdh",
+            "id": 11330831,
+            "node_id": "MDQ6VXNlcjExMzMwODMx",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/11330831?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/darkdh",
+            "html_url": "https://github.com/darkdh",
+            "followers_url": "https://api.github.com/users/darkdh/followers",
+            "following_url": "https://api.github.com/users/darkdh/following{/other_user}",
+            "gists_url": "https://api.github.com/users/darkdh/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/darkdh/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/darkdh/subscriptions",
+            "organizations_url": "https://api.github.com/users/darkdh/orgs",
+            "repos_url": "https://api.github.com/users/darkdh/repos",
+            "events_url": "https://api.github.com/users/darkdh/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/darkdh/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`-` to support specifying such items as `-llib`, meaning \u201clibrary lib in the library search path.\u201d referenced from https://gyp.gsrc.io/docs/InputFormatReference.md\n",
+        "created_at": "2016-08-25T14:52:32Z",
+        "updated_at": "2016-08-25T15:05:23Z",
+        "html_url": "https://github.com/brave/muon/pull/45#discussion_r76258626",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/45",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/76258626"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/45#discussion_r76258626"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/45"
+            }
+        },
+        "in_reply_to_id": 76204617
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/76261365",
+        "pull_request_review_id": null,
+        "id": 76261365,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc2MjYxMzY1",
+        "diff_hunk": "@@ -50,6 +50,7 @@\n           '<(libchromiumcontent_dir)/signin_core_browser.lib',\n           '<(libchromiumcontent_dir)/signin_core_common.lib',\n           '<(libchromiumcontent_dir)/os_crypt.lib',\n+          'crypt32.lib',",
+        "path": "autofill.gypi",
+        "position": null,
+        "original_position": 4,
+        "commit_id": "00d5a7083d5ff28bb5ad1a281cab6ee8fce7636e",
+        "original_commit_id": "cbef3beba278814309ab8cfceccbb5252b500011",
+        "user": {
+            "login": "bsclifton",
+            "id": 4733304,
+            "node_id": "MDQ6VXNlcjQ3MzMzMDQ=",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/4733304?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bsclifton",
+            "html_url": "https://github.com/bsclifton",
+            "followers_url": "https://api.github.com/users/bsclifton/followers",
+            "following_url": "https://api.github.com/users/bsclifton/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bsclifton/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bsclifton/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bsclifton/subscriptions",
+            "organizations_url": "https://api.github.com/users/bsclifton/orgs",
+            "repos_url": "https://api.github.com/users/bsclifton/repos",
+            "events_url": "https://api.github.com/users/bsclifton/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bsclifton/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Updated :+1: Definitely agree good for consistency, since no path is specified\n",
+        "created_at": "2016-08-25T15:06:01Z",
+        "updated_at": "2016-08-25T15:06:01Z",
+        "html_url": "https://github.com/brave/muon/pull/45#discussion_r76261365",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/45",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/76261365"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/45#discussion_r76261365"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/45"
+            }
+        },
+        "in_reply_to_id": 76204617
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/78689873",
+        "pull_request_review_id": null,
+        "id": 78689873,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc4Njg5ODcz",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+// Copyright (c) 2013 GitHub, Inc.\n+// Use of this source code is governed by the MIT license that can be\n+// found in the LICENSE file.\n+\n+#include \"atom/common/pepper_flash_util.h\"\n+\n+#include \"atom/common/options_switches.h\"\n+#include \"base/command_line.h\"\n+#include \"base/strings/string_split.h\"\n+#include \"base/strings/string_util.h\"\n+#include \"content/public/common/content_constants.h\"\n+#include \"ppapi/shared_impl/ppapi_permissions.h\"\n+\n+namespace atom {\n+\n+content::PepperPluginInfo CreatePepperFlashInfo(const base::FilePath& path,\n+                                                const std::string& version) {\n+  content::PepperPluginInfo plugin;\n+\n+  plugin.is_out_of_process = true;\n+  plugin.name = content::kFlashPluginName;\n+  plugin.path = path;\n+#if defined(OS_WIN)\n+  plugin.is_on_local_drive = !base::IsOnNetworkDrive(path);\n+#endif\n+  plugin.permissions = ppapi::PERMISSION_DEV | ppapi::PERMISSION_PRIVATE |\n+    ppapi::PERMISSION_BYPASS_USER_GESTURE | ppapi::PERMISSION_FLASH;\n+  plugin.is_external = true;\n+\n+  std::vector<std::string> flash_version_numbers = base::SplitString(\n+      version, \".\", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);\n+  if (flash_version_numbers.size() < 1)\n+    flash_version_numbers.push_back(\"11\");\n+  // |SplitString()| puts in an empty string given an empty string. :(\n+  else if (flash_version_numbers[0].empty())\n+    flash_version_numbers[0] = \"11\";\n+  if (flash_version_numbers.size() < 2)\n+    flash_version_numbers.push_back(\"2\");\n+  if (flash_version_numbers.size() < 3)\n+    flash_version_numbers.push_back(\"999\");\n+  if (flash_version_numbers.size() < 4)\n+    flash_version_numbers.push_back(\"999\");",
+        "path": "atom/common/pepper_flash_util.cc",
+        "position": 42,
+        "original_position": 42,
+        "commit_id": "b18ed58f4d61d60d0dd6e7cf2e04083083d4de2a",
+        "original_commit_id": "b18ed58f4d61d60d0dd6e7cf2e04083083d4de2a",
+        "user": {
+            "login": "bbondy",
+            "id": 831718,
+            "node_id": "MDQ6VXNlcjgzMTcxOA==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/831718?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bbondy",
+            "html_url": "https://github.com/bbondy",
+            "followers_url": "https://api.github.com/users/bbondy/followers",
+            "following_url": "https://api.github.com/users/bbondy/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bbondy/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bbondy/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bbondy/subscriptions",
+            "organizations_url": "https://api.github.com/users/bbondy/orgs",
+            "repos_url": "https://api.github.com/users/bbondy/repos",
+            "events_url": "https://api.github.com/users/bbondy/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bbondy/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "when does it happen that you don't have a full version number?\n",
+        "created_at": "2016-09-14T05:59:49Z",
+        "updated_at": "2016-09-14T05:59:49Z",
+        "html_url": "https://github.com/brave/muon/pull/56#discussion_r78689873",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/56",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/78689873"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/56#discussion_r78689873"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/56"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79670212",
+        "pull_request_review_id": 801578,
+        "id": 79670212,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjcwMjEy",
+        "diff_hunk": "@@ -18,6 +18,7 @@\n       'lib/browser/api/dialog.js',\n       'lib/browser/api/exports/electron.js',\n       'lib/browser/api/global-shortcut.js',\n+      'lib/browser/api/importer.js',",
+        "path": "filenames.gypi",
+        "position": 4,
+        "original_position": 4,
+        "commit_id": "dba77504b7cf6c3590da668f289d4b26864b8079",
+        "original_commit_id": "dba77504b7cf6c3590da668f289d4b26864b8079",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "can you move these to an importer.gypi file? See extensions.gypi\n",
+        "created_at": "2016-09-20T17:44:12Z",
+        "updated_at": "2016-09-20T17:44:12Z",
+        "html_url": "https://github.com/brave/muon/pull/57#discussion_r79670212",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/57",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79670212"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/57#discussion_r79670212"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/57"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79656711",
+        "pull_request_review_id": 789169,
+        "id": 79656711,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjU2NzEx",
+        "diff_hunk": "@@ -0,0 +1,172 @@\n+// Copyright 2016 The Brave Authors. All rights reserved.",
+        "path": "atom/browser/api/atom_api_update_client.cc",
+        "position": null,
+        "original_position": 1,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "can we move this to brave/browser in a follow-up? Trying to keep non-upstreamable stuff separate so we can split out the repos\n",
+        "created_at": "2016-09-20T16:42:29Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79656711",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79656711"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79656711"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79657580",
+        "pull_request_review_id": 790016,
+        "id": 79657580,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjU3NTgw",
+        "diff_hunk": "@@ -0,0 +1,172 @@\n+// Copyright 2016 The Brave Authors. All rights reserved.\n+// Use of this source code is governed by a BSD-style license that can be\n+// found in the LICENSE file.\n+\n+#include \"atom/browser/api/atom_api_update_client.h\"\n+\n+#include \"atom/browser/api/atom_api_extension.h\"\n+#include \"atom/browser/component_updater/default_extensions.h\"\n+#include \"atom/browser/component_updater/extension_installer.h\"\n+#include \"atom/browser/extensions/atom_extension_system.h\"\n+#include \"atom/browser/extensions/atom_notification_types.h\"\n+#include \"atom/common/native_mate_converters/string16_converter.h\"\n+#include \"atom/common/native_mate_converters/value_converter.h\"\n+#include \"base/strings/utf_string_conversions.h\"\n+#include \"base/values.h\"\n+#include \"brave/browser/brave_content_browser_client.h\"\n+#include \"components/component_updater/component_updater_service.h\"\n+#include \"components/update_client/crx_update_item.h\"\n+#include \"content/public/browser/browser_thread.h\"\n+#include \"content/public/browser/notification_service.h\"\n+#include \"extensions/browser/notification_types.h\"\n+#include \"extensions/browser/updater/update_service.h\"\n+#include \"extensions/browser/updater/update_service_factory.h\"\n+#include \"native_mate/dictionary.h\"\n+\n+\n+void ComponentsUI::OnDemandUpdate(\n+    component_updater::ComponentUpdateService* cus,\n+    const std::string& component_id) {\n+  cus->GetOnDemandUpdater().OnDemandUpdate(component_id);\n+}\n+\n+bool\n+ComponentsUI::GetComponentDetails(const std::string& id,\n+                                  update_client::CrxUpdateItem* item) const {\n+  return cus_->GetComponentDetails(id, item);\n+}\n+\n+namespace atom {\n+\n+namespace api {\n+\n+UpdateClient::UpdateClient(v8::Isolate* isolate,\n+                 content::BrowserContext* browser_context)\n+      : browser_context_(browser_context) {\n+  cus_ = component_updater::ComponentUpdateServiceFactory(\n+    new extensions::AtomUpdateClientConfig(browser_context));\n+  cus_->AddObserver(this);\n+  Init(isolate);\n+  registrar_.Add(this,\n+      extensions::NOTIFICATION_EXTENSION_ENABLED,\n+      content::NotificationService::AllBrowserContextsAndSources());\n+  registrar_.Add(this,\n+      extensions::NOTIFICATION_CRX_INSTALLER_DONE,\n+      content::NotificationService::AllBrowserContextsAndSources());\n+}\n+\n+UpdateClient::~UpdateClient() {\n+}\n+\n+void UpdateClient::Observe(\n+     int type, const content::NotificationSource& source,\n+     const content::NotificationDetails& details) {\n+  switch (type) {\n+    case extensions::NOTIFICATION_EXTENSION_ENABLED: {\n+      Emit(\"extension-enabled\");",
+        "path": "atom/browser/api/atom_api_update_client.cc",
+        "position": null,
+        "original_position": 66,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "should probably have one for `extension-disabled` as well, but maybe both should go in atom_api_extensions? Can also be follow-up\n",
+        "created_at": "2016-09-20T16:46:18Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79657580",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79657580"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79657580"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79663933",
+        "pull_request_review_id": 795782,
+        "id": 79663933,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjYzOTMz",
+        "diff_hunk": "@@ -220,6 +222,33 @@ void Extension::Enable(const std::string& extension_id) {\n }\n \n // static\n+void Extension::Remove(const std::string& extension_id) {\n+  const extensions::Extension* extension =\n+    GetInstance()->extensions_.GetByID(extension_id);\n+  if (extension) {",
+        "path": "atom/browser/api/atom_api_extension.cc",
+        "position": null,
+        "original_position": 17,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "shouldn't this just call `Extension::Disable`?\n",
+        "created_at": "2016-09-20T17:15:55Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79663933",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79663933"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79663933"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79664951",
+        "pull_request_review_id": 796681,
+        "id": 79664951,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjY0OTUx",
+        "diff_hunk": "@@ -220,6 +222,33 @@ void Extension::Enable(const std::string& extension_id) {\n }\n \n // static\n+void Extension::Remove(const std::string& extension_id) {\n+  const extensions::Extension* extension =\n+    GetInstance()->extensions_.GetByID(extension_id);\n+  if (extension) {",
+        "path": "atom/browser/api/atom_api_extension.cc",
+        "position": null,
+        "original_position": 17,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "actually I would disable in `AtomExtensionSystem` because there is a check there to prevent uninstalling component extensions (like brave)\n",
+        "created_at": "2016-09-20T17:20:24Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79664951",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79664951"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79664951"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        },
+        "in_reply_to_id": 79663933
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79665126",
+        "pull_request_review_id": 796830,
+        "id": 79665126,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjY1MTI2",
+        "diff_hunk": "@@ -220,6 +222,33 @@ void Extension::Enable(const std::string& extension_id) {\n }\n \n // static\n+void Extension::Remove(const std::string& extension_id) {\n+  const extensions::Extension* extension =\n+    GetInstance()->extensions_.GetByID(extension_id);\n+  if (extension) {\n+    content::NotificationService::current()->Notify(\n+      atom::NOTIFICATION_DISABLE_USER_EXTENSION_REQUEST,\n+      content::Source<Extension>(GetInstance()),\n+      content::Details<const extensions::Extension>(extension));\n+  }\n+\n+  base::FilePath install_directory;\n+  PathService::Get(component_updater::DIR_COMPONENT_USER, &install_directory);\n+  extensions::file_util::UninstallExtension(install_directory, extension_id);",
+        "path": "atom/browser/api/atom_api_extension.cc",
+        "position": null,
+        "original_position": 26,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this should run on the file thread and should probably also happen in `AtomExtensionSystem` to prevent uninstall of component extensions. See `ExtensionService::OnExtensionInstalled`\n",
+        "created_at": "2016-09-20T17:21:07Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79665126",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79665126"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79665126"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79665817",
+        "pull_request_review_id": 797482,
+        "id": 79665817,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjY1ODE3",
+        "diff_hunk": "@@ -370,6 +377,20 @@ void AtomExtensionSystem::Shared::Observe(int type,\n \n       break;\n     }\n+    case atom::NOTIFICATION_EXTENSION_UNINSTALL_REQUEST: {\n+      auto extension =\n+        content::Details<const Extension>(details).ptr();\n+      base::FilePath install_directory;\n+      PathService::Get(component_updater::DIR_COMPONENT_USER,\n+          &install_directory);\n+      std::string extension_id = extension->id();\n+      auto registry = ExtensionRegistry::Get(browser_context_);\n+      registry->RemoveEnabled(extension_id);",
+        "path": "atom/browser/extensions/atom_extension_system.cc",
+        "position": null,
+        "original_position": 41,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "not sure if these methods should be called or not, but `ExtensionRegistry::TriggerOnUninstalled` does. See `ExtensionService::UninstallExtension`\n",
+        "created_at": "2016-09-20T17:23:58Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79665817",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79665817"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79665817"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/brave/muon/pulls/comments/79668044",
+        "pull_request_review_id": 799542,
+        "id": 79668044,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc5NjY4MDQ0",
+        "diff_hunk": "@@ -0,0 +1,172 @@\n+// Copyright 2016 The Brave Authors. All rights reserved.\n+// Use of this source code is governed by a BSD-style license that can be\n+// found in the LICENSE file.\n+\n+#include \"atom/browser/api/atom_api_update_client.h\"\n+\n+#include \"atom/browser/api/atom_api_extension.h\"\n+#include \"atom/browser/component_updater/default_extensions.h\"\n+#include \"atom/browser/component_updater/extension_installer.h\"\n+#include \"atom/browser/extensions/atom_extension_system.h\"\n+#include \"atom/browser/extensions/atom_notification_types.h\"\n+#include \"atom/common/native_mate_converters/string16_converter.h\"\n+#include \"atom/common/native_mate_converters/value_converter.h\"\n+#include \"base/strings/utf_string_conversions.h\"\n+#include \"base/values.h\"\n+#include \"brave/browser/brave_content_browser_client.h\"\n+#include \"components/component_updater/component_updater_service.h\"\n+#include \"components/update_client/crx_update_item.h\"\n+#include \"content/public/browser/browser_thread.h\"\n+#include \"content/public/browser/notification_service.h\"\n+#include \"extensions/browser/notification_types.h\"\n+#include \"extensions/browser/updater/update_service.h\"\n+#include \"extensions/browser/updater/update_service_factory.h\"\n+#include \"native_mate/dictionary.h\"\n+\n+\n+void ComponentsUI::OnDemandUpdate(\n+    component_updater::ComponentUpdateService* cus,\n+    const std::string& component_id) {\n+  cus->GetOnDemandUpdater().OnDemandUpdate(component_id);\n+}\n+\n+bool\n+ComponentsUI::GetComponentDetails(const std::string& id,\n+                                  update_client::CrxUpdateItem* item) const {\n+  return cus_->GetComponentDetails(id, item);\n+}\n+\n+namespace atom {\n+\n+namespace api {\n+\n+UpdateClient::UpdateClient(v8::Isolate* isolate,\n+                 content::BrowserContext* browser_context)\n+      : browser_context_(browser_context) {\n+  cus_ = component_updater::ComponentUpdateServiceFactory(\n+    new extensions::AtomUpdateClientConfig(browser_context));\n+  cus_->AddObserver(this);\n+  Init(isolate);\n+  registrar_.Add(this,\n+      extensions::NOTIFICATION_EXTENSION_ENABLED,\n+      content::NotificationService::AllBrowserContextsAndSources());\n+  registrar_.Add(this,\n+      extensions::NOTIFICATION_CRX_INSTALLER_DONE,\n+      content::NotificationService::AllBrowserContextsAndSources());\n+}\n+\n+UpdateClient::~UpdateClient() {\n+}\n+\n+void UpdateClient::Observe(\n+     int type, const content::NotificationSource& source,\n+     const content::NotificationDetails& details) {\n+  switch (type) {\n+    case extensions::NOTIFICATION_EXTENSION_ENABLED: {\n+      Emit(\"extension-enabled\");\n+      break;\n+    }\n+    case extensions::NOTIFICATION_CRX_INSTALLER_DONE: {\n+      Emit(\"crx-installer-done\");\n+      break;\n+    }\n+  }\n+}\n+\n+void UpdateClient::OnEvent(Events event, const std::string& id) {\n+  update_client::CrxUpdateItem item;\n+  GetComponentDetails(id, &item);\n+  switch (event) {\n+    case Events::COMPONENT_CHECKING_FOR_UPDATES:\n+      Emit(\"component-checking-for-updates\", id);\n+      break;\n+    case Events::COMPONENT_WAIT:\n+      Emit(\"component-wait\", id);\n+      break;\n+    case Events::COMPONENT_UPDATE_FOUND:\n+      Emit(\"component-update-found\", id);\n+      break;\n+    case Events::COMPONENT_UPDATE_READY: {\n+      // Uninstall for upgrades\n+        atom::api::Extension::GetInstance()->Remove(id);\n+        Emit(\"component-update-ready\", id);\n+      }\n+      break;\n+    case Events::COMPONENT_UPDATED: {\n+        auto str = item.component.version.GetString();\n+        Emit(\"component-update-updated\", id, str);\n+      }\n+      break;\n+    case Events::COMPONENT_NOT_UPDATED:\n+      Emit(\"component-not-updated\", id);\n+      break;\n+    case Events::COMPONENT_UPDATE_DOWNLOADING:\n+      Emit(\"component-update-downloading\", id);\n+      break;\n+  }\n+}\n+\n+void UpdateClient::RegisterComponentForUpdate(\n+    const std::string& public_key,\n+    const base::Closure& registered_callback,\n+    const ReadyCallback& ready_callback) {\n+  component_updater::RegisterExtension(\n+      cus_.get(), public_key, registered_callback, ready_callback);\n+}\n+\n+void UpdateClient::OnComponentRegistered(const std::string& extension_id) {\n+  Emit(\"component-registered\", extension_id);\n+}\n+\n+void UpdateClient::OnComponentReady(\n+    const std::string& extension_id,\n+    const base::FilePath& install_dir) {\n+  Emit(\"component-ready\", extension_id, install_dir.value());\n+}\n+\n+void UpdateClient::RegisterComponent(const std::string& extension_id) {\n+  base::Closure registered_callback =\n+    base::Bind(&UpdateClient::OnComponentRegistered,\n+               base::Unretained(this), extension_id);\n+  ReadyCallback ready_callback =\n+    base::Bind(&UpdateClient::OnComponentReady,\n+               base::Unretained(this), extension_id);\n+  if (extension_id == kOnePasswordId) {\n+    RegisterComponentForUpdate(\n+        kOnePasswordPublicKeyStr, registered_callback, ready_callback);\n+  } else if (extension_id == kDashlaneId) {\n+    RegisterComponentForUpdate(\n+        kDashlanePublicKeyStr, registered_callback, ready_callback);\n+  } else if (extension_id == kLastPassId) {\n+    RegisterComponentForUpdate(\n+        kLastPassPublicKeyStr, registered_callback, ready_callback);\n+  } else if (extension_id == kPDFJSId) {\n+    RegisterComponentForUpdate(\n+        kPDFJSPublicKeyStr, registered_callback, ready_callback);\n+  }\n+}\n+\n+void UpdateClient::CheckNow(const std::string& extension_id) {\n+  OnDemandUpdate(cus_.get(), extension_id);\n+}\n+\n+// static\n+mate::Handle<UpdateClient> UpdateClient::Create(\n+    v8::Isolate* isolate,\n+    content::BrowserContext* browser_context) {\n+  return mate::CreateHandle(isolate,",
+        "path": "atom/browser/api/atom_api_update_client.cc",
+        "position": null,
+        "original_position": 157,
+        "commit_id": "d9e54c981c07911b96cdf7038cd75eb821026da6",
+        "original_commit_id": "0c398c193708c0a5ad8da90d13f227bd09c14d19",
+        "user": {
+            "login": "bridiver",
+            "id": 34129,
+            "node_id": "MDQ6VXNlcjM0MTI5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/34129?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bridiver",
+            "html_url": "https://github.com/bridiver",
+            "followers_url": "https://api.github.com/users/bridiver/followers",
+            "following_url": "https://api.github.com/users/bridiver/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bridiver/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bridiver/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bridiver/subscriptions",
+            "organizations_url": "https://api.github.com/users/bridiver/orgs",
+            "repos_url": "https://api.github.com/users/bridiver/repos",
+            "events_url": "https://api.github.com/users/bridiver/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bridiver/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "the update client should use `chrome::GetBrowserContextRedirectedInIncognito` to make sure that there is only one per user since the extensions are shared across private and session contexts\n",
+        "created_at": "2016-09-20T17:33:46Z",
+        "updated_at": "2016-09-27T04:30:56Z",
+        "html_url": "https://github.com/brave/muon/pull/59#discussion_r79668044",
+        "pull_request_url": "https://api.github.com/repos/brave/muon/pulls/59",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/comments/79668044"
+            },
+            "html": {
+                "href": "https://github.com/brave/muon/pull/59#discussion_r79668044"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/brave/muon/pulls/59"
+            }
+        }
+    }
+]

@@ -1,0 +1,124 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When working in an electronics lab there are rarely enough hands on deck. From holding probes to manipulating circuits, every task seems to pull full attention away from the others, the only real way to focus on your work is to have an assistant do the busy work for you. But what if that assistant were a computer? This is what we thought about as we designed our hack.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Smart Scopes is a combination hardware/software hack, combining electrical engineering equipment with consumer electronics to allow the most common tasks in the lab to be done automatically. Commands are spoken to an Amazon Echo, which listens intently and then quickly solves problems, provides answers, or even performs data analysis.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Oscilloscopes often times have a serial port on the back, designed to be connected to a remote interface. We have brought this decades-old technology back to the present by integrating voice control. Our commands run as subcomponents of one omniscient Alexa voice control skill, capturing relevant input from the user while ignoring conversation. While the Echo helps with its solid voice recognition api, a significant amount of post processing makes our interface perfectly tuned for use in a lab.
+                </p>
+                <p>
+                    Commands from the echo are processed by an AWS Lambda process, reducing high overhead server costs and making our platform scalable to an arbitrary number of users. The lambda process communicates with slave devices through a high throughput redis instance, which facilitates bidirectional communication even through proxies and unreliable networks while ensuring security through its industry standard practices.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Most of our challenges came from interfacing devices. We are utilizing 9 separate computational units in this hack (Oscilloscope, FGEN, Raspberry Pi, AWS Lambda Instance, Redis Instance, Image Proxy Server, User display laptop, Octopart Servers, Wolfram Servers) and every synapse is a place for complication.
+                </p>
+                <p>
+                    One of the hardest problems we faced was utilizing the Echo&rsquo;s voice capabilities. While it comes with the necessities to make a basic command system it lacks the processing to be able to listen constantly while filtering out non-targeted speech with a high degree of accuracy. We wanted to avoid the dreaded hotword as much as possible, so fine tuning this system was essential.
+                </p>
+                <p>
+                    Another issue we had was interfacing with the test equipment. The oscilloscope and function generator we brought are decades old, and so require care to interface with properly. Even standard RS-232 serial cables were not compatible, and so we had to partially fashion our own cable out of breadboards and jumper wires.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    One thing which we are especially happy with is how responsive the test equipment interface is. Thanks to the real-time bi-directional communication provided by redis we are able to push updates to the Oscilloscope and FGEN before the echo has finished saying its first word. In a lab environment people don&rsquo;t have time to wait for yet more technology, and so reaching the point where our hack actually makes things simpler was an achievement.
+                </p>
+                <p>
+                    In our hacks we try to be budget friendly as well as creative. While for development purposes we limited ourselves to budget of a few hundred dollars, the system is designed to be able to scale down to just a few dollars in chips. This gives it potential even for the hobbyist, who is often strapped for cash after buying big ticket items such as oscilloscopes and function generators.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    While we had a little experience working with voice recognition coming into this event, spending 36 hours interacting and developing with a state of the art voice control device gave us a better understanding of where the technology is and how best to use it to create effective offerings to consumers.
+                </p>
+                <h2>
+                    What's next for Smart Scope
+                </h2>
+                <p>
+                    We are all electrical engineering majors, and some of us teach EE labs where students often have trouble finding joy in the grind of lab. We hope to integrate this into our electronics experimenting, and to use it to get students more involved in electrical engineering.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            echo
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            function-generator
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            oscilloscope
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            wires
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

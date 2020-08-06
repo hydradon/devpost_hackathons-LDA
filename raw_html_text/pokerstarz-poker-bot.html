@@ -1,0 +1,219 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="781816" data-title="Poker" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/816/datas/original.jpeg">
+                            <img alt="PokerStarz poker bot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/816/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Poker
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="781774" data-title="1st round histogram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/774/datas/original.png">
+                            <img alt="PokerStarz poker bot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/774/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                1st round histogram
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="781773" data-title="Other round histograms" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/773/datas/original.png">
+                            <img alt="PokerStarz poker bot &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/773/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Other round histograms
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We have created a bot that can play well a modification of Texas Holdem Poker game. The modification consists in introducing superpowers to the game, which makes it more challenging and interesting. Our strategy is based on calculating a score for our hand and then selecting a suitable action. The score can be loosely interpreted as the probability of winning. We use different thresholds for the score to select our next action.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It is a bot that uses simulations and probabilistic methods to play Poker well.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Details on the strategy as well as some additional details follow.
+                </p>
+                <h3>
+                    Calculating the score of hand in combination with the board:
+                </h3>
+                <p>
+                    We used Treys library to calculate the rank of our hand. The best rank 1 is obtained by a Royal Flush, while the worst rank is 7642. We used this to calculate a score which could be loosely interpreted as the probability of winning given our hand and the board. The formula is: p(win|hand, board)=1.0 - rank(hand, board)/7642.0
+                </p>
+                <h3>
+                    Strategy of selecting action:
+                </h3>
+                <p>
+                    1st round:
+                </p>
+                <ul>
+                    <li>
+                        Only two cards (pocket cards) are available and the board is empty. This presents a problem for Treys library as it can only evaluate combinations with five cards (which can be chosen out of 5, 6 or 7 cards). To solve this, and to get a score for our two cards, we decided to perform Monte Carlo simulations. We keep the first two cards fixed and then we generate 3 other cards, repeatedly 1000 times. We then calculate the rank of each such combination and take the average of all ranks. This allows us to find a score even in the initial round, which we can use for decision making based on the probability.
+                    </li>
+                    <li>
+                        We take into account the currently available actions (depending on the current state and previous actions), with preference first for raise, call, check and fold in this order. The minimum required score for raising is 0.33, 0.27 for calling and 0 for checking or folding. We always prefer to check over fold if we can check. If an action is not available in a current state (even if we have good cards), we select the next preferred action.
+                    </li>
+                    <li>
+                        We obtained the thresholds by running 1000 rounds of simulations of games to find the frequency of the different ranks/hands. A histogram plot is below (x-axis is the score, y-axis is the count/frequency).
+                    </li>
+                    <li>
+                        <img alt="1stRoundThresholds - see the gallery" data-canonical-url="1stRoundThresholds.png" src="https://res.cloudinary.com/devpost/image/fetch/s--0wDBK3UD--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/1stRoundThresholds.png">
+                    </li>
+                </ul>
+                <p>
+                    Other rounds:
+                </p>
+                <ul>
+                    <li>
+                        In this case, we can directly use Treys library to find a score for our hand. Based on the score and the available actions, we select the action.
+                    </li>
+                    <li>
+                        We take into account the currently available actions, with preference first for raise, call, check and fold in this order. * The minimum required score for raising is 0.55, 0.2 for calling and 0 for checking or folding. We always prefer to check over fold if we can check. If an action is not available in a current state (even if we have good cards), we select the next preferred action.
+                    </li>
+                    <li>
+                        We obtained these thresholds by running 1000000 rounds of simulations of games to find the frequency of the different ranks/hands (we could run 1000 times more simulations than in the first round because we do not need to run 1000 simulations for the possible board cards). A plot follows (x-axis is the score, y-axis is the count/frequency).
+                    </li>
+                    <li>
+                        <img alt="otherRoundsThresholds - see the gallery" data-canonical-url="otherRoundsThresholds.png" src="https://res.cloudinary.com/devpost/image/fetch/s--hqWcNOY9--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/otherRoundsThresholds.png">
+                    </li>
+                    <li>
+                        The lowest scores are the most common and they describe a high card (the least valuable category - no calling or raising). The next bucket is a pair of cards, for which we have decided to call or check. Next, we have cards with at least two pairs (and other more valuable combinations), for which we raise as these actions are relatively uncommon. We keep in mind that a relatively aggressive strategy in poker is more likely to win (because of that we use a relatively low threshold for raising).
+                    </li>
+                </ul>
+                <h3>
+                    Stake raising strategy:
+                </h3>
+                <ul>
+                    <li>
+                        The maximum raise of stake that we consider is max_raise = our_chips - (table_stake - our_stake)
+                    </li>
+                    <li>
+                        The raise of stake that we do actually do is min(max_raise, 2*table_stake)
+                    </li>
+                </ul>
+                <h3>
+                    Superpowers:
+                </h3>
+                <p>
+                    As a modification to the standard Texas Holdem Poker, Square point introduced superpowers to make the game more interesting. Our bot has support for these superpowers. We use the superpowers (spy, seer, leech) when we have not used them yet, they are available and the pot has at least ten times more money than we have (it needs to be really valuable to use them).
+                </p>
+                <h3>
+                    Infrastructure and implementation aspects:
+                </h3>
+                <ul>
+                    <li>
+                        Communication with the server: we used Python socket library for connecting to Square Point server via TCP.
+                    </li>
+                    <li>
+                        The server gives a different representation of cards than can be used in Treys library, hence we need to convert the format of the cards.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Treys library does not support evaluating situations with only two cards (pre-flop situation). We had to come up with our own, innovative way of handling this situation - by doing Monte Carlo simulation. We also had to deal with quite many issues in communicating with the server.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Our bot plays the game really well and it has won all tournaments so far. We are also proud of our decision making strategy based on simulations and modelling, and also the fact we found a good way to find thresholds. Another very important thing that we are very proud of is that we managed to connect and work with the server.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    How to create bots playing poker and how to work with the server giving responses.
+                </p>
+                <h2>
+                    What's next for PokerStarz poker bot
+                </h2>
+                <p>
+                    We could use advanced Reinforcement Learning strategies such as SARSA, Q-Learning or even Deep RL Q-Learning.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            socket
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            treys
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/brano2/htb2019-pokerstarz" rel="nofollow" target="_blank" title="https://github.com/brano2/htb2019-pokerstarz">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,89 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I like creating apps that make your phone smarter and make your life easier. I was annoyed by having to pause my music when leaving my desk, so I wanted to make a hack to do it for me. The idea of using ultrasound was inspired by
+                    <a href="http://www.gierad.com/projects/sweepsense/" rel="nofollow">
+                        SweepSense
+                    </a>
+                    , which I found after Googling for solutions to my first-world problem. SweepSense has much higher goals and complex technology, but one problem: I couldn't use it on my phone! I couldn't find any code and their demo was only shown on iOS, so I had my work cut out for me.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Pauses your music when you take your headphones off, starts again when you put them back on. Also pauses when someone says your name.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Speech recognition to detect your name is done with
+                    <a href="https://github.com/cmusphinx/pocketsphinx" rel="nofollow">
+                        PocketSphinx
+                    </a>
+                    , chosen for its ability to do offline speech recognition.
+                </p>
+                <p>
+                    Detecting whether your headphones are on or off is done by playing a specific frequency of ultrasound through the headphones and listening for it on your phone. Ultrasound is out of the range of human hearing, so your listening experience is the same. When your headphones are on your head, the ultrasound is blocked. When you lift them off your head, it is easily audible to your phone, even in noisy environments.
+                    <a href="https://github.com/JorenSix/TarsosDSP" rel="nofollow">
+                        TarsosDSP
+                    </a>
+                    was used for real-time audio processing to help with ultrasound detection.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    White noise or loud noises can be a big issue, as they appear, to a frequency analysis, as having high levels of all frequencies, including the specific ultrasonic frequency used. Some simple white noise detection was implemented to prevent basic things like the wind or breathing from pausing the music, but it's imperfect.
+                </p>
+                <p>
+                    It's not possible to have to applications listening to microphone input at a time, so both of the functions (headphone detection and name detection) can't run at once. It's possible to split the input, but the voice recognition model is trained on a sample rate that is too low to detect ultrasound with.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/PaeP3nguin/EarBuddies" rel="nofollow" target="_blank" title="https://github.com/PaeP3nguin/EarBuddies">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

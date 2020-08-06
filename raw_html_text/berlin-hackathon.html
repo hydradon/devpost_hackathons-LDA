@@ -1,0 +1,162 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/qTUvozYAjYA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="514992" data-title="The &quot;substation load sensor&quot; simulator, powered by Intel's Predix developer kit." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/514/992/datas/original.jpg">
+                            <img alt="Notitia Qualis &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/514/992/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The "substation load sensor" simulator, powered by Intel's Predix developer kit.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="514993" data-title="The web interface. Upper graph shows the measurements, and marks in red those with low quality. The graph at the bottom shows the features." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/514/993/datas/original.png">
+                            <img alt="Notitia Qualis &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/514/993/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The web interface. Upper graph shows the measurements, and marks in red those with low quality. The graph at the bottom shows the features.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="514994" data-title="Auto regressive moving average (ARMA) model for time correlation estimation." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/514/994/datas/original.png">
+                            <img alt="Notitia Qualis &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/514/994/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Auto regressive moving average (ARMA) model for time correlation estimation.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Sensor Measurement Quality Analysis
+                </h1>
+                <p>
+                    More and more analytics are done on sensor data. This strengthens the need of ensuring the quality of sensor gathered data.
+                </p>
+                <p>
+                    This project aims to answer the need for reliable sensor data. We add confidence to sensor data by statistically analyzing it and setting a quality attribute for that data. The quality, together with the original measurement, are written to a Predix Time Series, leveraging Predix's native support for a quality attribute for each measurement.
+                </p>
+                <p>
+                    The statistical model we used to measure the quality of the data is the ARMA (auto regressive moving average) model. The model we use is configurable and can be extended to use more elaborate models.
+                </p>
+                <p>
+                    In order to visualize the quality of the data, the project contains a web interface that displays a graph of the measurements. When our system recognizes low quality data it shows a red indication of low quality points. The web interface also displays a graph of the features computed for each measurement. When there is a change in the features between consecutive measurements there is a clear visual indication on the screen.
+                </p>
+                <p>
+                    In order to demonstrate the solution in real-time, we developed a simulator for a sensor using Intel's Predix developer kit. The simulator represents a sensor with mostly valid measurements, and spontaneous data corruption due to Gaussian noise. In the normal state the sensor's measurements are taken from the data set provided by ESB (the data set is the load measurement from ESB's substations). In order to control when data corruption happens we connected a physical button to the kit. When the button is pressed by the user - Gaussian noise is injected into the measurement.
+                </p>
+                <p>
+                    Overall our system's architecture is as follows:
+                </p>
+                <ul>
+                    <li>
+                        The simulator ingests the data (valid or corrupted) into a Predix time series.
+                    </li>
+                    <li>
+                        The analyzer component, which runs as a Predix app, analyzes the measurements in the time series, and outputs them, with a quality attribute for each measurement, to another Predix time series.
+                    </li>
+                    <li>
+                        The web interface requests a measurement, quality measure, and the feature vector from the analyzer and displays in visually.
+                    </li>
+                </ul>
+                <p>
+                    See more info about the project in the presentation available in GitHub.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            statistics
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/nadav-steiner/berlin-hackathon" rel="nofollow" target="_blank" title="https://github.com/nadav-steiner/berlin-hackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://electric-flyer-front-erythemic-carnification.run.aws-usw02-pr.ice.predix.io/" rel="nofollow" target="_blank" title="https://electric-flyer-front-erythemic-carnification.run.aws-usw02-pr.ice.predix.io/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                electric-flyer-front-erythemic-carnification.run.aws-usw02-pr.ice.predix.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

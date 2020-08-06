@@ -1,0 +1,493 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/226003716?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    OpsBot - A Slack Chatbot built on Amazon Lex for AWS Guides
+                </h1>
+                <p>
+                    OpsBot enables a DevOps team to collaboratively assign and track tasks, share knowledge and collect resolution logs for issues faced during task execution. 
+Runbooks are task templates that capture repetitive activities that the team performs, while Runlogs capture the task context including issues and resolution for reuse.
+The bot uses runbooks and runlogs to ensure that team members have the resources they require to search for information regarding their tasks or designate 
+tasks to others in their team. 
+Users can search, filter runbooks and assign runbooks to others or pick them up for execution themselves. They can also check runbooks assigned to them and execute them. 
+The execution phase creates runlogs which keeps getting updated at each step of the execution. Users can also raise issues they face during execution and look for 
+resolutions available in the repository or on stackoverflow (via google custom search) or seek help from other team members by delegating the task, so the team member can
+start from where the first user left off.
+                </p>
+                <h3>
+                    Glossary
+                </h3>
+                <ul>
+                    <li>
+                        A
+                        <strong>
+                            runbook
+                        </strong>
+                        is a compilation of standard procedural operations or steps that dev execute sequentially for repetitive tasks. Though Runbooks are generally 
+a set of how-to instructions which contains the steps needed to get a job done. Runbooks can also be tutorials or guides 
+to walkthrough over relevant information and learn about standard dev tools, scripts, products or services. OpsBot currently stores runbooks in elasticsearch, 
+crawled from AWS tutorials, troubleshooting guides and how-to manuals.
+                    </li>
+                    <li>
+                        A
+                        <strong>
+                            runlog
+                        </strong>
+                        is an instance of a task execution enabling tracking it to completion while capturing contextual details of user, environment, dependencies, issues 
+and corresponding resolutions. Runlogs are sharable within the team, enabling users to delegate sub-tasks to each other while maintaining the overall context.
+                        <br>
+                    </li>
+                </ul>
+                <h1>
+                    Using OpsBot
+                </h1>
+                <p>
+                    The bot is accessible at
+                    <a href="https://opsxchange.slack.com/" rel="nofollow">
+                        https://opsxchange.slack.com/
+                    </a>
+                </p>
+                <p>
+                    The bot name
+                    <code>
+                        OpsBot
+                    </code>
+                    needs to be selected from the list of apps available on the above link. Thereafter, users can get started conversing with OpsBot by 
+typing utterances in the
+                    <code>
+                        message
+                    </code>
+                    box at the bottom for the following course of actions which are entry points to the bot:
+                </p>
+                <ul>
+                    <li>
+                        Searching for runbooks for particular AWS products.
+                    </li>
+                    <li>
+                        Execution and troubleshooting of runbooks.
+                    </li>
+                    <li>
+                        Resolution of issues in runlog.
+                    </li>
+                </ul>
+                <p>
+                    The details of distinct features of OpsBot including instructions on how to converse with the bot are:
+                </p>
+                <h3>
+                    Searching for runbooks
+                </h3>
+                <p>
+                    Users can give commands such as
+                    <code>
+                        search
+                    </code>
+                    or
+                    <code>
+                        find
+                    </code>
+                    in slack to start searching for runbooks. The bot prompts the user to enter further details such 
+as
+                    <code>
+                        product name
+                    </code>
+                    along with some optional parameters such as runbook type, nature of information required and tool type of AWS product so as to fetch only 
+the most relevant runbooks. Some command examples include:
+                </p>
+                <pre class="language-nolang"><code>How can I manage my AWS products
+I need help with some AWS ​products
+find runbooks
+</code></pre>
+                <h3>
+                    Assigning Runbooks
+                </h3>
+                <p>
+                    Users can assign a particular runbook after searching and selecting one. The bot prompts user to enter the team members's name whom to assign and the date
+when to assign. Upon validation, the runbook gets assigned and a runlog is created with entries such as originator, recipient, user, logtime, runbook id, runlog 
+id, runbook name, status.
+                </p>
+                <h3>
+                    Execute Runbooks
+                </h3>
+                <p>
+                    Users can give commands such as
+                    <code>
+                        execute
+                    </code>
+                    to execute a particular runbook assigned to them in the runlogs. At each step of the execution, user is prompted 
+to mark a step as
+                    <code>
+                        complete
+                    </code>
+                    or
+                    <code>
+                        raise an issue
+                    </code>
+                    regarding the step by clicking on the options button and he gets directed to the selected intent. 
+The corresponding runlog gets updated with fields such as issue and status.A command example to get this intent started is:
+                </p>
+                <pre class="language-nolang"><code>List all the tasks assigned to me
+I want to complete my assignments
+</code></pre>
+                <h3>
+                    Raise Issue
+                </h3>
+                <p>
+                    The execution process provides the user with the opportunity to raise errors or issues if need be at particular steps/tasks. The user is asked to provide a small 
+description or summary of the issue whereby it gets logged into the runlog in a new field. Next, the user is shown resolutions for the issue which may be available
+from some previously completed runlogs or from stackoverflow. The user is prompted to select a resolution and then shown the complete details present in it.
+The user has an option to make it known whether the resolution was helpful. If yes, either the resolution count in runlog gets increased or the resolution gets 
+updated in the runlog depending on whether the resolution came from the existing runlogs or from stackoverflow. Some command examples include:
+                </p>
+                <pre class="language-nolang"><code>troubleshoot error
+I need Help
+Help me with the error
+Encountered an error. Need help
+</code></pre>
+                <h3>
+                    Resolve Issue
+                </h3>
+                <p>
+                    Users can give commands such as
+                    <code>
+                        resolve
+                    </code>
+                    to resolve an issue registered in a runlog with known runlog id. The user then provides a resolution to the issue 
+listed in the runlog and the runlog gets updated with this information.A command example to get this intent started is:
+                </p>
+                <pre class="language-nolang"><code>List issues assigned to me
+</code></pre>
+                <h3>
+                    Listing Runbooks
+                </h3>
+                <p>
+                    Users can give commands such
+                    <code>
+                        list runbooks
+                    </code>
+                    to display all the runlogs which contain runbooks assigned to them with the latest status in the runlogs.
+Users can select the
+                    <code>
+                        execute
+                    </code>
+                    option after selecting a particular runlog to start execution of the runbook step by step. The user will thus be directed to 
+the
+                    <code>
+                        execute
+                    </code>
+                    intent.
+                </p>
+                <h1>
+                    Installation Instructions
+                </h1>
+                <h1>
+                    GORDON
+                </h1>
+                <p>
+                    Gordon is a tool to create, wire and deploy AWS Lambdas using CloudFormation. Gordon has two aims:
+                </p>
+                <ul>
+                    <li>
+                        Easily deploy and manage lambdas.
+                    </li>
+                    <li>
+                        Easily connect those lambdas to other AWS services (kinesis, dynamo, s3, etc...)
+                    </li>
+                </ul>
+                <p>
+                    Documentation:
+                    <a href="https://gordon.readthedocs.io/en/latest/" rel="nofollow">
+                        Click here
+                    </a>
+                </p>
+                <p>
+                    Lambdas are simple functions written in any of the supported AWS languages (python, javascript and java). Working with lambdas is quite easy to start with, but 
+once you want to develop some complex integrations, it becomes a bit of a burden to deal with all the required steps to put some changes live. Gordon tries to 
+make the entire process as smooth as possible.In gordon, Lambdas are resources that you&rsquo;ll group and define within apps. The idea is to keep Lambdas with the 
+same business domain close to each other in the same app.
+                </p>
+                <h3>
+                    What gordon will do for you?
+                </h3>
+                <ul>
+                    <li>
+                        Download any external requirements your lambdas might have.
+                    </li>
+                    <li>
+                        Create a zip file with your lambda, packages and libraries.
+                    </li>
+                    <li>
+                        Upload this file to S3.
+                    </li>
+                    <li>
+                        Create a lambda with your code and settings (memory, timeout...)
+                    </li>
+                    <li>
+                        Publish a new version of the lambda.
+                    </li>
+                    <li>
+                        Create an alias named current pointing to this new version.
+                    </li>
+                    <li>
+                        Create a new IAM Role for this lambda and attach it.
+                    </li>
+                    <li>
+                        As result, your lambda will be ready to run on AWS!
+                    </li>
+                </ul>
+                <p>
+                    Gordon requires several python libraries, but all of them should get installed seamlessly using pip.
+                    <code>
+                        $ pip install gordon
+                    </code>
+                </p>
+                <h3>
+                    Creating a project
+                </h3>
+                <p>
+                    From the command line, cd into a directory where you&rsquo;d like to store your code, then run the following command:
+                    <code>
+                        $ gordon startproject demo
+                    </code>
+                    This will create a demo directory in your current directory with the following structure:
+                </p>
+                <pre class="language-nolang"><code>demo
+└── settings.yml
+</code></pre>
+                <h3>
+                    Creating an application
+                </h3>
+                <p>
+                    Now that we have our project created, we need to create our first app. Run the following command from the command line:
+                </p>
+                <pre class="language-nolang"><code>$ gordon startapp firstapp```
+This will create a firstapp directory inside your project with the following structure:
+```firstapp/
+├── helloworld
+│   └── code.py
+└── settings.yml
+</code></pre>
+                <p>
+                    These files are:
+                </p>
+                <ul>
+                    <li>
+                        code.py : File where the source code of our first helloworld lambda will be. By default gordon creates a function called handler inside this file and registers 
+it as the main handler.
+                    </li>
+                    <li>
+                        settings.yml : Configuration related to this application. By default gordon registers a helloworld lambda function.
+Now that we know what these files does, we need to install this firstapp. In order to do so, open your project settings.yml and add firstapp to the apps list:
+                        <code>
+                            project: demo
+default-region: us-east-1
+code-bucket: gordon-demo-5f1fb41f
+apps:
+- gordon.contrib.lambdas
+- firstapp
+                        </code>
+                        This will make Gordon take count of the resources registered within the firstapp application.
+                    </li>
+                </ul>
+                <h3>
+                    Build your project
+                </h3>
+                <p>
+                    Now that your project is ready, you need to build it. You&rsquo;ll need to repeat this step every time you make some local changes and want to deploy them to AWS.
+                </p>
+                <p>
+                    From the command line, cd into the project root, then run the following command:
+                    <code>
+                        $ gordon build
+                    </code>
+                    This command will have an output similar to:
+                </p>
+                <pre class="language-nolang"><code>$ gordon build
+Loading project resources
+Loading installed applications
+contrib_lambdas:
+✓ version
+firstapp:
+✓ helloworld
+Building project...
+✓ 0001_p.json
+✓ lambda:contrib_lambdas:version
+✓ lambda:firstapp:helloworld
+✓ 0002_pr_r.json
+✓ 0003_r.json
+</code></pre>
+                <p>
+                    You&rsquo;ll now see a new _build directory in your project path. That directory contains everything gordon needs to put your lambdas live.
+                </p>
+                <h3>
+                    Deploy your project
+                </h3>
+                <p>
+                    Deploying a project is a as easy as using the apply command:
+                    <code>
+                        $ gordon apply
+                    </code>
+                    This command will have an output similar to:
+                </p>
+                <pre class="language-nolang"><code>$ gordon apply
+Applying project...
+0001_p.json (cloudformation)
+CREATE_COMPLETE waiting...
+0002_pr_r.json (custom)
+✓ code/contrib_lambdas_version.zip (da0684c2)
+✓ code/firstapp_helloworld.zip (45da7d76)
+0003_r.json (cloudformation)
+CREATE_COMPLETE waiting...
+</code></pre>
+                <p>
+                    Your lambdas are ready to be used
+                </p>
+                <h1>
+                    ElasticSearch
+                </h1>
+                <p>
+                    Setting up Elasticsearch Cloud Instance
+                </p>
+                <h3>
+                    Creating cluster
+                </h3>
+                <pre class="language-nolang"><code>1.Log into the Elastic Cloud Console, if you aren&rsquo;t logged in already.
+2.Select Clusters at the top and then click New Cluster.
+3.Set the cluster size. During the free trial period, you get access to provision one cluster with 1GB memory, and 24GB storage.
+4.Choose a region close to you.
+5.Configure the details relating ES version,shards,plugins
+6.Optional: Name your cluster.
+7.Click on the Create Cluster button.
+</code></pre>
+                <p>
+                    After provisioning of new cluster is complete Overview page appears with details of URL endpoints.
+Use the url endpoints to create index and insert data.
+Enable kibana in configurations page.
+                </p>
+                <h3>
+                    1.Create the index for runbooks
+                </h3>
+                <p>
+                    Use cURL or postman client with mappings included in request body
+                </p>
+                <pre class="language-nolang"><code>curl -X PUT \
+        &lt;elasticsearch url&gt; \
+  -H 'authorization: Basic &lt;authorization token&gt;' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: &lt;postman token&gt;' \
+  --data-binary  @runbook_mappings.json
+</code></pre>
+                <h3>
+                    2.Create the index for runlogs
+                </h3>
+                <pre class="language-nolang"><code>curl -X PUT \
+        &lt;elasticsearch url&gt; \
+  -H 'authorization: Basic &lt;authorization token&gt;' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: &lt;postman token&gt;' \
+  --data-binary  @runlog_mappings.json
+</code></pre>
+                <h3>
+                    3.Indexing the documents(runbooks)
+                </h3>
+                <pre class="language-nolang"><code>curl -X PUT \
+        &lt;elasticsearch url&gt; \
+  -H 'authorization: Basic &lt;authorization token&gt;' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: &lt;postman token&gt;' \
+ --data-binary  @documents.json
+</code></pre>
+                <h1>
+                    Feedback
+                </h1>
+                <p>
+                    We would love to hear as much feedback as possible! If you have any comment, please drop us an email to
+                    <a href="mailto:awsxbot@gmail.com" rel="nofollow">
+                        awsxbot@gmail.com
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/elasticsearch">
+                                elasticsearch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-custom-search">
+                                google-custom-search
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gordon
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://opsxchange.slack.com/messages/@opsbot/" rel="nofollow" target="_blank" title="https://opsxchange.slack.com/messages/@opsbot/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                opsxchange.slack.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

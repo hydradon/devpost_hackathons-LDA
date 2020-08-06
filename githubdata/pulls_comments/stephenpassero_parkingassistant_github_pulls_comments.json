@@ -1,0 +1,198 @@
+[
+    {
+        "url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/277146170",
+        "pull_request_review_id": 228890748,
+        "id": 277146170,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDI3NzE0NjE3MA==",
+        "diff_hunk": "@@ -29,28 +31,37 @@ describe(\"StreetParkingRules\", () => {\n     describe('when parking Monday-Saturday after 7pm', () => {\n       describe('and car is on wrong side of street', () => {\n         it('returns 0', () => {\n-          const rules = new StreetParkingRules()\n           const wednesdayEvening = new Date(2019, 3, 3, 19, 1)\n           expect(rules.timeRemainingOnSide(wednesdayEvening, 'odd')).toEqual(0)\n         })\n       })\n       describe('and car is on even side of street on a Wednesday', () => {\n         it('returns minutes until switch', () => {\n-          const rules = new StreetParkingRules()\n           const aWednesdayMorning = new Date(2019, 3, 3, 19, 1)\n           expect(rules.timeRemainingOnSide(aWednesdayMorning, 'even')).toEqual(1439 * 60)\n         })\n       })\n       describe('and car is on odd side of street on a Tuesday', () => {\n         it('returns minutes until switch', () => {\n-          const rules = new StreetParkingRules()\n           const aWednesdayMorning = new Date(2019, 3, 2, 19, 1)\n           expect(rules.timeRemainingOnSide(aWednesdayMorning, 'odd')).toEqual(1439 * 60)\n         })\n       })\n     })\n     describe('when parking on Sunday', () => {\n+      describe('and car is on odd side of the street', () => {\n+        it('returns minutes until switch', () => {\n+          const sundayNoon = new Date(2019, 3, 21, 12, 1)\n+          expect(rules.timeRemainingOnSide(sundayNoon, 'odd')).toEqual(1859 * 60)\n+        })\n+      })\n \n+      describe('and car is on even side of the street', () => {\n+        it('returns minutes until switch', () => {\n+          const sundayNoon = new Date(2019, 3, 21, 12, 1)",
+        "path": "__tests__/models/StreetParkingRulesSpec.js",
+        "position": null,
+        "original_position": 64,
+        "commit_id": "7b03e8669348e6f6db82e949f82662b5d34321d5",
+        "original_commit_id": "1d112a7e8f3dbe1b8b53e192092d5f802125ade3",
+        "user": {
+            "login": "gap777",
+            "id": 6495610,
+            "node_id": "MDQ6VXNlcjY0OTU2MTA=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/6495610?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/gap777",
+            "html_url": "https://github.com/gap777",
+            "followers_url": "https://api.github.com/users/gap777/followers",
+            "following_url": "https://api.github.com/users/gap777/following{/other_user}",
+            "gists_url": "https://api.github.com/users/gap777/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/gap777/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/gap777/subscriptions",
+            "organizations_url": "https://api.github.com/users/gap777/orgs",
+            "repos_url": "https://api.github.com/users/gap777/repos",
+            "events_url": "https://api.github.com/users/gap777/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/gap777/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Incorrect. \r\n\r\n```\r\nParking on the even-numbered side of the street only until 7:00 p.m. on Tuesday, Thursday and Saturday. Parking on odd-numbered side only on Sunday and until 7:00 p.m. on Monday, Wednesday and Friday\r\n```\r\nPlus, i would want multiple Sunday even tests, one at 12 (which would already pass), and one at 8pm (which is what you're changing), in addition to the ones on odd (12p + 7pm?)",
+        "created_at": "2019-04-20T20:58:25Z",
+        "updated_at": "2019-05-04T20:00:28Z",
+        "html_url": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r277146170",
+        "pull_request_url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/277146170"
+            },
+            "html": {
+                "href": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r277146170"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/280654924",
+        "pull_request_review_id": 233312206,
+        "id": 280654924,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDI4MDY1NDkyNA==",
+        "diff_hunk": "@@ -29,28 +31,46 @@ describe(\"StreetParkingRules\", () => {\n     describe('when parking Monday-Saturday after 7pm', () => {\n       describe('and car is on wrong side of street', () => {\n         it('returns 0', () => {\n-          const rules = new StreetParkingRules()\n           const wednesdayEvening = new Date(2019, 3, 3, 19, 1)\n           expect(rules.timeRemainingOnSide(wednesdayEvening, 'odd')).toEqual(0)\n         })\n       })\n       describe('and car is on even side of street on a Wednesday', () => {\n         it('returns minutes until switch', () => {\n-          const rules = new StreetParkingRules()\n           const aWednesdayMorning = new Date(2019, 3, 3, 19, 1)\n           expect(rules.timeRemainingOnSide(aWednesdayMorning, 'even')).toEqual(1439 * 60)\n         })\n       })\n       describe('and car is on odd side of street on a Tuesday', () => {\n         it('returns minutes until switch', () => {\n-          const rules = new StreetParkingRules()\n           const aWednesdayMorning = new Date(2019, 3, 2, 19, 1)\n           expect(rules.timeRemainingOnSide(aWednesdayMorning, 'odd')).toEqual(1439 * 60)\n         })\n       })\n     })\n     describe('when parking on Sunday', () => {\n+      describe('and car is on odd side of the street', () => {\n+        it('returns minutes until switch', () => {\n+          const sundayNoon = new Date(2019, 3, 21, 12, 1)",
+        "path": "__tests__/models/StreetParkingRulesSpec.js",
+        "position": 57,
+        "original_position": 57,
+        "commit_id": "7b03e8669348e6f6db82e949f82662b5d34321d5",
+        "original_commit_id": "504554fbda8bbc557b5bee2407a4e03edf3098d5",
+        "user": {
+            "login": "gap777",
+            "id": 6495610,
+            "node_id": "MDQ6VXNlcjY0OTU2MTA=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/6495610?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/gap777",
+            "html_url": "https://github.com/gap777",
+            "followers_url": "https://api.github.com/users/gap777/followers",
+            "following_url": "https://api.github.com/users/gap777/following{/other_user}",
+            "gists_url": "https://api.github.com/users/gap777/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/gap777/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/gap777/subscriptions",
+            "organizations_url": "https://api.github.com/users/gap777/orgs",
+            "repos_url": "https://api.github.com/users/gap777/repos",
+            "events_url": "https://api.github.com/users/gap777/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/gap777/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I think I was imagining an 8pm test for this case, b/c that's a part of what's different... maybe it's covered by the one below.",
+        "created_at": "2019-05-03T03:12:17Z",
+        "updated_at": "2019-05-04T20:00:28Z",
+        "html_url": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r280654924",
+        "pull_request_url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/280654924"
+            },
+            "html": {
+                "href": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r280654924"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/280655142",
+        "pull_request_review_id": 233312206,
+        "id": 280655142,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDI4MDY1NTE0Mg==",
+        "diff_hunk": "@@ -16,7 +16,17 @@ export default class StreetParkingRules {\n   }\n \n \n-  switchSidesAt(dateTime) {\n+  switchSidesAt(dateTime, day) {\n+    if(day === 1){ // There are different rules on Sunday",
+        "path": "models/StreetParkingRules.js",
+        "position": null,
+        "original_position": 6,
+        "commit_id": "7b03e8669348e6f6db82e949f82662b5d34321d5",
+        "original_commit_id": "504554fbda8bbc557b5bee2407a4e03edf3098d5",
+        "user": {
+            "login": "gap777",
+            "id": 6495610,
+            "node_id": "MDQ6VXNlcjY0OTU2MTA=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/6495610?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/gap777",
+            "html_url": "https://github.com/gap777",
+            "followers_url": "https://api.github.com/users/gap777/followers",
+            "following_url": "https://api.github.com/users/gap777/following{/other_user}",
+            "gists_url": "https://api.github.com/users/gap777/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/gap777/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/gap777/subscriptions",
+            "organizations_url": "https://api.github.com/users/gap777/orgs",
+            "repos_url": "https://api.github.com/users/gap777/repos",
+            "events_url": "https://api.github.com/users/gap777/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/gap777/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Is there a way we can put Sunday exception logic somehow in the rules object and then test it here? Ideally, we'd want different rules objects (line 7) for each city we support... and we wouldn't want this function to change for every city (but different cities prob. have different days whereby they get around the odd # days in a week)",
+        "created_at": "2019-05-03T03:15:00Z",
+        "updated_at": "2019-05-04T20:00:28Z",
+        "html_url": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r280655142",
+        "pull_request_url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/280655142"
+            },
+            "html": {
+                "href": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r280655142"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/280655183",
+        "pull_request_review_id": 233312206,
+        "id": 280655183,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDI4MDY1NTE4Mw==",
+        "diff_hunk": "@@ -5,7 +5,7 @@\n     \"android\": \"expo start --android\",\n     \"ios\": \"expo start --ios\",\n     \"eject\": \"expo eject\",\n-    \"test\": \"./node_modules/.bin/jest --watch\"\n+    \"test\": \"./node_modules/.bin/jest\"",
+        "path": "package.json",
+        "position": null,
+        "original_position": 5,
+        "commit_id": "7b03e8669348e6f6db82e949f82662b5d34321d5",
+        "original_commit_id": "504554fbda8bbc557b5bee2407a4e03edf3098d5",
+        "user": {
+            "login": "gap777",
+            "id": 6495610,
+            "node_id": "MDQ6VXNlcjY0OTU2MTA=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/6495610?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/gap777",
+            "html_url": "https://github.com/gap777",
+            "followers_url": "https://api.github.com/users/gap777/followers",
+            "following_url": "https://api.github.com/users/gap777/following{/other_user}",
+            "gists_url": "https://api.github.com/users/gap777/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/gap777/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/gap777/subscriptions",
+            "organizations_url": "https://api.github.com/users/gap777/orgs",
+            "repos_url": "https://api.github.com/users/gap777/repos",
+            "events_url": "https://api.github.com/users/gap777/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/gap777/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Watch is helpful b/c it allows you to save changes and auto run the tests. Why did you remove it?",
+        "created_at": "2019-05-03T03:15:31Z",
+        "updated_at": "2019-05-04T20:00:28Z",
+        "html_url": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r280655183",
+        "pull_request_url": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/comments/280655183"
+            },
+            "html": {
+                "href": "https://github.com/stephenpassero/parkingAssistant/pull/5#discussion_r280655183"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/stephenpassero/parkingAssistant/pulls/5"
+            }
+        }
+    }
+]

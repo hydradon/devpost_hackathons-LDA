@@ -1,0 +1,2055 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    As people who are new to hackathons, we decided to take on the hardest project. It started off going really well. We thought we turned Enigma into a machine. However, we were unable to decode any messages, because we failed to realize the fact that the rotors do not turn the next rotor when it goes from Z to A. If we had known about that before 3 hours before the project was due, perhaps we would have had a working decryptor. However, we did create a machine that would have baffled the Bombe because it is not like other enigma machines. Considering the fact that we have only started learning C++ a few months ago, and that we are new to the world of hackathoning, I think we did well. I definitely had fun staying up for a whole 30 hours and I cannot wait to go to another hackathon!
+                </p>
+                <p>
+                    Oh, and here is our code...
+                </p>
+                <p>
+                    (we had a decryption code too but it didn't work quite right)
+                </p>
+                <h1>
+                    include
+                </h1>
+                <p>
+                    using namespace std;
+                </p>
+                <p>
+                    int validnumber(int);
+int letter2num(char);
+char num2letter(int);
+char rotorI(int);
+char rotorII(int);
+char rotorIII(int);
+char rotorIV(int);
+char rotorV(int);
+char rotorVI(int);
+char rotorVII(int);
+char rotorVIII(int);
+char Rrotors(int,char);
+char RrotorI(char);
+char RrotorII(char);
+char RrotorIII(char);
+char RrotorIV(char);
+char RrotorV(char);
+char RrotorVI(char);
+char RrotorVII(char);
+char RrotorVIII(char);
+char reflectorB(int);
+char reflectorA(int);
+char reflectorC(int);
+int rotorNum(int, int);
+char BigR(char, int, int, int, int,int,int);
+char plug(char,char[2][10]);
+//char[] cToABC(int);
+                </p>
+                <p>
+                    int main()
+{
+int rotor1, rotor2, rotor3, refNum;
+char start1, start2, start3, num1, num2, num3, refLetter;
+char plugs[2][10];
+string message;
+                </p>
+                <pre class="language-nolang"><code>cout &lt;&lt; "Enigma M3 Machine Application:\r\nEnter Reflector:";
+cin &gt;&gt; refLetter;
+if(toupper(refLetter) == 'B')
+refNum = 11;
+else if(toupper(refLetter) == 'A')
+refNum = 10;
+else if(toupper(refLetter) == 'C')
+refNum = 12;
+cout &lt;&lt; "Enter Rotor 1: ";
+cin &gt;&gt; rotor3;
+cout &lt;&lt; "Enter Rotor 2: ";
+cin &gt;&gt; rotor2;
+cout &lt;&lt; "Enter Rotor 3: ";
+cin &gt;&gt; rotor1;
+cout &lt;&lt; "Enter Ringstellung Value 1: ";
+cin &gt;&gt; start1;
+cout &lt;&lt; "Enter Ringstellung Value 2: ";
+cin &gt;&gt; start2;
+cout &lt;&lt; "Enter Ringstellung Value 3: ";
+cin &gt;&gt; start3;
+cout &lt;&lt; "Enter Grundstellung Value 1: ";
+cin &gt;&gt; num1;
+cout &lt;&lt; "Enter Grundstellung Value 2: ";
+cin &gt;&gt; num2;
+cout &lt;&lt; "Enter Grundstellung Value 3: ";
+cin &gt;&gt; num3;
+</code></pre>
+                <p>
+                    //  for(int i = 0;i &lt; 10;i++)
+//     {
+//       for(int j = 0;j &lt; 2;j++)
+//       {
+//          cout &lt;&lt; "Enter Plug " &lt;&lt; i + 1 &lt;&lt; " Letter " &lt;&lt; j + 1 &lt;&lt; ": ";
+//          cin &gt;&gt; plugs[j][i];
+//          plugs[j][i]=toupper(plugs[j][i]);
+//          for(int k = 0;k &lt;= i;k++)
+//             {
+//             for(int p = 0;p &lt;= j;p++)
+//                {
+//                if(plugs[j][i]!=plugs[p][k] || (i== k &amp;&amp; j==p))
+//                   continue;
+//                else{
+//                   cout &lt;&lt; "That plug is already chosen. Try again!" &lt;&lt; endl;
+//                   j--;
+//                   }
+//                }
+//             }
+//       }
+//     }
+cout &lt;&lt; "Enter code you wish to encrypt:" &lt;&lt; endl;
+getline(cin, message);
+getline(cin, message);
+int r, g;
+                </p>
+                <pre class="language-nolang"><code>r = letter2num(num1) + (letter2num(num2) * 26 - 26) + (letter2num(num3) * 676 - 676);
+g = (letter2num(start1)-1) + (letter2num(start2)* 26 - 26) + (letter2num(start3)* 676 - 676);
+
+
+cout &lt;&lt; "Encrypted Code: ";
+
+string encrypted = "";
+</code></pre>
+                <p>
+                    aa
+    for(int c = 0; c &lt; message.size();c++)
+    {
+    encrypted += /
+                    <em>
+                        plug
+                    </em>
+                    /(BigR(/
+                    <em>
+                        plug
+                    </em>
+                    /(toupper(message.at(c))/
+                    <em>
+                        ,plugs
+                    </em>
+                    /),r+c,g,rotor1,rotor2,rotor3,refNum)/
+                    <em>
+                        ,plugs
+                    </em>
+                    /);
+    }
+    cout &lt;&lt; encrypted &lt;&lt; endl;
+                </p>
+                <p>
+                    return 0;
+}
+                </p>
+                <p>
+                    /* char[] cToABC(int c)
+{
+char a[3];
+a[0] = num2letter(c/676);
+c= c%676;
+a[1] = num2letter(c/26);
+c= c%26;
+a[2]=num2letter(c);
+                </p>
+                <pre class="language-nolang"><code>return a;
+</code></pre>
+                <p>
+                    }
+ */
+                </p>
+                <p>
+                    char plug(char input, char array[2][10])
+{
+char buddy;
+for(int i = 0;i &lt; 10;i++)
+{
+if(array[0][i] == input){
+buddy = array[1][i];
+return buddy;}
+else if(array[1][i] == input){
+buddy = array[0][i];
+return buddy;}
+else
+buddy = input;
+}
+return buddy;
+}
+                </p>
+                <p>
+                    char BigR(char inLetter, int iteration,int interation2, int a, int b, int c, int refNum)
+{
+int rotor1 = a;
+int rotor2 = b;
+int rotor3 = c;
+int tmp;
+                </p>
+                <pre class="language-nolang"><code>tmp=(rotorNum(rotor1,validnumber(letter2num(inLetter)+iteration-interation2))-iteration+interation2);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; endl;
+tmp=(rotorNum(rotor2,validnumber(tmp+(iteration/26)-interation2/26))-(iteration/26)+interation2/26);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; endl;
+tmp=(rotorNum(rotor3,validnumber(tmp+(iteration/676)-interation2/676))-(iteration/676)+interation2/676);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; endl;
+tmp=rotorNum(refNum,tmp);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; "reflector" &lt;&lt; endl;
+
+
+tmp=letter2num(Rrotors(rotor3,num2letter(validnumber(tmp+(iteration/676)-interation2/676)))-iteration/676+interation2/676);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; endl;
+tmp=letter2num(Rrotors(rotor2,num2letter(validnumber(tmp+(iteration/26)-interation2/26)))-iteration/26+interation2/26);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; endl;
+tmp=letter2num(Rrotors(rotor1,num2letter(validnumber(tmp+(iteration)-interation2)))-iteration+interation2);
+//cout &lt;&lt; num2letter(validnumber(tmp)) &lt;&lt; endl;
+tmp=num2letter(validnumber(tmp));
+return tmp;
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    int letter2num(char a)
+{
+int num = (int)toupper(a) - 64;
+return num;
+}
+                </p>
+                <p>
+                    char num2letter(int a)
+{
+int b = a + 64;
+char letter = (char)b;
+return b;
+}
+                </p>
+                <p>
+                    int validnumber(int a)
+{
+while(a &gt; 26 || a &lt; 1)
+{
+if(a &gt; 26)
+a = a - 26;
+else
+a = a + 26;
+}
+return a;
+}
+                </p>
+                <p>
+                    int rotorNum(int rotorNum, int valueInserted)
+{
+switch(rotorNum){
+case 1:
+return letter2num(rotorI(valueInserted));
+break;
+case 2:
+return letter2num(rotorII(valueInserted));
+break;
+case 3:
+return letter2num(rotorIII(valueInserted));
+break;
+case 4:
+return letter2num(rotorIV(valueInserted));
+break;
+case 5:
+return letter2num(rotorV(valueInserted));
+break;
+case 6:
+return letter2num(rotorVI(valueInserted));
+break;
+case 7:
+return letter2num(rotorVII(valueInserted));
+break;
+case 8:
+return letter2num(rotorVIII(valueInserted));
+break;
+case 10:
+return letter2num(reflectorA(valueInserted));
+break;
+case 11:
+return letter2num(reflectorB(valueInserted));
+break;
+                </p>
+                <pre class="language-nolang"><code>   case 12:
+                return letter2num(reflectorC(valueInserted));
+break;
+</code></pre>
+                <p>
+                    }}
+                </p>
+                <p>
+                    char Rrotors(int rnum, char in)
+{
+                </p>
+                <pre class="language-nolang"><code>    string ABC="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+                switch(rnum)
+    {
+    case 1:
+    return RrotorI(in);
+    break;
+    case 2:
+    return RrotorII(in);
+    break;
+    case 3:
+    return RrotorIII(in);
+    break;
+    case 4:
+    return RrotorIV(in);
+    break;
+    case 5:
+    return RrotorV(in);
+    break;
+    case 6:
+    return RrotorVI(in);
+
+    break;
+
+    case 7:
+    return RrotorVII(in);
+    break;
+    case 8:
+    return RrotorVIII(in);
+    break;
+
+
+    }
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorVII(char a)
+{
+switch(a)
+{
+case 'N':
+return 'A';
+break;
+case 'Z':
+return 'B';
+break;
+case 'J':
+return 'C';
+break;
+case 'H':
+return 'D';
+break;
+case 'G':
+return 'E';
+break;
+case 'R':
+return 'F';
+break;
+case 'C':
+return 'G';
+break;
+case 'X':
+return 'H';
+break;
+case 'M':
+return 'I';
+break;
+case 'Y':
+return 'J';
+break;
+case 'S':
+return 'K';
+break;
+case 'W':
+return 'L';
+break;
+case 'B':
+return 'M';
+break;
+case 'O':
+return 'N';
+break;
+case 'U':
+return 'O';
+break;
+case 'F':
+return 'P';
+break;
+case 'A':
+return 'Q';
+break;
+case 'I':
+return 'R';
+break;
+case 'V':
+return 'S';
+break;
+case 'L':
+return 'T';
+break;
+case 'P':
+return 'U';
+break;
+case 'E':
+return 'V';
+break;
+case 'K':
+return 'W';
+break;
+case 'Q':
+return 'X';
+break;
+case 'D':
+return 'Y';
+break;
+case 'T':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorVI(char a)
+{
+switch(a)
+{
+case 'J':
+return 'A';
+break;
+case 'P':
+return 'B';
+break;
+case 'G':
+return 'C';
+break;
+case 'V':
+return 'D';
+break;
+case 'O':
+return 'E';
+break;
+case 'U':
+return 'F';
+break;
+case 'M':
+return 'G';
+break;
+case 'F':
+return 'H';
+break;
+case 'Y':
+return 'I';
+break;
+case 'Q':
+return 'J';
+break;
+case 'B':
+return 'K';
+break;
+case 'E':
+return 'L';
+break;
+case 'N':
+return 'M';
+break;
+case 'H':
+return 'N';
+break;
+case 'Z':
+return 'O';
+break;
+case 'R':
+return 'P';
+break;
+case 'D':
+return 'Q';
+break;
+case 'K':
+return 'R';
+break;
+case 'A':
+return 'S';
+break;
+case 'S':
+return 'T';
+break;
+case 'X':
+return 'U';
+break;
+case 'L':
+return 'V';
+break;
+case 'I':
+return 'W';
+break;
+case 'C':
+return 'X';
+break;
+case 'T':
+return 'Y';
+break;
+case 'W':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorVIII(char a)
+{
+switch(a)
+{
+case 'F':
+return 'A';
+break;
+case 'K':
+return 'B';
+break;
+case 'Q':
+return 'C';
+break;
+case 'H':
+return 'D';
+break;
+case 'T':
+return 'E';
+break;
+case 'L':
+return 'F';
+break;
+case 'X':
+return 'G';
+break;
+case 'O':
+return 'H';
+break;
+case 'C':
+return 'I';
+break;
+case 'B':
+return 'J';
+break;
+case 'J':
+return 'K';
+break;
+case 'S':
+return 'L';
+break;
+case 'P':
+return 'M';
+break;
+case 'D':
+return 'N';
+break;
+case 'Z':
+return 'O';
+break;
+case 'R':
+return 'P';
+break;
+case 'A':
+return 'Q';
+break;
+case 'M':
+return 'R';
+break;
+case 'E':
+return 'S';
+break;
+case 'W':
+return 'T';
+break;
+case 'N':
+return 'U';
+break;
+case 'I':
+return 'V';
+break;
+case 'U':
+return 'W';
+break;
+case 'Y':
+return 'X';
+break;
+case 'G':
+return 'Y';
+break;
+case 'V':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorIV(char a)
+{
+switch(a)
+{
+case 'E':
+return 'A';
+break;
+case 'S':
+return 'B';
+break;
+case 'O':
+return 'C';
+break;
+case 'V':
+return 'D';
+break;
+case 'P':
+return 'E';
+break;
+case 'Z':
+return 'F';
+break;
+case 'J':
+return 'G';
+break;
+case 'A':
+return 'H';
+break;
+case 'Y':
+return 'I';
+break;
+case 'Q':
+return 'J';
+break;
+case 'U':
+return 'K';
+break;
+case 'I':
+return 'L';
+break;
+case 'R':
+return 'M';
+break;
+case 'H':
+return 'N';
+break;
+case 'X':
+return 'O';
+break;
+case 'L':
+return 'P';
+break;
+case 'N':
+return 'Q';
+break;
+case 'F':
+return 'R';
+break;
+case 'T':
+return 'S';
+break;
+case 'G':
+return 'T';
+break;
+case 'K':
+return 'U';
+break;
+case 'D':
+return 'V';
+break;
+case 'C':
+return 'W';
+break;
+case 'M':
+return 'X';
+break;
+case 'W':
+return 'Y';
+break;
+case 'B':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorV(char a)
+{
+switch(a)
+{
+case 'V':
+return 'A';
+break;
+case 'Z':
+return 'B';
+break;
+case 'B':
+return 'C';
+break;
+case 'R':
+return 'D';
+break;
+case 'G':
+return 'E';
+break;
+case 'I':
+return 'F';
+break;
+case 'T':
+return 'G';
+break;
+case 'Y':
+return 'H';
+break;
+case 'U':
+return 'I';
+break;
+case 'P':
+return 'J';
+break;
+case 'S': 
+return 'K';
+break;
+case 'D':
+return 'L';
+break;
+case 'N':
+return 'M';
+break;
+case 'H':
+return 'N';
+break;
+case 'L':
+return 'O';
+break;
+case 'X':
+return 'P';
+break;
+case 'A':
+return 'Q';
+break;
+case 'W':
+return 'R';
+break;
+case 'M':
+return 'S';
+break;
+case 'J':
+return 'T';
+break;
+case 'Q':
+return 'U';
+break;
+case 'O':
+return 'V';
+break;
+case 'F':
+return 'W';
+break;
+case 'E':
+return 'X';
+break;
+case 'C':
+return 'Y';
+break;
+case 'K':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorIII(char a)
+{
+switch(a)
+{
+case 'B':
+return 'A';
+break;
+case 'D':
+return 'B';
+break;
+case 'F':
+return 'C';
+break;
+case 'H':
+return 'D';
+break;
+case 'J':
+return 'E';
+break;
+case 'L':
+return 'F';
+break;
+case 'C':
+return 'G';
+break;
+case 'P':
+return 'H';
+break;
+case 'R':
+return 'I';
+break;
+case 'T':
+return 'J';
+break;
+case 'X':
+return 'K';
+break;
+case 'V':
+return 'L';
+break;
+case 'Z':
+return 'M';
+break;
+case 'N':
+return 'N';
+break;
+case 'Y':
+return 'O';
+break;
+case 'E':
+return 'P';
+break;
+case 'I':
+return 'Q';
+break;
+case 'W':
+return 'R';
+break;
+case 'G':
+return 'S';
+break;
+case 'A':
+return 'T';
+break;
+case 'K':
+return 'U';
+break;
+case 'M':
+return 'V';
+break;
+case 'U':
+return 'W';
+break;
+case 'S':
+return 'X';
+break;
+case 'Q':
+return 'Y';
+break;
+case 'O':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorI(char a)
+{
+switch(a)
+{
+case 'E':
+return 'A';
+break;
+case 'K':
+return 'B';
+break;
+case 'M':
+return 'C';
+break;
+case 'F':
+return 'D';
+break;
+case 'L':
+return 'E';
+break;
+case 'G':
+return 'F';
+break;
+case 'D':
+return 'G';
+break;
+case 'Q':
+return 'H';
+break;
+case 'V':
+return 'I';
+break;
+case 'Z':
+return 'J';
+break;
+case 'N':
+return 'K';
+break;
+case 'T':
+return 'L';
+break;
+case 'O':
+return 'M';
+break;
+case 'W':
+return 'N';
+break;
+case 'Y':
+return 'O';
+break;
+case 'H':
+return 'P';
+break;
+case 'X':
+return 'Q';
+break;
+case 'U':
+return 'R';
+break;
+case 'S':
+return 'S';
+break;
+case 'P':
+return 'T';
+break;
+case 'A':
+return 'U';
+break;
+case 'I':
+return 'V';
+break;
+case 'B':
+return 'W';
+break;
+case 'R':
+return 'X';
+break;
+case 'C':
+return 'Y';
+break;
+case 'J':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char RrotorII(char a)
+{
+switch(a)
+{
+case 'A':
+return 'A';
+break;
+case 'J':
+return 'B';
+break;
+case 'D':
+return 'C';
+break;
+case 'K':
+return 'D';
+break;
+case 'S':
+return 'E';
+break;
+case 'I':
+return 'F';
+break;
+case 'R':
+return 'G';
+break;
+case 'U':
+return 'H';
+break;
+case 'X':
+return 'I';
+break;
+case 'B':
+return 'J';
+break;
+case 'L':
+return 'K';
+break;
+case 'H':
+return 'L';
+break;
+case 'W':
+return 'M';
+break;
+case 'T':
+return 'N';
+break;
+case 'M':
+return 'O';
+break;
+case 'C':
+return 'P';
+break;
+case 'Q':
+return 'Q';
+break;
+case 'G':
+return 'R';
+break;
+case 'Z':
+return 'S';
+break;
+case 'N':
+return 'T';
+break;
+case 'P':
+return 'U';
+break;
+case 'Y':
+return 'V';
+break;
+case 'F':
+return 'W';
+break;
+case 'V':
+return 'X';
+break;
+case 'O':
+return 'Y';
+break;
+case 'E':
+return 'Z';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char rotorII(int a)
+{
+switch(a)
+{
+case 1:
+return 'A';
+break;
+case 2:
+return 'J';
+break;
+case 3:
+return 'D';
+break;
+case 4:
+return 'K';
+break;
+case 5:
+return 'S';
+break;
+case 6:
+return 'I';
+break;
+case 7:
+return 'R';
+break;
+case 8:
+return 'U';
+break;
+case 9:
+return 'X';
+break;
+case 10:
+return 'B';
+break;
+case 11:
+return 'L';
+break;
+case 12:
+return 'H';
+break;
+case 13:
+return 'W';
+break;
+case 14:
+return 'T';
+break;
+case 15:
+return 'M';
+break;
+case 16:
+return 'C';
+break;
+case 17:
+return 'Q';
+break;
+case 18:
+return 'G';
+break;
+case 19:
+return 'Z';
+break;
+case 20:
+return 'N';
+break;
+case 21:
+return 'P';
+break;
+case 22:
+return 'Y';
+break;
+case 23:
+return 'F';
+break;
+case 24:
+return 'V';
+break;
+case 25:
+return 'O';
+break;
+case 26:
+return 'E';
+break;
+}
+                </p>
+                <p>
+                    }
+                </p>
+                <p>
+                    char rotorIII(int a)
+{
+switch(a)
+{
+case 1:
+return 'B';
+break;
+case 2:
+return 'D';
+break;
+case 3:
+return 'F';
+break;
+case 4:
+return 'H';
+break;
+case 5:
+return 'J';
+break;
+case 6:
+return 'L';
+break;
+case 7:
+return 'C';
+break;
+case 8:
+return 'P';
+break;
+case 9:
+return 'R';
+break;
+case 10:
+return 'T';
+break;
+case 11:
+return 'X';
+break;
+case 12:
+return 'V';
+break;
+case 13:
+return 'Z';
+break;
+case 14:
+return 'N';
+break;
+case 15:
+return 'Y';
+break;
+case 16:
+return 'E';
+break;
+case 17:
+return 'I';
+break;
+case 18:
+return 'W';
+break;
+case 19:
+return 'G';
+break;
+case 20:
+return 'A';
+break;
+case 21:
+return 'K';
+break;
+case 22:
+return 'M';
+break;
+case 23:
+return 'U';
+break;
+case 24:
+return 'S';
+break;
+case 25:
+return 'Q';
+break;
+case 26:
+return 'O';
+break;
+}
+}
+                </p>
+                <p>
+                    char rotorV(int a)
+{
+switch(a)
+{
+case 1:
+return 'V';
+break;
+case 2:
+return 'Z';
+break;
+case 3:
+return 'B';
+break;
+case 4:
+return 'R';
+break;
+case 5:
+return 'G';
+break;
+case 6:
+return 'I';
+break;
+case 7:
+return 'T';
+break;
+case 8:
+return 'Y';
+break;
+case 9:
+return 'U';
+break;
+case 10:
+return 'P';
+break;
+case 11:
+return 'S';
+break;
+case 12:
+return 'D';
+break;
+case 13:
+return 'N';
+break;
+case 14:
+return 'H';
+break;
+case 15:
+return 'L';
+break;
+case 16:
+return 'X';
+break;
+case 17:
+return 'A';
+break;
+case 18:
+return 'W';
+break;
+case 19:
+return 'M';
+break;
+case 20:
+return 'J';
+break;
+case 21:
+return 'Q';
+break;
+case 22:
+return 'O';
+break;
+case 23:
+return 'F';
+break;
+case 24:
+return 'E';
+break;
+case 25:
+return 'C';
+break;
+case 26:
+return 'K';
+break;
+}
+}
+                </p>
+                <p>
+                    char rotorIV(int num)
+{
+switch(num)
+{
+case 1:
+return 'E';
+break;
+case 2:
+return 'S';
+break;
+case 3:
+return 'O';
+break;
+case 4:
+return 'V';
+break;
+case 5:
+return 'P';
+break;
+case 6:
+return 'Z';
+break;
+case 7:
+return 'J';
+break;
+case 8:
+return 'A';
+break;
+case 9:
+return 'Y';
+break;
+case 10:
+return 'Q';
+break;
+case 11:
+return 'U';
+break;
+case 12:
+return 'I';
+break;
+case 13:
+return 'R';
+break;
+case 14:
+return 'H';
+break;
+case 15:
+return 'X';
+break;
+case 16:
+return 'L';
+break;
+case 17:
+return 'N';
+break;
+case 18:
+return 'F';
+break;
+case 19:
+return 'T';
+break;
+case 20:
+return 'G';
+break;
+case 21:
+return 'K';
+break;
+case 22:
+return 'D';
+break;
+case 23:
+return 'C';
+break;
+case 24:
+return 'M';
+break;
+case 25:
+return 'W';
+break;
+case 26:
+return 'B';
+break;
+                </p>
+                <pre class="language-nolang"><code>}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char rotorI(int num)
+{
+switch(num)
+{
+case 1:
+return 'E';
+break;
+case 2:
+return 'K';
+break;
+case 3:
+return 'M';
+break;
+case 4:
+return 'F';
+break;
+case 5:
+return 'L';
+break;
+case 6:
+return 'G';
+break;
+case 7:
+return 'D';
+break;
+case 8:
+return 'Q';
+break;
+case 9:
+return 'V';
+break;
+case 10:
+return 'Z';
+break;
+                </p>
+                <pre class="language-nolang"><code>    case 11:
+                                return 'N';
+    break;
+    case 12:
+    return 'T';
+    break;
+    case 13:
+    return 'O';
+    break;
+    case 14:
+    return 'W';
+    break;
+    case 15:
+    return 'Y';
+    break;
+    case 16:
+    return 'H';
+    break;
+    case 17:
+    return 'X';
+    break;
+    case 18:
+    return 'U';
+    break;
+    case 19:
+    return 'S';
+    break;
+    case 20:
+    return 'P';
+    break;
+    case 21:
+    return 'A';
+    break;
+    case 22:
+    return 'I';
+    break;
+    case 23:
+    return 'B';
+    break;
+    case 24:
+    return 'R';
+    break;
+    case 25:
+    return 'C';
+    break;
+    case 26:
+    return 'J';
+    break;
+
+}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char reflectorB(int num)
+{
+switch(num)
+{
+case 1:
+return 'Y';
+break;
+case 2:
+return 'R';
+break;
+case 3:
+return 'U';
+break;
+case 4:
+return 'H';
+break;
+case 5:
+return 'Q';
+break;
+case 6:
+return 'S';
+break;
+case 7:
+return 'L';
+break;
+case 8:
+return 'D';
+break;
+case 9:
+return 'P';
+break;
+case 10:
+return 'X';
+break;
+case 11:
+return 'N';
+break;
+case 12:
+return 'G';
+break;
+case 13:
+return 'O';
+break;
+case 14:
+return 'K';
+break;
+case 15:
+return 'M';
+break;
+case 16:
+return 'I';
+break;
+case 17:
+return 'E';
+break;
+case 18:
+return 'B';
+break;
+case 19:
+return 'F';
+break;
+case 20:
+return 'Z';
+break;
+case 21:
+return 'C';
+break;
+case 22:
+return 'W';
+break;
+case 23:
+return 'V';
+break;
+case 24:
+return 'J';
+break;
+case 25:
+return 'A';
+break;
+case 26:
+return 'T';
+break;
+                </p>
+                <pre class="language-nolang"><code>}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char reflectorA(int num)
+{
+switch(num)
+{
+case 1:
+return 'E';
+break;
+case 2:
+return 'J';
+break;
+case 3:
+return 'M';
+break;
+case 4:
+return 'Z';
+break;
+case 5:
+return 'A';
+break;
+case 6:
+return 'L';
+break;
+case 7:
+return 'Y';
+break;
+case 8:
+return 'X';
+break;
+case 9:
+return 'V';
+break;
+case 10:
+return 'B';
+break;
+case 11:
+return 'W';
+break;
+case 12:
+return 'F';
+break;
+case 13:
+return 'C';
+break;
+case 14:
+return 'R';
+break;
+case 15:
+return 'Q';
+break;
+case 16:
+return 'U';
+break;
+case 17:
+return 'O';
+break;
+case 18:
+return 'N';
+break;
+case 19:
+return 'T';
+break;
+case 20:
+return 'S';
+break;
+case 21:
+return 'P';
+break;
+case 22:
+return 'I';
+break;
+case 23:
+return 'K';
+break;
+case 24:
+return 'H';
+break;
+case 25:
+return 'G';
+break;
+case 26:
+return 'D';
+break;
+                </p>
+                <pre class="language-nolang"><code>}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char reflectorC(int num)
+{
+switch(num)
+{
+case 1:
+return 'F';
+break;
+case 2:
+return 'V';
+break;
+case 3:
+return 'P';
+break;
+case 4:
+return 'J';
+break;
+case 5:
+return 'I';
+break;
+case 6:
+return 'A';
+break;
+case 7:
+return 'O';
+break;
+case 8:
+return 'Y';
+break;
+case 9:
+return 'E';
+break;
+case 10:
+return 'D';
+break;
+case 11:
+return 'R';
+break;
+case 12:
+return 'Z';
+break;
+case 13:
+return 'X';
+break;
+case 14:
+return 'W';
+break;
+case 15:
+return 'G';
+break;
+case 16:
+return 'C';
+break;
+case 17:
+return 'T';
+break;
+case 18:
+return 'K';
+break;
+case 19:
+return 'U';
+break;
+case 20:
+return 'Q';
+break;
+case 21:
+return 'S';
+break;
+case 22:
+return 'B';
+break;
+case 23:
+return 'N';
+break;
+case 24:
+return 'M';
+break;
+case 25:
+return 'H';
+break;
+case 26:
+return 'L';
+break;
+                </p>
+                <pre class="language-nolang"><code>}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char rotorVI(int num)
+{
+switch(num)
+{
+case 1:
+return 'J';
+break;
+case 2:
+return 'P';
+break;
+case 3:
+return 'G';
+break;
+case 4:
+return 'V';
+break;
+case 5:
+return 'O';
+break;
+case 6:
+return 'U';
+break;
+case 7:
+return 'M';
+break;
+case 8:
+return 'F';
+break;
+case 9:
+return 'Y';
+break;
+case 10:
+return 'Q';
+break;
+case 11:
+return 'B';
+break;
+case 12:
+return 'E';
+break;
+case 13:
+return 'N';
+break;
+case 14:
+return 'H';
+break;
+case 15:
+return 'Z';
+break;
+case 16:
+return 'R';
+break;
+case 17:
+return 'D';
+break;
+case 18:
+return 'K';
+break;
+case 19:
+return 'A';
+break;
+case 20:
+return 'S';
+break;
+case 21:
+return 'X';
+break;
+case 22:
+return 'L';
+break;
+case 23:
+return 'I';
+break;
+case 24:
+return 'C';
+break;
+case 25:
+return 'T';
+break;
+case 26:
+return 'W';
+break;
+                </p>
+                <pre class="language-nolang"><code>}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char rotorVII(int num)
+{
+switch(num)
+{
+case 1:
+return 'N';
+break;
+case 2:
+return 'Z';
+break;
+case 3:
+return 'J';
+break;
+case 4:
+return 'H';
+break;
+case 5:
+return 'G';
+break;
+case 6:
+return 'R';
+break;
+case 7:
+return 'C';
+break;
+case 8:
+return 'X';
+break;
+case 9:
+return 'M';
+break;
+case 10:
+return 'Y';
+break;
+case 11:
+return 'S';
+break;
+case 12:
+return 'W';
+break;
+case 13:
+return 'B';
+break;
+case 14:
+return 'O';
+break;
+case 15:
+return 'U';
+break;
+case 16:
+return 'F';
+break;
+case 17:
+return 'A';
+break;
+case 18:
+return 'I';
+break;
+case 19:
+return 'V';
+break;
+case 20:
+return 'L';
+break;
+case 21:
+return 'P';
+break;
+case 22:
+return 'E';
+break;
+case 23:
+return 'K';
+break;
+case 24:
+return 'Q';
+break;
+case 25:
+return 'D';
+break;
+case 26:
+return 'T';
+break;
+                </p>
+                <pre class="language-nolang"><code>}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    char rotorVIII(int num)
+{
+switch(num)
+{
+case 1:
+return 'F';
+break;
+case 2:
+return 'K';
+break;
+case 3:
+return 'Q';
+break;
+case 4:
+return 'H';
+break;
+case 5:
+return 'T';
+break;
+case 6:
+return 'L';
+break;
+case 7:
+return 'X';
+break;
+case 8:
+return 'O';
+break;
+case 9:
+return 'C';
+break;
+case 10:
+return 'B';
+break;
+                </p>
+                <pre class="language-nolang"><code>    case 11:
+                                return 'J';
+    break;
+    case 12:
+    return 'S';
+    break;
+    case 13:
+    return 'P';
+    break;
+    case 14:
+    return 'D';
+    break;
+    case 15:
+    return 'Z';
+    break;
+    case 16:
+    return 'R';
+    break;
+    case 17:
+    return 'A';
+    break;
+    case 18:
+    return 'M';
+    break;
+    case 19:
+    return 'E';
+    break;
+    case 20:
+    return 'W';
+    break;
+    case 21:
+    return 'N';
+    break;
+    case 22:
+    return 'I';
+    break;
+    case 23:
+    return 'U';
+    break;
+    case 24:
+    return 'Y';
+    break;
+    case 25:
+    return 'G';
+    break;
+    case 26:
+    return 'V';
+    break;
+
+}
+
+return '0';
+</code></pre>
+                <p>
+                    }
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            blood-sweat-and-tears
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            hard-work
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            more-tears
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            zero-sleep
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,150 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Assistant Plays Zork
+                </h1>
+                <p>
+                    This is a Google assistant action that allows the user to play Zork I (
+                    <a href="https://en.wikipedia.org/wiki/Zork_I" rel="nofollow">
+                        https://en.wikipedia.org/wiki/Zork_I
+                    </a>
+                    ). The Zork series is in the public domain.
+                </p>
+                <h2>
+                    Architecture
+                </h2>
+                <p>
+                    The Application is split into 3 main parts: Zork binary, REST API interface, and Actions on Google.
+                </p>
+                <h3>
+                    Zork
+                </h3>
+                <p>
+                    The Zork source from
+                    <a href="https://github.com/devshane/zork" rel="nofollow">
+                        https://github.com/devshane/zork
+                    </a>
+                    is used to run the game of zork. The source files are included in the project under ther "zork" folder. The start script builds the binaries when it is started.
+                </p>
+                <h3>
+                    REST API
+                </h3>
+                <p>
+                    The interface to Zork is handled by a REST API built with Node.js and Express.js. When requested (with a GET request to /startGame endpoint) the Zork binary is started as a child_process and communication can be sent and received on the child's stdin and stdout respectively.
+                </p>
+                <p>
+                    Endpoints:
+                </p>
+                <ul>
+                    <li>
+                        GET - /startGame: ends any running games and starts a new game, responds with any data on stdout.
+                    </li>
+                    <li>
+                        POST - /: string in request.body.cmd is sent to the stdin of running game as the next instruction, response is returned.
+                    </li>
+                    <li>
+                        GET - /: returns the last message that was sent on the running game's stdout
+                    </li>
+                    <li>
+                        GET - /end: ends the running game and responds with success message.
+                    </li>
+                </ul>
+                <h3>
+                    Actions on Google
+                </h3>
+                <p>
+                    Actions on Google is used to feed the commands from Google assistant to the REST API and playback the responses. Our google action is setup with the name "lord zork", so the action can be trigured using the phrase: "Hey Google, talk to lord zork".
+                </p>
+                <p>
+                    Intents are created to start the game (manually and on action start), end the game when the action is cancelled, send commands, and repeat prompts. Each intent is handled using a webhook fullfillment running as a Firebase function. The fullfillment has handlers for each intent. The intents are:
+                </p>
+                <ul>
+                    <li>
+                        Default Welcome Intent: runs when action is initiated or when user says "Start new game". This intent starts a Zork executable that the user can interact for, kills any running executables.
+                    </li>
+                    <li>
+                        repeat: triggered with the phrase "Repeat last prompt" repeats the last output from the Zork executable.
+                    </li>
+                    <li>
+                        finish: triggered when the user exits the action, kills running Zork processes.
+                    </li>
+                    <li>
+                        Default Fallback Intent: our main intent that process the all other statements (that don't match previous intents) and sends them as commands to the running Zork.
+                    </li>
+                </ul>
+                <h2>
+                    Running
+                </h2>
+                <p>
+                    The backend application can be run with the following:
+                </p>
+                <pre class="language-nolang"><code>cd node-app
+npm start
+</code></pre>
+                <p>
+                    The start script builds the Zork binary w/ make. Their may be error messages if dependencies are not met.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-home
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/tlcox3/assistant-plays-zork" rel="nofollow" target="_blank" title="https://github.com/tlcox3/assistant-plays-zork">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

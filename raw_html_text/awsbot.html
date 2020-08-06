@@ -1,0 +1,116 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/183916537?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We run multiple production workloads on AWS. As such almost always we have the AWS console and the CLI tools running in the background. Though using a combination of the console and the CLI tools you can do a lot, we still have a number of custom programs that we manually run. Our team is spread across the globe so we also use slack a lot. and love it. We have used off the shelf slack bots for various reminders and notification, so I was curious if we could bring the power of AWS automation to Slack. The idea was to be able to do significant portion of our AWS related work right from within slack. The hackathon acted as the perfect catalyst.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The awsBot takes instructions from a authorized slack channel and carries out common AWS tasks that you would typically do using the console or using AWS command line tools. Once the user is logged into Slack to their channel , they do not need to log in again. It uses the slack token combined with AWS IAM , roles to ensure security and access. Currently the bot can do a variety of common task with EC2 and S3 like for example you can start and stop instances. The bot can also quickly list the status of your instances in a particular region. Something we use quite often. Similarly for S3 it can list out buckets and the contents of a bucket.
+                </p>
+                <p>
+                    The bot can also take backups at an instance level and list out all available snapshots for an instance. Using cloud formation, the can create resources for you on AWS. The bot also provides live feedback as the status of your resources change in AWS, like when new resources are being deployed or when instances are being turned off, all without leaving Slack.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The bot is based on a serverless architecture and uses AWS Lambda as the backbone eliminating the need to provision servers. The lambda functions are exposed using custom APIs built using AWS API gateway. Finally the APIs are integrated to Slack via custom integrations. The actual logic for the bot was written in Python using the boto3 SDK for AWS. To implement security I have leveraged AWS KMS to encrypt the Slack tokens and URLs. This will ensure that the bot only responds to commands from authorized slack channels.  Listing of the technologies behind the bot.
+                </p>
+                <ul>
+                    <li>
+                        AWS Lambda
+                    </li>
+                    <li>
+                        AWS API Gateway
+                    </li>
+                    <li>
+                        AWS KMS
+                    </li>
+                    <li>
+                        AWS Cloudformation
+                    </li>
+                    <li>
+                        Python with boto3
+                    </li>
+                    <li>
+                        Slack custom integrations
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Though serverless computing has been around for a while. It is not something that I have used extensively or have experience. As such it did take a little time to get used to the serverless computing architecture, but once there it was a lot of fun. We have already identified a few use cases within our team where servers computing would be a good fit.
+                </p>
+                <p>
+                    Security was one of the other primary challenges I had when I initially got this idea. Even before I had written the first line of code for the bot, I knew I needed to implement some of kind encryption along with roles. We have used client and server side encryption in the past, but to use it with a serverless architecture I needed something that could scale with deployment and not having to worry about managing the encryption and decryption process or manage keys. Thankfully AWS KMS fit right in.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It's been just a couple of days since the bot was created and we have already deployed within two slack channels with two different teams. The initial response has been very encouraging with the bot serving over 2K requests and there have not been any issues with managing concurrent user requests as well. Though the bot currently only supports limited functions in EC2 and S3, it does it really well and in an efficient manner.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    The first and foremost, working and developing for serverless compute, AWS Lambda in particular. I also picked up how to build different types custom interrogations with slack.
+                </p>
+                <h2>
+                    What's next for awsBot
+                </h2>
+                <p>
+                    Expanding to cover other AWS services like RedShift and RDS, mainly because that is one of the other areas where we do a lot of work. I also plan to implement natural language processing.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/slack">
+                                slack
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

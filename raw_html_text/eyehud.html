@@ -1,0 +1,202 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/5E8dueHWfjA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The beginnings of this idea came from long road trips. When driving having good
+visibility is very important. When driving into the sun, the sun visor never seemed
+to be able to actually cover the sun. When driving at night, the headlights of
+oncoming cars made for a few moments of dangerous low visibility. Why isn't there
+a better solution for these things? We decided to see if we could make one, and
+discovered a wide range of applications for this technology, going far beyond
+simply blocking light.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    EyeHUD is able to track objects on opposite sides of a transparent LCD screen in order to
+render graphics on the screen relative to all of the objects it is tracking. i.e. Depending on where the observer and the object of interest are located on the each side of the screen, the location of the graphical renderings are adjusted
+                </p>
+                <p>
+                    Our basic demonstration is based on our original goal of blocking light. When sitting
+in front of the screen, eyeHUD uses facial recognition to track the position of
+the users eyes. It also tracks the location of a bright flash light on the opposite side
+of the screen with a second camera. It then calculates the exact position to render a dot on the screen
+that completely blocks the flash light from the view of the user no matter where
+the user moves their head, or where the flash light moves. By tracking both objects
+in 3D space it can calculate the line that connects the two objects and then where
+that line intersects the monitor to find the exact position it needs to render graphics
+for the particular application.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We found an LCD monitor that had a broken backlight. Removing the case and the backlight
+from the monitor left us with just the glass and liquid crystal part of the display.
+Although this part of the monitor is not completely transparent, a bright light would
+shine through it easily. Unfortunately we couldn't source a fully transparent display
+but we were able to use what we had lying around. The camera on a laptop and a small webcam
+gave us the ability to track objects on both sides of the screen.
+                </p>
+                <p>
+                    On the software side we used OpenCV's haar cascade classifier in python to perform facial recognition.
+Once the facial recognition is done we must locate the users eyes in their face in pixel space for
+the user camera, and locate the light with the other camera in its own pixel space. We then wrote
+an algorithm that was able to translate the two separate pixel spaces into real 3D space, calculate
+the line that connects the object and the user, finds the intersection of this line and the monitor,
+then finally translates this position into pixel space on the monitor in order to render a dot.
+                </p>
+                <h2>
+                    Challenges we ran Into
+                </h2>
+                <p>
+                    First we needed to determine a set of equations that would allow us to translate between the three separate
+pixel spaces and real space. It was important not only to be able to calculate this transformation, but
+we also needed to be able to calibrate the position and the angular resolution of the cameras. This meant
+that when we found our equations we needed to identify the linearly independent parts of the equation to figure
+out which parameters actually needed to be calibrated.
+                </p>
+                <p>
+                    Coming up with a calibration procedure was a bit of a challenge. There were a number of calibration parameters
+that we needed to constrain by making some measurements. We eventually solved this by having the monitor render
+a dot on the screen in a random position. Then the user would move their head until the dot completely blocked the
+light on the far side of the monitor. We then had the computer record the positions in pixel space of all three objects.
+This then told the computer that these three pixel space points correspond to a straight line in real space.
+This provided one data point. We then repeated this process several times (enough to constrain all of the degrees of freedom
+in the system). After we had a number of data points we performed a chi-squared fit to the line defined by these points
+in the multidimensional calibration space. The parameters of the best fit line determined our calibration parameters to use
+in the transformation algorithm.
+                </p>
+                <p>
+                    This calibration procedure took us a while to perfect but we were very happy with the speed and accuracy we were able to calibrate at.
+                </p>
+                <p>
+                    Another difficulty was getting accurate tracking on the bright light on the far side of the monitor. The web cam we were
+using was cheap and we had almost no access to the settings like aperture and exposure which made it so the light would
+easily saturate the CCD in the camera. Because the light was saturating and the camera was trying to adjust its own exposure,
+other lights in the room were also saturating the CCD and so even bright spots on the white walls were being tracked as well.
+We eventually solved this problem by reusing the radial diffuser that was on the backlight of the monitor we took apart.
+This made any bright spots on the walls diffused well under the threshold for tracking. Even after this we had a bit of trouble
+locating the exact center of the light as we were still getting a bit of glare from the light on the camera lens. We were
+able to solve this problem by applying a gaussian convolution to the raw video before trying any tracking. This allowed us
+to accurately locate the center of the light.
+                </p>
+                <h2>
+                    Accomplishments that we are proud of
+                </h2>
+                <p>
+                    The fact that our tracking display worked at all we felt was a huge accomplishments. Every stage of this project felt like a
+huge victory. We started with a broken LCD monitor and two white boards full of math. Reaching a well working final product
+was extremely exciting for all of us.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    None of our group had any experience with facial recognition or the OpenCV library. This was a great opportunity to dig into
+a part of machine learning that we had not used before and build something fun with it.
+                </p>
+                <h2>
+                    What's next for eyeHUD
+                </h2>
+                <p>
+                    Expanding the scope of applicability.
+                </p>
+                <ul>
+                    <li>
+                        Infrared detection for pedestrians and wildlife in night time conditions
+                    </li>
+                    <li>
+                        Displaying information on objects of interest
+                    </li>
+                    <li>
+                        Police information via license plate recognition
+                        <br>
+                        Transition to a fully transparent display and more sophisticated cameras.
+                        <br>
+                        General optimization of software.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            coffee
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            duct-tape
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            foam
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lcd-display
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            web-cams
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Rob-MFn-Fletcher/eyeHUD" rel="nofollow" target="_blank" title="https://github.com/Rob-MFn-Fletcher/eyeHUD">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

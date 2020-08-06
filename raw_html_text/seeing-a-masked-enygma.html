@@ -1,0 +1,121 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    At Next House, one of the (objectively) best dorms on MIT's campus, we love to burn the midnight oil working on jigsaw puzzles, and we take great pride in hanging the finished products in the hallways of our wing. As you might guess, this process often involves intensely scrutinizing the picture on the front of the puzzle box for hours on end, attempting to find matches and appropriately placing the pieces of the puzzle. Our most recent puzzle, however, presented a new challenge in that it came enclosed in a mysterious, unremarkable Ziploc bag, with the only identifying feature being a simplistic Sharpie label: "Train/Car." It's one thing to solve a puzzle with knowledge of the final product, but it's an entirely distinct problem to solve a jigsaw puzzle given just the bits and pieces! With this in mind, we set out to design an app that would attempt to do exactly this.
+                </p>
+                <h2>
+                    What It Does
+                </h2>
+                <p>
+                    Our project employs computer vision to solve real jigsaw puzzles. While a project like this has been done before, we built upon this past project by restricting the information provided to the system we developed. Namely, while conventional jigsaw puzzle solving techniques rely on information about the finished puzzle&mdash;the images on the front and the overall contours&mdash;we attempted to develop a puzzle solver which is only given information about the individual puzzle pieces and has no information about the final image depicted in the puzzle. This presents a significant challenge with respect to prior algorithms because they can no longer make use of the large-scale image or avoid the demands of precision required by looking more carefully at the edges of the puzzles.
+                </p>
+                <h2>
+                    How We Built It
+                </h2>
+                <p>
+                    Python and computer vision, specifically OpenCV, form the backbone of the project. The process can be broken into several steps:
+                </p>
+                <p>
+                    Capture images --&gt; Process images --&gt; Extract metrics --&gt; Predict matches
+                </p>
+                <p>
+                    <strong>
+                        Capture Images
+                    </strong>
+                    - in order to obtain precise information about the puzzle pieces, we captured color detail from the front sides of the pieces and contour information from the back of the pieces (where the fit is tighter and edges sharper) by scanning the pieces on a conventional scanner.
+                </p>
+                <p>
+                    <strong>
+                        Process images
+                    </strong>
+                    - images are processed in several ways, most notably including creating binary images from the puzzles to get better edge data. We also process each piece to extract data which will be useful for the later stages of analysis.
+                </p>
+                <p>
+                    <strong>
+                        Extract Metrics
+                    </strong>
+                    - we use three metrics to determine matches:
+1) Convexity - is each side of the puzzle piece convex, concave, or straight? Intuitively, convex sides should only match with concave sides, and straight sides should lie on the edge of the puzzle.
+2) Edge length - how long approximately is the edge of each piece (from corner to corner)?
+3) Color - what is the color pattern near the edges of the pieces, and how does it match up with other pieces?
+                </p>
+                <p>
+                    <strong>
+                        Predict Matches
+                    </strong>
+                    - based on the above metrics, determine which pairs of sides fit most well together. Convexity is a relatively discrete measurement which, given proper functioning of the helper functions, can easily work to eliminate some of the possible matches (e.g. whenever two sides are both edge sides or both convex). Edge length likewise can be used within a threshold to be a discrete heuristic to narrow down possibilities. Color can be represented by a descriptor or mathematical vector representation constructed as a 3D color histogram, and color descriptors can be compared using the Euclidean norm.
+                </p>
+                <h2>
+                    Challenges We Ran Into
+                </h2>
+                <p>
+                    We encountered a multitude of challenges with this project, but a recurring theme was simply having trouble with achieving a high enough precision to do a lot of the tasks we wanted to accomplish. For instance, performing edge detection to get a general edge for a shape is easy, but doing it with sufficiently high precision to find corners or match contours was much more difficult.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are particularly proud of the work we were able to do in learning and implementing OpenCV and computer vision algorithms to get a lot of the basic ideas working, especially with a more challenging project than we originally planned for.
+                </p>
+                <h2>
+                    What's next for Solving Apictorial Mass Enygmas
+                </h2>
+                <h2>
+                    Notes
+                </h2>
+                <p>
+                    For the record, the striking similarity with a HackNY project from 2013 was rather coincidental and was not known to any of our members until right after the hackathon started&mdash;we even talked about using the exact same computer vision algorithm used by these hackers! After hours of deliberation we decided nevertheless to go through with a more advanced version of the project that would require different computer vision techniques.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            computer-vision
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/atwang16/same-hack17" rel="nofollow" target="_blank" title="https://github.com/atwang16/same-hack17">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

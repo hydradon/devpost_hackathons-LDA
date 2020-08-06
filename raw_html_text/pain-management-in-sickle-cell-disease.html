@@ -1,0 +1,78 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Currently there is little understanding of how pain in sickle cell disease (SCD) patients influences their physiology or vice versa. Since there is no current cure for SCD, the current clinical focus is on pain management which relies on patients&rsquo; self-reported pain symptoms. The main idea behind this project is to see if we can use objective physiology symptoms to predict the pain levels of SCD patients.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Gives a causal map for the relationship between pain and physiological parameters that comprise pulse (heart rate), respiration rate, blood oxygen content (SpO2), skin temperature, and blood pressure, as well as the pain score, a value between 0 and 10 with 0 indicating no pain, and 10 indicating the maximum pain.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We first imported physiological and pain data (40 patients, 5363 records) into TETRAD. Only 402 cases had a complete set of features; these cases were used in the analyses.  Due to the relatively small number of cases with complete data, we used the currently experimental bootstrap method using the FGES (Fast Greedy Equivalence Search) with 1000 bootstrap samples to account for sampling uncertainty. After deriving the model, we implemented a path analysis on the model using both parametric and bootstrap (1000 samples) methods. We then compared the results of the Structural Equation Modeling (SEM) of the bootstrap with those from the original data and found that both provided identical model parameters that validate that bootstrapping did not add more bias into the model. In both cases, the model could not be rejected by the data at the 0.05 alpha level (chi square p-value above 0.05).  We considered adding knowledge to the model (pain causes blood pressure (systolic and diastolic)). However, systolic and diastolic blood pressure were found to be collinear (r=0.64) and by accounting for the causal relationship between pain and systolic blood pressure, we found that pain is independent of diastolic blood pressure (partial correlation of pain and diastolic blood pressure was 0.062 after accounting for systolic blood pressure). After that we tested the Markov Blanket technique using the Pain score as the target node since we are interested in predicting the pain value using the remaining parameters. We played with two different penalty values: 2 and 1. The penalty of 2 yielded a more parsimonious model, removing SpO2 and respiration rate which matched the Markov blanket we would derive from the graph derived from the FGES procedure. However, the predicted pain score accuracy results using multiple-imputed data (40 imputation datasets) were 23% (best case), 22% (average) and 21% (worst case) which while above the baseline accuracy of 9.09%, was still not up to the mark. However, with the penalty of 1, we found that all the six physiological factors either directly or indirectly played a role in the pain score. This full model, while not parsimonious, resulted in accuracy levels of 43% (best case), 38% (average), and 35% (worst case). Using the TETRAD system, it was intellectually satisfying to find that pain did indeed influence systolic blood pressure and pulse directly, while having an indirect relationship with the remaining parameters.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Since the percentage of the missing data is high in the dataset, we elected to use list-wise deletion. We could not get regression-based imputation to work, and did not want to over-inflate correlations through mean or median imputation. In the future, the challenge of modeling this particular dataset will be to find creative ways to use techniques that can learn the relationship within the parameters without introducing a bias to the model to ensure generalizability. We considered the bootstrap FGES a starting point, but more work needs to be done.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We found that pain is independent of diastolic blood pressure (partial correlation of pain and diastolic blood pressure was 0.062 after accounting for systolic blood pressure). 
+For the parsimonious model, the predicted pain score accuracy results using imputed data were 23% (best case), 22% (average) and 21% (worst case) which while above the baseline accuracy of 9.09%, was still not up to the mark. However, it was interesting to find that the parameters pulse, skin temperature, systolic and diastolic blood pressure play a stronger role in modeling pain than the remaining two components. 
+After reducing the Markov blanket penalty to 1, we obtained that all the six physiological factors either directly or indirectly played a role in the pain score. This full model, while not parsimonious resulted in accuracy levels of 43% (best case), 38% (average), and 35% (worst case). This is extremely promising given that pain is subjective and overall, we still created a fairly simple model with six vital signs to predict pain outcomes.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Vital signs can be used to model pain symptoms in SCD patients. However, individualized models perform better than general models which on retrospection is not surprising given the individualized nature of pain tolerance and symptoms. Moreover, the relationship between pain and the six vitals is not all direct; the two parameters pulse and systolic blood pressure are the only two direct links caused by pain. It was also rewarding to find out that there are definite causal links (there were no undirected links) with definite directions between the different variables. Specifically, none of the physiological parameters affected the pain score for the patients; however pain affected physiological symptoms either directly or indirectly.
+                </p>
+                <h2>
+                    What's next for Pain Management in Sickle Cell Disease
+                </h2>
+                <p>
+                    We are currently facing challenges in retaining missing data by using techniques like bootstrapping for causal structure learning. We need more data to validate our current findings. These data were collected in the inpatient settings in the hospital. The larger goal of the project is to move from vitals measured during the inpatient setting to using wearable physiological data so that pain management can be extended to the outpatient settings so that SCD patients can manage their pain symptoms more efficiently, reducing the number of re-hospitalizations.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            spss
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tetrad
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

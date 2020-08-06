@@ -1,0 +1,252 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/69hkx1WJR7c?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="299626" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/299/626/datas/original.png">
+                            <img alt="Galactic Cooperation &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/299/626/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="299787" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/299/787/datas/original.png">
+                            <img alt="Galactic Cooperation &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/299/787/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="299788" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/299/788/datas/original.png">
+                            <img alt="Galactic Cooperation &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/299/788/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to provide game that utilizes multiple wearable technologies in a fun and healthy way.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It uses the nod ring to control a space ship in the game which is used to destroy asteroids that are the size of planets that are coming at you from random directions in a Unity-made game.
+                </p>
+                <p>
+                    It also uses the Estimote beacons to have a second player that moves from one beacon to the other in order to win the game and to change the state of the first player. The first player could be on fire due to the Android device being close to one beacon and the fire could be extinguished when the second estimote beacon, which could be on the other side of the room, is reached.
+                </p>
+                <p>
+                    This means that the game has to be cooperative and that's why we named it Galactic Cooperation. One player has to motivate the other player to run faster from one beacon to the other in order to extinguish the fire, while the first player has to concentrate on destroying planet sized asteroids.
+                </p>
+                <p>
+                    If the second player doesn't extinguish the fire for in a couple of seconds, the they both lose the game. This gives an extra layer of challenge where neither of the players are allowed to lose focus on their own tasks.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    We used Unity engine to make the game and the logic for the nod ring itself and Android Studio to make an Android app that connects to the Unity-made game using TCP sockets and the estimote SDK.
+                </p>
+                <p>
+                    The estimote beacons are constantly detected using Bluetooth 4.0 low energy and we are able to know if the first beacon is 'fire' and the second beacon is 'extinguish' due to the fact that they have unique ID, major and minor.
+                </p>
+                <p>
+                    We also know how far the beacons are due to the fact that we are using estimote SDK to range monitor the signal strength of the beacons and convert the signal strength to meters (distance).
+                </p>
+                <p>
+                    The Unity engine is able to directly get the nod ring coordinates in 2D space because we are using nod ring libraries and SDK for the Unity engine game portion. This means that the Nod ring could be connected via Bluetooth on a Mac or a PC, since Unity is cross-platform.
+                </p>
+                <p>
+                    The Android device is constantly detecting how close you are to each estimote beacon and once you reach a certain beacon and a certain size (~ 0.5 meters) it sends a Socket byte packet to the Unity engine to either light the space ship on fire or extinguish it, which means that the Android player could be very far away from the computer that runs the game and it will still connect via WiFi.
+                </p>
+                <p>
+                    Minimum Android version needed is Android 4.3
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Being able to connect Android to Unity engine, we needed to create a C# Socket server and a Java client that constantly need to maintain connection in order to send the 'fire' and 'extinguish' beacons. This was very time-consuming as the sockets are blocking and we need to properly thread each of the socket implementations to make it work both ways (Android with Estimote and Unity with Nod Ring).
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We are very proud of the fact that we were actually able to build a full finished project on our first (for Adrian) and second(for Maksim) Hackathons.
+                </p>
+                <p>
+                    To individually learn to use so many new subjects and tools that we were not taught in our CEGEP computer science program as well as implementing subjects we were taught in a professional and then to be able to bring all of these aspects together into one big project that just works.
+                </p>
+                <p>
+                    To be able to finish the project in less than 48 hours is quite an accomplishment and we are both proud of that fact.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned to use sockets (client/server), we learned to use estimote SDK and to range the signal strength of them, as well as learned how to use the nod ring in a Unity environment.
+                </p>
+                <h2>
+                    What's next for Galactic Cooperation
+                </h2>
+                <p>
+                    We plan on polishing it up and hopefully submitting it as a free game and perhaps even implementing other wearable technologies for even more players to increase cooperation.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            beacon
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluetooth">
+                                bluetooth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/estimote">
+                                estimote
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nod-ring
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            socket
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/xml">
+                                xml
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.dropbox.com/s/y0amfr6fkiayqq2/Galactic%20Cooperation%20-%20Player%202%20-%20Android?dl=0" rel="nofollow" target="_blank" title="https://www.dropbox.com/s/y0amfr6fkiayqq2/Galactic%20Cooperation%20-%20Player%202%20-%20Android?dl=0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.dropbox.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.dropbox.com/sh/9f8czytksrvj5ro/AACml1W01x8Ax3A3uu9aG8Bda?dl=0" rel="nofollow" target="_blank" title="https://www.dropbox.com/sh/9f8czytksrvj5ro/AACml1W01x8Ax3A3uu9aG8Bda?dl=0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.dropbox.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.dropbox.com/s/6fa3vtpkt1bvy2p/Galaxy%20Cooperation%20-%20Unity%20Project%20Files.zip?dl=0" rel="nofollow" target="_blank" title="https://www.dropbox.com/s/6fa3vtpkt1bvy2p/Galaxy%20Cooperation%20-%20Unity%20Project%20Files.zip?dl=0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.dropbox.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/adriantodorov/EstimoteToUnityAPI" rel="nofollow" target="_blank" title="https://github.com/adriantodorov/EstimoteToUnityAPI">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

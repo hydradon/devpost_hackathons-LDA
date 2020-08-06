@@ -1,0 +1,170 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/191366255?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="444742" data-title="Lake photosphere with multiple stylized sections" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/742/datas/original.jpg">
+                            <img alt="DreamPainter &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/742/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Lake photosphere with multiple stylized sections
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="444073" data-title="City center in the style of Udnie" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/073/datas/original.jpg">
+                            <img alt="DreamPainter &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/073/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                City center in the style of Udnie
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="444094" data-title="Utrecht Canal in the style of Rain Princess" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/094/datas/original.jpg">
+                            <img alt="DreamPainter &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/094/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Utrecht Canal in the style of Rain Princess
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We decided to pursue this idea after acquiring a Samsung Gear VR headset about 6 hours into Cal Hacks. One of our teammateshad recently heard about style transfer neural networks for applying one image's "style" to another.
+                </p>
+                <p>
+                    Combine the two and we get a fully-immersive artistic viewing and making experience!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    DreamPainter allows users to view real-life landscape photospheres and, using the Gear VR's controls, toggle through the various stylized versions of those photospheres. In an experimental mode, users can also "paint" the style of multiple artists onto the landscape photosphere with a virtual "brush", so they can mix and match multiple styles on the same sphere!
+                </p>
+                <p>
+                    Example styles below:
+(
+                    <a href="http://i.imgur.com/wiOtLFY.jpg" rel="nofollow">
+                        http://i.imgur.com/wiOtLFY.jpg
+                    </a>
+                    )
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used Logan Engstrom's fast style transfer neural network implementation
+                    <a href="https://github.com/lengstrom/fast-style-transfer" rel="nofollow">
+                        found here
+                    </a>
+                    to give a set of equirectangular photosphere images in the style of famous paintings such as Picabia's Udnie, The Great Wave off Kanagawa, Picasso's A Muse, and many more.
+                </p>
+                <p>
+                    Because we had limited computational power, we could not run an entire image through the neural net implementation at once, so we wrote an image processing pipeline that would slice each image into pieces, feed each one through the NN, and then stitch the results back together.
+                </p>
+                <p>
+                    We then used the Unity engine to transform the original and stylized photospheres into textures, and overlaid them onto a virtual sphere to create the viewing environment for our Samsung Gear VR app. We interfaced with the Gear VR's button controls to allow users to swipe to change their original image, and tap to toggle through each image's style.
+                </p>
+                <p>
+                    For the paintbrush feature, we used Unity's Gyroscope readings to obtain quaternion readings of the user's headset orientation. We then translated those readings into Euler angles, then used equirectangular projection mappings to align our angles with corresponding areas on the original 2-D image. This allowed the user to look at an area in the photo sphere, modify the 2-D painting, and have Unity remap the affected area into the sphere.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Most of our team members did not have previous experience with Unity or C# in general, so we got to learn how to load textures and create game objects in Unity while writing the scripts necessary to interface with the Gear VR's button controls.
+                </p>
+                <p>
+                    The math involved to translate quaternion readings to 2D image coordinates was also fairly complex
+                </p>
+                <h2>
+                    Accomplishments that we're proud of and what we learned
+                </h2>
+                <p>
+                    We got really good at Unity and VR technology!
+                </p>
+                <h2>
+                    What's next for DreamPainter
+                </h2>
+                <p>
+                    Creating an online service that lets users upload any of their photospheres, stylize them and load them into the app, so that anyone can see their entire world through the eyes of artistic genius!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            fast-style-transfer
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/samsung-gear-vr">
+                                samsung-gear-vr
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

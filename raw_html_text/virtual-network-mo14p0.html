@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We didn't have any other ideas.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Simulates and displays network protocols and device interactions on a virtual network.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Every router is given a string address:
+                </p>
+                <h3>
+                    Transport send
+                </h3>
+                <ul>
+                    <li>
+                        Data is split up into packets of length 255. In the event that a packet has length &lt; 255, it is padded with &sect; characters.
+                    </li>
+                    <li>
+                        Packets have two addresses (sender and receiver) as well as some HEAD information specifying what type of packet it its (DATA, DV, or DEL).
+                    </li>
+                    <li>
+                        Packets are also given a sequence number specifying the order they were sent originally (this is to account for random propagation delay from the link layer).
+                    </li>
+                </ul>
+                <h3>
+                    Network send
+                </h3>
+                <ul>
+                    <li>
+                        Routers are aware of their neighbours by default (they have neighbour addresses and distances). Each router maintains two dictionaries: one containing the current best distance to every other node and one containing the next node on the another node (i.e. to['5'] = '4' means that any packet on its way to router '5' should be sent to router '4').
+                    </li>
+                    <li>
+                        Upon creation of a node, its neighbours update their distance and to vectors to include this new node and send out an update. Updates are also triggered for every router at regular intervals.
+                    </li>
+                    <li>
+                        A local update (triggered by a new node being added) involves every neighbour of the new node sending its new distance vector to all of its neighbours.
+                    </li>
+                    <li>
+                        A global update (triggered at regular intervals) involves every node sending its distance vector to all of its neighbours.
+                    </li>
+                    <li>
+                        Upon receiving a distance vector, routers check the received one to see if a new, shorter, route has been found (and if one has, it updates its distance vector).
+                    </li>
+                    <li>
+                        When a router disconnects, it sends a DEL packet to all of its neighbours instructing them to remove it from their distance and to vectors.
+                    </li>
+                    <li>
+                        When new information is created (i.e. a node is generated or destroyed), it takes one update for its neighbours to be made aware, two updates for their neighbours, etc. All in all, it takes d updates for every node to be made aware of new information where d is the diameter of the graph.
+                    </li>
+                    <li>
+                        Once distance vectors are set up and enough updates have been performed, routing a packet is as simple as each router checking its to vector to see where to forward the packet onto until it reaches its destination.
+                    </li>
+                </ul>
+                <h3>
+                    Link send
+                </h3>
+                <ul>
+                    <li>
+                        Each edge maintains a queue of packets waiting to be sent as well as the packet currently being sent (each edge can be transmitting one packet at a time).
+                    </li>
+                    <li>
+                        At every tick, the packet being transmitted is shifted further along the edge until it reaches the other side.
+                    </li>
+                    <li>
+                        Packets are given ages and deleted at age 1000 (each transmitting packet's age increases by 1 each tick). This is to avoid build up of "lost" packets
+                    </li>
+                </ul>
+                <h3>
+                    Network receive
+                </h3>
+                <ul>
+                    <li>
+                        If the packet is a special packet (i.e. a DEL or DV packet), the necessary action takes place.
+                    </li>
+                    <li>
+                        If the packet's destination address is the router's address, it is sent up to the transport layer. If not, the router's to vector is consulted and the packet is forwarded towards its destination.
+                    </li>
+                </ul>
+                <h3>
+                    Transport receive
+                </h3>
+                <ul>
+                    <li>
+                        Each router stores a list of received packets for each other router on the network. Every time a packet is received it is appended to the sender's queue and the number of items in the queue is checked. If the number of items matches the number of packets in the message (this number is stored in each packet) then the data is reconstructed.
+                    </li>
+                    <li>
+                        Data is reconstructed by simply concatenating the contents into one string based on sequence number.
+                    </li>
+                </ul>
+                <h3>
+                    Visuals
+                </h3>
+                <ul>
+                    <li>
+                        Visualisation for this project was built from the ground up from a fairly barebones graphics library (graphics.py).
+                    </li>
+                    <li>
+                        The network topology is shown, routers are represented as nodes and links are edges between nodes.
+                    </li>
+                    <li>
+                        When a packet is sent between two routers, a packet animation is shown moving along the edge between the two nodes.
+                    </li>
+                    <li>
+                        The fill colour of a packet is the colour of the origin node that sent it.
+                    </li>
+                    <li>
+                        The outline of the packet shows the packet number; there is a gradient from black (first packet) to white (last packet) for a batch of packets.
+                    </li>
+                    <li>
+                        The length of a queue on an edge is shown as the colour of the edge, the more packets queued to go down the more red it is.
+                    </li>
+                    <li>
+                        Real time router creation and deletion is possible via clicking (or clicking from random positions).
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It runs.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    A lot about python development,
+                </p>
+                <h2>
+                    What's next for Virtual Network?
+                </h2>
+                <p>
+                    The routing algorithm will be updated to prioritise nodes with smaller queues to avoid pile ups.
+Different MAC protocols will be added e.g. CSMA
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            graphics.py
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/benapier/durhack-2019" rel="nofollow" target="_blank" title="https://github.com/benapier/durhack-2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

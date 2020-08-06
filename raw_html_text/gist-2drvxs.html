@@ -1,0 +1,924 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    gist, a git repository status pretty-printer
+                </p>
+                <p>
+                    An expression based, ergonomic langauge for writing the status of your git repository into
+your shell prompt.
+                </p>
+                <p>
+                    For example :
+                    <code>
+                        "\&lt;\b\(\+\-)&gt;\[\M\A\R\D':'\m\a\u\d]\{\h('@')}':'"
+                    </code>
+                    results in something that
+might look like
+                    <code>
+                        &lt;master(+1)&gt;[M1:D3]{@5}:
+                    </code>
+                    where
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            master
+                        </code>
+                        is the name of the current branch.
+                    </li>
+                    <li>
+                        <code>
+                            +1
+                        </code>
+                        : means we are 1 commit ahead of the remote branch
+                    </li>
+                    <li>
+                        <code>
+                            M1
+                        </code>
+                        : the number of staged modifications
+                    </li>
+                    <li>
+                        <code>
+                            D3
+                        </code>
+                        : is the number of unstaged deleted files
+                    </li>
+                    <li>
+                        <code>
+                            @5
+                        </code>
+                        : is the number of stashes
+                    </li>
+                </ul>
+                <p>
+                    <code>
+                        gist
+                    </code>
+                    expressions also support inline format expressions to do things like making text red,
+or bold, or using ANSI terminal escape sequences, or setting RGB colors for your git
+information.
+                </p>
+                <h1>
+                    Grammar
+                </h1>
+                <p>
+                    <code>
+                        gist
+                    </code>
+                    expressions have four basic types of expressions:
+                </p>
+                <ol>
+                    <li>
+                        Named expressions
+                    </li>
+                    <li>
+                        Format expressions
+                    </li>
+                    <li>
+                        Group expressions
+                    </li>
+                    <li>
+                        Literals
+                    </li>
+                </ol>
+                <h2>
+                    Literals
+                </h2>
+                <p>
+                    Any characters between single quotes literal, except for backslashes and single quotes.
+Literals are left untouched.  For example,
+                    <code>
+                        'literal'
+                    </code>
+                    outputs
+                    <code>
+                        literal
+                    </code>
+                    .
+                </p>
+                <h2>
+                    Named expressions
+                </h2>
+                <p>
+                    Named expressions represent information about your git repository.
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Meaning
+                            </th>
+                            <th>
+                                Example
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    \b
+                                </code>
+                            </td>
+                            <td>
+                                branch name or head commit id
+                            </td>
+                            <td>
+                                <code>
+                                    master
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \B
+                                </code>
+                            </td>
+                            <td>
+                                remote name
+                            </td>
+                            <td>
+                                <code>
+                                    origin/master
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \+
+                                </code>
+                            </td>
+                            <td>
+                                # of commits ahead remote
+                            </td>
+                            <td>
+                                <code>
+                                    +1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \-
+                                </code>
+                            </td>
+                            <td>
+                                # of commits behind remote
+                            </td>
+                            <td>
+                                <code>
+                                    -1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \m
+                                </code>
+                            </td>
+                            <td>
+                                # of unstaged modified files
+                            </td>
+                            <td>
+                                <code>
+                                    M1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \a
+                                </code>
+                            </td>
+                            <td>
+                                # of untracked files
+                            </td>
+                            <td>
+                                <code>
+                                    ?1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \d
+                                </code>
+                            </td>
+                            <td>
+                                # of unstaged deleted files
+                            </td>
+                            <td>
+                                <code>
+                                    D1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \u
+                                </code>
+                            </td>
+                            <td>
+                                # of merge conflits
+                            </td>
+                            <td>
+                                <code>
+                                    U1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \M
+                                </code>
+                            </td>
+                            <td>
+                                # of staged modified files
+                            </td>
+                            <td>
+                                <code>
+                                    M1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \A
+                                </code>
+                            </td>
+                            <td>
+                                # of added files
+                            </td>
+                            <td>
+                                <code>
+                                    A1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \R
+                                </code>
+                            </td>
+                            <td>
+                                # of renamed files
+                            </td>
+                            <td>
+                                <code>
+                                    R1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \D
+                                </code>
+                            </td>
+                            <td>
+                                # of staged deleted files
+                            </td>
+                            <td>
+                                <code>
+                                    D1
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \h
+                                </code>
+                            </td>
+                            <td>
+                                # of stashed files
+                            </td>
+                            <td>
+                                <code>
+                                    H1
+                                </code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    You can provide other expressions as arguments to expressions which replace the default prefix
+which appears before the result or file count.  For example,
+                    <code>
+                        \h('@')
+                    </code>
+                    will output
+                    <code>
+                        @3
+                    </code>
+                    instead of
+                    <code>
+                        H3
+                    </code>
+                    if your repository has 3 stashed files.  You can provide an arbitrary number
+of valid expressions as a prefix to another named expression.
+                </p>
+                <h2>
+                    Group Expressions
+                </h2>
+                <p>
+                    Gist will surround grouped expressions with parentheses or brackets, and will print nothing if
+the group is empty.
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Macro
+                            </th>
+                            <th>
+                                Result
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    \[]
+                                </code>
+                            </td>
+                            <td>
+                                empty
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \()
+                                </code>
+                            </td>
+                            <td>
+                                empty
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \&lt;&gt;
+                                </code>
+                            </td>
+                            <td>
+                                empty
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \{}
+                                </code>
+                            </td>
+                            <td>
+                                empty
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \{\b}
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    {master}
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \&lt;\+\-&gt;
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    &lt;+1-1&gt;
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \[\M\A\R]
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    [M1A3]
+                                </code>
+                                where
+                                <code>
+                                    \R
+                                </code>
+                                is empty
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    \[\r\(\a)]
+                                </code>
+                            </td>
+                            <td>
+                                empty, when
+                                <code>
+                                    \r
+                                </code>
+                                ,
+                                <code>
+                                    \a
+                                </code>
+                                are empty
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>
+                    Format Expressions
+                </h2>
+                <p>
+                    Gist expressions support ANSI terminal formatting through the following styles:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Format
+                            </th>
+                            <th>
+                                Meaning
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    #~(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                reset
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #_(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                underline
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #i(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                italic text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #*(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                bold text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #r(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                red text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #g(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                green text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #b(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                blue text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #m(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                magenta/purple text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #y(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                yellow text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #w(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                white text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #k(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                bright black text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #[01,02,03](
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                24 bit rgb text color
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #R(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                red background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #G(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                green background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #B(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                blue background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #M(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                magenta/purple background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #Y(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                yellow background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #W(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                white background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #K(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                bright black background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #{01,02,03}(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                24 bit rgb background color
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #01(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                ANSI bold, support for any ANSI terminal code
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    Format styles can be combined in a single expression by separating them with semicolons:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Format
+                            </th>
+                            <th>
+                                Meaning
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    #w;K(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                white text, black background
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #r;*(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                red bold text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #1;42(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                bold red text
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    #_;*(
+                                </code>
+                                ...
+                                <code>
+                                    )
+                                </code>
+                            </td>
+                            <td>
+                                underline bold text
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h1>
+                    Work at MangoHacks
+                </h1>
+                <p>
+                    Before mangohacks, I had no implementation for half of the named expressions which connect to the libgit2 api, and I had no format macros, and no implementation for them.
+                </p>
+                <p>
+                    Specifically, my work at mangohacks included:
+                </p>
+                <ul>
+                    <li>
+                        Adding format macros to the abstract syntax tree
+                    </li>
+                    <li>
+                        De-duping the parser
+                    </li>
+                    <li>
+                        De-duping the interpreter
+                    </li>
+                    <li>
+                        Simplifying the recursive tree structure of the Abstract Syntax Tree
+                    </li>
+                    <li>
+                        Simplifying the grammar to make the language more ergonomic
+                    </li>
+                    <li>
+                        Adding an implementation for the format macros
+                        <ul>
+                            <li>
+                                Refactoring the interpreter
+                            </li>
+                            <li>
+                                Coming up with a recursive divide-and-conquer strategy to implicitly flatten the AST to a list while keeping format information
+                            </li>
+                            <li>
+                                Using an ANSI terminal library to automagically support (slightly) platform independent color
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            rust
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/glfmn/gist" rel="nofollow" target="_blank" title="https://github.com/glfmn/gist">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,249 @@
+[
+    {
+        "url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225763447",
+        "pull_request_review_id": 165435222,
+        "id": 225763447,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNTc2MzQ0Nw==",
+        "diff_hunk": "@@ -61,3 +61,5 @@ typings/\n # dotenv environment variables file\n .env\n .next\n+\n+BladeAPI.js",
+        "path": ".gitignore",
+        "position": 5,
+        "original_position": 5,
+        "commit_id": "07cf25fec8e0f47820d43e6aae20a87f1d0bbc0a",
+        "original_commit_id": "11f4647a7e00fb79a08c75fd47c1512e6a64aa88",
+        "user": {
+            "login": "liangzl",
+            "id": 4186389,
+            "node_id": "MDQ6VXNlcjQxODYzODk=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/4186389?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/liangzl",
+            "html_url": "https://github.com/liangzl",
+            "followers_url": "https://api.github.com/users/liangzl/followers",
+            "following_url": "https://api.github.com/users/liangzl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/liangzl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/liangzl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/liangzl/subscriptions",
+            "organizations_url": "https://api.github.com/users/liangzl/orgs",
+            "repos_url": "https://api.github.com/users/liangzl/repos",
+            "events_url": "https://api.github.com/users/liangzl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/liangzl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Why do we add this to ignore?  Without this file, this app can not run , right?",
+        "created_at": "2018-10-17T02:24:25Z",
+        "updated_at": "2018-10-17T03:36:30Z",
+        "html_url": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225763447",
+        "pull_request_url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225763447"
+            },
+            "html": {
+                "href": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225763447"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225763911",
+        "pull_request_review_id": 165435222,
+        "id": 225763911,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNTc2MzkxMQ==",
+        "diff_hunk": "@@ -1,115 +1,71 @@\n 'use strict';\n \n-// third-parties modules\n-const fs = require('fs');\n+const fs   = require('fs');\n const path = require('path');\n-const variables = new WeakMap();\n \n-// 11BE LimeCasks release\n-const LimeCasks = require('LimeCasks/core/Wrap3.js');\n-\n-// Main Class\n-class DLogsAPI extends LimeCasks {\n-\tconstructor(cfpath) {\n-\t\t// parent\n-\t\tsuper(cfpath);\n-\n-\t\t// parameters\n-\t\tvariables.set(this, {address: null, password: null});\n-\n-\t\tthis.AppName = 'DLogs';\n-\t\tthis.artifactPath = path.join(this.configs.artifactPath, this.AppName + '.json');\n-\t\tthis.gasPrice = '9000000000';\n-\n-\t\tthis.Artifact = JSON.parse(fs.readFileSync(this.artifactPath).toString()); // truffle artifact\n-\t\tthis.ABI = this.Artifact.abi;\n-\t\tthis.contractAddress = this.Artifact.networks[this.networkID].address;\n-\n-\t\t// class methods\n-\t\tthis.init = (ipfs) => {\n-\t\t\tif(!this.connected()) return false; // connect first\n-\t\t\tthis.dapp = this.web3.eth.contract(this.ABI).at(this.contractAddress);\n-\t\t\tthis.ipfs = ipfs;\n-\n-\t\t\treturn true;\n-\t\t}\n-\n-\t\tthis.getAccount = () => { let addr = variables.get(this).address; return addr; }\n-\t\tthis.validPass  = () => { \n-\t\t\tlet addr = variables.get(this).address;\n-\t\t\tlet pass = variables.get(this).password; \n-\n-\t\t\tconst _vp = (resolve, reject) => {\n-\t\t\t\tthis.ipc3.personal.unlockAccount(addr, pass, (err, result) => {\n-\t\t\t\t\tif (err) return reject(err);\n-\t\t\t\t\tresolve(result);\n-\t\t\t\t})\n+// 11BE BladeIron Client API\n+const BladeIronClient = require('./BladeAPI.js');\n+\n+class DLogsAPI extends BladeIronClient {\n+\tconstructor(options) {\n+\t\tsuper(options);\n+\n+\t\tthis.ctrName = 'DLogs'; // there's only one smart contract in this app, so we can just define it here.\n+\t\tthis.bindAddr = '0x';\n+\t\t\n+\t\tthis.linkAccount = (address) => { this.bindAddr = address; return this.client.request('setAccount', [address]) };\n+\t\tthis.getAccount = () => { return this.bindAddr };",
+        "path": "DLogsAPI.js",
+        "position": 59,
+        "original_position": 59,
+        "commit_id": "07cf25fec8e0f47820d43e6aae20a87f1d0bbc0a",
+        "original_commit_id": "11f4647a7e00fb79a08c75fd47c1512e6a64aa88",
+        "user": {
+            "login": "liangzl",
+            "id": 4186389,
+            "node_id": "MDQ6VXNlcjQxODYzODk=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/4186389?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/liangzl",
+            "html_url": "https://github.com/liangzl",
+            "followers_url": "https://api.github.com/users/liangzl/followers",
+            "following_url": "https://api.github.com/users/liangzl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/liangzl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/liangzl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/liangzl/subscriptions",
+            "organizations_url": "https://api.github.com/users/liangzl/orgs",
+            "repos_url": "https://api.github.com/users/liangzl/repos",
+            "events_url": "https://api.github.com/users/liangzl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/liangzl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "If linkAccount() call failed in the client.request, will this getAccount() function return a wrong information. I mean for the linkAccount() should we set `this.binAddr =address` after we know the client call succeeded. ",
+        "created_at": "2018-10-17T02:28:18Z",
+        "updated_at": "2018-10-17T03:36:30Z",
+        "html_url": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225763911",
+        "pull_request_url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225763911"
+            },
+            "html": {
+                "href": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225763911"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225764016",
+        "pull_request_review_id": 165435222,
+        "id": 225764016,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNTc2NDAxNg==",
+        "diff_hunk": "@@ -1,115 +1,71 @@\n 'use strict';\n \n-// third-parties modules\n-const fs = require('fs');\n+const fs   = require('fs');\n const path = require('path');\n-const variables = new WeakMap();\n \n-// 11BE LimeCasks release\n-const LimeCasks = require('LimeCasks/core/Wrap3.js');\n-\n-// Main Class\n-class DLogsAPI extends LimeCasks {\n-\tconstructor(cfpath) {\n-\t\t// parent\n-\t\tsuper(cfpath);\n-\n-\t\t// parameters\n-\t\tvariables.set(this, {address: null, password: null});\n-\n-\t\tthis.AppName = 'DLogs';\n-\t\tthis.artifactPath = path.join(this.configs.artifactPath, this.AppName + '.json');\n-\t\tthis.gasPrice = '9000000000';\n-\n-\t\tthis.Artifact = JSON.parse(fs.readFileSync(this.artifactPath).toString()); // truffle artifact\n-\t\tthis.ABI = this.Artifact.abi;\n-\t\tthis.contractAddress = this.Artifact.networks[this.networkID].address;\n-\n-\t\t// class methods\n-\t\tthis.init = (ipfs) => {\n-\t\t\tif(!this.connected()) return false; // connect first\n-\t\t\tthis.dapp = this.web3.eth.contract(this.ABI).at(this.contractAddress);\n-\t\t\tthis.ipfs = ipfs;\n-\n-\t\t\treturn true;\n-\t\t}\n-\n-\t\tthis.getAccount = () => { let addr = variables.get(this).address; return addr; }\n-\t\tthis.validPass  = () => { \n-\t\t\tlet addr = variables.get(this).address;\n-\t\t\tlet pass = variables.get(this).password; \n-\n-\t\t\tconst _vp = (resolve, reject) => {\n-\t\t\t\tthis.ipc3.personal.unlockAccount(addr, pass, (err, result) => {\n-\t\t\t\t\tif (err) return reject(err);\n-\t\t\t\t\tresolve(result);\n-\t\t\t\t})\n+// 11BE BladeIron Client API\n+const BladeIronClient = require('./BladeAPI.js');\n+\n+class DLogsAPI extends BladeIronClient {\n+\tconstructor(options) {\n+\t\tsuper(options);\n+\n+\t\tthis.ctrName = 'DLogs'; // there's only one smart contract in this app, so we can just define it here.\n+\t\tthis.bindAddr = '0x';\n+\t\t\n+\t\tthis.linkAccount = (address) => { this.bindAddr = address; return this.client.request('setAccount', [address]) };\n+\t\tthis.getAccount = () => { return this.bindAddr };\n+\n+\t\t// mapping rest of original functions\n+\t\tthis.register = (ipnsHash) => \n+\t\t{ \n+\t\t\tif (this.bindAddr == '0x') {\n+\t\t\t\treturn Promise.reject(false); \n+\t\t\t} else {\n+\t\t\t\treturn this.sendTk(this.ctrName)('register')(this.bindAddr, ipnsHash)();\n \t\t\t}\n-\n-\t\t\treturn new Promise(_vp);\n-\t\t}\n-\n-\t\tthis.linkAccount = (address, password) => { \n-\t\t\tvariables.get(this).address = address;\n-\t\t\tvariables.get(this).password = password;\n-\t\t\treturn this.validPass();\n-\t\t}\n-\n-\t\t// smart contract function bindings\n-\t\tthis.register = (ipnsHash) => {\n-\t\t\tlet address = this.getAccount();\n-\n-\t\t\tif (address === null) return false;\n-\n-\t\t\tlet passwd = variables.get(this).password;\n-\t\t\tlet gasest = this.dapp.register.estimateGas(address, ipnsHash); \n-\n-\t\t\treturn this.unlockViaIPC(passwd)(address).then((r) => {\n-\t\t\t\tconsole.log(`Registering address ${address} using IPNS ${ipnsHash}`);\n-\t\t\t\treturn this.dapp.register(address, ipnsHash, {from: address, gas: gasest, gasPrice: this.gasPrice});\t\n-\t\t\t})\n \t\t}\n \n-\t\tthis.unregister = () => {\n-\t\t\tlet address = this.getAccount();\n-\n-\t\t\tif (address === null) return false;\n-\n-\t\t\tlet passwd  = variables.get(this).password;\n-\t\t\tlet gasest = this.dapp.unregister.estimateGas(address); \n-\n-\t\t\treturn this.unlockViaIPC(passwd)(address).then((r) => {\n-\t\t\t\tconsole.log(`Unregistering address ${address}`);\n-\t\t\t\treturn this.dapp.unregister(address, {from: address, gas: gasest, gasPrice: this.gasPrice});\t\n-\t\t\t})\n-\t\t}\n-\n-\t\tthis.lookUpByAddr = (address) => {\n-\t\t\treturn this.dapp.addr2ipns(address);\n+\t\tthis.unregister = () => \n+\t\t{\n+\t\t\tif (this.bindAddr == '0x') {\n+\t\t\t\treturn Promise.reject(false); \n+\t\t\t} else {\n+\t\t\t\treturn this.sendTk(this.ctrName)('unregister')(this.bindAddr)();\n+\t\t\t}\n \t\t}\n \n-\t\tthis.lookUpByIPNS = (ipnsHash) => {\n-\t\t\treturn this.dapp.ipns2addr(ipnsHash);\n+\t\t// constant function calls are now also promises, due to RPC interaction\n+\t\tthis.lookUpByAddr = (address) =>\n+\t\t{\n+\t\t\treturn this.call(this.ctrName)('addr2ipns')(address)\n+\t\t\t\t   .then((rc) => { return rc.result })\n+\t\t\t\t   .catch((err) => { console.log(err); return 'Qm';});",
+        "path": "DLogsAPI.js",
+        "position": 126,
+        "original_position": 126,
+        "commit_id": "07cf25fec8e0f47820d43e6aae20a87f1d0bbc0a",
+        "original_commit_id": "11f4647a7e00fb79a08c75fd47c1512e6a64aa88",
+        "user": {
+            "login": "liangzl",
+            "id": 4186389,
+            "node_id": "MDQ6VXNlcjQxODYzODk=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/4186389?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/liangzl",
+            "html_url": "https://github.com/liangzl",
+            "followers_url": "https://api.github.com/users/liangzl/followers",
+            "following_url": "https://api.github.com/users/liangzl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/liangzl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/liangzl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/liangzl/subscriptions",
+            "organizations_url": "https://api.github.com/users/liangzl/orgs",
+            "repos_url": "https://api.github.com/users/liangzl/repos",
+            "events_url": "https://api.github.com/users/liangzl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/liangzl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "What does 'Qm' mean?",
+        "created_at": "2018-10-17T02:29:21Z",
+        "updated_at": "2018-10-17T03:36:30Z",
+        "html_url": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225764016",
+        "pull_request_url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225764016"
+            },
+            "html": {
+                "href": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225764016"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225764122",
+        "pull_request_review_id": 165435222,
+        "id": 225764122,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNTc2NDEyMg==",
+        "diff_hunk": "@@ -1,115 +1,71 @@\n 'use strict';\n \n-// third-parties modules\n-const fs = require('fs');\n+const fs   = require('fs');\n const path = require('path');\n-const variables = new WeakMap();\n \n-// 11BE LimeCasks release\n-const LimeCasks = require('LimeCasks/core/Wrap3.js');\n-\n-// Main Class\n-class DLogsAPI extends LimeCasks {\n-\tconstructor(cfpath) {\n-\t\t// parent\n-\t\tsuper(cfpath);\n-\n-\t\t// parameters\n-\t\tvariables.set(this, {address: null, password: null});\n-\n-\t\tthis.AppName = 'DLogs';\n-\t\tthis.artifactPath = path.join(this.configs.artifactPath, this.AppName + '.json');\n-\t\tthis.gasPrice = '9000000000';\n-\n-\t\tthis.Artifact = JSON.parse(fs.readFileSync(this.artifactPath).toString()); // truffle artifact\n-\t\tthis.ABI = this.Artifact.abi;\n-\t\tthis.contractAddress = this.Artifact.networks[this.networkID].address;\n-\n-\t\t// class methods\n-\t\tthis.init = (ipfs) => {\n-\t\t\tif(!this.connected()) return false; // connect first\n-\t\t\tthis.dapp = this.web3.eth.contract(this.ABI).at(this.contractAddress);\n-\t\t\tthis.ipfs = ipfs;\n-\n-\t\t\treturn true;\n-\t\t}\n-\n-\t\tthis.getAccount = () => { let addr = variables.get(this).address; return addr; }\n-\t\tthis.validPass  = () => { \n-\t\t\tlet addr = variables.get(this).address;\n-\t\t\tlet pass = variables.get(this).password; \n-\n-\t\t\tconst _vp = (resolve, reject) => {\n-\t\t\t\tthis.ipc3.personal.unlockAccount(addr, pass, (err, result) => {\n-\t\t\t\t\tif (err) return reject(err);\n-\t\t\t\t\tresolve(result);\n-\t\t\t\t})\n+// 11BE BladeIron Client API\n+const BladeIronClient = require('./BladeAPI.js');\n+\n+class DLogsAPI extends BladeIronClient {\n+\tconstructor(options) {\n+\t\tsuper(options);\n+\n+\t\tthis.ctrName = 'DLogs'; // there's only one smart contract in this app, so we can just define it here.\n+\t\tthis.bindAddr = '0x';\n+\t\t\n+\t\tthis.linkAccount = (address) => { this.bindAddr = address; return this.client.request('setAccount', [address]) };\n+\t\tthis.getAccount = () => { return this.bindAddr };\n+\n+\t\t// mapping rest of original functions\n+\t\tthis.register = (ipnsHash) => \n+\t\t{ \n+\t\t\tif (this.bindAddr == '0x') {\n+\t\t\t\treturn Promise.reject(false); \n+\t\t\t} else {\n+\t\t\t\treturn this.sendTk(this.ctrName)('register')(this.bindAddr, ipnsHash)();\n \t\t\t}\n-\n-\t\t\treturn new Promise(_vp);\n-\t\t}\n-\n-\t\tthis.linkAccount = (address, password) => { \n-\t\t\tvariables.get(this).address = address;\n-\t\t\tvariables.get(this).password = password;\n-\t\t\treturn this.validPass();\n-\t\t}\n-\n-\t\t// smart contract function bindings\n-\t\tthis.register = (ipnsHash) => {\n-\t\t\tlet address = this.getAccount();\n-\n-\t\t\tif (address === null) return false;\n-\n-\t\t\tlet passwd = variables.get(this).password;\n-\t\t\tlet gasest = this.dapp.register.estimateGas(address, ipnsHash); \n-\n-\t\t\treturn this.unlockViaIPC(passwd)(address).then((r) => {\n-\t\t\t\tconsole.log(`Registering address ${address} using IPNS ${ipnsHash}`);\n-\t\t\t\treturn this.dapp.register(address, ipnsHash, {from: address, gas: gasest, gasPrice: this.gasPrice});\t\n-\t\t\t})\n \t\t}\n \n-\t\tthis.unregister = () => {\n-\t\t\tlet address = this.getAccount();\n-\n-\t\t\tif (address === null) return false;\n-\n-\t\t\tlet passwd  = variables.get(this).password;\n-\t\t\tlet gasest = this.dapp.unregister.estimateGas(address); \n-\n-\t\t\treturn this.unlockViaIPC(passwd)(address).then((r) => {\n-\t\t\t\tconsole.log(`Unregistering address ${address}`);\n-\t\t\t\treturn this.dapp.unregister(address, {from: address, gas: gasest, gasPrice: this.gasPrice});\t\n-\t\t\t})\n-\t\t}\n-\n-\t\tthis.lookUpByAddr = (address) => {\n-\t\t\treturn this.dapp.addr2ipns(address);\n+\t\tthis.unregister = () => \n+\t\t{\n+\t\t\tif (this.bindAddr == '0x') {\n+\t\t\t\treturn Promise.reject(false); \n+\t\t\t} else {\n+\t\t\t\treturn this.sendTk(this.ctrName)('unregister')(this.bindAddr)();\n+\t\t\t}\n \t\t}\n \n-\t\tthis.lookUpByIPNS = (ipnsHash) => {\n-\t\t\treturn this.dapp.ipns2addr(ipnsHash);\n+\t\t// constant function calls are now also promises, due to RPC interaction\n+\t\tthis.lookUpByAddr = (address) =>\n+\t\t{\n+\t\t\treturn this.call(this.ctrName)('addr2ipns')(address)\n+\t\t\t\t   .then((rc) => { return rc.result })\n+\t\t\t\t   .catch((err) => { console.log(err); return 'Qm';});",
+        "path": "DLogsAPI.js",
+        "position": 126,
+        "original_position": 126,
+        "commit_id": "07cf25fec8e0f47820d43e6aae20a87f1d0bbc0a",
+        "original_commit_id": "11f4647a7e00fb79a08c75fd47c1512e6a64aa88",
+        "user": {
+            "login": "liangzl",
+            "id": 4186389,
+            "node_id": "MDQ6VXNlcjQxODYzODk=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/4186389?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/liangzl",
+            "html_url": "https://github.com/liangzl",
+            "followers_url": "https://api.github.com/users/liangzl/followers",
+            "following_url": "https://api.github.com/users/liangzl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/liangzl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/liangzl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/liangzl/subscriptions",
+            "organizations_url": "https://api.github.com/users/liangzl/orgs",
+            "repos_url": "https://api.github.com/users/liangzl/repos",
+            "events_url": "https://api.github.com/users/liangzl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/liangzl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Nevermind I see what it is.",
+        "created_at": "2018-10-17T02:30:11Z",
+        "updated_at": "2018-10-17T03:36:30Z",
+        "html_url": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225764122",
+        "pull_request_url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225764122"
+            },
+            "html": {
+                "href": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225764122"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25"
+            }
+        },
+        "in_reply_to_id": 225764016
+    },
+    {
+        "url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225772371",
+        "pull_request_review_id": 165445709,
+        "id": 225772371,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNTc3MjM3MQ==",
+        "diff_hunk": "@@ -1,115 +1,71 @@\n 'use strict';\n \n-// third-parties modules\n-const fs = require('fs');\n+const fs   = require('fs');\n const path = require('path');\n-const variables = new WeakMap();\n \n-// 11BE LimeCasks release\n-const LimeCasks = require('LimeCasks/core/Wrap3.js');\n-\n-// Main Class\n-class DLogsAPI extends LimeCasks {\n-\tconstructor(cfpath) {\n-\t\t// parent\n-\t\tsuper(cfpath);\n-\n-\t\t// parameters\n-\t\tvariables.set(this, {address: null, password: null});\n-\n-\t\tthis.AppName = 'DLogs';\n-\t\tthis.artifactPath = path.join(this.configs.artifactPath, this.AppName + '.json');\n-\t\tthis.gasPrice = '9000000000';\n-\n-\t\tthis.Artifact = JSON.parse(fs.readFileSync(this.artifactPath).toString()); // truffle artifact\n-\t\tthis.ABI = this.Artifact.abi;\n-\t\tthis.contractAddress = this.Artifact.networks[this.networkID].address;\n-\n-\t\t// class methods\n-\t\tthis.init = (ipfs) => {\n-\t\t\tif(!this.connected()) return false; // connect first\n-\t\t\tthis.dapp = this.web3.eth.contract(this.ABI).at(this.contractAddress);\n-\t\t\tthis.ipfs = ipfs;\n-\n-\t\t\treturn true;\n-\t\t}\n-\n-\t\tthis.getAccount = () => { let addr = variables.get(this).address; return addr; }\n-\t\tthis.validPass  = () => { \n-\t\t\tlet addr = variables.get(this).address;\n-\t\t\tlet pass = variables.get(this).password; \n-\n-\t\t\tconst _vp = (resolve, reject) => {\n-\t\t\t\tthis.ipc3.personal.unlockAccount(addr, pass, (err, result) => {\n-\t\t\t\t\tif (err) return reject(err);\n-\t\t\t\t\tresolve(result);\n-\t\t\t\t})\n+// 11BE BladeIron Client API\n+const BladeIronClient = require('./BladeAPI.js');\n+\n+class DLogsAPI extends BladeIronClient {\n+\tconstructor(options) {\n+\t\tsuper(options);\n+\n+\t\tthis.ctrName = 'DLogs'; // there's only one smart contract in this app, so we can just define it here.\n+\t\tthis.bindAddr = '0x';\n+\t\t\n+\t\tthis.linkAccount = (address) => { this.bindAddr = address; return this.client.request('setAccount', [address]) };\n+\t\tthis.getAccount = () => { return this.bindAddr };",
+        "path": "DLogsAPI.js",
+        "position": 59,
+        "original_position": 59,
+        "commit_id": "07cf25fec8e0f47820d43e6aae20a87f1d0bbc0a",
+        "original_commit_id": "11f4647a7e00fb79a08c75fd47c1512e6a64aa88",
+        "user": {
+            "login": "infwonder",
+            "id": 4305884,
+            "node_id": "MDQ6VXNlcjQzMDU4ODQ=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/4305884?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/infwonder",
+            "html_url": "https://github.com/infwonder",
+            "followers_url": "https://api.github.com/users/infwonder/followers",
+            "following_url": "https://api.github.com/users/infwonder/following{/other_user}",
+            "gists_url": "https://api.github.com/users/infwonder/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/infwonder/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/infwonder/subscriptions",
+            "organizations_url": "https://api.github.com/users/infwonder/orgs",
+            "repos_url": "https://api.github.com/users/infwonder/repos",
+            "events_url": "https://api.github.com/users/infwonder/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/infwonder/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "you're right!",
+        "created_at": "2018-10-17T03:38:28Z",
+        "updated_at": "2018-10-17T03:38:28Z",
+        "html_url": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225772371",
+        "pull_request_url": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/comments/225772371"
+            },
+            "html": {
+                "href": "https://github.com/elevenbuckets/ethsf_dlogs/pull/25#discussion_r225772371"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/elevenbuckets/ethsf_dlogs/pulls/25"
+            }
+        },
+        "in_reply_to_id": 225763911
+    }
+]

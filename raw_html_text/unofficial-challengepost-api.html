@@ -1,0 +1,161 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I was inspired by the innovative tools that I was learning about at the most recent AWS Summit here in New York (Checkout the presentations on
+                    <a href="http://www.slideshare.net/AmazonWebServices/tag/2015nysummit" rel="nofollow">
+                        SlideShare
+                    </a>
+                    and
+                    <a href="https://www.youtube.com/user/AmazonWebServices/Cloud" rel="nofollow">
+                        Youtube
+                    </a>
+                    if you haven't already.)
+                </p>
+                <p>
+                    I knew that I wanted to use AWS Lambda to run "Event-Driven Code in the Cloud" as they put it, and when they showed us how simple it was to create an HTTP endpoint for your Lambda functions the first thing that sprung to mind was a scraper that would take Devpost pages and return JSON.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    It's a little quirky to work with since you'll need to make POST requests in order to retrieve your data as JSON, since the new API Gateway/Lambda combination doesn't seem to have anyway to support URL parameters yet. Here is the example CURL command I would execute to scrape my portfolio:
+                </p>
+                <pre class="language-bash"><code>$ curl -X POST -H "Content-Type: application/json" -d '{"screen_name":"MGerrior"}' https://iii3mdppm7.execute-api.us-east-1.amazonaws.com/prod/UserPortfolioEndpoint
+</code></pre>
+                <p>
+                    Obviously you will want to replace my screen name with your screen name to obtain data related to you. It's not built as a crawler yet, so it will only return information that is visible when you first view your portfolio on Devpost.
+                </p>
+                <p>
+                    The API uses Amazon's new API Gateway that provides built in caching and throttling out of the box. The API endpoint is the hooked up to a Lambda function that is executed when the request is received. The Lambda function then scrapes the page, formats it as a JSON response, and returns it to the API Gateway which subsequently returns it to you.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One of the challenges that I ran into was finding resources for learning how to work with these tools. They're both fairly new services (API Gateway was just announced at the summit a week ago), so finding resources online outside of the official docs was not easy. I additionally ran into some issues with the Grunt tasks I was using from
+                    <code>
+                        grunt-aws-lambda
+                    </code>
+                    since it was producing empty zip files for me to upload to Lambda, but I eventually just zipped the files myself.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm pretty proud that I was able to get this up and running in just a few hours as part of Dev Thursday here at Devpost.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned that I hate writing Java. As of right now AWS Lambda mainly supports two runtime environments which are node.js and Java. I couldn't figure out how to get NPM modules loaded in Lambda (Save yourself some time, just read
+                    <a href="http://hipsterdevblog.com/blog/2014/12/07/writing-functions-for-aws-lambda-using-npm-and-grunt/" rel="nofollow">
+                        this
+                    </a>
+                    ) so I decide I would just use Java instead and take advantage of all the built-in libraries, or so I thought. After struggling with Eclipse, and then struggling to install the AWS SDK for Eclipse (something something Data Tools Platform?), I switched back to node.js and bundled the npm modules as a ZIP file thanks to the guide above.
+                </p>
+                <h2>
+                    What's next for Unofficial Devpost API
+                </h2>
+                <p>
+                    I want to figure out how to add CORS headers to the responses from the API Gateway so that developers on Devpost can integrate this data into third party sites such as their portfolio by doing something as simple as:
+                </p>
+                <pre class="language-javascript"><code>$.post("https://iii3mdppm7.execute-api.us-east-1.amazonaws.com/prod/UserPortfolioEndpoint", {screen_name: "MGerrior"}, function(data) {
+        // Add your projects to the DOM
+});
+</code></pre>
+                <p>
+                    If you try that right now the request will fail for security purposes since the
+                    <code>
+                        Access-Control-Allow-Origin
+                    </code>
+                    header is not set in the response.
+                </p>
+                <p>
+                    Also, it wouldn't hurt for this to have more endpoints, or to just build an actual API for Devpost.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cheerio.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            grunt-aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/grunt-js">
+                                grunt.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/npm">
+                                npm
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            request
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

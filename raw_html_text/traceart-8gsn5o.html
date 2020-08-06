@@ -1,0 +1,216 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="335519" data-title='1. enter "Jingle Bells" lyrics' href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/519/datas/original.png">
+                            <img alt="TraceArt &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/519/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                1. enter "Jingle Bells" lyrics
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="335520" data-title="2. submit lyrics" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/520/datas/original.png">
+                            <img alt="TraceArt &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/520/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                2. submit lyrics
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="335522" data-title="3. traceroute on linux server" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/522/datas/original.png">
+                            <img alt="TraceArt &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/522/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                3. traceroute on linux server
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="335523" data-title="4. traceroute on HE looking glass" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/523/datas/original.png">
+                            <img alt="TraceArt &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/335/523/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                4. traceroute on HE looking glass
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In September 2015,
+                    <code>
+                        traceroute bad.horse
+                    </code>
+                    pops out on Twitter.
+When I type this command in terminal, the lyrics of
+                    <em>
+                        Bad Horse
+                    </em>
+                    appear on the output.
+My first thought was: that's so cool!
+My second thought was: how did they do that?
+                </p>
+                <p>
+                    As a PhD student doing network research, it doesn't take me too long to figure out the underlying mechanisms.
+And I want to do something better: let everyone have their own "traceroute bad.horse".
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    And here comes the
+                    <strong>
+                        TraceArt
+                    </strong>
+                    project: anyone can submit their favorite quotes, lyrics, or poem, and turn it into a traceroute destination that can display these text.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    <strong>
+                        TraceArt
+                    </strong>
+                    has 3 major modules:
+                </p>
+                <ul>
+                    <li>
+                        Frontend web page, which allows user to submit the quotes / lyrics / poem.
+                    </li>
+                    <li>
+                        Backend services, which accepts the submission, assigns a block of IP addresses, and provisions reverse DNS records for those addresses to display each line of text.
+                    </li>
+                    <li>
+                        A hop emulator, which emulates multiple network hops when a destination is being tracerouted to.
+                    </li>
+                </ul>
+                <p>
+                    Since there's no more IPv4 addresses left,
+                    <strong>
+                        TraceArt
+                    </strong>
+                    is built to work on IPv6 network.
+IPv6 connectivity comes from HE TunnelBroker.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    ICMPv6 checksum computation is one of the headaches.
+Wireshark is constantly reporting "incorrect checksum" and traceroute will not work without a correct checksum.
+We carefully read the protocols again, debug the code, and identified then fixed the issue.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Ruoyu is a beginner that learnt a bit of Python last semester and does not have knowledge on network protocols.
+Junxiao explains the network protocols and programming techniques, so that Ruoyu successfully wrote backend scripts that generates DNS server configuration files.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We had a deeper understand on IPv6 protocols, and gained experience on collaboration between experienced and inexperienced developers.
+                </p>
+                <h2>
+                    What's next for TraceArt
+                </h2>
+                <p>
+                    The frontend web page can allow uploading a greyscale picture, which is then converted into a matrix to be displayed on traceroute output.
+                </p>
+                <p>
+                    Security of the backend services needs improvement.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            bind9
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dns
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ipv6
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tun
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://traceart.yoursunny.cn/" rel="nofollow" target="_blank" title="https://traceart.yoursunny.cn/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                traceart.yoursunny.cn
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

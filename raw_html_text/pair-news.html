@@ -1,0 +1,188 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="590954" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/590/954/datas/original.png">
+                            <img alt="Pair News &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/590/954/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="590955" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/590/955/datas/original.png">
+                            <img alt="Pair News &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/590/955/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="590992" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/590/992/datas/original.png">
+                            <img alt="Pair News &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/590/992/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    There's so many sources of information online, many of which put some level of spin on the content before you read it. However, in order to understand the full story behind any event, it's important to see multiple perspectives and understand how they spin the story. Therefore, we thought it would be incredibly useful to have a website that can aggregate sources on the most important current events and provide people with an objective measure of how that news source covers the event in terms of emotions.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Pair News pulls the latest, most important news stories together and aggregates multiple news sources that talk about the same event. It also shows the sentiment of the article in order to show the user whether that article is framing the event in a more positive or negative light than other sources.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The first step was to scrape the web for all relevant news articles. We utilized a free news API to help with this as it helped with finding the sources along with metadata on them. Then we scraped the actual text of the articles in order to compare them and find which are about the same story. We found a library that would help with this, but it didn't work for some sources and left much to be desired for others. So we wrote custom scraping code for some websites in addition to filtering code to exclude things like sports match results announcements which we weren't interested in.
+                </p>
+                <p>
+                    Next we used Porter's stemmer and a punctuation remover on the text of the article to prepare it for similarity computation. The similarity was performed by converting the text into vectors and computing their cosine similarity. This similarity score was then used to group the articles that were about the same event.
+                </p>
+                <p>
+                    After that we utilized the Natural Language Processing capabilities of Googles Cloud Platform to perform sentiment analysis, named entity extraction, and named entity sentiment analysis. The sentiment value was then used to determine which news sources spun an event positively and which spun it negatively.
+                </p>
+                <p>
+                    Finally, we used Django to bring these results to the web and used Bootstrap to display everything to the user in an intuitive and visually-pleasing manner.
+                </p>
+                <p>
+                    We obtained the domains NewsComparing.tech and PairHeadlines.com from .tech and Domains.com. The second of which contains what we consider to be a subtle, yet clever pun.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    There were many hurdles throughout this challenge, but none that we weren't able to overcome, or at least sidestep. The web scraping library that we found initially had large problems with some major sites like ABC News, which we found unacceptable. So we had to implement custom scraping code for some websites and create a variety of specific filters for others in order to get good results.
+                </p>
+                <p>
+                    The grouping of the texts and sentiment analysis took longer to compute than we expected on a large data set like the one we were using, so the bugs we had set us back in time significantly. This gave us less time for front-end and UI development.
+                </p>
+                <p>
+                    We also planned to make our site using Google's Material Design Lite, but had many issues with making it render correctly and so switched to Bootstrap in the end.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Creating a website that seems like something we would actually want to use has been an incredibly rewarding experience, especially for what has been the first hackathon for most of us. It was really interesting to combine a variety of technologies, including web scraping, rule-based NLP, deep-learning NLP, and modern web technologies into a single coherent project.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Having people who are experienced with different parts of a project is extremely useful because of the fact that everyone can teach the other members of the group about things that they don't know as much about, which makes everyone more productive. It's also important to leave plenty of time for front-end design, it can take more time than expected.
+                </p>
+                <h2>
+                    What's next for Pair News
+                </h2>
+                <p>
+                    We could implement our completed entity analysis code in the UI, which would provide the user with information about what each news organization portrays specific entities, such as Saudi Arabia, Black Lives Matter, and Donald Trump.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nltk">
+                                nltk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scipy">
+                                scipy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sklearn
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

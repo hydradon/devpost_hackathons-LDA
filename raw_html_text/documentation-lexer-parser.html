@@ -1,0 +1,190 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    YHack Submission 2019:
+                </h1>
+                <h2>
+                    Inspiration
+                </h2>
+                <h4>
+                    The source:
+                </h4>
+                <p>
+                    An important part of Computer Science is keeping one's code clean. As many students, engineers, and researchers have discovered is poorly documented code can costs weeks, months, or even years of efforts to work around.
+                </p>
+                <h4>
+                    The problem:
+                </h4>
+                <p>
+                    Some languages have a fully integrated, optimal system for documenting their code (e.g. Java via. Javadoc). Others, have partial or very little standard in the way of documentation. Even across languages, documentation style and format is different to such a degree that documentation tools are not interchangeable in most circumstances.
+                </p>
+                <h4>
+                    The solution:
+                </h4>
+                <p>
+                    Write a Universal Documentation Generator (UDG) that dynamically generates documentation based off of preset guidelines. The goal is to provide support for many different types of languages, regardless of style.
+                </p>
+                <p>
+                    Towards that goal, our team at YHack has developed the first stage of such a program. Using the lexer/parser development kit ANTLR4, we created a robust scanner that takes in a file, and parses it for specific tags to create documentation with.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    At this stage, the parser simply identifies multiline comment blocks, and attempts to find and label tags inside for future documentation generation. After it completes it, it will print the tags it was able to identify, and generate a parse tree of the entire file given to it.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Although a makefile is included, it is a simple one that only works with the provided
+                    <code>
+                        yhacktester.cpp
+                    </code>
+                    file. However, there is a three step process to build (and execute) as needed:
+                </p>
+                <p>
+                    Note that this process has only been done on Unix systems, although in theory it would work on windows.
+                </p>
+                <ol>
+                    <li>
+                        Create Aliases and Update Classpath:
+                        <code>
+                            $ cd /usr/local/lib
+%%% For OSX:
+$ sudo curl -O https://www.antlr.org/download/antlr-4.7.2-complete.jar
+%%% Otherwise:
+$ wget https://www.antlr.org/download/antlr-4.7.2-complete.jar
+$ export CLASSPATH=".:/usr/local/lib/antlr-4.7.2-complete.jar:$CLASSPATH"
+$ alias antlr4='java -jar /usr/local/lib/antlr-4.7.2-complete.jar'
+$ alias grun='java org.antlr.v4.gui.TestRig'
+                        </code>
+                    </li>
+                    <li>
+                        <p>
+                            Create an input file to parse:
+In order for the scanner to work, tags must be indicated by a tab, followed by an @ sign. There are currently 7 tag signs. 
+'returns'   Return Tag to indicate passed/popped values
+'param'     Parameter Tag (Primarily for functions, subroutines, etc)
+'name'      The name of the data structure / statement
+'author'    Who wrote the code being tagged
+'date'      Important dates for the code (creation, edit, etc.)
+'function'  Function, subroutine, method, etc Tag
+'class'     Class Tag
+'note'      "Nota Bene": An important note to remember
+'desc'      Description or otherwise explanation of code 'snippet'
+'ref'       Reference Tag to indicate other (important) files
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            With input.file written and ready to go in the project directory, Run the following 3 commands:
+                        </p>
+                        <pre class="language-nolang"><code>antlr4 UDG.g4
+javac UDG*.java
+grun UDG program -gui &lt; input.file
+</code></pre>
+                        <p>
+                            alternatively, the last line can use -trace instead of -gui
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <h3>
+                    Backus&ndash;Naur Form and Context Free Languages
+                </h3>
+                <p>
+                    There's a lot that goes into making a robust parser and lexer, and it's not the easiest thing to pick up in 36 hours. Admittedly we have had some experience in the past, however ANTLR was a completely new experience for us as a team.
+                </p>
+                <h3>
+                    First Hackathon
+                </h3>
+                <p>
+                    All members on the team decided to go to YHack because they had we had never gone to one before. We didn't know what to expect, and we wanted to see what we could do in a crunch. Now that we've set a bar, we plan on breaking it.
+                </p>
+                <h3>
+                    Hardware Issues
+                </h3>
+                <p>
+                    One of our team-member's computers stopped charing correctly. After borrowing a multimeter from MLH, we discovered no problems with the cord. We had just enough time to salvage some important documents before our team member's computer died. Although not strictly a software challenge, it was still a part of the experience, and a speed bump in our development plans. Thankfully, the kindness of both MLH and hosts at Yale made that experience much easier than it could have been.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <h4>
+                    Swap tasks when people slow down.
+                </h4>
+                <p>
+                    Often people on the team would get stuck on one thing, and we would al swap computers. Not only did fresh eyes look on our bugs and problems, but we also got a break from our mental blocks, and changed gears. A series of nagging bugs got solved this way.
+                </p>
+                <h4>
+                    The project was too ambitious for 36 hours
+                </h4>
+                <p>
+                    Only after the fact did we discover that we bit off more than we could chew. Although we felt we succeeded in our attempts, it was nonetheless discouraging to not see the tool we planned on designing.
+                </p>
+                <h2>
+                    What's next for Documentation Lexer/Parser
+                </h2>
+                <ul>
+                    <li>
+                        Edit parser to work stand alone without dedicated runtime.
+                    </li>
+                    <li>
+                        Develop data structure to hold data in smaller, more efficient form than parse tree.
+                    </li>
+                    <li>
+                        Create data base to hold growing list of languages, and necessary data to use UDG with.
+                    </li>
+                    <li>
+                        attempt to write hello world in as many languages as possible to try and make the code more robust.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            antlr4
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/TheWrightGuy/UDG_YHack_2019.git" rel="nofollow" target="_blank" title="https://github.com/TheWrightGuy/UDG_YHack_2019.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

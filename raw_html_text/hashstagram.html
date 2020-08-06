@@ -1,0 +1,318 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="695509" data-title="Architecture in GCP" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/695/509/datas/original.png">
+                            <img alt="HashStagram &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/695/509/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architecture in GCP
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="695639" data-title="Screenshot of Hashtag Selection Output" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/695/639/datas/original.png">
+                            <img alt="HashStagram &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/695/639/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Screenshot of Hashtag Selection Output
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    Dearest Reader,
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Will's professor handed him a paper (
+                    <a href="https://arxiv.org/abs/1605.05054" rel="nofollow">
+                        HARRISON: A Benchmark on HAshtag Recommendation for Real-world Images in Social Networks, Park, et al.
+                    </a>
+                    ). We re-implemented it.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Given a picture, based on a models trained over 57,000 Instagram photos and their captions (gathered and preprocessed by grad students, return the top 5 hashtags (based on a set of the 1000 most popular hashtags on the platform) most reflective of the dataset.
+                </p>
+                <h2>
+                    How it was built
+                </h2>
+                <h3>
+                    1. The Models
+                </h3>
+                <ul>
+                    <li>
+                        <a href="https://github.com/pytorch" rel="nofollow">
+                            pytorch
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py" rel="nofollow">
+                            AlexNet
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/GKalliatakis/Keras-VGG16-places365" rel="nofollow">
+                            VGG16
+                        </a>
+                    </li>
+                    <li>
+                        <del>
+                            a lot of black magic
+                        </del>
+                    </li>
+                    <li>
+                        Google Cloud Platform
+                        <ul>
+                            <li>
+                                2 x Deep Learning VM Image on Compute Engine Instance
+                            </li>
+                            <li>
+                                PyTorch (new!)
+                            </li>
+                            <li>
+                                26 GB memory, 4 cores
+                            </li>
+                            <li>
+                                GPUs: V100 x 1, K80 x 8
+                            </li>
+                            <li>
+                                Storage
+                            </li>
+                            <li>
+                                Exports trained models/weights to GCP Storage
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <del>
+                            80 days' worth of Passion Fruit flavored vitamin B12 in half the Deep Learning Team
+                        </del>
+                    </li>
+                </ul>
+                <h3>
+                    2. The Web App
+                </h3>
+                <ul>
+                    <li>
+                        Running on Flask, served with Gunicorn and Nginx on a GCP Compute Engine instance
+                        <ul>
+                            <li>
+                                16 GB memory, 4 cores
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        HTML, CSS, jQuery (just a little)
+                    </li>
+                    <li>
+                        The poster child of My First Bootstrap Website&trade; templates
+                    </li>
+                    <li>
+                        <a href="https://github.com/pqina/filepond" rel="nofollow">
+                            filepond
+                        </a>
+                        by pqina
+                    </li>
+                    <li>
+                        A little bit of Photoshop and some Instagram mockup .psds
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Deep Learning by nature is black magic invoked by dancing around a fire under the full moon, neither of which the team had
+                    </li>
+                    <li>
+                        Half the ML team was allergic to the gym
+                    </li>
+                    <li>
+                        Running out of memory (and subsequent infighting within the ML team for memory)
+                    </li>
+                    <li>
+                        Originally wanted to use GCP serverless options, but size of model would take too long, needed to be preloaded for acceptable latencies
+                    </li>
+                    <li>
+                        Multi-threaded nature of web servers led to multiple copies of model being loaded, overwhelming memory limits
+                        <br>
+                        <ul>
+                            <li>
+                                Preloaded and shared as read-only across all threads to fix
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        The web dev didn't know anything about web dev
+                    </li>
+                    <li>
+                        The intractable nature of the project
+                    </li>
+                    <li>
+                        <del>
+                            ML is black magic
+                        </del>
+                    </li>
+                    <li>
+                        <del>
+                            Deep Learning is black magic on steroids
+                        </del>
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        The web dev has a nonzero number of skill points in web dev
+                    </li>
+                    <li>
+                        GCP Liaison has added to his ever growing knowledge base concerning cloud based services
+                    </li>
+                    <li>
+                        <del>
+                            We actually finished a project
+                        </del>
+                    </li>
+                    <li>
+                        We finished a somewhat sizable project, given our history (or lack thereof)
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Planning projects beforehand is a good idea
+                    </li>
+                    <li>
+                        The most confusing thing about learning web dev was the fact that I was working with and integrating three different syntaxes I had no experience with on a platform I had no system knowledge about
+                    </li>
+                    <li>
+                        Code reviews are important and you should always be wary of particularly good results for precision and recall
+                    </li>
+                    <li>
+                        In our case, rapidly rising numbers in precision and recall (e.g. 0.005 --&gt; 0.015 between batches) is Very Not Good&trade; and you should be skeptical
+                    </li>
+                </ul>
+                <h2>
+                    What's next for HashStagram
+                </h2>
+                <ul>
+                    <li>
+                        <del>
+                            A fire, full moon, and an ML team that's Dance 101 certified
+                        </del>
+                    </li>
+                    <li>
+                        Scale it on GCP with load balancing
+                    </li>
+                    <li>
+                        Integration on mobile app
+                    </li>
+                </ul>
+                <h2>
+                    Links
+                </h2>
+                <p>
+                    As included in the external form fields, the website can be found at
+                    <a href="http://imehi.me/" rel="nofollow">
+                        imehi.me
+                    </a>
+                    and the GitHub repository at
+                    <a href="https://github.com/willshiao/sdhacks-2018" rel="nofollow">
+                        willshiao/sdhacks-2018
+                    </a>
+                    .
+                </p>
+                <p>
+                    Sincerely,
+The HashStagram Team
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alexnet
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pytorch">
+                                pytorch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            resnet
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vgg16
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://imehi.me/" rel="nofollow" target="_blank" title="http://imehi.me/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                imehi.me
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/willshiao/sdhacks-2018" rel="nofollow" target="_blank" title="https://github.com/willshiao/sdhacks-2018">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

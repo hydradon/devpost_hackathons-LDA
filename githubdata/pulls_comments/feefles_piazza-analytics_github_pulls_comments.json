@@ -1,0 +1,51 @@
+[
+    {
+        "url": "https://api.github.com/repos/feefles/piazza-analytics/pulls/comments/39126011",
+        "pull_request_review_id": null,
+        "id": 39126011,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM5MTI2MDEx",
+        "diff_hunk": "@@ -1,21 +1,38 @@\n-var readyStateCheckInterval = setInterval(function() {\n-    if (document.readyState === \"complete\") {\n-        clearInterval(readyStateCheckInterval);\n-        $(window).hashchange(updateNames);\n+var lastPiazzaPost = -1;\n \n-        updateNames()\n+$(document).ready(function() {\n+    $(window).unload(updateNames);\n+    // wait until a dom thing exists\n+    updateNames();\n+});\n \n-    }\n-}, 50);\n+new MutationObserver(function(mutations) {\n+    mutations.forEach(function(mutation) {\n+        if (!mutation.addedNodes) {\n+            return;\n+        }\n+        updateNames();\n+    });\n+}).observe(document.body, {\n+    childList: true,\n+    subtree: true,\n+    attributes: false,\n+    characterData: false\n+});\n \n function updateNames() {\n-    var server_ip = \"https://cdn.moe/piazza/\"\n+    var proxyUrl = \"https://cdn.moe/piazza/\";",
+        "path": "piazza-analytics-chrome/src/inject.js",
+        "position": 32,
+        "original_position": 32,
+        "commit_id": "455403f5734698ac82c0bc985581b8d98b2bbffc",
+        "original_commit_id": "455403f5734698ac82c0bc985581b8d98b2bbffc",
+        "user": {
+            "login": "feefles",
+            "id": 3271562,
+            "node_id": "MDQ6VXNlcjMyNzE1NjI=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/3271562?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/feefles",
+            "html_url": "https://github.com/feefles",
+            "followers_url": "https://api.github.com/users/feefles/followers",
+            "following_url": "https://api.github.com/users/feefles/following{/other_user}",
+            "gists_url": "https://api.github.com/users/feefles/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/feefles/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/feefles/subscriptions",
+            "organizations_url": "https://api.github.com/users/feefles/orgs",
+            "repos_url": "https://api.github.com/users/feefles/repos",
+            "events_url": "https://api.github.com/users/feefles/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/feefles/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "oops my bad. I haven't done js in a while if it's not obvious... python for dayzz\n",
+        "created_at": "2015-09-10T05:30:51Z",
+        "updated_at": "2015-09-10T05:30:51Z",
+        "html_url": "https://github.com/feefles/piazza-analytics/pull/5#discussion_r39126011",
+        "pull_request_url": "https://api.github.com/repos/feefles/piazza-analytics/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/feefles/piazza-analytics/pulls/comments/39126011"
+            },
+            "html": {
+                "href": "https://github.com/feefles/piazza-analytics/pull/5#discussion_r39126011"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/feefles/piazza-analytics/pulls/5"
+            }
+        }
+    }
+]

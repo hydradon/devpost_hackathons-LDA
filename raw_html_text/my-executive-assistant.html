@@ -1,0 +1,201 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/-2rKtlLAodk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Alexa has become a big part of my evening and weekend routine. I use Alexa to create reminders, add things to my shopping list, and set timers.
+Unfortunately, Alexa isn't as useful on days that I work from home. I use Microsoft Outlook to manage my work calendar, and Alexa doesn't integrate and function in the way I need it ("her"?) to. Alexa can access Outlook calendars; she just doesn't function in an efficient manner. For example:
+                </p>
+                <ul>
+                    <li>
+                        I often want to know when my next meeting is (in an hour, it started 10 minutes ago, at 2pm, etc). Alexa will tell me my next 4 meeting events, and will pull in "day-long" events. While that is helpful, it's too long of a response and doesn't address my specific question ("when is my next meeting")
+                    </li>
+                    <li>
+                        When I am running late for a meeting, I often want to tell the attendees that I'm running late. Alexa can't do that.
+                    </li>
+                    <li>
+                        Even though Alexa has access to my calendar, she can't remind me of upcoming birthdays of my contacts.
+                    </li>
+                </ul>
+                <p>
+                    So, I decided to build a skill that addresses some of those concerns
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Appointment Assistant enhances Alexa's integration with Outlook Calendars to:
+                </p>
+                <ul>
+                    <li>
+                        Tell me the time of my next meeting (it started 5 mins ago, in 20 mins, at 8:30 am tomorrow)
+                    </li>
+                    <li>
+                        Cancel or decline my next meeting
+                    </li>
+                    <li>
+                        Tell the attendees (or meeting organizer) of my next meeting that I am running late
+                    </li>
+                    <li>
+                        Remind me of upcoming birthdays (The skill looks at my Outlook contacts to determine if there are any upcoming birthdays. The skill will remind me to give the contact a call or send an email. The skill offers to add a reminder to my Outlook Tasks).
+                    </li>
+                </ul>
+                <p>
+                    Note: The skill normally closes the request after the information is provided; however when a meeting start time is plus/minus 10 mins from the current time, Alexa will ask "anything else?". I do this in order to allow users to - (a) tell meeting attendees that they are late or (b) decline the meeting - without opening the skill again.
+                </p>
+                <h2>
+                    What it doesn't do
+                </h2>
+                <p>
+                    There are some things that Alexa and Outlook arean't great use cases for. I didn't want to get into reading or sending emails (faster on a computer or phone) or sending messages to my contacts (fuzzy search to match the requested name to the contact still has a way to go).
+                </p>
+                <p>
+                    In addition, I originally planned to build a skill that handled both calendar events and creation of tasks, but decided that it broke the
+                    <a href="https://developer.amazon.com/blogs/alexa/post/bc00da06-ec89-41d4-8760-c48814406a86/10-things-every-skill-should-do-do-one-thing-really-well" rel="nofollow">
+                        "do one thing really well"
+                    </a>
+                    rule.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The skill leverages a number of AWS services:
+                </p>
+                <ul>
+                    <li>
+                        Lambda (execution logic/code)
+                    </li>
+                    <li>
+                        DynamoDB (session management)
+                    </li>
+                    <li>
+                        S3 (image storage)
+                    </li>
+                </ul>
+                <p>
+                    In addition, I use the following libraries/APIs:
+                </p>
+                <ul>
+                    <li>
+                        Microsoft Graph API - this provides access to the Microsoft Outlook Calendar, Task, User Mailbox (needed for time zone information) and email with one library
+                    </li>
+                    <li>
+                        Moment and Moment.Timezone - used for time management calculations (the skill behaves differently if the next meeting has already started, versus it starting in 30 mins, versus if it starts tomorrow).
+                    </li>
+                    <li>
+                        Microsoft Azure Atlas API - Converts Microsoft Timezone IDs to IANA Timezone IDs (explained more in the "challenges" section.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    <strong>
+                        Finding the right name
+                    </strong>
+                    I really struggled to find a name that represented what the skill does. I originality called it "My Executive Assistant", but quickly realized that the name didn't reflect what the skill does (or rather what, it does not do - like take messages, order lunch, schedule meetings, buy anniversary gifts, etc).
+                </p>
+                <p>
+                    Finding a good name was additionally impacted by the functionality - my skill, very simply, tells you when your next meeting is (and does a few things based on that information). The word "calendar" will usually activate the Alexa calendar function. "Next" is used to advance a playing track. So, I had to play around with a number of word and phrase combinations before landing on an invocation name that accurately described the skill and was easily activated.
+                </p>
+                <p>
+                    <strong>
+                        Timezones
+                    </strong>
+                    I needed to understand the time zone of the user to accurately provide the start time for upcoming meetings. Outlook provides timezone information - unfortunately this information is provided in the Microsoft timezone format, instead of the IANA Timezone format (needed for libraries like moment.js for time comparison). Microsoft provides an API that translates MS Timezone ID to IANA Timezone ID, so the only challenge was integrating to the API (which requires you to sign up for the MS Azure cloud service).
+                </p>
+                <p>
+                    <strong>
+                        SPAM/Disabling Account During Certification
+                    </strong>
+                    My test Outlook.com account was suspended during certification testing due to the number of email messages being sent out (to test the "I'm running late" functionality). Luckily, I was able to explain the problem to the certification team! A few years ago, it would have taken weeks to communicate and resolve the problem.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    When I work from home, I use this skill every few hours... so if nothing else, I am getting a lot out of it!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learn a little more each time I build a skill. This was the first skill with Account Linking that I've built in a while. My first attempts were admittedly "kludgey"; I believe I implemented linking in a much more natural way for this skill.
+In addition, I think I found a good balance between driving a "voice first" point of view, and still enhancing the experience for those with an Echo Show or Echo Dot.
+                </p>
+                <h2>
+                    What's next for Appointment Assistant (and other Work from Home applications)
+                </h2>
+                <ul>
+                    <li>
+                        I could see this being a suite of Outlook Virtual Assistant applications - add my Outlook task, change my Skype availability, etc
+                    </li>
+                    <li>
+                        I'd like to offer notifications - but only when the user requests it, and only for the "next meeting". For example, I often look at my calendar, realize that I have 10 mins before my next conference call, and I start working on something else. Then, I realize 15 minutes have gone by and I'm now late for the call. I'd like to give a user the ability for to set a notification to be reminded at the meeting start time (if the meeting is in 30 mins). I'm hoping to get into the Notifications beta to implement this functionality.
+                    </li>
+                    <li>
+                        I only look for birthdays, but I may expand to look for anniversaries as well.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-graph-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/VexAssist-Apps-Appointment-Assistant/dp/B07C74QQSF/" rel="nofollow" target="_blank" title="https://www.amazon.com/VexAssist-Apps-Appointment-Assistant/dp/B07C74QQSF/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

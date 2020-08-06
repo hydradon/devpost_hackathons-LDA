@@ -1,0 +1,142 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We're two high school students heading into Grade 12. For the last three years of high school, science teachers have continually promised an elusive "astronomy unit"; a unit that never came to be due to "time constraints". Our project makes it quick and painless for teachers to at least introduce the astronomy unit in a fun and unique way - after all, the astronomy unit is always scheduled as the last unit before the end of a semester, so it has to leave a good impression on returning students!
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    The simulator can be loaded in any WebGL-enabled browser, instantly allowing access to the entire application. If an Oculus Rift (or Google Cardboard) head-mounted display is detected, rendering switches (via WebVR) to the secondary display, instantly unlocking an immersive 3D world that is both scientifically accurate as well as aesthetically pleasing.
+                </p>
+                <p>
+                    The simulator accurately takes into account:
+                </p>
+                <ul>
+                    <li>
+                        orbits (of moons as well as planets)
+** includes orbit eccentricity; rotation period; tidal locking
+                    </li>
+                    <li>
+                        inclination
+                    </li>
+                    <li>
+                        elevation data for normal mapping - enhances detail without increasing polygon count
+                    </li>
+                    <li>
+                        global maps of planets (composed from USGS data, NASA data, and more)
+                    </li>
+                    <li>
+                        ...and other more gritty details
+                    </li>
+                </ul>
+                <p>
+                    Thanks to a more advanced rendering system than just projecting a map onto a sphere, the simulator renders with high quality even on older computers whose graphics cards can't handle more than blurry 2048x2048 textures (and most school computers fit this classification) while maintaining a high framerate.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Having recently updated one of our laptops to Windows 10, we were surprised to learn that the Oculus Rift does not work on Windows 10 devices. At the same time, the second Windows 8.1 laptop had a faulty network card that prevented us from using WiFi. Getting this awkward setup to work was a hack in and of itself, involving a couple external storage devices and a
+                    <strong>
+                        lot
+                    </strong>
+                    of Git. On top of this, we ran into a well-documented Oculus Rift bug that disabled the device's motion tracker - we wasted a lot of debugging time working around it.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The Oculus Rift rendering works (seriously, drawing a simple textured sphere took at least half of the development time due to Oculus bugs and whatnot)! The planet rendering is also really cool. All the data collected online for global surface maps is in simple a 2:1 equirectangular (cylindrical) projection. There are two problems with mapping this data directly onto a sphere. First off, you get lots of distortion at the poles:
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://sc-cdn.scaleengine.net/i/552ba1671cb3f2830a2b6f70f28047cf1.png" src="https://res.cloudinary.com/devpost/image/fetch/s--_1KwemWA--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://sc-cdn.scaleengine.net/i/552ba1671cb3f2830a2b6f70f28047cf1.png">
+                </p>
+                <p>
+                    Secondly, if you want decent quality, you'd need an 8k resolution or higher map - hardly accessible for all those poor school computers with dated graphics cards.
+                </p>
+                <p>
+                    Our solution was to split each equirectangular map into 6 cube faces of a much smaller size (baking them in Blender), and load them as a cubemap (i.e. skybox) into OpenGL. This accomplishes two things. Firstly, since Blender performs the baking on a per-pixel basis, there is no distortion at the poles. But more importantly, the smaller cube face textures are easily usable by ancient hardware while maintaining a (nearly) equivalent amount of detail.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Setting up an Oculus Rift is hard. It also makes you nauseous until you adjust the interpupillary distance to fit your eyes. But at the same time, its also very easy to develop for and provides and alternative, more immersive means of interacting with data.
+                </p>
+                <h2>
+                    What's next for Solar System Explorer
+                </h2>
+                <p>
+                    Ideally, we would like to have dedicated more time into the actual look and feel of the simulator. A user's experience would be enhanced greatly by atmospheric scattering, better closeups via parallax mapping, styling with a bloom filter and other eye-candy. At its base lies accurate computations, but its look could do with a bit more work.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            opengl-es
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/three-js">
+                                three.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            usgs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/webgl">
+                                webgl
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            webvr
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/IvyBits/techretreat-2015" rel="nofollow" target="_blank" title="https://github.com/IvyBits/techretreat-2015">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

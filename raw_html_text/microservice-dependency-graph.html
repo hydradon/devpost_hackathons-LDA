@@ -1,0 +1,278 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/5rTIGhPwF7Y?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="389728" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/728/datas/original.png">
+                            <img alt="Hootsuite Microservice Dependency Graph &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/728/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Service Dependency Graph
+                </h1>
+                <p>
+                    Store and display microservice dependency graph.
+                </p>
+                <h1>
+                    Projects Description
+                </h1>
+                <h2>
+                    Service Stats
+                </h2>
+                <p>
+                    It's responsible for receive microservices data and returns that data in a graph format to be displayed by the Service Viewer project. All data is stored using the current time as an identification, so this way is possible to view data trough time.
+                </p>
+                <p>
+                    This data in JSON format is sent through a HTTP POST to /calling URI, and it's represented by:
+                </p>
+                <ul>
+                    <li>
+                        Caller Name (Microservice that performs the call)
+                    </li>
+                    <li>
+                        Called Name (Microservice that receives the call)
+                    </li>
+                    <li>
+                        Called Endpoint Name (Microservice's endpoint that receives the call)
+                    </li>
+                </ul>
+                <p>
+                    Example:
+                </p>
+                <pre class="language-json"><code>{
+        "serviceCaller":"checkout",
+  "serviceCalled":"users",
+  "endpointCalled":"findById"
+}
+</code></pre>
+                <p>
+                    <strong>
+                        Important Note:
+                    </strong>
+                    this process return 200 (OK) instantly (it's basically a request and forget method), this way the clients don't need to wait for the whole process to be executed.
+                </p>
+                <h3>
+                    Test
+                </h3>
+                <pre class="language-sh"><code>$ sbt test
+</code></pre>
+                <h3>
+                    Run
+                </h3>
+                <p>
+                    <em>
+                        It requires a Redis instance running locally.
+                    </em>
+                </p>
+                <pre class="language-sh"><code>$ sbt run
+</code></pre>
+                <h3>
+                    Insert Dummy Data
+                </h3>
+                <p>
+                    It requires
+                    <em>
+                        curl
+                    </em>
+                    command to run this script.
+                </p>
+                <p>
+                    Please, do not forget to run the service-stats through SBT before executing this script.
+                </p>
+                <p>
+                    Just run the script:
+                </p>
+                <pre class="language-sh"><code>$ ./insert-dummy-data.sh
+</code></pre>
+                <p>
+                    It will perform some HTTP post requests to
+                    <a href="http://localhost:8080" rel="nofollow">
+                        http://localhost:8080
+                    </a>
+                    , after that you can see the graph using the service-viewer project.
+                </p>
+                <h3>
+                    Technology Used
+                </h3>
+                <ul>
+                    <li>
+                        Scala language
+                    </li>
+                    <li>
+                        Akka HTTP
+                    </li>
+                    <li>
+                        Scalatest
+                    </li>
+                    <li>
+                        Redis (rediscala)
+                    </li>
+                </ul>
+                <h3>
+                    How it works internally
+                </h3>
+                <h4>
+                    Storing data
+                </h4>
+                <p>
+                    All data is stored into Redis using HASH format to represent graph data.
+                </p>
+                <p>
+                    The key for Node/Vertex is
+                    <strong>
+                        nodes:HH.mm
+                    </strong>
+                    (HH is the hour and mm is the minute). Example:
+                    <strong>
+                        nodes:17.41
+                    </strong>
+                </p>
+                <p>
+                    The key for Link/Edge is
+                    <strong>
+                        edges:HH.mm
+                    </strong>
+                    (HH is the hour and mm is the minute). Example:
+                    <strong>
+                        edges:17.41
+                    </strong>
+                </p>
+                <p>
+                    Each edge contains a value that represents how many requests it received at a specific time,
+and it can be visualized as a label
+                    <strong>
+                        rep/min
+                    </strong>
+                    by the service-viewer graph).
+                </p>
+                <p>
+                    The node's index is generated by a Redis String using the
+                    <strong>
+                        inc
+                    </strong>
+                    command.
+                </p>
+                <h4>
+                    Displaying Data
+                </h4>
+                <p>
+                    Currently is only possible to display a graph for a specific time (hour:minute).
+                </p>
+                <h3>
+                    What is missing (Things to do)
+                </h3>
+                <p>
+                    As it does not intend to be a time series graph, it would be good to determine how many time all data that represents a specific time will be available. Adding TTL to those data could fix that issue, so this way there'll be no conflict among dates.
+                </p>
+                <h2>
+                    Service Viewer
+                </h2>
+                <p>
+                    It's responsible for displaying the graph in a browser.
+                </p>
+                <p>
+                    It's just an HTML file (service-viewer/index.html) that you can open directly in your browser.
+                </p>
+                <p>
+                    This HTML uses: Jquery and D3.js
+                </p>
+                <p>
+                    Example:
+                </p>
+                <p>
+                    <img alt="how it looks like" data-canonical-url="https://raw.githubusercontent.com/rlazoti/microservice-dependency-graph/master/service-viewer/screenshot.png" src="https://res.cloudinary.com/devpost/image/fetch/s--IKBqmWR_--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/rlazoti/microservice-dependency-graph/master/service-viewer/screenshot.png">
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/akka">
+                                akka
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/d3-js">
+                                d3.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scala">
+                                scala
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            scalatest
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/rlazoti/microservice-dependency-graph" rel="nofollow" target="_blank" title="https://github.com/rlazoti/microservice-dependency-graph">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

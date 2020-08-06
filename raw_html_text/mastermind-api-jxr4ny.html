@@ -1,0 +1,250 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Mastermind API
+                </h1>
+                <h2>
+                    Introduction
+                </h2>
+                <p>
+                    In this challenge I built a API to play Mastermind Game
+                    <a href="https://en.wikipedia.org/wiki/Mastermind_(board_game)" rel="nofollow">
+                        https://en.wikipedia.org/wiki/Mastermind_(board_game)
+                    </a>
+                    .
+                </p>
+                <h2>
+                    Built with
+                </h2>
+                <ul>
+                    <li>
+                        Grape -
+                        <a href="https://github.com/ruby-grape/grape" rel="nofollow">
+                            https://github.com/ruby-grape/grape
+                        </a>
+                    </li>
+                    <li>
+                        Ruby
+                    </li>
+                    <li>
+                        MongoDB
+                    </li>
+                    <li>
+                        Rspec
+                    </li>
+                    <li>
+                        Love
+## API requests examples
+                    </li>
+                </ul>
+                <h3>
+                    Availables Games:
+                </h3>
+                <pre class="language-nolang"><code>curl -H "Content-Type: application/vnd.api+json" -X GET http://127.0.0.1:9393/api/v1/games/available
+</code></pre>
+                <pre class="language-json"><code>{
+                "games": [{
+                "id": "57422a5e7c26415c978f2b68"
+    }, {
+    "id": "57422a407c26415c8a52cb28"
+    }, {
+    "id": "574228667c26415ac4086c81"
+    }]
+}
+</code></pre>
+                <h3>
+                    Create a new game
+                </h3>
+                <pre class="language-nolang"><code>curl -H "Content-Type: application/vnd.api+json" -X POST http://127.0.0.1:9393/api/v1/games -d '{"player":{ "name": "Icaro Seara"}}'
+</code></pre>
+                <pre class="language-json"><code>{
+                "colors": ["R", "B", "G", "Y", "O", "P", "C", "M"],
+    "code_length": 8,
+    "game_id": "57422c287c26415db186f554",
+    "player_id": "5741b9a27c2641f95b65b335"
+}
+</code></pre>
+                <h3>
+                    Join a game:
+                </h3>
+                <pre class="language-nolang"><code>curl -H "Content-Type: application/vnd.api+json" -X POST http://127.0.0.1:9393/api/v1/games/574238277c26416797461ccc/join -d '{"player":{ "name": "Icaro fahning"}}'
+</code></pre>
+                <pre class="language-json"><code>{
+                "colors": ["R", "B", "G", "Y", "O", "P", "C", "M"],
+    "code_length": 8,
+    "game_id": "574232dd7c2641637faa31fb",
+    "player_id": "574203837c264133d74b854e"
+}
+</code></pre>
+                <h3>
+                    Post a guess:
+                </h3>
+                <pre class="language-nolang"><code>curl -H "Content-Type: application/vnd.api+json" -X POST http://127.0.0.1:9393/api/v1/games/574238277c26416797461ccc/guess -d '{"player": {"id": "574203837c264133d74b854e"}, "code": "RRRRRRRR"}'
+</code></pre>
+                <pre class="language-json"><code>{
+                "colors": ["R", "B", "G", "Y", "O", "P", "C", "M"],
+    "code_length": 8,
+    "game_id": "574238277c26416797461ccc",
+    "player_id": "574203837c264133d74b854e",
+    "correct": 1,
+    "misplaced": 0,
+    "code": "RRRRRRRR",
+    "solved": false,
+    "time_taken": 0,
+    "time_started": "2016-05-22T19:52:35.658-03:00",
+    "time_limit": "2016-05-22T19:57:35.658-03:00",
+    "winner": "",
+    "num_guesses": 2,
+    "past_guesses": [{
+    "code": "RRRRRRRR",
+    "correct": 1,
+    "misplaced": 0,
+    "player": "Icaro Seara"
+    }, {
+    "code": "RRRRRRRR",
+    "correct": 1,
+    "misplaced": 0,
+    "player": "Icaro fahning"
+    }]
+}
+</code></pre>
+                <pre class="language-json"><code>{
+                "colors": ["R", "B", "G", "Y", "O", "P", "C", "M"],
+    "code_length": 8,
+    "game_id": "574238277c26416797461ccc",
+    "player_id": "574203837c264133d74b854e",
+    "correct": 8,
+    "misplaced": 0,
+    "code": "YROBOMCP",
+    "solved": true,
+    "time_taken": "69",
+    "time_started": "2016-05-22T19:52:35.658-03:00",
+    "time_limit": "2016-05-22T19:57:35.658-03:00",
+    "winner": "Icaro fahning",
+    "num_guesses": 2,
+    "past_guesses": [{
+    "code": "RRRRRRRR",
+    "correct": 1,
+    "misplaced": 0,
+    "player": "Icaro fahning"
+    }, {
+    "code": "YROBOMCP",
+    "correct": 8,
+    "misplaced": 0,
+    "player": "Icaro fahning"
+    }]
+}
+</code></pre>
+                <h3>
+                    Game Status
+                </h3>
+                <pre class="language-nolang"><code>curl -H "Content-Type: application/vnd.api+json" -X GET http://127.0.0.1:9393/api/v1/games/57423e717c26416bbc839eba/status
+</code></pre>
+                <pre class="language-json"><code>{
+                "game": {
+                "id": "57423e717c26416bbc839eba",
+                "winner": null,
+                "started_at": null,
+                "time_limit": 0,
+                "time_taken": 0,
+                "solved": false
+    }
+}
+</code></pre>
+                <h2>
+                    Running application locally
+                </h2>
+                <pre class="language-nolang"><code>shotgun
+</code></pre>
+                <h2>
+                    Access console
+                </h2>
+                <pre class="language-nolang"><code>RACK_ENV="development" irb -r "./application.rb"
+</code></pre>
+                <h1>
+                    Pre-Requisites
+                </h1>
+                <p>
+                    Before building, you will need to have installed in your machine the following tools:
+                </p>
+                <ul>
+                    <li>
+                        Ruby - 2.2.3+
+                    </li>
+                    <li>
+                        Bundler - 1.12.4+
+                    </li>
+                    <li>
+                        MongoDB - 3.2.x
+                    </li>
+                </ul>
+                <h2>
+                    Testing application
+                </h2>
+                <pre class="language-nolang"><code>bundle exec rspec
+</code></pre>
+                <h3>
+                    Repository:
+                </h3>
+                <p>
+                    <a href="https://github.com/icaroseara/Mastermind-API" rel="nofollow">
+                        https://github.com/icaroseara/Mastermind-API
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            grape
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/rspec">
+                                rspec
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/icaroseara/Mastermind-API" rel="nofollow" target="_blank" title="https://github.com/icaroseara/Mastermind-API">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

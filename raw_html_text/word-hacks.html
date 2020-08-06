@@ -1,0 +1,223 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/354C21q5EFo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="624213" data-title="Word Hacks" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/624/213/datas/original.png">
+                            <img alt="Word Hacks &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/624/213/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Word Hacks
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Word Hacks
+                </h2>
+                <p>
+                    This Alexa skill is designed to make your life easier whether you are working from home and need to quickly look things up or just want to get some quick information about a word you are trying to add to a college paper. Are you searching for the perfect synonym to give your email that little extra oomph? Just remembered a great idea for your next short story that you don't want to forget? Or, maybe you are just interested in expanding your linguistic chops with clever idioms, words, and translations that you can slip into conversation?
+                </p>
+                <p>
+                    All of those tasks and more can be performed with Word Hacks!
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Putting this project together was a lot of fun, but also a tremendous challenge. It pushed me well past my comfort zone of putting an application together and required me to learn a lot of new skills. It started out as a simple exercise in connecting to external APIs, in particular to get translations. I wanted to make a fun and easy to use translation app that could help people who needed to quickly hear something in another language.
+                </p>
+                <p>
+                    Then, I decided it would also be useful to be able to get definitions, synonyms, and other features. That turned into a desire to build and track projects, which blossomed into a desire to be able to add calendar events to help track such projects outside of the application.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    With this skill, you can:
+                </p>
+                <p>
+                    1) Ask for translations of words or phrases from English into over 70 compatible languages.
+2) Find synonyms or antonyms of a word.
+3) Lookup words that sound like something else.
+4) Search rhyming words.
+5) Learn descriptive adjectives for a word.
+6) Find homophones.
+7) Get the definition of a word.
+8) Hear example usages of a word.
+9) Learn about the word of the day.
+10) Hear a quote of the day from one of seven categories.
+11) Create and log progress toward an ongoing writing project.
+12) Learn about different English Idioms.
+13) Define and hear your goal of the day to keep you motivated.
+14) Create and read upcoming events on your Google calendar.
+15) Track your in-skill projects on your Word Hacks calendar.
+16) Create reminders and notes for important details you don't want to forget.
+17) And more!
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I built the application using Java, Maven, DynamoDB, and multiple APIs. The general features of the application are run through Alexa sessions and customer details after a user logs in, and then different features are run either through API, internal data, or other features. For example, the two different endpoints for translations give me options when interacting with a customer. Microsoft translations are often considered to be more accurate, but Google translations offer more languages, so utilizing both of them means I can offer the largest possible list of applicable languages while still focusing on accuracy. There is also caching to keep track of popular translations, quotes, word of the day, and more features to save on API calls while the lambda function is hot.
+                </p>
+                <p>
+                    Using Wordnik and WordsAPI gives me access to more features around word lookups in English. You can get definitions and examples from Wordnik, as well as the word of the day, and from Words you can lookup synonyms, antonyms, homophones, adjectives, similar sounding and rhyming words, and more. All of this is masked from the user, but it means I can offer more features than one or the other might allow.
+                </p>
+                <p>
+                    Oauth2 gives me the ability to track and update user information across accounts and devices, and Google Calendar gives me the ability to track and update a project and other information to the user so they can find it when they need it most. The projects and notes are stored internally as well for easy managing and updating.
+                </p>
+                <p>
+                    For the design, I wanted to ensure that a user would not be overwhelmed with speech from Alexa while still being able to access all of the different features. To handle this, I built a conversational system where I can prompt the user with simple yes or no questions to perform random actions or continue the process. For example, when a user is reading off reminders and notes they made for themselves, the system can continue prompting them to read the next note, and likewise when a user is asking for the definition of a word, it might also ask if they would like to have that word translated, or get synonyms, or some other similar task. The conversational flow was important to me, as well as maintaining a session state and long term state separately so that the user can easily change tracks without interrupting important features.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    All along the way I ran into small challenges that needed to be addressed. I didn't only want to have features, but I wanted to make sure that the flow of the application made sense, personalized itself to the user, and was completely random and conversational. I built a system of creating custom responses from Alexa that should keep her responses from sounding monotonous or repetitive.
+                </p>
+                <p>
+                    Setting up and configuring all of the different APIs was also a difficult task, as was testing to make sure that the application performed as expected. Since so much of it was random, I had to ensure that the same task could be performed in multiple different ways without creating new problems.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Because of this project, I learned how to wire up dozens of APIs, how to design and implement a conversational Alexa skill, how to connect users to my database using OAuth2, and how to do countless other things that will help me immensely when designing and building my next project.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned far more things than could be listed here, but mostly I learned that persistence and hard work can really pay off when the final product is ready for release. I kept plugging away at it, adding features and wiring up code until I was finally ready to test the final product. It was incredibly rewarding seeing all of the pieces working and flowing together.
+                </p>
+                <h2>
+                    What's next for Word Hacks
+                </h2>
+                <p>
+                    I plan on releasing new features for the application, including using Sheets to track reminders and other details for the user so that they can have a log of what is happening in the application. I also plan to continue weeding out bugs and enhancing the voice user interface to make it as simple and conversational as possible.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            chinese-to-latin-character
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-calendar">
+                                google-calendar
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-geocoding">
+                                google-geocoding
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-translate">
+                                google-translate
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-translate
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            oauth2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            quoteoftheday
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/wordnik">
+                                wordnik
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            words
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.lincolncole.net/skills/word-hacks" rel="nofollow" target="_blank" title="https://www.lincolncole.net/skills/word-hacks">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.lincolncole.net
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

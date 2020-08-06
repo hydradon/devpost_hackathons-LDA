@@ -1,0 +1,195 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="700316" data-title="Mesh Device" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/700/316/datas/original.png">
+                            <img alt="Relief Mesh &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/700/316/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Mesh Device
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    After Hurricane Florence, a recent natural disaster that caused severe damage to North and South Carolina, hundreds of thousands of people were left without power, stranded, or unable to communicate with their loved ones. To migiate this solution, we thought of possible solutions that would let people communicate with authorities and share information in the case that wireless networks, cell towers, or power supplies get taken down.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Relief Mesh is a low-cost mesh network that allows a mobile device or computer to connect via WiFi hotspot and access a mesh network comprised of other Relief Mesh devices. Each mesh device contains a long range (LoRa) 900 MHz packet radio transceiver with approximate range of up to 12 miles able to broadcast small text messages. In addition, each device is equipped with a 2.4 GHz long range transceiver with amplifier, able to communicate with WiFi networks over a kilometer away using mesh devices. Once a user has a device connected to the mesh device's WiFi hotspot, the user is able to send distress messages or communicate with others nearby using the built in chat app. Furthermore, a simple protocol is provided on the network for developers to build further apps, for example an app to allow easy access to emergency services.
+                </p>
+                <p>
+                    Cost estimate:
+Raspberry Pi Zero: $5
+Wireless long-range transceiver: $5
+Miscellaneous parts (wires, batteries, etc): $10
+NRF 24l01 2.4 GHz long-range transceiver: $2
+Total cost: ~$25
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used an AdaFruit Feather 32u4 RFM95 LoRa Radio for small packet transmission, and a Long Range NRF24L01 transceiver for closer-range data transmission. The backend was built in Flask and hosted on Microsoft's Azure platform, allowing for communication between the mesh devices and the chat servers. The AdaFruit Feather device has an Arduino built in, and each Feather device was attached to a Raspberry Pi Zero W via USB Serial. Once a message was sent, it was passed from the Raspberry Pi Zero to the Feather, which would then broadcast it to the mesh network.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We faced challenges with implementing the website in Wix Code due to the program being mostly offline, making it difficult to communicate with the Pi&rsquo;s. In addition, communication between the various different mesh devices using different protocols (LoRa, 2.4 GHz) was complicated, due to different interfaces. For example, Arduino datatypes in C were different from the Pi&rsquo;s datatypes in Python, making the LoRa and NRF modules difficult to work with.
+                </p>
+                <p>
+                    To account for the small bandwidth of the transceivers at approximately 200 bytes per packet, we implemented lossless string compression on the Raspberry Pi using Huffman coding and priority queues. However, Huffman coding presented a challenge due to the requirement of a Huffman tree, which lowered available space for packet transmission. Therefore, a predefined tree was generated off a corpus from Project Gutenberg's most downloaded book, Pride and Prejudice. Once fully implemented, the mesh devices were able to send messages nearly twice as long as originally. The process presented a series of challenge, however: it was difficult to delimit start/end points due to the erratic nature of Huffman coding and the way that the computer handles bits.
+                </p>
+                <p>
+                    Setting up WiFi hotspots on the Pi was a challenge, too, and we could not fully create a LAN - instead, we used Ad-Hoc networks to communicate between devices.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Getting it to work! We started with a a huge selection of hardware (three of the four team members brought all they had) and an idea that we wanted to help people, and the idea evolved into creating a functional mesh network with a built in chat system and protocols for developers to build on.
+                </p>
+                <p>
+                    Once our mesh system was developed, our chat app was able to work completely offline from SOCH&rsquo;s penthouse to the basement. We added further devices
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We gained a much better understanding of string compression, and learned a lot about communication between different devices over the serial bus. We explored disaster relief efforts and learned a lot about the effects of different natural disasters and what causes gives rescue officers the most difficulty when rescuing survivors of disasters.
+                </p>
+                <h2>
+                    What's next for Relief Mesh
+                </h2>
+                <p>
+                    We plan to create a better looking and more functional prototype afterwards, and look at its viability in the market. Ideally, these devices would be cheap and small enough to place several in a neighborhood, so many people can access them. We plan on building further applications on top of the protocol and including different physical devices in the mesh network. Currently, we have GPS modules, chat modules, and emergency alert modules.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/gps">
+                                gps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nrf
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raspberry-pi-zero
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rfm95
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/wix">
+                                wix
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://github.com/kevin-fang/relief-mesh" rel="nofollow" target="_blank" title="http://github.com/kevin-fang/relief-mesh">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

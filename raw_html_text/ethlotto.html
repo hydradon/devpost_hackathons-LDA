@@ -1,0 +1,122 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This smart contract code uses the Ethereum Blockchain to issue lottery tickets to paying customers, who then have a random chance of winning everyone else's bets for themselves.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used the Ethereum solidity Remix IDE.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Integrating the contract into a browser, as I was not skilled with Javascript.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I managed to learn to read and use an Ethereum contract in a matter of days.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    There is more to a Decentralized app than just the contract, some javascript will be necessary to build a full UI.
+                </p>
+                <h2>
+                    The Code
+                </h2>
+                <pre class="language-nolang"><code>pragma solidity ^0.4.11;
+
+contract Lotto {
+
+mapping(address =&gt; uint) internal players_wager;
+mapping(uint =&gt; address) internal players;
+uint internal num_of_users = 0;
+uint public total_wagers = 0;
+
+address internal owner;
+string public game_name;
+uint internal rand;
+uint public winning_number;
+
+function Lotto() {
+owner = msg.sender;
+game_name = "Ethereum Lotto";
+}
+
+function wager() public payable  {
+if (msg.value &gt; 0) {
+if (players_wager[msg.sender] == 0) {
+players[num_of_users] = msg.sender;
+num_of_users += 1;
+}
+players_wager[msg.sender] += msg.value;
+total_wagers += 1;
+//msg.value;
+}
+}
+
+function wager_ether_value(address addr) returns(uint){
+return players_wager[addr];
+}
+
+function user_address(uint nb) returns(address){
+return players[nb];
+}
+
+function test_random() returns(uint) {
+rand = uint(block.blockhash(block.number-1)) % total_wagers;
+return rand;
+}
+
+function decide_winner() public returns(uint) {
+if (msg.sender == owner) {
+uint sum = 0;
+winning_number = uint(block.blockhash(block.number-1)) % total_wagers;
+for (uint i=0; i &lt; num_of_users; i++) {
+sum += players_wager[players[i]];
+if (sum &gt;= winning_number) {
+selfdestruct(players[i]);
+return;
+}
+}
+}
+}
+
+}
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ethereum
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

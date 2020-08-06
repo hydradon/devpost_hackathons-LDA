@@ -1,0 +1,162 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="891938" data-title="Problem-Solution Overview" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/891/938/datas/original.PNG">
+                            <img alt="BSafe &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/891/938/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Problem-Solution Overview
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Each year, 132 people die in vehicle-related fatalities in the US Waste &amp; Recycling industry with 98 of these being civilians. Each fatality costs these companies ~$1.5m each in direct costs. There are also thousands of other incidents resulting in environmental disaster, property damage and serious injury. We picked this industry because their operations include high-risk activities (e.g., driving large trucks with many stops and starts) in uncontrolled environments (e.g., weather, traffic, route hazards, pedestrians, etc.) where members of the community are at risk.
+                </p>
+                <p>
+                    The main risk drivers are people-related (e.g., experience of driver, their driving record, etc.); systems-related (e.g., time since last maintenance, age of truck); and, environment-related (e.g., weather, high-risk route, school zones, etc.). Our product, BSafe, is a predictive analytics SAAS which pushes a notification to truck drivers through Twilio when the combined risk factors result in a heightened probability that a serious incident will occur. Drivers can then take corrective action such as slowing down or taking a safer route to complete the job.
+                </p>
+                <p>
+                    BSafe reduces the probability of serious incidents from happening. This saves companies millions dollars each year in direct costs; improves employee morale and company culture; and, improves sustainability in terms of reduced environmental impacts.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    BSafe is a machine learning model based on neural networks and XGBoost. It takes data from a diverse range of public sources (e.g., Google Maps, Mass.gov, etc.) and private sources (e.g., driver data, truck data, etc.) of all accidents along 6 routes over the last 5 years totaling 2,443 accidents and 3 fatalities to train the model to identify combinations of risk factors that are associated with a high probability of a serious incident occurring.  Across all of Boston there have been 26,307 accidents and 129 fatalities in the last 5 year indicating one fatality for every 200 accidents.
+                </p>
+                <p>
+                    The company can then set its own risk threshold to determine when a driver should be notified that they have entered a high risk situation.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    First, we use Python and Keras to build a machine learning model using a neural network to determine a safety score for a combination of routes, drivers and trucks. We then performed a cross-validated grid search across various settings for each model to determine the optimal hyperparameters. The model was trained on a Google Cloud Virtual Machine (8 vCPUs, 30 GB Memory). We scraped the Mass.gov database for historical incident data across 6 routes. We also gathered and processed historical weather data to improve the predictive power of the model.
+                </p>
+                <p>
+                    Second, we set up a safety trigger threshold in the model which can be tailored for each company based on their individual risk tolerance. When the safety risk threshold is triggered, the model in Python sends a text message via Twilio to the driver&rsquo;s phone.
+                </p>
+                <p>
+                    Third, we configure the driver&rsquo;s phone so that text messages received from Twilio are automatically read out loud by Google Assistant notifying the driver that they have entered a high-risk state and giving them a notification on how to adjust their behavior based.
+                </p>
+                <p>
+                    Finally, the risk profiles of all drivers are displayed graphically on a dashboard powered by Plotly│Dash. This allows management to monitor driver safety in &lsquo;real time&rsquo; and take preventative action before an incident occurs.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We initially begun using the Firebase platform to display the initial output from the model because it provided certain attractive features such as mapping individual stops made by the driver as well as running a simulation of the truck route over time. However, we ran into significant challenges in trying to adopt open source code from Firebase to our input data. As a result, we decided to use Dash in the interests of time.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are very proud that we were able to build such a complex machine learning model employing a neural network and which drew data from multiple different public and private sources under a constrained timeline.
+                </p>
+                <p>
+                    We&rsquo;re also proud that we were able to get a market-ready product that could be deployed &lsquo;in the field&rsquo; tomorrow using predictive analytics to change human behavior in &lsquo;real time&rsquo; with the aim of saving lives and reducing man-caused environmental incidents which lead to a more sustainable world.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We have learned how to put together pieces of data from multiple sources and APIs together in a clean and standard way to train advanced models. We have also learned about a great new tool for notifications (Twilio) and were able to notice the improvements from using Google Cloud VMs to train deep learning models.
+                </p>
+                <h2>
+                    What's next for BSafe
+                </h2>
+                <p>
+                    In the future, we would like to would like to fully leverage all of Google&rsquo;s capabilities and APIs to provide management with more insightful &lsquo;real time&rsquo; analytics on safety (e.g., Firebase).  Another opportunities is to link into MassDot API for historical traffic information and potentially real-time traffic camera images for improved risk analysis.
+                </p>
+                <p>
+                    We would also like to the model using actual data from a Waste &amp; Recycling company.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/plotly">
+                                plotly
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sklearn
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/felixdumont/peoplelytics" rel="nofollow" target="_blank" title="https://github.com/felixdumont/peoplelytics">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,182 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    In cryptocurrency price variability, relative highs and lows in the price point are common indicators for investors to buy and sell currencies for profit gain. This machine learning algorithm takes advantage of this trend for profit maximization. The problem with traditional algorithms is they attempt to learn the statistics of the price dynamics. However, the statistics are unpredictable and are rarely constant. However, algorithms that use data such as relative high and low price points during sampled time intervals can learn smart decisions regardless of unpredictable statistics in price dynamics.
+                </p>
+                <h1>
+                    !/usr/bin/env python3
+                </h1>
+                <h1>
+                    -
+                    <em>
+                        - coding: utf-8 -
+                    </em>
+                    -
+                </h1>
+                <p>
+                    import gdax
+import datetime
+import numpy as np
+import sys
+import sklearn
+                </p>
+                <p>
+                    from sklearn.neural_network import MLPClassifier
+                </p>
+                <p>
+                    product = "{}-{}".format("ETH", "USD")
+publicClient = gdax.PublicClient()
+size = 0
+data = np.zeros([100,5])
+                </p>
+                <p>
+                    count = 0
+                </p>
+                <p>
+                    for num in range(0,10):
+    while size&lt;100:
+    unit = 60
+    ten_min = datetime.timedelta(minutes=10)
+    now = datetime.datetime.now() - (count*ten_min)
+    start_time = now - ten_min
+    hist = publicClient.get_product_historic_rates(
+    product,
+    start=start_time.isoformat(),
+    end=now.isoformat(),
+    granularity=unit)
+    #print(datetime.datetime.fromtimestamp(int(hist[0][0])).isoformat())
+    #print(datetime.datetime.fromtimestamp(int(hist[-1][0])).isoformat())
+    for i in range(0,len(hist)):
+    #print(hist)
+    if 'message' in hist:
+    continue
+    h = hist[i]
+    for j in range(0,5):
+    data[size,j] = h[j]
+    size = size + 1
+    if size&gt;=99:
+    break
+    count = count + 1
+    np.flipud(data)
+    iterations = 0
+    arr_profit = []
+    arr_profit.insert(0,-sys.maxsize) 
+    initial_amount = 100
+                </p>
+                <pre class="language-nolang"><code>if num==1:
+                clf = MLPClassifier(solver='sgd',hidden_layer_sizes=(5,8,3,1))
+    clf.fit(data[:,1:5],-initial_amount*np.ones((100,1)) )
+
+
+while True:
+
+if iterations&gt;10:
+if check_minima_maxima(arr_profit):
+break;
+else:
+if iterations&gt;=50:
+break;
+
+batch_size = 100
+
+usd_wallet = np.zeros([batch_size,1])
+bitcoin_wallet = np.zeros([batch_size,1])
+prices = (data[:,1:2] + data[:,2:3] + data[:,3:4] + data[:,4:5])/4
+labels = np.empty([batch_size,1])
+amount = np.zeros([batch_size,1])
+labels[0] = 0
+bitcoin_wallet[0] = initial_amount/prices[0]
+amount[0] = initial_amount
+predictions = clf.predict(data[:,1:5])
+print(predictions)
+for i in range(1,len(predictions)):
+predict_ = predictions[i]
+usd = usd_wallet[i-1]
+bitcoin = bitcoin_wallet[i-1]
+price = prices[i]
+if predict_&gt;0:
+if predict_&gt;bitcoin:
+labels[i] = (bitcoin - predict_)*price
+
+amount[i] = amount[i-1] + (bitcoin - predict_)*price
+continue
+else:
+usd_wallet[j] = usd + predict_*price
+bitcoin_wallet[j] = bitcoin - predict_/price    
+
+elif predict_&lt;0:
+predict_ = abs(predict_)
+if predict_&gt;usd:
+labels[i] = usd - predict_
+
+amount[i] = amount[i-1] + usd - predict_
+continue
+else:
+usd_wallet[j] = usd_wallet[j-1] - predict_
+bitcoin_wallet[j] = bitcoin_wallet[j-1] + predict_/price
+
+else:
+labels[i] = 0
+amount[i] = amount[i-1]
+continue             
+
+amount[i] = usd_wallet[i] + bitcoin_wallet[i]*price   
+
+#train neural network with data and amount
+clf.fit(data[:,1:5],amount)    
+final_amount = amount[batch_size - 1]
+arr_profit.insert(0,final_amount)    
+iterations = iterations + 1
+</code></pre>
+                <p>
+                    def check_minima_maxima(var):
+    ptr = 0
+    temp = var[ptr]
+    similar = 0
+    ptr = ptr + 1
+    flag = True
+    while 1:
+    element = var[ptr]
+    if abs(element - temp)&lt;=10:
+    similar = similar + 1
+    if similar&gt;=10:
+    return flag
+    ptr = ptr + 1
+                    <br>
+                    flag = False
+    return flag
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            gdax
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scipy">
+                                scipy
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

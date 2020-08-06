@@ -1,0 +1,160 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/vLFJTF5PGXM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="835449" data-title="A user using ForeSight to locate a pair of pliers" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/835/449/datas/original.JPG">
+                            <img alt="ForeSight &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/835/449/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A user using ForeSight to locate a pair of pliers
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="835450" data-title="The hardware for the project" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/835/450/datas/original.JPG">
+                            <img alt="ForeSight &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/835/450/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The hardware for the project
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="835570" data-title="A simulation of the vibration sensors in the armband and a object detection processed live video" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/835/570/datas/original.png">
+                            <img alt="ForeSight &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/835/570/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A simulation of the vibration sensors in the armband and a object detection processed live video
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    There are over 1.3 billion people in the world who live with some form of vision impairment. Often, retrieving small objects, especially off the ground, can be tedious for those without complete seeing ability. We wanted to create a solution for those people where technology can not only advise them, but physically guide their muscles in their daily life interacting with the world.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    ForeSight was meant to be as intuitive as possible in assisting people with their daily lives. This means tapping into people's sense of touch and guiding their muscles without the user having to think about it. ForeSight straps on the user's forearm and detects objects nearby. If the user begins to reach the object to grab it, ForeSight emits multidimensional vibrations in the armband which guide the muscles to move in the direction of the object to grab it without the user seeing its exact location.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    This project involved multiple different disciplines and leveraged our entire team's past experience. We used a Logitech C615 camera and ran two different deep learning algorithms, specifically convolutional neural networks, to detect the object. One CNN was using the Tensorflow platform and served as our offline solution. Our other object detection algorithm uses AWS Sagemaker recorded significantly better results, but only works with an Internet connection. Thus, we use a two-sided approach where we used Tensorflow if no or weak connection was available and AWS Sagemaker if there was a suitable connection. The object detection and processing component can be done on any computer; specifically, a single-board computer like the NVIDIA Jetson Nano is a great choice. From there, we powered an ESP32 that drove the 14 different vibration motors that provided the haptic feedback in the armband. To supply power to the motors, we used transistor arrays to use power from an external Lithium-Ion battery. From a software side, we implemented an algorithm that accurately selected and set the right strength level of all the vibration motors. We used an approach that calculates the angular difference between the center of the object and the center of the frame as well as the distance between them to calculate the given vibration motors' strength. We also built a piece of simulation software that draws a circular histogram and graphs the usage of each vibration motor at any given time.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One of the major challenges we ran into was the capability of Deep Learning algorithms on the market. We had the impression that CNN could work like a &ldquo;black box&rdquo; and have nearly-perfect accuracy. However, this is not the case, and we experienced several glitches and inaccuracies. It then became our job to prevent these glitches from reaching the user&rsquo;s experience.
+                </p>
+                <p>
+                    Another challenge we ran into was fitting all of the hardware onto an armband without overwhelming the user. Especially on a body part as used as an arm, users prioritize movement and lack of weight on their devices. Therefore, we aimed to provide a device that is light and small.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We&rsquo;re very proud that we were able to create a project that solves a true problem that a large population faces. In addition, we're proud that the project works and can't wait to take it further!
+                </p>
+                <p>
+                    Specifically, we're particularly happy with the user experience of the project. The vibration motors work very well for influencing movement in the arms without involving too much thought or effort from the user.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We all learned how to implement a project that has mechanical, electrical, and software components and how to pack it seamlessly into one product.
+                </p>
+                <p>
+                    From a more technical side, we gained more experience with Tensorflow and AWS. Also, working with various single board computers taught us a lot about how to use these in our projects.
+                </p>
+                <h2>
+                    What's next for ForeSight
+                </h2>
+                <p>
+                    We&rsquo;re looking forward to building our version 2 by ironing out some bugs and making the mechanical design more approachable. In addition, we&rsquo;re looking at new features like facial recognition and voice control.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

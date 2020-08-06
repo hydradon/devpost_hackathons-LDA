@@ -1,0 +1,231 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/NccvExdI1j0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="801617" data-title="Control Crypto from a Feature Phone" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/801/617/datas/original.png">
+                            <img alt="USSD For All &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/801/617/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Control Crypto from a Feature Phone
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My inspiration from this application came from different avenues.
+                </p>
+                <ul>
+                    <li>
+                        First and foremost, the main goal that I have is to empower a user to be able to be in charge of their finances. Simplicity achieves that.
+                    </li>
+                    <li>
+                        Secondly, I want to accelerate the adoption of crypto and level the playing field as to who can actually use it. Let's face it, right now mostly people with a certain wealth can access a smartphone and sign their transactions on their device, and the others do not. There is about 4.5 billion phones in the world and according to
+                        <a href="http://www.lightspeedresearch.com/importance-feature-phones-emerging-markets/" rel="nofollow">
+                            this
+                        </a>
+                        : "Of this number, 40% of the global population are smart phones users while the remainder use the feature or &lsquo;dumb&rsquo; phones". That's 2.7 billion phones that cannot interact with crypto.
+                    </li>
+                    <li>
+                        Thirdly my girlfriend inspired me to look at USSD applications, and I thank her for that
+                    </li>
+                </ul>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The application has 3 parts, a
+                    <strong>
+                        User
+                    </strong>
+                    solidity contract that a user needs to deploy at the beginning. I envision this deployment as though it's a "Sign up" to the network. This could be done at points of sale (like MPESA points of sale). Here the user needs to input his phone number and
+                    <strong>
+                        codes
+                    </strong>
+                    . By codes I mean hashed secrets, that will be used in a commit-reveal scheme for the "Telco smart contract".
+                </p>
+                <p>
+                    Another part is the Telco smart contract. This smart contract takes care of the logic of transfering tokens between users, and in general doing transactions on behalf of the user. The Telco
+                    <strong>
+                        cannot
+                    </strong>
+                    transact the tokens/create CDPs unless the user reveals one of the secrets that they inputted.
+                </p>
+                <p>
+                    The last 2 parts are the USSD Golang Server and the React frontend onboarder application. The USSD server is the one responding to all USSD requests from the cell phone, and creating the transactions as needed/order by the users.
+                </p>
+                <p>
+                    The react frontend is a small example of the "initial portal" that the onboarding user would see, helping them interact with their contract. The react frontend also uses Portis a possible solution for the user's key management needs, which in certain networks (unfortunately not kovan) uses meta transactions to pay for the user's gas costs.
+                </p>
+                <p>
+                    The application can:
+                </p>
+                <ul>
+                    <li>
+                        Send tokens between phone numbers, no need to be registered, you can register in the future and withdraw the coins
+                    </li>
+                    <li>
+                        Withdraw tokens to the user's wallet as they wish
+                    </li>
+                    <li>
+                        Create a MakerDAO CDP to lock ETH and get DAI tokens, loans in a few clicks!
+                    </li>
+                    <li>
+                        Show user's account information such as balance etc
+                    </li>
+                    <li>
+                        Deploy a user's User contract from a simple frontend using Portis
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Initially I was going to add Raiden payment channels on it so a User could have multiple payment channels controlled by the Telco. The problem I ran into was that raiden was focused on payment channels between EOA's and not between contracts or even EOA -&gt; contract (which is more general state transition). So I had to abandon that route.
+Another problem is that the system of commit-reveal is still not ideal for users, and does not address the possibility of a Telco not executing a transaction on behalf of the user (although the user can retrieve his funds when he wants!)
+Also again, this onboarding needed a public/private keypair for the user (stored on Portis) and this still means a lot of complexity for a regular user
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It works! It's simple, not too many bells and whisltes and you can have a loan IN 6 CLICKS! That's insane.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    USSD applications are actually really cool. When I think that I could send ETH and get a loan with an old style Nokia phone -- there should be more care put into these applications.
+                </p>
+                <p>
+                    ONE SHOULD ALWAYS DO THEIR RESEARCH ON WHAT NETWORKS CERTAIN APPLICATIONS ARE DEPLOYED ON. I changed networks 3 times, from ropsten to goerli to kovan to do this, a huge waste of time.
+                </p>
+                <p>
+                    PS: MakerDao's contract names are terrible, I do not know why they went for such complexity.
+                </p>
+                <h2>
+                    What's next for USSD For All
+                </h2>
+                <p>
+                    Look into state channels for contract to contract interactions.
+                </p>
+                <p>
+                    <strong>
+                        To access the USSD menu
+                    </strong>
+                    , click
+                    <a href="https://simulator.africastalking.com:1517/simulator/ussd" rel="nofollow">
+                        here
+                    </a>
+                    , input the phone number 254777777777, choose USSD and then the channel number *384*7007#
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            dai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/golang">
+                                golang
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            makerdao
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            portis
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Dev43/crypto-ussd" rel="nofollow" target="_blank" title="https://github.com/Dev43/crypto-ussd">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ancient-ravine-46133.herokuapp.com/" rel="nofollow" target="_blank" title="https://ancient-ravine-46133.herokuapp.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                ancient-ravine-46133.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://simulator.africastalking.com:1517/simulator/ussd" rel="nofollow" target="_blank" title="https://simulator.africastalking.com:1517/simulator/ussd">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                simulator.africastalking.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

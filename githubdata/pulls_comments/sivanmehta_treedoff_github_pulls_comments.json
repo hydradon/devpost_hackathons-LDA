@@ -1,0 +1,247 @@
+[
+    {
+        "url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796214",
+        "pull_request_review_id": 30921706,
+        "id": 109796214,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDEwOTc5NjIxNA==",
+        "diff_hunk": "@@ -32,155 +37,138 @@ export default class Tree extends Component {\n       source: \"lol.not\",\n       pros: [],\n       cons: []\n-    }\n+    };\n \n     this.state = {\n-      // the argument that we're representing\n-      tree: defaultArgument,\n-      // list of types (pro/con, index)\n-      path: [],\n       // loading icon indication\n       loading: false\n-    }\n+    };\n \n-    this.saveTree = this.saveTree.bind(this)\n-    this.advancePath = this.advancePath.bind(this)\n-    this.regressPath = this.regressPath.bind(this)\n-    this.setConfidence = this.setConfidence.bind(this)\n-    this.setDescription = this.setDescription.bind(this)\n-    this.setSource = this.setSource.bind(this)\n-    this.setTitle = this.setTitle.bind(this)\n-    this.addStatement = this.addStatement.bind(this)\n-    this.removeStatement = this.removeStatement.bind(this)\n+    this.setCurrentStatement = this.setCurrentStatement.bind(this);\n+    // this.changeCurrentStatement = thiss.changeCurrentStatement.bind(this);\n+\n+    this.saveTree = this.saveTree.bind(this);\n+    this.setConfidence = this.setConfidence.bind(this);\n+    this.setDescription = this.setDescription.bind(this);\n+    this.setSource = this.setSource.bind(this);\n+    this.setTitle = this.setTitle.bind(this);\n+    this.addStatement = this.addStatement.bind(this);\n+    this.removeStatement = this.removeStatement.bind(this);\n+    this.handleData = this.handleData.bind(this);\n+\n+    \n+  }\n+\n+  handleData(data){\n+    this.props.actions.updateTree(data);\n   }\n \n   componentDidMount() {\n     fetch(\"/api\")\n       .then(res => res.json())\n-      .then(data => this.setState({tree: data}))\n-      .catch(() => console.log(\"Could not fetch data =(\"))\n+      .then(data => this.handleData(data))\n+      .catch(() => console.log(\"Could not fetch data =(\"));\n   }\n \n   saveTree() {\n     fetch('/api/tree', {\n       credentials: 'same-origin',\n-      body: JSON.stringify(this.state.tree),\n+      body: JSON.stringify(this.props.tree),\n       method: 'POST',\n       headers: {\n         'Content-Type': 'application/json'\n       }\n-    }).then(res => console.log(res.status))\n+    }).then(res => console.log(res.status));\n   }\n \n-  advancePath(pro, index) {\n-    this.setState({\n-      path: this.state.path.concat((pro ? \"pros\" : \"cons\") + index)\n-    })\n-  }\n+  // refactor so you just get the statements to display\n+  // get current statement\n \n-  regressPath(amt) {\n-    this.setState({\n-      path: this.state.path.slice(0, amt)\n-    })\n-  }\n+  // use a sort of map thingy\n+  setCurrentStatement(property, val){",
+        "path": "src/components/tree.js",
+        "position": null,
+        "original_position": 122,
+        "commit_id": "70e987dc9f1ce0d0be930d51252a5c602667ad2e",
+        "original_commit_id": "a717b6a335a80e7663bdcc20828777378baf6e81",
+        "user": {
+            "login": "SivanMehta",
+            "id": 6868877,
+            "node_id": "MDQ6VXNlcjY4Njg4Nzc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/6868877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SivanMehta",
+            "html_url": "https://github.com/SivanMehta",
+            "followers_url": "https://api.github.com/users/SivanMehta/followers",
+            "following_url": "https://api.github.com/users/SivanMehta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SivanMehta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SivanMehta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SivanMehta/subscriptions",
+            "organizations_url": "https://api.github.com/users/SivanMehta/orgs",
+            "repos_url": "https://api.github.com/users/SivanMehta/repos",
+            "events_url": "https://api.github.com/users/SivanMehta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SivanMehta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This code has *finally* been refactored and centralized into one function. \ud83c\udf89 \ud83d\udca5 \ud83d\udd25 ",
+        "created_at": "2017-04-04T22:45:56Z",
+        "updated_at": "2017-04-05T00:30:48Z",
+        "html_url": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796214",
+        "pull_request_url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796214"
+            },
+            "html": {
+                "href": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796214"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796482",
+        "pull_request_review_id": 30921706,
+        "id": 109796482,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDEwOTc5NjQ4Mg==",
+        "diff_hunk": "@@ -0,0 +1,29 @@\n+import * as types from '../actions/action-types';\n+\n+// export const regressPath = () => {\n+//   return {\n+//     type: types.REGRESS_PATH,\n+//   };\n+// };\n+\n+// export const advancePath = (statement, pro) => {\n+//   return {\n+//     type: types.ADVANCE_PATH,\n+//     statement\n+//   };\n+// };\n+\n+export default (path = [], action) => {\n+\t// change this to use statement not pro and index\n+  switch (action.type) {\n+    case types.ADVANCE_PATH:\n+      return [...path, ((action.pro ? \"pros\" : \"cons\") + action.index)]",
+        "path": "src/reducers/path-reducer.js",
+        "position": 7,
+        "original_position": 20,
+        "commit_id": "70e987dc9f1ce0d0be930d51252a5c602667ad2e",
+        "original_commit_id": "a717b6a335a80e7663bdcc20828777378baf6e81",
+        "user": {
+            "login": "SivanMehta",
+            "id": 6868877,
+            "node_id": "MDQ6VXNlcjY4Njg4Nzc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/6868877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SivanMehta",
+            "html_url": "https://github.com/SivanMehta",
+            "followers_url": "https://api.github.com/users/SivanMehta/followers",
+            "following_url": "https://api.github.com/users/SivanMehta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SivanMehta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SivanMehta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SivanMehta/subscriptions",
+            "organizations_url": "https://api.github.com/users/SivanMehta/orgs",
+            "repos_url": "https://api.github.com/users/SivanMehta/repos",
+            "events_url": "https://api.github.com/users/SivanMehta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SivanMehta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This is sweet.",
+        "created_at": "2017-04-04T22:47:40Z",
+        "updated_at": "2017-04-05T00:30:48Z",
+        "html_url": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796482",
+        "pull_request_url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796482"
+            },
+            "html": {
+                "href": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796482"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796687",
+        "pull_request_review_id": 30921706,
+        "id": 109796687,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDEwOTc5NjY4Nw==",
+        "diff_hunk": "@@ -0,0 +1,71 @@\n+import * as types from './action-types';\n+\n+export const updateTree = (tree) => {\n+  return {\n+    type: types.UPDATE_TREE,\n+    tree\n+  };\n+};\n+\n+export const regressPath = (amt) => {\n+  return {\n+    type: types.REGRESS_PATH,\n+    amt\n+  };\n+};\n+\n+export const advancePath = (pro, index) => {\n+  return {\n+    type: types.ADVANCE_PATH,\n+    pro,\n+    index\n+  };\n+};\n+\n+// export const setConfidence = (statement, confidence) => {",
+        "path": "src/actions/tree-actions.js",
+        "position": null,
+        "original_position": 25,
+        "commit_id": "70e987dc9f1ce0d0be930d51252a5c602667ad2e",
+        "original_commit_id": "a717b6a335a80e7663bdcc20828777378baf6e81",
+        "user": {
+            "login": "SivanMehta",
+            "id": 6868877,
+            "node_id": "MDQ6VXNlcjY4Njg4Nzc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/6868877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SivanMehta",
+            "html_url": "https://github.com/SivanMehta",
+            "followers_url": "https://api.github.com/users/SivanMehta/followers",
+            "following_url": "https://api.github.com/users/SivanMehta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SivanMehta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SivanMehta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SivanMehta/subscriptions",
+            "organizations_url": "https://api.github.com/users/SivanMehta/orgs",
+            "repos_url": "https://api.github.com/users/SivanMehta/repos",
+            "events_url": "https://api.github.com/users/SivanMehta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SivanMehta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Are, along with all the below comment functions, commented out because they're unneeded, or they simply don't work? From what I understand you're updating the **entire** tree every time a single piece of data is changed. Please correct me if I'm wrong.\r\n\r\nIf they're useless, please take them out.",
+        "created_at": "2017-04-04T22:49:00Z",
+        "updated_at": "2017-04-05T00:30:48Z",
+        "html_url": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796687",
+        "pull_request_url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796687"
+            },
+            "html": {
+                "href": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796687"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796732",
+        "pull_request_review_id": 30921706,
+        "id": 109796732,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDEwOTc5NjczMg==",
+        "diff_hunk": "@@ -0,0 +1,16 @@\n+export const UPDATE_TREE = 'UPDATE_TREE';\n+export const REGRESS_PATH = 'REGRESS_PATH';\n+export const ADVANCE_PATH = 'ADVANCE_PATH';\n+export const SET_CONFIDENCE = 'SET_CONFIDENCE';\n+export const SET_TITLE = 'SET_TITLE';\n+export const SET_DESCRIPTION = 'SET_DESCRIPTION';\n+export const SET_SOURCE = 'SET_SOURCE';\n+export const ADD_STATEMENT = 'ADD_STATEMENT';\n+export const REMOVE_STATEMENT = 'REMOVE_STATEMENT';\n+",
+        "path": "src/actions/action-types.js",
+        "position": null,
+        "original_position": 10,
+        "commit_id": "70e987dc9f1ce0d0be930d51252a5c602667ad2e",
+        "original_commit_id": "a717b6a335a80e7663bdcc20828777378baf6e81",
+        "user": {
+            "login": "SivanMehta",
+            "id": 6868877,
+            "node_id": "MDQ6VXNlcjY4Njg4Nzc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/6868877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SivanMehta",
+            "html_url": "https://github.com/SivanMehta",
+            "followers_url": "https://api.github.com/users/SivanMehta/followers",
+            "following_url": "https://api.github.com/users/SivanMehta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SivanMehta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SivanMehta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SivanMehta/subscriptions",
+            "organizations_url": "https://api.github.com/users/SivanMehta/orgs",
+            "repos_url": "https://api.github.com/users/SivanMehta/repos",
+            "events_url": "https://api.github.com/users/SivanMehta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SivanMehta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This is a lot of whitespace we don't need. Also, the only place any of these are used are in `src/actions/tree-actions.js`. From what I understand, this makes lines 4-16 unneeded,",
+        "created_at": "2017-04-04T22:49:16Z",
+        "updated_at": "2017-04-05T00:30:48Z",
+        "html_url": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796732",
+        "pull_request_url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109796732"
+            },
+            "html": {
+                "href": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109796732"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109799656",
+        "pull_request_review_id": 30925312,
+        "id": 109799656,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDEwOTc5OTY1Ng==",
+        "diff_hunk": "@@ -14,14 +14,18 @@\n     \"react-dom\": \"^15.4.2\",\n     \"react-edit-inline\": \"^1.0.8\",\n     \"react-flexbox-grid\": \"^1.0.2\",\n+    \"react-redux\": \"^5.0.3\",\n     \"react-router-dom\": \"^4.0.0\",\n     \"react-tap-event-plugin\": \"^2.0.1\",\n+    \"redux\": \"^3.6.0\",\n     \"style-loader\": \"^0.16.1\",\n     \"svg-react-loader\": \"^0.3.7\",\n     \"webpack\": \"^2.3.3\"",
+        "path": "package.json",
+        "position": 18,
+        "original_position": 10,
+        "commit_id": "70e987dc9f1ce0d0be930d51252a5c602667ad2e",
+        "original_commit_id": "a717b6a335a80e7663bdcc20828777378baf6e81",
+        "user": {
+            "login": "SivanMehta",
+            "id": 6868877,
+            "node_id": "MDQ6VXNlcjY4Njg4Nzc=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/6868877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SivanMehta",
+            "html_url": "https://github.com/SivanMehta",
+            "followers_url": "https://api.github.com/users/SivanMehta/followers",
+            "following_url": "https://api.github.com/users/SivanMehta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SivanMehta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SivanMehta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SivanMehta/subscriptions",
+            "organizations_url": "https://api.github.com/users/SivanMehta/orgs",
+            "repos_url": "https://api.github.com/users/SivanMehta/repos",
+            "events_url": "https://api.github.com/users/SivanMehta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SivanMehta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Can you also add `body-parser`?\r\n\r\n```\r\n$ npm start\r\nError: Cannot find module 'body-parser'\r\n    at Function.Module._resolveFilename (module.js:469:15)\r\n    at Function.Module._load (module.js:417:25)\r\n    at Module.require (module.js:497:17)\r\n    at require (internal/module.js:20:19)\r\n    at Object.<anonymous> (/Users/admin/Documents/Side Projects/treedoff/server/index.js:12:20)\r\n    at Module._compile (module.js:570:32)\r\n    at Object.Module._extensions..js (module.js:579:10)\r\n    at Module.load (module.js:487:32)\r\n    at tryModuleLoad (module.js:446:12)\r\n    at Function.Module._load (module.js:438:3)\r\n```",
+        "created_at": "2017-04-04T23:10:42Z",
+        "updated_at": "2017-04-05T00:30:48Z",
+        "html_url": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109799656",
+        "pull_request_url": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/comments/109799656"
+            },
+            "html": {
+                "href": "https://github.com/SivanMehta/treedoff/pull/20#discussion_r109799656"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/SivanMehta/treedoff/pulls/20"
+            }
+        }
+    }
+]

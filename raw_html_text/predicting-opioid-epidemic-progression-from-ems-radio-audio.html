@@ -1,0 +1,214 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="807475" data-title="Project Schematic: Audio is processed into OD incidence maps, which predict the epidemic progression. Phila.gov data is ideal training data." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/475/datas/original.png">
+                            <img alt="DeepPhilaOD -9B &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/475/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Project Schematic: Audio is processed into OD incidence maps, which predict the epidemic progression. Phila.gov data is ideal training data.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="807509" data-title="Testing DeepPhilaOD: 5 epochs, 150 steps per epoch (took about 6 minutes per epoch), default parameters yielded roughly 0 accuracy. " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/509/datas/original.png">
+                            <img alt="DeepPhilaOD -9B &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/509/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Testing DeepPhilaOD: 5 epochs, 150 steps per epoch (took about 6 minutes per epoch), default parameters yielded roughly 0 accuracy.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="807510" data-title="Sample prediction: raw output is an array of predicted overdose values that correlates with zip code regions." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/510/datas/original.png">
+                            <img alt="DeepPhilaOD -9B &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/510/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Sample prediction: raw output is an array of predicted overdose values that correlates with zip code regions.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    DeepPhilaOD - 9B
+                </h1>
+                <p>
+                    Predicting Opioid epidemic progression from EMS radio audio
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Philadelphia is one of many locations in the US that is affected by economic inequity. By July 2018, nearly 3 million low-income Pennsylvania residents were enrolled in Medicaid/ CHIP[1]. Community poverty has been shown to be a risk factor of drug addiction to which the opioid epidemic is linked [2]. A lot of publicly available data on opioid abuse is not updated on a live basis - usually, it&rsquo;s quarterly at best. We were hoping that by scanning unconventional channels of information, we could help to identify areas that currently are, and may be hotspot areas for opioid abuse in the future, which helps professionals work proactively in combating the environmental risk factors that contribute to opioid abuse.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This project models the opioid epidemic progression and predicts its progression through analysis of EMS radio audio, such as on police channels using Broadcastify, to identify incidents of opioid-related calls along with other attributes like location and time.  The proposed predictive model DeepPhilaOD is a deep convolutional neural network that generates predictions of overdoses for certain zip codes.  Prelimary training and testing has resulted in 99.99% accuracy, but only 5 zip code areas were analyzed.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We stuck with python as our language of choice for this project, and relied heavily on having broadcastify.com as a source of live police &amp; EMS radio, and wrote scripts for Google Cloud&rsquo;s various tools and services. The short version is: we record the jabber on Philadelphia&rsquo;s publicly available police &amp; EMS radios and turn it into text. Then, we parsed that text and visualized it on a map.
+                </p>
+                <p>
+                    The deep learning portion of this is based on the pre-trained model called Inceptionv3 by Google.  This pre-trained model has network weights from training on about 1.2 million images, validation on 50,000 images and testing on 100,000 images.  Because this base network is very deep, a considerable number of layers (dense, dropout, convolution, maxpooling,etc) were added for the implementation of transfer learning in Keras.  Preprocessing of the image data is necessary to convert it to channels-last input tensor.  Although the initial testing results yielded consistent 0% accuracy, with parameter tuning, the results indicate a very high accuracy above 99%.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    First, data.  It was difficult to get examples of police and EMS raw audio files. We found a site called broadcastify.com that hosted streams of police and emergency response scanners, but had to figure out how to capture the audio from the site into a format that we could feed to Google&rsquo;s Speech API. We were all relatively inexperienced, and none of us had worked with an API prior to this event, so there was a lot of documentation to read, errors to troubleshoot, and dependencies to install. After finally configuring our systems, we spent a lot of time slowly building up pieces of our project and were constantly wondering whether our idea was too ambitious for our skill level.  Later in the workflow, ideally, the transfer learning model would be trained on data that was used to generate the annual summary figures on Philadelphia's Department of Health, Health Information Portal.
+                </p>
+                <p>
+                    Another significant issue is that there were only 5 zip code regions considered in the training, testing, and evaluation.  It is fairly common to see 47 zip code regions on zip code maps, but there is a total of 87 total zip codes in Philadelphia.  The small number of regions targeted for generating predictions may have been a factor contributing to an artificial inflation of the testing result (nearly all at 100%).
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're all first time hackers and first time using API and image-related deep learning! Making something that actually functioned fairly close to our original vision was very exciting, and we were all proud of what we had created together.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Lots! A lot about API&rsquo;s, how challenging it was to produce something that would actually help others combat poverty and better utilize their resources, figuring out how to use brand-new tools in a relatively short amount of time.
+                </p>
+                <h2>
+                    What's next for DeepPhilaOD?
+                </h2>
+                <p>
+                    Although the skeleton of DeepPhilaOD has taken shape, the workflow has yet to be automated.  Future works include filtering the audio transcripts with an embedding network, such as the pre-trained word2vec, to determine whether the incidence is opioid overdose-related, whether each new dialogue is a new incident, and so on.  Another augmention could be developed for scraping additional attributes from other EMS data that would ideally improve the model's reliability and prediction.
+                </p>
+                <h3>
+                    References
+                </h3>
+                <p>
+                    [1]
+                    <a href="https://www.healthinsurance.org/pennsylvania-medicaid/" rel="nofollow">
+                        https://www.healthinsurance.org/pennsylvania-medicaid/
+                    </a>
+                    <br>
+                    [2]
+                    <a href="https://www.drugabuse.gov/publications/drugs-brains-behavior-science-addiction/drug-misuse-addiction" rel="nofollow">
+                        https://www.drugabuse.gov/publications/drugs-brains-behavior-science-addiction/drug-misuse-addiction
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            audio-streaming
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            deep-learning
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-compute-engine">
+                                google-compute-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-speech-to-text-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-storage">
+                                google-storage
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-vm-instances
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            transfer-learning
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/amt353/Codefest19_Opioid" rel="nofollow" target="_blank" title="https://github.com/amt353/Codefest19_Opioid">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

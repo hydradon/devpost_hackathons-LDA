@@ -1,0 +1,90 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/_hLNWmw8dBo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I wanted to build an engaging Alexa-skill game for young children that also exercises their minds. I believe that interacting with Alexa is much better for a child than sitting in silence looking at a computer screen by themselves, which is becoming more common in their everyday lives. Playing an Alexa-skill like Categories forces children to practice their listening, speaking, and critical thinking skills.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Categories is a classic odd-man-out game designed specifically for young children. Once a Categories game is started, Alexa will repeatedly give the user a list of four common words but one of them will not be associated with the other three. An example list of words would be [dog, cat, apply, bear]. Because 'dog', 'cat', and 'bear' are all mammals and 'apple' is a fruit, 'apple' would be the word that doesn't belong.
+                </p>
+                <p>
+                    Once Alexa gives the list of words, the user must reply with
+                    <code>
+                        the answer is {word}
+                    </code>
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    This is a typical Alexa-skill built through the Alexa developer's portal and a lambda function written in python. Once the skill is called and the game is started, the user enters a continuous session going back and forth with Alexa as she asks questions. In order to check answers and teach users categories that they are not familiar with, I save the question, answer, and category in the session (so the skill has a small amount of "memory" to it). In order to save the session, I store the session attributes inside a small dictionary which is passed back and forth between the lambda function and echo.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The biggest challenge I had was the corner case of the user saying a phrase that is not allowed in the game. When you set up an Alexa-skill, you must create 'Intents' for phrases that the user may say as the go through the game. If the user says an incoherent word or there is chatter in the background, Alexa defaults to a random Intent (for me it was the 'Start Game Intent'. To combat this problem, I made an 'Error Intent' which is programmed to expect incoherent/nonexistent words. After incorporating this intent, it seemed to become the default intent for bad user inputs and solved all of my corner cases.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm most proud of my random choosing algorithm for the list of words. First, I created a pickle in python of a dictionary containing all of the different categories and their corresponding words. This cut down on the time it takes to generate the list of words sent to the user. Secondly, I designed the choosing algorithm so that it is dynamic. The list of words sent to the user are not static or hard-coded. Instead, the function chooses a random main category (choosing 3 random words from that list) and then a random answer category (choosing 1 random word from that list). It then combines those words into another random list and sends those along to the user. The number of items in each category range from 3-10, so you can often see the same category but have different words from it.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I was already familiar with many AWS services before starting this project, so learning how to build an Alexa-skill was relatively easy and fun. One skill that I did not expect to learn was networking. Working in the Alexa development environment introduced me to networking, sockets, and server frameworks such as Flask. It is really cool technology and got me very interested in smart technology. This is the first Alexa skill that I ever created. I learned
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

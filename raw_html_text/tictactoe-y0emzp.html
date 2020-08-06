@@ -1,0 +1,211 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    It was a challenge from BroadbandTV and I though that developing even a simple game, is challenging.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Player plays TicTacToe against the computer. All responses are in JSON format.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    It was built using Laravel Framework, and as it was to be small and run as easily as possible, no database was used. All session/cache files are stored in files locally.
+                </p>
+                <p>
+                    As there was no indication if this project was to be Player X Computer or Player X Player, I ended up coding
+Player X Computer, as it is more challenging.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Calculate the computer's next move.
+                </p>
+                <h2>
+                    What's next for TicTacToe
+                </h2>
+                <ul>
+                    <li>
+                        Add support for multiplayer;
+                    </li>
+                    <li>
+                        Add support for Ultimate TicTacToe;
+                    </li>
+                    <li>
+                        Add PHP Unit tests.
+                    </li>
+                </ul>
+                <h2>
+                    Running TicTacToe
+                </h2>
+                <pre class="language-nolang"><code>unzip tictactoe.zip
+cd tictactoe
+php artisan serve --port=8000
+</code></pre>
+                <p>
+                    If using source from GitHub:
+                </p>
+                <pre class="language-nolang"><code>composer install
+php artisan serve --port=8000
+</code></pre>
+                <h2>
+                    Playing using curl
+                </h2>
+                <p>
+                    <strong>
+                        1) Start a new session:
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>curl http://localhost:8000/start
+</code></pre>
+                <p>
+                    If you want to choose a side (X or O, X is the default side), post data:
+                </p>
+                <pre class="language-nolang"><code>curl --data "side=O" http://localhost:8000/start
+</code></pre>
+                <p>
+                    The response will return the sessionId for that game instance.
+                </p>
+                <p>
+                    <strong>
+                        2) Choose a field and play:
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>curl --data "sessionId={SESSIONID}&amp;field={FIELD}" http://localhost:8000/play
+</code></pre>
+                <p>
+                    Example:
+                </p>
+                <pre class="language-nolang"><code>curl --data "sessionId=8e49a5350b188822ee466bb537696df4&amp;field=b3" http://localhost:8000/play
+</code></pre>
+                <p>
+                    <strong>
+                        3) You can forfeit:
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>curl --data "sessionId={SESSIONID}" http://localhost:8000/forfeit
+</code></pre>
+                <p>
+                    Example:
+                </p>
+                <pre class="language-nolang"><code>curl --data "sessionId=8e49a5350b188822ee466bb537696df4" http://localhost:8000/forfeit
+</code></pre>
+                <p>
+                    <strong>
+                        4) To check game status:
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>curl --data "sessionId={SESSIONID}" http://localhost:8000/status
+</code></pre>
+                <p>
+                    Example:
+                </p>
+                <pre class="language-nolang"><code>curl --data "sessionId=8e49a5350b188822ee466bb537696df4" http://localhost:8000/status
+</code></pre>
+                <p>
+                    <strong>
+                        5) Show help
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>curl http://localhost:8000/
+</code></pre>
+                <h2>
+                    Game information
+                </h2>
+                <p>
+                    The board was designed this way and accepts the following field names:
+                </p>
+                <pre class="language-nolang"><code>a1 | a2 | a3
+------------
+b1 | b2 | b3
+------------
+c1 | c2 | c3
+</code></pre>
+                <h2>
+                    Relevant files
+                </h2>
+                <ul>
+                    <li>
+                        app/Http/Controllers/SessionControler.php
+                    </li>
+                    <li>
+                        app/Http/Controllers/TicTacToeControler.php
+                    </li>
+                    <li>
+                        app/Http/Middleware/SessionValidator.php
+                    </li>
+                    <li>
+                        app/Http/routes.php
+                    </li>
+                    <li>
+                        app/Model/TicTacToeBoard.php
+                    </li>
+                    <li>
+                        app/Utils/TicTacToeUtils.php
+                    </li>
+                </ul>
+                <h2>
+                    Tools used
+                </h2>
+                <ul>
+                    <li>
+                        PHP 5.5.34
+                    </li>
+                    <li>
+                        Eclipse Mars 4.5.2
+                    </li>
+                    <li>
+                        curl 7.43.0
+                    </li>
+                    <li>
+                        composer 1.2-dev
+                    </li>
+                    <li>
+                        Mac OS X El Capitan 10.11.5
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/laravel">
+                                laravel
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/calvin-yeh/tictactoe-php" rel="nofollow" target="_blank" title="https://github.com/calvin-yeh/tictactoe-php">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

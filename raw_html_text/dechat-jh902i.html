@@ -1,0 +1,120 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    It all started after reading the white paper of how NuCypher implements Proxy-Re-Encryption. It seemed very natural to implement such encryption scheme to provide privacy in group chatting applications. The addition of shamir secret sharing allowed us to organically create a decentralized chatting application. We felt like this idea required NuCypher to guarantee that malicious servers would not have the power to spy on its client's conversations. This group chatting application would make it really easy for users to become part of the server network when the group chat is created. Since the information is shared using Threshold Secret Sharing, the users who participate in network have very high assurance that their messages are indeed safe, as they themselves would not collaborate with malicous servers who wish to accumulate shares. With the socket network built and server/client modules developers could quickly use our web chatting application as a basis for many new projects.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The network is split between Nodes and Clients, each of these work together to allow the clients to send and receive encrypted messages without trusting a server with the keys used to decrypt these ciphertexts. Other chatting applications rely on a server as a "Trusted" key manager. This server becomes a single point of failure, and if the server manager ever decides to become dishonest, the privacy of the entire system is compromised. Our network however would remain secure even if M-1 nodes decide to break the rules and try to trick the users. So the privacy of the communication in this group chatting application relies on trusting cryptographic protocols rather than trusting the honesty of a closed source server.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Each node in the network is in charge of maintaining a share on the M of N Shamir Secret Sharing protocol. Nodes are in charge of computing part of a secret, and send it to the corresponding client. Once a client gathers M of these shares, he can combine them to decrypt ciphertexts. Malicious nodes who wish to spy on their users have no information on the contents of the ciphertexts as they only have a single share of this secret which on its own is no different than a random bitstring . The honest nodes provide their shares to the clients, which means that clients will be able to gather the M necessary shares to eventually obtain the secret needed to decrypt the messages.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Nodes and Clients are constantly sending data to eachother. Each time the data is sent from one end to the other, it needs to be packaged correctly to make sure that the receiving end can use it. This process is known as the serialization and deserialization of data. As we are dealing with asymmetric cryptographic protocols, the data is often large and looks random. It is hard to find errors in the transmission of this data as most of the times we the data itself looks like random numbers and letters. This led to some challenges in debugging our project.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    As a team composed of only two members, we were able to code the group chatting application from scratch during the hackathon. We are proud of organizing and delegating the tasks within the project correctly. Initially we spent a couple of hours on the architecture of the project, which allowed us to not only have a working solution but also an elegant and readible codebase. Before this project we had never worked with sockets nor with the encryption protocol we used in the application. Learning these two topics and having a working application in less than 24 hours is a big accomplishment. Cheers for our first hackathon
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how Proxy-Re-Encryption works, how to work with sockets, and how to code a client server conversation application.
+                </p>
+                <h2>
+                    What's next for dechat
+                </h2>
+                <p>
+                    We will continue developing the application with the goal of
+                </p>
+                <ol>
+                    <li>
+                        Hiding metadata from the Nodes and Clients.
+                    </li>
+                    <li>
+                        Expand the codebase for the nodes to scale to larger number of nodes and clients in the network.
+                    </li>
+                    <li>
+                        Code a user interface, and tutorials on how to do a project similar to this one.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            crypto
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nucypher
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            p2p
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            proxy-re-encryption
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/tcp">
+                                tcp
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/osagga/proxyChat" rel="nofollow" target="_blank" title="https://github.com/osagga/proxyChat">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

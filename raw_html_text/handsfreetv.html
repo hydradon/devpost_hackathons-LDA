@@ -1,0 +1,176 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/1v2MmMLJ3HA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-gif-player="true" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/908/464/datas/original.gif">
+                            <img alt="HandsfreeTV &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/908/464/datas/gallery.jpg">
+                        </a>
+                        <span class="gif-tag">
+                            GIF
+                        </span>
+                        <a class="gif-play">
+                            <i class="fas fa-play">
+                            </i>
+                        </a>
+                        <p>
+                            <i>
+                                Hand + Gesture Tracking
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The digital mouse was a revolutionary inspiration of it's time. However, with advances in computer vision and voice recognition, we can now bring digital interfaces into a modern generation. Our project HandsFreeTV focuses on discovering new ways to control entertainment consumption without the need of tactile hardware.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    HandsfreeTV was created with the intent of giving everyone a hands-free experience while watching **entertainment. The target platform we chose for the scope of this hackathon was YouTube, as it is, widespread and readily available.
+                </p>
+                <p>
+                    We approached this idea by combining two previously disjoint user-interfaces, voice and gestures. Only together can these two modules provide users with a natural and comprehensive way to interact with today&rsquo;s digital entertainment. The packages we created are easily transferable to other systems such as smart home devices and other entertainment platforms.
+                </p>
+                <p>
+                    As of now, HandsfreeTV listens to users for YouTube videos to search for. HandsfreeTV also has a camera that processes signals to do various actions (such as play/pause, volume up/down, and more)!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    For the hand tracking, we used Google's open source MediaPipe project along with their Hand Landmark Model to create a pipeline to detect and track hands/fingers. To classify a hand pose as an action, we then created a dataset of over 15,000 images of different hand poses. Those images were fed into our own deep convolutional neural network built using Google's TensorFlow and trained on GCP&rsquo;s Compute Engine, creating a model that classifies hand poses as actions.
+                </p>
+                <p>
+                    For the voice tracking, we leveraged Google Cloud's Speech-to-Text service to perform speech transcription. We used a streaming technique so our application is continuously ready to accept and process user input.
+                </p>
+                <p>
+                    To control the YouTube browser programmatically, we used Selenium to simulate traditional input sources.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    A major issue we ran into was training our own gesture detection model. We ran into many errors with setting up a GPU instance and installing the necessary drivers and programs to leverage the compute power. In the end, we had to fall back to training our machine learning models on CPU instances, which was significantly slower. This resulted in us being unable to iteratively improve our model as much as we&rsquo;d have hoped for.
+                </p>
+                <p>
+                    Concurrency was another common issue. The hand-tracking software we used (MediaPipe) ran in its own process, thus we needed a way to send data from the tracking software to our main application. This, we were able to solve with a rudimentary hack by queueing up files to avoid read-write conflicts. In addition, we needed to asynchronously track the two main components for inputs, the gesture-recognition and voice-control. To solve this problem, we used a pub-sub architecture in a multi-threaded application.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are very proud of developing an end-to-end product that may very well be the future of user interfaces. As we are both rookie hackers, delivering a finished project is something we are very pleased with.
+                </p>
+                <p>
+                    In addition, we are proud of&hellip;
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We gained much technical knowledge in areas such as concurrency and computer vision. We also learned a lot in the process of training our custom CNN from scratch.
+In addition to hard skills, we learned a great deal about the necessary considerations and foresight needed to build a complete product.
+                </p>
+                <h2>
+                    What's next for HandsfreeTV
+                </h2>
+                <p>
+                    There is much to build on top of HandsfreeTV. Since there are still a few quirks in our hand detection model, that would be the first place to improve. Another early target for improvement is simply to improve the general robustness of HandsfreeTV. Going further, it would be amazing to test HandsfreeTV on platforms such as Netflix, Hulu and Disney+.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gesture-tracking
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-cloud-speech-to-text
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            hand-tracking
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/selenium">
+                                selenium
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/NickL77/HandsfreeTV" rel="nofollow" target="_blank" title="https://github.com/NickL77/HandsfreeTV">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

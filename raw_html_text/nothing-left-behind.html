@@ -1,0 +1,143 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/kMck1iOZYZc?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="657782" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/657/782/datas/original.jpg">
+                            <img alt="NoThing Left Behind &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/657/782/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="657784" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/657/784/datas/original.jpg">
+                            <img alt="NoThing Left Behind &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/657/784/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    &lsquo;Beep, beep, beep...&rsquo;. It&rsquo;s my alarm. I can&rsquo;t recall how many times I&rsquo;ve hit the snooze button. I know it&rsquo;s too early, but somehow I&rsquo;m still late! I try to wake my daughter to get her ready for school, but she just complains about it being too cold, and throws the covers over her head. The next 30 minutes are a blur; a cacophony of breakfasts being eaten, socks being found and bags being packed. Somehow we&rsquo;re out of the door and on our way to school.
+                </p>
+                <p>
+                    Unfortunately it&rsquo;s a bit of trek to my daughter&rsquo;s school, a 50 minute slog. We play I spy and number games to pass the time. I try to ignore the fact that I&rsquo;m going to be late for work&hellip; again. Then a small voice pipes up and says, &ldquo;Daddy - I think I&rsquo;ve left my lunch box at home&rdquo;. My heart sinks. We&rsquo;re 45 minutes away from home. There&rsquo;s no way we&rsquo;re turning back now. Another &lsquo;emergency lunch order&rsquo; to be purchased, the worst parent of the year award goes to me, for the second week in a row.
+                </p>
+                <p>
+                    It&rsquo;s always something, whether it&rsquo;s umbrellas, coats, book bags, lunch boxes - you name it, we&rsquo;ve left it. Now, thanks to Azure and Arduino, nothing is left behind. Nothing Left Behind is a context based object tracker; just throw a Thing into a lunchbox or the pocket of a coat and Azure will send out an alert if the Things don&rsquo;t leave together.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Each Thing is a battery powered Arduino MKR1000 hooked up to Azure IoT Hub. Azure IoT Hub manages device state and triggers Azure Functions whenever new telemetry is received. Azure Functions queries Azure CosmosDB and produces alerts (Twilio SMS messages) if Things drift apart.
+                </p>
+                <p>
+                    Why Azure? As each Thing is battery powered, reducing energy consumption is critical. By only powering up to check-in with Azure we can leave the heavy lifting of calculations and sending alerts to the power of the cloud. Moreover, as each Thing isn&rsquo;t always connected to the internet (it will spend most of its life in sleep mode) Azure IoT queues commands (like play a sound, or turn on the light) until the Thing checks-in again.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    <img alt="Nothing Left Behind Architecture" data-canonical-url="https://raw.githubusercontent.com/chriscoombs/nothing-left-behind/master/nlb_arch.png" src="https://res.cloudinary.com/devpost/image/fetch/s--xoXCsJiL--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/chriscoombs/nothing-left-behind/master/nlb_arch.png">
+                </p>
+                <p>
+                    Please head over to
+                    <a href="https://github.com/chriscoombs/nothing-left-behind" rel="nofollow">
+                        GitHub
+                    </a>
+                    for the project's source code and build instructions.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The first prototype used Wi-Fi signals to compare the position of each Thing. Unfortunately, even when stationary the Things would send different scan results. As a result, v1.1 uses a very simple set of rules for determining if a Thing has been left behind - i.e. is a Thing which belongs to a Thing family, still connected to Wi-Fi when the other Things from that family aren't? If yes, send an alert.
+                </p>
+                <h2>
+                    What's next for Nothing Left Behind
+                </h2>
+                <p>
+                    The current version of Nothing Left Behind depends on a Wi-Fi connection to communicate with Azure (so leaving something at school is still a problem). I've ordered a couple of Arduinos with SigFox onboard to test their location detection capabilities, which I hope will become v2.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure-iot-suite">
+                                azure-iot-suite
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/chriscoombs/nothing-left-behind" rel="nofollow" target="_blank" title="https://github.com/chriscoombs/nothing-left-behind">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,140 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/BID_o8kT_G8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="869042" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/869/042/datas/original.png">
+                            <img alt="Chat Plays Poker &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/869/042/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="869043" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/869/043/datas/original.png">
+                            <img alt="Chat Plays Poker &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/869/043/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    To bring the TwitchPlays experience to a live poker setting. Using the combined powers of the audience to pilot a POV seat in a quarantined cash game in RIU Live Studios. All players at the tables profits as well as any donations to the streamer during the stream will go to charity, ChatPlaysPoker's first episode resulted in $533 in winnings/donations which ChatPlays voted to give to the Make-A-Wish foundation. Episode 2 saw the extension battle against the biggest names in poker such as Chris Moneymaker and Joe Stapleton.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    A live_config console facing the streamer is used to trigger the specific situation that the twitch seat is facing in the poker game eg. Check or Bet/Call or Fold. The audience is then prompted to vote using the buttons appearing in the extension. The streamer then communicates via earpiece to a person sitting in twitch's seat on the action to take.
+                </p>
+                <p>
+                    The live_config page also displays a graph which is recommended to be displayed on screen via OBS to allow viewers on mobile to follow the voting. Custom Poll's can also be triggered and works as any other polling application does.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Created a React Node.js App With Sequelize backend hosted on heroku. Utilising twitch 'whispers' to send polls from the live_config to viewers.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Delay was a concern that I had when building the project. In test runs I noticed that on weaker connections, viewers were stating the poll's were appearing before the action reached them e.g. they had the option to "call or fold" before their opponent had bet. My solution for this was to utilise the
+                    <code>
+                        hlsLatencyBroadcaster
+                    </code>
+                    called from the
+                    <code>
+                        onContext
+                    </code>
+                    helper which told me how many seconds behind the live feed this viewer's stream was. When each viewer received a 'whisper' indicating a poll to be shown, I would add the hlsLatencyBroadcaster (capped at 8s to allow for shorter poll durations) as a delay before the poll appeared for the viewer.
+Webhooks from each individual viewer extension to listen for new polls was an initial solution I had planned, however this was seeming very inefficient and costly way of updating information if the stream was to ever 10k viewers. Twitch's inbuilt extension messaging system called 'whispers' proved a far cleaner solution as I will further describe below.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The integration with a chat bot which allowed mobile viewers to vote on the action. This used all of the same backend code and was a very simple implementation, chatbot support seemed incredibly detailed compared with extension support. While this increased interactivity and addressed the mobile exclusion issue that was the main complaint from episode 1, this did raise the concern that viewers could be voting twice, once in chat once via the extension. To add a level of security I began passing the JWT with each vote sent to the backend and verifying that the twitch username within had a maximum of one vote per poll regardless of chat/extension origin.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    'Whispers' between extension live_config and all viewers was a very valuable asset that twitch provides. This would have been more requests for the backend and possibly added extra server costs if the extension was to see a large increase in viewer count which we believed was likely. By using 'whispers', I was making one call to the backend from the live_config for updating the polls and gathering the poll results, then when it was time to display to the viewers which option won. I would send a 'whisper' to all (1.7k at peak) viewers with the results of the poll to result in an "audience says: Call" notification on screen. A massively more efficient system and has scaled well so far as 0 errors have been logged (in production) so far with large audiences.
+                </p>
+                <p>
+                    This was also my first experience with parsing information to fit the format for an updating react-chartjs graph. A simple and useful package.
+                </p>
+                <p>
+                    A more thorough customisation suite for onContext changes such as Sub Tier/hlsLatencyBroadcaster either on twitch's site or more likely in the devrig would be useful. This would help for testing things such as sub status on channels like mine which are non affilate.
+                </p>
+                <h2>
+                    What's next for Chat Plays Poker
+                </h2>
+                <p>
+                    Next additions will be vote weighting for sub tiers, the code is ready for that already as each vote has the property ```votePower: 1" currently. Other interactivity tweaks such as a voting streak etc. have been considered and will likely be implemented.
+                </p>
+                <p>
+                    A working title 'play like the pros' where we ask notable players or celebrities to play along at home as if they were any other viewer voting. Then we compare all viewers votes with the celebrities and see who had the highest % of same answers, rewarding the winner with RIU merchandise or a free sub.
+                </p>
+                <p>
+                    Three episodes down, RIU plans to put on more regular weekly shows with new poker formats and celebrities.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

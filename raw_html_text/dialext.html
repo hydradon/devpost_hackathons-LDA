@@ -1,0 +1,161 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    [Thank you everybody for the warm reception to our idea and for recognizing us with awards at our first hackathon!]
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We went into this hackathon without a solid idea for a project and were hoping for inspiration somewhere along the way. The live demo of Twilio's SMS messaging services at the opening ceremony seemed so seamless and so powerful, that we knew we wanted to use their API. 3 hours into the hackathon we came up with Dialext!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Dialext is a group texting interface which is meant to take down language barriers and to allow people to communicate with each other by translating all incoming texts to each user's preferred language!
+                </p>
+                <p>
+                    One of the many reasons Dialext is a great product is its consideration of its users' needs! While many people have unlimited texting these days, unlimited data is still nowhere near as common. There are also many places which have too poor of a signal for good data connections but a good enough signal for SMS. Since Dialext is completely SMS-based (from the user's perspective), it eliminates the need for data, which is required for many other web-based or app-based translation and chatting applications! Another bonus is the convenience - not only does Dialext provide a chatting space for you and your friends, but it automatically does all the translations behind the scenes without the user having to copy/paste the texts from their friends into 3rd party translators!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The program was built in
+                    <strong>
+                        Visual Studio 2017
+                    </strong>
+                    using
+                    <strong>
+                        C# .NET
+                    </strong>
+                    . We used
+                    <strong>
+                        Twilio's REST API
+                    </strong>
+                    for sending and receiving SMS messages,
+                    <strong>
+                        Microsoft's Azure Cognitive Services - Translator Text API
+                    </strong>
+                    for translating the individual texts between languages, and
+                    <strong>
+                        ngrok
+                    </strong>
+                    to allow our receiver program to be called by Twilio over the internet.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    <strong>
+                        Twilio Timeout:
+                    </strong>
+                </p>
+                <p>
+                    To make this project run, I have two C# .NET applications running simultaneously, but that was not always the case. Initially there was only one C# .NET project, and it was in charge of receiving the incoming SMS messages, decoding the textmessages/phone numbers/ other useful info, checking whether the user was a new or returning user, storing and retrieving user information to/from databases, translating the texts, and sending out the relevant messages to each user based on sender/sendee status, user/admin level, and preferred language. What I didn't know at first was that the Twilio API had a wait time of 15 seconds for a reply before timing out and assuming something was wrong with my server/application and abandoning the SMS request in favor of an error message.
+                </p>
+                <p>
+                    I couldn't find a way to increase the timeout time, so I had to find ways to make a swifter response. Most of the time seemed to come from opening, searching through, and closing the Access databases which stored the currently-active users' phone numbers and preferred languages. I decided to split the project into two.
+                </p>
+                <p>
+                    The first project would get the SMS message, send the phone number and SMS body (message) into a quick .txt file, and respond with null to Twilio, avoiding the timeout problem. This is the receive program.
+                </p>
+                <p>
+                    The second project would read each .txt file placed in its reserved directory by the first receive program. This second program would take note of the sender's phone number and message, check for exit codes (if the user is trying to leave the chat) and respond accordingly, report any major changes/errors to the admin, and, of course, translate and send out the messages to each individual user.
+                </p>
+                <p>
+                    <strong>
+                        Access Databases
+                    </strong>
+                </p>
+                <p>
+                    Initially we were using Access Databases (.accdb) to store the information from each user, but we had trouble with the "Microsoft.ACE.OLEDB.12.0" provider which seemed to be on my PC but not recognized by my Visual Studio project - after trying to resolve this problem for about an hour, I prioritized finishing the rest of the project, and simply used .txt files instead.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    This is our first hackathon and we made a functional project!!!! While I've worked with C# before and am familiar with Visual Studio, I've never used Twilio SMS or Azure Translator APIs before, so there was definitely a lot that I learned from this project!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    The obvious answers are that we learned the Twilio SMS and Azure Translator APIs, but we also learned how to trouble-shoot, make decisions, and adapt quickly to changing conditions/project specifications. Finally, we learned that if we come upon an error/ problem/ question on the software we're building, odds are that somebody before us has thought the exact same thing - Google and StackOverflow are your best friends in these scenarios.
+                </p>
+                <h2>
+                    What's next for Dialext
+                </h2>
+                <p>
+                    A static web page for hosting the Twilio response instructions, for explaining Dialext's purpose, and for letting people sign up their phone numbers online? Support for more languages than the current 6 (English, French, German, Portuguese, Russian, Spanish)? Support for multiple group chats and for private group chats? Less hard coding/repetition and more security? There are lots of ways to improve this project!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/net">
+                                .net
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            azure-cognitive-services-translator
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/caffeine">
+                                caffeine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            love-&lt;3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/AnaChapko/RevolutionUC_2019_Dialext" rel="nofollow" target="_blank" title="https://github.com/AnaChapko/RevolutionUC_2019_Dialext">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

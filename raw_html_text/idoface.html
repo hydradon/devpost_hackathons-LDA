@@ -1,0 +1,126 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="372668" data-title="homepage" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/372/668/datas/original.png">
+                            <img alt="Idoface &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/372/668/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                homepage
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="372669" data-title="about us" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/372/669/datas/original.png">
+                            <img alt="Idoface &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/372/669/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                about us
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="372683" data-title="mainpage" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/372/683/datas/original.png">
+                            <img alt="Idoface &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/372/683/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                mainpage
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    背景
+                </h2>
+                <p>
+                    &ldquo;追剧&rdquo;成为追星的一种新日常，而网络连续剧、综艺真人秀、歌曲MV等在线或本地的音视频资源又使得追剧变得更加便捷。然而，大量的、长时间的节目却成为了信息爆炸的一种新形式：一个真实的案例是，身边的鹿晗粉丝为了一睹偶像风采，需要观看数十个小时的&ldquo;跑男&rdquo;节目；而其中真正令她心驰神往的有鹿晗的瞬间，加起来不过数十分钟而已。
+而随着技术的飞速发展，从视频中识别出人像已经成为可能。我们从上述的追剧小需求出发，提出本次Idoface项目，使用商汤科技提供的face detection技术，视图为娱乐视频提供一种新的观赏或重温方式。同时我们相信，这种对视频的处理在其他领域（如刑侦）同样将具有巨大潜力。
+                </p>
+                <h2>
+                    目的
+                </h2>
+                <p>
+                    Idoface为Idol face的简称，项目初衷是在视频中找到用户关注的idol出现的时间点，用简单的方式呈现在视频进度条上，以方便用户直接观看自己最关注的部分。
+项目主界面为视频播放界面，包括播放器板块、人物筛选板块和截图一览板块。除视频播放界面，项目还完善了homepage与团队信息页面。
+                </p>
+                <h2>
+                    技术简述
+                </h2>
+                <p>
+                    1、按照一定频率获取视频截图，通过接口face/detection上传到服务器进行分析得到face_id的集合，得到所有的face_id；
+2、将所有face_id依次加入faceset，在加入时通过face/search找出set中与当前face最接近的k个face，如果得到相似度最差的face置信度小于阈值，则认为set中当前face所属的人的脸的数量还没有达到k，判定可以将face加入set，否则不加入，以此保证set中同一人的脸的数量在k以内；
+3、将face_set里的人脸分类，新建person保存同一人的face_id。具体方法是依次枚举face，使用face/verification比对set中剩余face，若判定为同一人则加入当前face所属的person集合中；
+4、枚举所有face，判定与每个person的相似度，进行分类，获得每个person在视频中出现的所有face_id；
+5、利用face_id计算获取person在视频中出现的所有时间点，用于前端显示。
+                </p>
+                <h2>
+                    其他前景
+                </h2>
+                <p>
+                    我们认为，抛开从娱乐性的出发点，从视频中识别出出现过的面孔并反馈到视频播放器上的技术本身就具有极大使用价值。例如，当前有大量警力被投入到监控视频的筛查中，而利用本项目成果，视频筛查的消耗将极大缩小。因此，我们相信本项目由较为广阔的应用前景。
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sensetime
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

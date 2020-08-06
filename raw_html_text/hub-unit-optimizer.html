@@ -1,0 +1,184 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="891978" data-title="These all Boston University HUB courses required to graduate 26 in total." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/891/978/datas/original.png">
+                            <img alt="HUB UNIT OPTIMIZER &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/891/978/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                These all Boston University HUB courses required to graduate 26 in total.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="891981" data-title="We designed our HUB optimizer for students in Questrom School of Business at BU. However can be adaptable for all majors at BU." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/891/981/datas/original.png">
+                            <img alt="HUB UNIT OPTIMIZER &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/891/981/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                We designed our HUB optimizer for students in Questrom School of Business at BU. However can be adaptable for all majors at BU.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration.
+                </h2>
+                <p>
+                    Boston University in 2018 implemented a new general education requirement where all students must fulfill 26 HUB units to graduate. HUB units include Philosophy, Quantitative Reasoning, Individual in a community, teamwork, and collaboration..etc (see picture).
+                </p>
+                <p>
+                    With the new HUB system, the courses in your major already have some of the HUB units fulfilled. For example, Business students have 17 units fulfilled by their major courses, and still, need to take 9 HUB units outside of their major.
+                </p>
+                <p>
+                    Each course at Boston University has either 3 HUB units, 2 HUB units, or 1 HUB unit.
+                </p>
+                <p>
+                    Right now students have to manually check every gen-ed course to find the best combination of courses that give them the most amount of HUB units. This process takes a long time to manually check every course and also can make it difficult for students to graduate in time if they do not find the right combination of gen-ed courses with the right HUB units.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The goal of our program/application automatically finds the optimal combinations of courses (the least amount of courses) that will give all the HUB units needed for a major to graduate.
+                </p>
+                <p>
+                    For example, with a business student that needs 9 HUB units, they could take anywhere between 3 courses (each course has exactly the 3 units needed) and 9 courses (each course has only one unit you need).
+                </p>
+                <p>
+                    Using the Business student who needs 9 HUB units example, our program/application will check if 3 courses is possible then if it is, it will give the classes to the student, then if 3 courses is not possible it the program will go to 4 courses...etc, until the optimal (least amount) of courses is found the fulfills all the HUB units and provide it to the student.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    First, we used web scraping using the python package called BeautifulSoup from
+                    <a href="https://www.bu.edu/hub/hub-courses/philosophical-aesthetic-and-historical-interpretation/" rel="nofollow">
+                        https://www.bu.edu/hub/hub-courses/philosophical-aesthetic-and-historical-interpretation/
+                    </a>
+                    . Which would take put the HUB unit into a python dictionary.
+                </p>
+                <p>
+                    For example: 'Teamwork / Collaboration': ['CAS AA 313', 'CAS AA 517', 'CAS AH 325' .......etc for hundreds of courses], 'Historical Consciousness': ['CAS AA 207', 'CAS AH 325'....etc] 
+....then it would do this for all 26 units and all courses associated with the HUB unit.
+                </p>
+                <p>
+                    If a course has two HUB units, then it will show up as a duplicate in the associated list of the HUB unit. For example, CAS AH 325 is a duplicate in Teamwork / Collaboration and Historical Consciousness so it gives both those units.
+                </p>
+                <p>
+                    Next, we would use this new python dictionary with all the HUB units and the associated courses and put created the lists of combinations that are needed HUB units which actually have a course associated with the combination. There are two HUB unit combinations and three-unit combinations. There are total possible of 9C3 (9 HUB units, in groups of 3 HUB) = 86 total possible groupings. But not all of 86 may actually have an existing course. Then for 9C2 (9 HUB units, in groups of 2 HUB) = 36 total possible groupings. But not all 36 have an existing course.
+                </p>
+                <p>
+                    Once the python application is complete, it will show ['Teamwork', 'Historical', 'Philosophy']: [the list of all classes that this combination], and do this for all existing HUB combinations needed for groupings of 3. Then do the same for groupings of 2 ['Teamwork', 'History'] = [the list of all classes that have this combination']
+                </p>
+                <p>
+                    Next is the optimization part of the program -- we did not get to this part. But the end result would look like:
+Major (enter) = Business Administration
+Total HUB units required = 26
+HUB units fulfilled by major (based on major) = 17
+HUB units needed to take outside of major (26-17) = 9
+The minimum number of classes you can take to fulfill the HUB units outside major (what program will do)= 4
+The combination of courses to fulfill (example) = 
+1) [Philsophy, History, Aestetic] 3-unit combo 
+2) [Writing Intensive, Global] 2-unit combo
+3) [Science Inquiry I, Social Inquiry II] 2-unit combo
+4) [Individual in community, Critical thinking] 2-course combo
+                </p>
+                <p>
+                    Then you can click the combination and it will show the classes in the combinations. For example:
+[Philsopy, History, Aestetic] = (CS111, FE101...etc)
+                </p>
+                <p>
+                    This will courses registration for courses with the HUB fast and seamless.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ol>
+                    <li>
+                        How to get the data of the classes with HUB (solved with web scraping)
+                    </li>
+                    <li>
+                        How to create the two and three combo HUB groups in python with associated courses (solved)
+                    </li>
+                    <li>
+                        Optimization (not yet solved)
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Our team is all extremely new to programming (and our very first hackathon) and we were super proud of all learning how to do Web Scraping with BeautifulSoup on Python. Then put the scraped web data into a python dictionary. Then creating a problem involving statistics that would create lists of the 3-combo and 2-combo hub classes. In the beginning, we thought this task was impossible we were able to make significant progress, we hope to continue to finish after the hackathon.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned how to approach a problem and solve it in steps (first hackathon for all of us)
+Web scraping
+Teamwork
+Github/devpost (new to us)
+                </p>
+                <h2>
+                    What's next for HUB UNIT OPTIMIZER
+                </h2>
+                <p>
+                    To work closely with the Questrom IT department and BU Build Lab to finish the application and launch it with course advising for students and the academic advisors.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/beautiful-soup">
+                                beautiful-soup
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/wilogao/HUB" rel="nofollow" target="_blank" title="https://github.com/wilogao/HUB">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

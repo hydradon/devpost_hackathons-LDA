@@ -1,0 +1,297 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Yellow Friday Pandas
+                </h1>
+                <h2>
+                    Getting Started
+                </h2>
+                <p>
+                    Boilerplate:
+                    <a href="https://github.com/sindresorhus/electron-boilerplate" rel="nofollow">
+                        https://github.com/sindresorhus/electron-boilerplate
+                    </a>
+                </p>
+                <ol>
+                    <li>
+                        Have WebStorm,
+                        <a href="https://nodejs.org/en/download/" rel="nofollow">
+                            Node.JS
+                        </a>
+                    </li>
+                    <li>
+                        Open WebStorm, and
+                        <code>
+                            git clone
+                        </code>
+                        this project.
+                    </li>
+                    <li>
+                        In the root directory of this project, run the node package manager to install any dependencies listed in the
+                        <code>
+                            package.json
+                        </code>
+                        .
+                        <code>
+                            npm install
+                        </code>
+                    </li>
+                    <li>
+                        Run the program by running the Electron command.
+                        <code>
+                            electron .
+                        </code>
+                        ## Technologies Used
+### Electron
+#### Setup
+                    </li>
+                    <li>
+                        npm:
+                        <a href="https://www.npmjs.com/" rel="nofollow">
+                            https://www.npmjs.com/
+                        </a>
+                    </li>
+                    <li>
+                        npm install -g electron --save-dev
+                    </li>
+                </ol>
+                <h4>
+                    Quick Start
+                </h4>
+                <ul>
+                    <li>
+                        Main Process
+                        <ul>
+                            <li>
+                                package.json's main --&gt; the main process
+                            </li>
+                            <li>
+                                script that runs in main proccess can display GUI via web pages
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            Renderer Process
+                        </p>
+                        <ul>
+                            <li>
+                                uses chromium
+                            </li>
+                            <li>
+                                each web page in Electron runs in its own process (the renderer process)
+                            </li>
+                            <li>
+                                use Node.js APIs in web pages to interact with OS
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            Main vs. Renderer Processes
+                        </p>
+                        <ul>
+                            <li>
+                                Main process creates pages by creating
+                                <code>
+                                    BrowserWindow
+                                </code>
+                                instances
+                                <ul>
+                                    <li>
+                                        each
+                                        <code>
+                                            BrowserWindow
+                                        </code>
+                                        instance runs web page in its own renderer process
+                                    </li>
+                                    <li>
+                                        When
+                                        <code>
+                                            BrowserWindow
+                                        </code>
+                                        instance destroyed, renderer process also terminated
+                                    </li>
+                                    <li>
+                                        main process manages all web pages + corresponding renderer processes
+                                    </li>
+                                    <li>
+                                        render processes only care about page its running on
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                GUI related APIs in web pages not allowed (leak resources)
+                                <ul>
+                                    <li>
+                                        GUI operations on web page performed by renderer process communicating with main process
+                                    </li>
+                                    <li>
+                                        renderer process requests main process performs desired action
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Communication between main process and renderer processes
+                                <ul>
+                                    <li>
+                                        <code>
+                                            ipcRenderer
+                                        </code>
+                                        and
+                                        <code>
+                                            ipcMain
+                                        </code>
+                                        (inter-process communication) modules for sending messages
+                                    </li>
+                                    <li>
+                                        remote module for RPC (?) style communication
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h4>
+                    Write your First Electron App
+                </h4>
+                <ul>
+                    <li>
+                        Structure
+your-app/
+├── package.json
+├── main.js
+└── index.html
+                        <ul>
+                            <li>
+                                package.json format exactly same as Node's modules
+                                <ul>
+                                    <li>
+                                        if main field is not present in package.json, attempts to load index.js
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                script in main field -&gt; startup script of app runs main process
+                                <ul>
+                                    <li>
+                                        main.js creates windows and handle system events
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                index.js is the web page to be showed
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        keep a global reference of window obj, otherwise window will be closed when js garbage collected
+                    </li>
+                </ul>
+                <h2>
+                    Reference
+                </h2>
+                <ul>
+                    <li>
+                        <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API" rel="nofollow">
+                            https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://processingjs.org/" rel="nofollow">
+                            http://processingjs.org/
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/karan" rel="nofollow">
+                            https://github.com/karan
+                        </a>
+                        <ul>
+                            <li>
+                                Search for "brain" or "sound" or something
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="http://sonic-pi.net/" rel="nofollow">
+                            http://sonic-pi.net/
+                        </a>
+                    </li>
+                    <li>
+                        Boilerplate
+                        <ul>
+                            <li>
+                                <a href="https://github.com/mxstbr/react-boilerplate/issues/889" rel="nofollow">
+                                    https://github.com/mxstbr/react-boilerplate/issues/889
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://stackoverflow.com/questions/5377960/whats-the-best-practice-to-git-clone-into-an-existing-folder" rel="nofollow">
+                                    http://stackoverflow.com/questions/5377960/whats-the-best-practice-to-git-clone-into-an-existing-folder
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            electron
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            p5.js
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/andrewtran1995/yellow-friday-pandas/tree/data_visualization" rel="nofollow" target="_blank" title="https://github.com/andrewtran1995/yellow-friday-pandas/tree/data_visualization">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

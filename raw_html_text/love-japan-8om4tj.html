@@ -1,0 +1,238 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/Bbs6SAR7gyg?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    &lt;&lt;&lt; LoveJapan &gt;&gt;&gt;
+                </h1>
+                <h3>
+                    アプリを作るきっかけとなったモチベーション
+                </h3>
+                <pre class="language-nolang"><code>・世界に誇れる日本の食文化を気軽に楽しめる外国人を増やしたい
+・食文化を通じて、日本の良さをもっと知ってほしい
+・日本を好きになってもらい、リピーターになってもらいたい
+</code></pre>
+                <h3>
+                    外国人が日本でお店を探すときに遭遇する悩み
+                </h3>
+                <pre class="language-nolang"><code>1) 日本語が読めない
+2) 食べたい物の名前を思い出せない
+3) そもそも日本が初めてなので、どんな食べ物があるのか知らない
+</code></pre>
+                <h3>
+                    でも
+                    <strong>
+                        大丈夫
+                    </strong>
+                    です、
+                    <strong>
+                        LoveJapan
+                    </strong>
+                    があればね！
+                </h3>
+                <pre class="language-nolang"><code>1) 写真から食べ物を特定してくれる
+2) 食べたい物を表現する文から食べ物を特定してくれる
+3) 日本が初めての人には食べ物の種類をリスト表示してくれる
+</code></pre>
+                <h3>
+                    ケース別利用イメージ
+                </h3>
+                <pre class="language-nolang"><code>[CASE1] 日本語が読めない、保存していた写真や街で見かけた食べ物の写真に撮ってお店を検索したい外国人
+        (1) スマフォに保存しておいた写真をアプリにアップロードします (食べ物のジャンルが決まります)
+  (2)「Tell me your place」というメッセージが返ってくるので、LINEの位置情報送信機能を使って、現在地もしくは検索したい場所の情報(GPS情報)を送信します
+  (3) 検索で見つかったお店が表示されるので、URLをクリックして詳細な情報を確認し、行きたいお店を決定します
+
+[CASE2] 以前から日本食に興味があり、どんな食べ物があるかは知っているが、その食べ物の種別が思い出しない外国人
+(1) 思い浮かんだキーワード(YAKINIKU)や日本食を表す表現で質問してみます
+(2) 『CASE1』の(2)(3)と同様の手順
+
+[CASE3] 日本が初めてなのでどんな食べ物があるのかを知らない外国人
+(1) 「日本に来るのが初めてです」「こんにちは」「Hi Einstein」等を入れると、検索できる食べ物のジャンルが表示されるので、ジャンル(Sushi, Tempura, Yakiniku, Ramen)を選択します
+(2) 『CASE1』の(2)(3)と同様の手順
+※入力文字をジャンル特定だけではなく、センチメントの判定にも利用しています。negativeと判定された場合、応答文字を変化させています。
+negative以外 --&gt; 「どれがお好みですか？」 
+negativeの場合 --&gt; 「私に任せてください、どれがお好みですか？」
+</code></pre>
+                <h3>
+                    アプリの機能と制限
+                </h3>
+                <pre class="language-nolang"><code>[機能]
+・利用者が入力した発話内容から、食べ物のジャンルを特定する機能 --&gt; Einstein Intent
+・利用者が送信した写真から、食べ物のジャンルを特定する機能 --&gt; Einstein Vision
+・利用者が入力した内容から、センチメントを特定する機能 --&gt; Einstein Sentiment
+・利用者が文字を入力する機能 --&gt; LINE UI
+・利用者が写真を取得/送信する機能 --&gt; LINE UI
+・位置情報を送信する機能 --&gt; LINE UI
+・レストラン検索機能 --&gt; ぐるなびレストランAPI
+[制限]
+・特定できるジャンルは、寿司、天ぷら、焼き肉、ラーメンの4つに限定されています
+・利用者が入力した発話内容によっては、正しくジャンルを特定できない可能性があります
+(Intent学習量が少ないため)
+・レストラン検索には、特定されたジャンルと位置情報(緯度経度)のみを使用しています
+</code></pre>
+                <h3>
+                    アプリ開発環境
+                </h3>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                サーバ環境
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                サーバ・プラットフォーム
+                            </td>
+                            <td>
+                                Heroku
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                画像認識API
+                            </td>
+                            <td>
+                                Einstein Image Classifier
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                意図判別API
+                            </td>
+                            <td>
+                                Einstein Intent
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                センチメントAPI
+                            </td>
+                            <td>
+                                Einstein Sentiment
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                レストランAPI
+                            </td>
+                            <td>
+                                ぐるなびレストランAPI
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                UI
+                            </td>
+                            <td>
+                                LINE
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                SDK
+                            </td>
+                            <td>
+                                line-bot-sdk-node.js
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>
+                    データ
+                </h3>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                種別
+                            </th>
+                            <th>
+                                提供者
+                            </th>
+                            <th>
+                                利用API
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                食べ物画像
+                            </td>
+                            <td>
+                                pythonスクリプトでクロールして取得
+                            </td>
+                            <td>
+                                Einstein Image Classififer
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                食べ物判定用データ
+                            </td>
+                            <td>
+                                独自に作成
+                            </td>
+                            <td>
+                                Einstein Intent
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>
+                    アプリ作成を通じて学んだこと
+                </h3>
+                <pre class="language-nolang"><code>・Einstein APIは仕様が全て公開されていて、かつ、ドキュメントが整備されているので、特別なガイドがなくても一般的なWeb Applicationの知識が簡単に利用可能である
+・HerokuがGitとシームレスに統合されているのでGITコマンドだけでデプロイとソースコード管理ができるのは便利
+・Einstein Sentimentが非常に気軽に使えるので、効果的な利用方法を考えてみたい
+・Einstein Object Detectionを活用する上で便利なツールが提供されていることがわかったので看板に写っている複数の食べ物から、どんなジャンルのお店なのかを判定させる等に利用できそうだ 
+</code></pre>
+                <h3>
+                    このアプリ発展的応用案
+                </h3>
+                <pre class="language-nolang"><code>1) 街の風景を写真に取ると、看板に描かれている写真からそのお店で提供してくれる日本食を教えてくれる
+                (Object Detection)
+2) 本格的なチャットでユーザの好みに応じたレコメンドをしてくれる
+(intents,sentimentの高度化)
+3) 地図アプリと連携して、見つけたお店までの道順を教えてくれる
+(Google Map等)
+4) Einstein以外のAI系APIと連携してさらに高度な人工知能系アプリケーションに発展させられる
+</code></pre>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://lovejapan.herokuapp.com/downloaded/QRCode.png" rel="nofollow" target="_blank" title="https://lovejapan.herokuapp.com/downloaded/QRCode.png">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                lovejapan.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

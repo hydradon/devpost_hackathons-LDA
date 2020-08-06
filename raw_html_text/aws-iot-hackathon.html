@@ -1,0 +1,274 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/rxURwf7VXik?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="569559" data-title="AWS IoT &amp; Kinesis data flow" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/559/datas/original.png">
+                            <img alt="MediSense &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/559/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                AWS IoT &amp; Kinesis data flow
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="569627" data-title="Hardware Design and Implementation" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/627/datas/original.png">
+                            <img alt="MediSense &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/627/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Hardware Design and Implementation
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    MediSense
+                </h1>
+                <p>
+                    MediSense is a Software/Hardware hybrid, that aims to make medical research highly affordable and available to anyone.
+                </p>
+                <p>
+                    Repo to house the information relating to my teams implementation for the
+                    <a href="https://awsiot.devpost.com" rel="nofollow">
+                        AWS IoT App Hackathon
+                    </a>
+                </p>
+                <h2>
+                    Setup Guide
+                </h2>
+                <h3>
+                    ESP32 / ESP8266
+                </h3>
+                <h4>
+                    Schematic
+                </h4>
+                <p>
+                    <img alt="images/esp32-design.png" data-canonical-url="https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/esp32-design.png" src="https://res.cloudinary.com/devpost/image/fetch/s--n7MB9CL3--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/esp32-design.png">
+                </p>
+                <h4>
+                    Flashing
+                </h4>
+                <p>
+                    Our design utilizes a ESP32 or ESP8266 microcontroller. The code we used to flash our board can be found in the
+                    <a href="https://github.com/t04glovern/esp32-mqtt-publish" rel="nofollow">
+                        t04glovern/esp32-mqtt-publish
+                    </a>
+                    repository.
+                </p>
+                <p>
+                    More indepth instructures can be found in that projects README, however the outcome from flashing that code to your board will be a stream of data similar to the following (depending on your personal configuration).
+                </p>
+                <pre class="language-bash"><code>ntp [Connected]
+aws [Connected]
+aws-sub [Connected]
+accl [Connected]
+aws-pub [Success]: {"thing_id":"thing-01","timestamp":1510856411,"accl_x":-0.857124,"accl_y":3.351882,"accl_z":15.05474,"accl_mag":15.44717,"accl_fft":[1.479036,0.612483,0.850653,0.894927,0.906535,0.942905]}
+aws-pub [Success]: {"thing_id":"thing-01","timestamp":1510856412,"accl_x":0.684742,"accl_y":2.169147,"accl_z":16.08904,"accl_mag":16.24903,"accl_fft":[0.699518,0.672761,0.895605,0.908498,0.956246,0.956738]}
+aws-pub [Success]: {"thing_id":"thing-01","timestamp":1510856413,"accl_x":-1.120486,"accl_y":0.445322,"accl_z":13.00051,"accl_mag":13.05631,"accl_fft":[2.676121,0.61359,0.800661,0.848166,0.870695,0.904833]}
+aws-pub [Success]: {"thing_id":"thing-01","timestamp":1510856415,"accl_x":-0.263362,"accl_y":-0.138864,"accl_z":13.2543,"accl_mag":13.25764,"accl_fft":[0.40734,0.631146,0.803048,0.868581,0.884759,0.895562]}
+</code></pre>
+                <p>
+                    The JSON playload being printed to serial is the payload sent to AWS IoT over its MQTT provider.
+                </p>
+                <h3>
+                    NodeRed
+                </h3>
+                <h4>
+                    Flow
+                </h4>
+                <p>
+                    The Flow file for this configuration can be found in
+                    <a href="misc/AWS-SpasmTracker" rel="nofollow">
+                        misc/AWS-SpasmTracker
+                    </a>
+                </p>
+                <p>
+                    <img alt="images/node-red-flow.png" data-canonical-url="https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/node-red-flow.png" src="https://res.cloudinary.com/devpost/image/fetch/s--vYc_6rbR--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/node-red-flow.png">
+                </p>
+                <h4>
+                    Dashboard
+                </h4>
+                <p>
+                    <img alt="images/node-red-dashboard.png" data-canonical-url="https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/node-red-dashboard.png" src="https://res.cloudinary.com/devpost/image/fetch/s--WkpknoYF--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/node-red-dashboard.png">
+                </p>
+                <h2>
+                    Alerts
+                </h2>
+                <p>
+                    Given how it's very difficult to determine whether a seizure is occurring by picking a threshold value in the time domain, we chose to use a Discrete Fourier Transform to analyse the signal in the frequency domain, focusing on the most likely human oscillations, the 1Hz to 8Hz region.
+                </p>
+                <p>
+                    <img alt="images/Wrist_Normal_With_Shaking.gif" data-canonical-url="https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/Wrist_Normal_With_Shaking.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--khl8NLnQ--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/Wrist_Normal_With_Shaking.gif">
+                </p>
+                <h2>
+                    Security
+                </h2>
+                <p>
+                    Using Amazon services to stream data from the devices ensures that confidential data is kept secure through its certificate based encryption, while
+                    <a href="https://aws.amazon.com/compliance/hipaa-compliance/" rel="nofollow">
+                        AWS HIPPA complaint cloud storage
+                    </a>
+                    means that patient data can be stored in secure scalable storage, with these two factors facilitating an easier path to HIPPA compliance.
+                </p>
+                <h2>
+                    Future Work
+                </h2>
+                <p>
+                    There are three real areas for future work.
+                </p>
+                <ul>
+                    <li>
+                        Size
+                    </li>
+                    <li>
+                        Power Consumption
+                    </li>
+                </ul>
+                <h3>
+                    Size
+                </h3>
+                <p>
+                    Our Prototype is currently small, but it can be a lot smaller by reducing the "modules" into a PCB board, the schematics of which have already been designed using a
+                    <a href="https://www.invensense.com/wp-content/uploads/2015/02/PS-MPU-9250A-01-v1.1.pdf" rel="nofollow">
+                        MPU-9250 accelerometer
+                    </a>
+                    ,
+                    <a href="http://espressif.com/sites/default/files/documentation/esp-wroom-32_datasheet_en.pdf" rel="nofollow">
+                        ESP-WROOM32 microcontroller
+                    </a>
+                    ,
+                    <a href="https://dlnmh9ip6v2uc.cloudfront.net/datasheets/Prototyping/TP4056.pdfa" rel="nofollow">
+                        TP4056 single cell charger
+                    </a>
+                    ,
+                    <a href="http://www.advanced-monolithic.com/pdf/ds1117.pdf" rel="nofollow">
+                        AMS117 3.3v voltage regulator
+                    </a>
+                    as well as a few discrete resistors and capacitors and other miscellaneous components.
+                </p>
+                <p>
+                    <img alt="images/FutureCircuitDiagram.png" data-canonical-url="https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/FutureCircuitDiagram.png" src="https://res.cloudinary.com/devpost/image/fetch/s--nAQKIyDX--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/FutureCircuitDiagram.png">
+                </p>
+                <p>
+                    Attempting to combine all of the modules on a single component is advantageous as it makes the device significantly thinner and smaller, allowing it to be less intrusive and more comfortable to wear. The current prototype layout is able to fit on a board that's 40mmx30mm.
+                </p>
+                <p>
+                    <img alt="images/FutureBoard.png" data-canonical-url="https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/FutureBoard.png" src="https://res.cloudinary.com/devpost/image/fetch/s--9X07J2jj--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/t04glovern/aws-iot-hackathon/master/images/FutureBoard.png">
+                </p>
+                <h3>
+                    Power Consumption
+                </h3>
+                <p>
+                    We reviewed some of the literature related to trying to power the device while it's attached to a person via a small peltier cooler, which generates power through the difference of temperature between its two sides but discovered quickly that the amount of power generated was going to be
+                    <a href="http://ieeexplore.ieee.org/abstract/document/5475111/" rel="nofollow">
+                        negligible, with an expected harvesting of 30&mu;W at a 15 Degree Celsius temperature difference
+                    </a>
+                    and wasn't worth the trade off of extra size and circuit complexity. Therefore instead of having the device even partially self powered, we needed to consider ways to minimize power consumption.
+                </p>
+                <p>
+                    The main method to reduce power consumption is to focus on the wireless radio part of the circuit, as there's a large difference between current consumption while transmitting (120mA) and not transmitting (15mA). Utilizing either the esp32s 4mb of flash memory or external EEPROM storage as a buffer to store data while the WIFI radio is turned off, then turn the radio on and send this data as a single burst.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aws-iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-kinesis
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            fritzing
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            hotglue
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mqtt
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nodered
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            platformio
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            solder
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/t04glovern/aws-iot-hackathon" rel="nofollow" target="_blank" title="https://github.com/t04glovern/aws-iot-hackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/t04glovern/esp32-mqtt-publish" rel="nofollow" target="_blank" title="https://github.com/t04glovern/esp32-mqtt-publish">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,88 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Earlier in the year me and some friends had created a arduino controlled google home application with a basic authentication ruby server running a Sinatra gem. I wanted to challenge myself for this challenge so I decided to ditch encryption, but run everything straight from the main computer running the video game Elite Dangerous rather than from a pi 3 server. I thought this would be very useful even in its bare bones state as you can apply it to anything you do on your computer from playing video games, auto filling forms, and even using it to create a speech to context bot.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    As of now this application takes in contexts of what it thinks you are saying, converts those contexts into commands that are prebuilt into the NLP platform by hand and then POST's it on a simple python http server parsing for those commands and values through the json contexted post.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used API.AI to quickly iterate and keep the NLP side of the application robust enough for scalability if more buttons and keys are eventually needed based of human context. This was sent to a simple http server running on local host which was tunneled out using ngrok so as to allow us to have a public facing URL which was required for the webhook request by api.ai. Once the json posted to the server was parsed I had to call ctypes or pythons win32 dll script for running keystrokes.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The problems with registering keystrokes is that they are registered not through direct x, therefore not allowing me to actually run keybinds in the game window. I overcame this by calling the Direct Iinput Keyboard Scan Codes found in dinput.h on the .NET framework of windows.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Realtime Data processing which can be used for many applications to come.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    creating a python server to handle post requests and creating a scalable app for game development.
+                </p>
+                <h2>
+                    What's next for Elite Dangerous Ship Assistant
+                </h2>
+                <p>
+                    I hope to integrate Elite's own API into the app which is event based through the game giving us a plethora of information the user can as the google home and the google home will spit data out depending on what events have been received by a event handler and parser. Next I want to create a neural network that can find trade routes around you that are most profitable based on your location in the game.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/api-ai">
+                                api.ai
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            elite-dangerous
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-home
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            simple.http
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

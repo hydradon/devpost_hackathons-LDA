@@ -1,0 +1,192 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="744444" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/444/datas/original.JPG">
+                            <img alt="BattleReeves &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/444/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="744445" data-title="Placing battleships" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/445/datas/original.JPG">
+                            <img alt="BattleReeves &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/445/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Placing battleships
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="744446" data-title="First hit on a second ship" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/446/datas/original.JPG">
+                            <img alt="BattleReeves &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/446/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                First hit on a second ship
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="744447" data-title="About to sink a ship at top centre" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/447/datas/original.JPG">
+                            <img alt="BattleReeves &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/744/447/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                About to sink a ship at top centre
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We heard Improbable's talk on their new probablistic programming language, Keanu, and thought it would be a lot of fun to try it out. We decided to focus on the game Battleships, since it is simple enough to program the graphics and logic in a hackathon, but has lots of hidden state to apply probabilistic programming on, and far too many configurations to simply brute-force.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    First, the player can position their five ships on the board. The application then allows the player to step through running two different probabilistic AIs to play the game - one using Keanu, and one using more combinatorial heuristics. At each stage, the selected AI rates the probability of one of the player's ships being under each square of the board, based on a uniform prior and its observations of hits and misses so far in the game. The player can click a button to aim at the square rated as most likely and move on to the next turn.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The AIs run on a Java backend, and communicate with the frontend via a REST API running on a Spring server. 
+The frontend combines available online components with pure typescript code to create multiple game instances, keep track of valid/invalid states and visualise the probabilities in a dynamic heatmap.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The Bayesian network for calculating which ships are in which squares is very large, and the resulting distribution is discontinuous and very high variance. Additionally many configurations of hits and misses are hard to fit -- very few arrangements of ships have non-zero probability. We also found that the sampler ran quite slowly for an interactive application.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    By making ship positions continuous and adding variance to observations, we allowed the Metropolis-Hastings optimiser to make much more headway than before, since this prevents regions of exactly zero probability.
+                </p>
+                <p>
+                    Additionally we wrote a heuristic AI that uses a simple algorithm (considering each ship separately, and seeing where it fits on the board, weighting each configuration by motivated symmetry assumptions) and gives good results in a very short runtime, allowing interactive exploration.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how to use a probabilistic programming language, and a lot about the kinds of problems such languages are well suited for. We also gained experience writing an interactive frontend using modern web technologies.
+                </p>
+                <h2>
+                    What's next for BattleReeves
+                </h2>
+                <p>
+                    We would like to explore ways to make our Bayesian network more efficient, and perhaps use more advanced optimisers.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/angular-js">
+                                angular.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keanu
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/spring">
+                                spring
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/typescript">
+                                typescript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/alexmotoc/hack-cambridge" rel="nofollow" target="_blank" title="https://github.com/alexmotoc/hack-cambridge">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

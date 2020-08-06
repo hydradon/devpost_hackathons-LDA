@@ -1,0 +1,177 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/KxbKylV1qHY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="821019" data-title="UiPath project with calls to workflow files (before)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/821/019/datas/original.png">
+                            <img alt="Workflow to Libs &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/821/019/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                UiPath project with calls to workflow files (before)
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="821020" data-title="Python script to convert workflow calls to lib calls" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/821/020/datas/original.png">
+                            <img alt="Workflow to Libs &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/821/020/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Python script to convert workflow calls to lib calls
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="821021" data-title="UiPath project with calls to libs (after)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/821/021/datas/original.png">
+                            <img alt="Workflow to Libs &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/821/021/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                UiPath project with calls to libs (after)
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    UiPath Workflows to Libs
+                </h1>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    One of the best features we had in the latest version of UiPath was the ability to create customized libraries. Prior to this, we were using reusable components by invoking workflow files.
+                </p>
+                <p>
+                    Once we created our libraries, we had to update the existing code of all the robots to ensure that they were using our brand new and shiny libraries - and we didn't want to do this manually!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We convert workflows calls to library calls.
+                </p>
+                <h3>
+                    Before
+                </h3>
+                <pre class="language-xml"><code>&lt;ui:InvokeWorkflowFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Precondition: ME52N Transacion visible.&amp;#xA;&amp;#xA;Actions:&amp;#xA;1.Converting JSON to DataTable to obtain the whole data from the PR - coming from reports&amp;#xA;&amp;#xA;" DisplayName="Deserialize object from Queue" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="[assetUiPathLibraryPath+&amp;quot;DeserializeObjectDataTable.xaml&amp;quot;]"&gt;
+        &lt;ui:InvokeWorkflowFile.Arguments&gt;
+        &lt;InArgument x:TypeArguments="x:String" x:Key="argJSONComing"&gt;[argTransactionItem.SpecificContent("DtPR").ToString]&lt;/InArgument&gt;
+        &lt;OutArgument x:TypeArguments="sd:DataTable" x:Key="argObjectOutput"&gt;[DtPRLines]&lt;/OutArgument&gt;
+  &lt;/ui:InvokeWorkflowFile.Arguments&gt;
+&lt;/ui:InvokeWorkflowFile&gt;
+</code></pre>
+                <h3>
+                    After
+                </h3>
+                <pre class="language-xml"><code>&lt;uilib:DeserializeObjectDataTable argJSONComing="[argTransactionItem.SpecificContent(&amp;quot;DtPR&amp;quot;).ToString]" argObjectOutput="[DtPRLines]"/&gt;
+</code></pre>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We developed a Python script that reads the XML DOM of
+                    <code>
+                        .xaml
+                    </code>
+                    files and process it converting workflow calls to library calls. First, we find out which are the namespaces of the current workflow files along with their input and output arguments. Then, we replace the workflow call with the library call adding those arguments. Finally, the input
+                    <code>
+                        .xaml
+                    </code>
+                    is overwritten with the new XML DOM structure.
+                </p>
+                <p>
+                    In our case, we had three different libraries to interact with different systems. UiPath, SAP and ServiceNow. However, this script can be easily extended with your own libraries.
+                </p>
+                <h2>
+                    Video demo
+                </h2>
+                <p>
+                    <a href="https://www.youtube.com/watch?v=KxbKylV1qHY" rel="nofollow">
+                        <img alt="UiPath Worfklows to Libs Video Demo" data-canonical-url="https://img.youtube.com/vi/KxbKylV1qHY/0.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--CJMjeER6--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://img.youtube.com/vi/KxbKylV1qHY/0.jpg">
+                    </a>
+                </p>
+                <h2>
+                    How to use it
+                </h2>
+                <h3>
+                    Requirements
+                </h3>
+                <ul>
+                    <li>
+                        Python 3
+                    </li>
+                </ul>
+                <h3>
+                    How to run it
+                </h3>
+                <p>
+                    Replace
+                    <code>
+                        PATH_TO_DIRECTORY_WITH_XAML_FILES
+                    </code>
+                    with your directory path where
+                    <code>
+                        .xaml
+                    </code>
+                    files are localised.
+                </p>
+                <pre class="language-bash"><code>python replace_workflow_for_lib_calls.py -d PATH_TO_DIRECTORY_WITH_XAML_FILES
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mccm-innovations/UiPath_Workflows_To_Libs" rel="nofollow" target="_blank" title="https://github.com/mccm-innovations/UiPath_Workflows_To_Libs">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

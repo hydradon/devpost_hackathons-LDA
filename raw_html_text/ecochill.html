@@ -1,0 +1,150 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/227469245?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="523464" data-title="The setup" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/464/datas/original.JPG">
+                            <img alt="EcoChill &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/464/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The setup
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="523465" data-title="LCD Display" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/465/datas/original.JPG">
+                            <img alt="EcoChill &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/465/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                LCD Display
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="523466" data-title="Remote BLE temp / humidity probe" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/466/datas/original.JPG">
+                            <img alt="EcoChill &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/466/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Remote BLE temp / humidity probe
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="523494" data-title="Relays wired into AC unit" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/494/datas/original.jpg">
+                            <img alt="EcoChill &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/494/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Relays wired into AC unit
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    To save money I bought a small, manual controlled window AC for the few hot days in San Francisco.  The problem is the temperature control is crude and I'm stuck with it either in high or low fan mode.  Plus it never fully turns off once it has cooled down at night, the fan keeps on running forever.  This wastes power, is annoying and is bad for the environment.  Home thermostats have Smart control so why shouldn't window AC units?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    EcoChill hijacks the AC unit's manual controls with an Arduino 101 and controls its operation to my liking.  Now I can decide how and when I want the fans and compressors to turn on.  This allows me to both save energy and improve the comfort and noise level of my room.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I spliced in high power relays into the control lines for the high / low fan and compressor temperature control switch inside of the AC unit.  Now I can control when the AC is in high or low fan mode and the compressor is on or off with the Arduino 101.  I then used an RFDuino board with a BME280 temperature and humidity sensor to wireless transmit the ambient temp and humidity over BLE to the Arduino 101.  This way the sensor can be anywhere in the room.  The Arduino 101 uses the onboard BLE to receive the temp and humidity and uses it to control a PID based on the desired set point temperature.  The PID control keeps the temperature near the setpoint.  I added further improvements to improve efficiency by keeping the fan running for some time after the compressor has turned off and to reduce fan on/off "bounce" around the setpoint.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    It took three different temp sensors to find one that finally worked with the RFDuino.  Either they were too inaccurate or the one-wire interface wouldn't work.  I finally used an I2C MEMs based one that works great.  I also had trouble figuring out the server/client/peripheral/central/etc. structure of BLE required for my setup.  The PID control also required a lot of manual hit/miss tuning as I did not have time to properly tune it.  I wanted to control the unit with an iOS app but ran out of time figuring out how the bytes needed to be sent and read.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Wiring up all the relays without killing myself.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    PIDs aren't magic and they especially don't work as well for on/off relays.  A lot of time in a controlled environment would be needed to properly tune the system for maximum efficiency.
+                </p>
+                <h2>
+                    What's next for EcoChill
+                </h2>
+                <p>
+                    I wanted to have an app to read the current temp and humidity over bluetooth and set the desired setpoint.  I also planned to connect my Misfit sleep monitor to the app to relay that information to the Arduino 101 so it could lower the temperature set point once I fell asleep.  This would further save energy and help me sleep at night by reducing noise in the room.  It would also be helpful to add a temperature sensor to both the intake and output of the AC unit so I can stop the fan after they have reach about the same temperature when the compressor is turned off.  This will further increase efficiency of the system.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            arduino-101
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            bme280
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lcd
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            power-relays
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rfduino
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

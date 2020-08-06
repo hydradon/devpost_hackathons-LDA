@@ -1,0 +1,354 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    <strong>
+                        Personal Chef Assistance Based on Alexa
+                    </strong>
+                </h2>
+                <hr>
+                <h2>
+                    <strong>
+                        Overview
+                    </strong>
+                </h2>
+                <p>
+                    This is a simple example of an Alexa app to use with Amazon Echo, to give you access to reciepies across the world.
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            MessageProvider.js
+                        </strong>
+                        - A service that serves prompt message, reprompt and error messages. The messages are stored in
+                        <code>
+                            messages.json
+                        </code>
+                        to be make it easy to configure.
+                    </li>
+                    <li>
+                        <strong>
+                            RecipeService.js
+                        </strong>
+                        - A service that parses JSON data and data manipulation.
+                        <br>
+                    </li>
+                    <li>
+                        <strong>
+                            index.js
+                        </strong>
+                        contains the interface Amazon Alexa.
+                    </li>
+                    <li>
+                        <strong>
+                            Messages.json and recipe.json
+                        </strong>
+                        - stores the general messages that can be configured by developer.
+                    </li>
+                </ul>
+                <h2>
+                    <strong>
+                        Requirements
+                    </strong>
+                </h2>
+                <hr>
+                <p>
+                    Install NodeJS LTS (preferably v4.3.0, so it matches AWS Lambda).
+                </p>
+                <pre class="language-nolang"><code>https://nodejs.org/en/download/
+</code></pre>
+                <p>
+                    Then, install the Node dependencies using this command:
+    ***
+    npm install
+    ***
+Additionally, to test this app locally without using Amazon Echo / Alexa yet, do the following:
+                </p>
+                <ul>
+                    <li>
+                        Clone the project
+                        <strong>
+                            alexa-app-server
+                        </strong>
+                        from this Github repository:
+                        <a href="https://github.com/matt-kruse/alexa-app-server" rel="nofollow">
+                            https://github.com/matt-kruse/alexa-app-server
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        From the project's root directory, install its dependencies:
+~~~
+npm install
+~~~
+                    </li>
+                    <li>
+                        Locate the folder
+                        <strong>
+                            examples/apps
+                        </strong>
+                        and copy the Chef project folder in it. You directory path should be **alexa-app-server/examples/apps/chef
+                    </li>
+                    <li>
+                        Go to the
+                        <strong>
+                            alexa-app-server/examples
+                        </strong>
+                        folder, and run this command to start the test server:
+~~~
+node server
+~~~
+                    </li>
+                    <li>
+                        With the server running, we can use it to test our Alexa app launch and intents. Go to this URL and play with it:
+                        <strong>
+                            <a href="http://localhost:8080/alexa/chef" rel="nofollow">
+                                http://localhost:8080/alexa/chef
+                            </a>
+                        </strong>
+                    </li>
+                </ul>
+                <h2>
+                    <strong>
+                        Using with Amazon Echo / Alexa
+                    </strong>
+                </h2>
+                <hr>
+                <p>
+                    To use this app with an Alexa device, we need to do 2 things: Upload the app code to AWS Lambda, and create a new Alexa Skill in Amazon Alexa Service.
+                </p>
+                <h3>
+                    Uploading to AWS Lambda
+                </h3>
+                <p>
+                    Create an AWS account in
+                    <a href="https://aws.amazon.com/" rel="nofollow">
+                        https://aws.amazon.com/
+                    </a>
+                    . The Free Tier/Plan is good enough for this.
+                </p>
+                <p>
+                    Create a new zip of the files that contain the code used by the app. This includes the
+                    <strong>
+                        node_modules/
+                    </strong>
+                    directory, since these are the packages that the app depends on. Files/Folders you need to package are:
+                </p>
+                <ul>
+                    <li>
+                        index.js
+                    </li>
+                    <li>
+                        datastore/
+                    </li>
+                    <li>
+                        services/
+                    </li>
+                    <li>
+                        node_modules/
+                    </li>
+                </ul>
+                <p>
+                    First, we'll create an AWS role to run our Lambda function:
+                </p>
+                <ol>
+                    <li>
+                        In AWS, go to the IAM console
+                    </li>
+                    <li>
+                        Select "Roles" in the left menu
+                    </li>
+                    <li>
+                        Click in "Create New Role"
+                    </li>
+                    <li>
+                        Name your role as
+                        <strong>
+                            lambda_basic_execution
+                        </strong>
+                    </li>
+                    <li>
+                        In Role Type screen, select "AWS Lambda"
+                    </li>
+                    <li>
+                        In Attach Policy screen, use the filter textbox to find the role "AWSLambdaFullAccess" and select it
+                    </li>
+                    <li>
+                        Complete the role creation.
+                    </li>
+                </ol>
+                <p>
+                    Now, go to AWS Lambda console and do the following:
+                </p>
+                <ol>
+                    <li>
+                        Click on
+                        <strong>
+                            Create a Lambda Function
+                        </strong>
+                    </li>
+                    <li>
+                        Select the template
+                        <strong>
+                            Blank Function
+                        </strong>
+                        and click Next
+                    </li>
+                    <li>
+                        In the trigger screen, click in the empty dotted space, and select
+                        <strong>
+                            Alexa Skills Kit
+                        </strong>
+                        . This will allow the Alexa Service to run the app in Lambda. Then next
+                    </li>
+                    <li>
+                        Provide a name to the function, and set the field "Existing Role" to
+                        <strong>
+                            lambda_basic_execution
+                        </strong>
+                    </li>
+                    <li>
+                        In the field "Code Entry Type", select option
+                        <strong>
+                            Upload ZIP file
+                        </strong>
+                        and upload the zip file we created before. Click next.
+                    </li>
+                    <li>
+                        After the function has been created, look in the top-right of the screen for the
+                        <strong>
+                            ARN
+                        </strong>
+                        string. Copy this string.
+                    </li>
+                </ol>
+                <h3>
+                    Creating a new Alexa Skill
+                </h3>
+                <ol>
+                    <li>
+                        Go to the page
+                        <a href="https://developer.amazon.com/" rel="nofollow">
+                            https://developer.amazon.com/
+                        </a>
+                        , sign in with your Amazon account and click in
+                        <strong>
+                            ALEXA
+                        </strong>
+                        tab
+                    </li>
+                    <li>
+                        Click in the option
+                        <strong>
+                            Alexa Skills Kit -&gt; Get started
+                        </strong>
+                    </li>
+                    <li>
+                        Click in
+                        <strong>
+                            Add a new skill
+                        </strong>
+                    </li>
+                    <li>
+                        In the "Skill information" screen, provide a name and an invocation name. The invocation name is what the user will use to launch your Alexa app from the device.
+                    </li>
+                    <li>
+                        In the "Interaction Model" screen, paste the
+                        <strong>
+                            Intent Schema
+                        </strong>
+                        and
+                        <strong>
+                            Sample Utterances
+                        </strong>
+                        that your Alexa skill will receive. You can obtain these from the
+                        <strong>
+                            alexa-app-server
+                        </strong>
+                        used during testing (check the "Requirements" section above about this).
+                    </li>
+                    <li>
+                        In the "Configuration" screen, select the Endpoint type
+                        <strong>
+                            AWS Lambda ARN
+                        </strong>
+                        , with region "North America", and provide the ARN string copied from the Lambda console.
+                    </li>
+                </ol>
+                <p>
+                    After this, your Alexa skill will be ready for testing. There is no need to continue with the Publishing setup, because now your registered Amazon Echo devices are able to connect to your Alexa skill.
+                </p>
+                <p>
+                    The screen "Testing" in Alexa Skill Kit has an Alexa Simulator that helps testing your app without using an Echo device.
+You can use it to listen how Alexa would say a response. Or enter an utterance defined in your Alexa skill to check that your Lambda function will run correctly when contacted by an Amazon Echo.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jjpatel361/alexa-chef" rel="nofollow" target="_blank" title="https://github.com/jjpatel361/alexa-chef">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,192 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/nRFwgWhpPNY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="444316" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/316/datas/original.jpg">
+                            <img alt="Take a Picasso &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/316/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="444317" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/317/datas/original.jpg">
+                            <img alt="Take a Picasso &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/317/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="444318" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/318/datas/original.jpg">
+                            <img alt="Take a Picasso &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/444/318/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Who doesn't want to sit and watch a bot sketch out their portrait?!! We wanted to use technology to create art - and with hardware, computer vision, and an iOS component - we made it happen.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We wanted to create a seamless experience for the user throughout the whole process. When the user enters the booth, all he has to say is &ldquo;Take a Pic!&rdquo; and our iOS app, using speech recognition, is triggered and takes a picture. From there, we used OpenCV with Python for computer vision to blur the image, find the edges of the photo, and extract the major features of the portrait to make the image look like a sketch. The picture is then vectorized to be drawn into one continuous path of many small line segments. These lines are then sent to the arduino behind the easel, which moves the motors accordingly to draw the picture!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    For the hardware, we 3D printed most of the plastic parts (the pen holder and the two pulleys). We connected each pulley to a stepper motor and the pen to a servo, and strung a line through the components, to finish the hardware that can draw on the page with either a pen up or down. For the software, the iPhone app uses AVFoundation methods to take pictures and flash the camera. The saved image is then uploaded to Dropbox through an IFTTT applet. We used OpenCV to do the image processing (blurring, edge detection, thinning, and extracting features) to make the image look more like a sketch. From there, we used Makelangelo software to convert the image into a vectorized format (one continuous line path). Similar arduino firmware allowed us to take in those line segments and use simple geometry to determine how much to move each motor accordingly to reach the desired spot.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We tried to complete the computer vision and processing part of the project with the Python Imaging Library at first, manually coding in edge detection, anti aliasing, particle deletion, blur, smoothing, and the Zhang Seun thinning algorithm. Later we decided to utilize OpenCV to use canny edge detection for our project - which worked perfectly in much less code. Another challenge we ran into was allowing the user to take a photo hands-free. We employed Apple&rsquo;s Speech Recognition API to transcribe drawing commands. Lastly, another challenge was getting the Arduino to communicate with the Makelangelo software - we used a Launchpad at first, which required additional libraries to communicate. We switched over to Arduino, and that worked much more seamlessly. We also had trouble uploading the image to Dropbox from the phone but were able to through universal links.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    One accomplishment we are really proud of is create steady straight lines with our stepper motors. Although in retrospect it was relatively simple geometry, it was a proud moment to see that the calculations actually worked and it could straight lines! In one of our earlier implementations, we had the y coordinates inverted, and that created a polar projection - finding this bug took a long time, but when we could finally draw accurately, it was amazing. Also, we&rsquo;re proud of getting accurate test detection for recognizing the command.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how to seamlessly interface hardware and software. We effectively split into two teams - hardware and software - and we learned at the end when bringing the two groups together to get the whole project working. Also, we worked that vectorizing an image is a significantly hard problem. We also talked to professor Carlo Sequin for consulting for this project, and we learned a lot about image detection from him.
+                </p>
+                <h2>
+                    What's next for Take a Picasso
+                </h2>
+                <p>
+                    Snapchat-like localized filters! We envision Picasso as being a real-life snapchat clone, so having the popular filters such as dog ears and sunglasses would be an excellent next addition. Also, we would like to have geolocation &ldquo;tagging&rdquo; as a feature, so the booth automatically polls its location and writes it in block letters at the bottom of the image. The booth is meant to be a fun interactive experience, so adding more filters is always a plus!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/3dprinting">
+                                3dprinting
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/dropbox">
+                                dropbox
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            easel
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ios">
+                                ios
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/joyhsu0504/draw" rel="nofollow" target="_blank" title="https://github.com/joyhsu0504/draw">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

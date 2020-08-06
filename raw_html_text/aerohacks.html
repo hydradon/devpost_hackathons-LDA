@@ -1,0 +1,52 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    We aimed to create a tool that would allow for autonomous surveying of roads for damages and potencial obstacles. Current surveying of roads is done by teams of people often employed by a state or municipality's Department of Commerce/ Transportation. With the growing population density around cities and number of roads in the U.S., these methods are obsolete. Obstacles such as land slides/ falling rocks on roads slow down the freight industry, neglected potholes damage the cars of tax-paying citizens, and ice on bridges during the colder months endanger lives. As governments become "smart" with the use of embedded technology and data acquisition/ analysis there are hopes that many of these inefficiencies can be solved.
+                </p>
+                <p>
+                    Our plan was to program a quadcopter that was enabled with GPS, sonar, and 2 cameras (one facing frontward and one facing downward) to take pictures of potholes and obstacles on the roads between 2 addresses/ latitude and longitude coordinates that would be submitted into the program. We planned to accomplish this by using Google Maps API in Python to take the 3 physical addresses (the quadcopter's current location, the trip start location, and the end location), generate directions, and checkpoints of GPS coordinates for the drone to follow. Google Maps API will generate up to 10 checkpoints for a trip, but we wanted a more accurate coordinate list, so we planned to recursively execute Google Maps API on a trip until all the coordinates had a minimum distance between them.
+                </p>
+                <p>
+                    This data would be calculated by the processor on board the drone before the trip was started and saved to its internal memory so that minimal internet connection would be required for the drone to complete it's trip. During the trip the quadcopter (our model having a maximum sonar range of 6 meters above the ground surface) would stay a minimum of 15 feet above the road as to avoid cars and use the sonar to survey the surface of the road. We also planned created and algorithm the allowed the quadcopter to use lane detection so that it can stay even with the road. Since the quadcopter had an altimeter and could tell what height it was above the road surface, we knew that we could use a low-pass filter to filter out any data of cars passing underneath the quadcopter during acquisition. We would then use a edge-detection filter (first-difference filter) in data processing during the trip to detect abnormalites such as potholes and obstacles in the road. If something was detected, the camera that faces the ground would take a picture of the abnormality marked with a GPS location and save it locally to the quadcopter.
+                </p>
+                <p>
+                    Though using an API to generate a list of coordinates and running data collected by sonar through a low-pass and first difference filter should have been possible in 24 hours, we were unable to complete our project because we were unable to access the data that the dual sensors on the bottom of the quadcopter were taking. We were able to write the lane detection algorithm using computer vision algorithms on video taken by the front camera and have the drone fly in a straight line down tech parkway, though we were unable to use Google Map's Python API to successfully create the checkpoints so instead we generated the checkpoints for a demo on campus ourselves. We believe that generating these checkpoints would have been more successful by using the Google Maps Java API instead of the Google Maps Python API. We were able to create the first-difference filter algorithm (edge detection) and us it on photos taken during flight to detect abnormalities in the road and save their picture, however we were not able to access the Quadcopter's GPS location because, similarly to the sonar data, we were unable to pull that data from the system.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/nrakoski3/AeroHacks" rel="nofollow" target="_blank" title="https://github.com/nrakoski3/AeroHacks">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

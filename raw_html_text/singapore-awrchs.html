@@ -1,0 +1,143 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    ETHSingapore hack: sharding!
+                </h1>
+                <p>
+                    Sharding (initially focused on beacon chain) built on top of my experimental project
+                    <a href="https://github.com/protolambda/protolith" rel="nofollow">
+                        <code>
+                            protolith
+                        </code>
+                    </a>
+                    .
+                </p>
+                <p>
+                    ETHSingapore Hackathon project, to be built further with any available time/resources.
+                </p>
+                <p>
+                    By @protolambda
+                </p>
+                <h2>
+                    Overview of codebase.
+                </h2>
+                <pre class="language-nolang"><code>lib
+├── beacon                       -- Beacon chain implementation
+│&nbsp;&nbsp; ├── beacon_block_chain.dart         -- The chain core
+│&nbsp;&nbsp; ├── beacon_block.dart               -- Spec of a block, mixes data/ components
+│&nbsp;&nbsp; ├── beacon_block_meta.dart          -- Spec for the context of a block (Beacon State here)
+│&nbsp;&nbsp; ├── beacon_network.dart             -- Combines the chain with a "syncer"; source of external data
+|   |
+│&nbsp;&nbsp; ├── attestation                               -- Classes for general attestation related work
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── attestation_data.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── attestation_record.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── pending_attestation_record.dart
+│&nbsp;&nbsp; ├── committees                                -- Classes to keep track of committee data.
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── shard_committee.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── shard_reassignment_record.dart
+│&nbsp;&nbsp; ├── crosslinks                                -- Crosslink records
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── cross_link_record.dart
+│&nbsp;&nbsp; ├── data                             -- Mixins: compose your own custom beacon block with these.
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── attestation.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── randao.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── signature.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── slot.dart
+│&nbsp;&nbsp; ├── forking                          -- Fork data (meta data in blocks in case a fork that needs a extra flags etc.)
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── fork_data.dart
+│&nbsp;&nbsp; ├── meta                             -- More mixins, but for the Block-meta (Beacon state here).
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── finality.dart                
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── fork.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── pow_receipt_root.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── randao.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── recent_state.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── validator_registry.dart
+│&nbsp;&nbsp; ├── pow                                              -- classes for Eth-1.0 related data.
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── candidate_pow_receipt_root_record.dart
+│&nbsp;&nbsp; ├── unfinalized                                  -- Where non-finalized blocks are maintained with
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── beacon_entry.dart                             -- wrap each block in an entry with extra functionality.
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── beacon_fork_choice.dart                       -- implementation of scoring used in GHOST, 
+|   |   |                                                 beacon chain itself does the Latest Message Driven (LMD) part.
+│&nbsp;&nbsp; │&nbsp;&nbsp; ├── dag                         -- DAG (leveled structure) used to order and path-find this block data. 
+│&nbsp;&nbsp; │&nbsp;&nbsp; │&nbsp;&nbsp; ├── dag.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; │&nbsp;&nbsp; └── fork_choice.dart
+│&nbsp;&nbsp; │&nbsp;&nbsp; └── ghost.dart                             -- implementation of GHOST as a fork-choice rule,
+|   |                                                   used in the DAG for pathfinding. 
+│&nbsp;&nbsp; └── validators                      -- Validator related records used in the beacon chain.
+│&nbsp;&nbsp;     └── validator_record.dart
+├── crypto                                     TODO: BLS aggregate signatures, mocked for now, to be implemented.
+│&nbsp;&nbsp; ├── BLSPubKey.dart
+│&nbsp;&nbsp; └── BLSSignature.dart
+├── eth2.dart                                  Starts a "network" instance for Eth-1, Beacon chain, and shards.
+│
+│                              -- TODO:
+├── shard                      -- Shard chain implementation (similar to the standard-chain spec)
+└── validator                  -- The beacon chain already handles blocks, but we still need an initiator to propose and attest them.
+├── attester
+└── proposer
+
+
+</code></pre>
+                <h2>
+                    Contributing
+                </h2>
+                <p>
+                    Discussions/suggestions are always welcome, but this code is just me during the hackathon.
+This repo will be made public near the end of the hackathon,
+ PRs/issues will be open after judging, to grow the project :)
+                </p>
+                <h2>
+                    License
+                </h2>
+                <p>
+                    MIT, see License file.
+                </p>
+                <h2>
+                    References
+                </h2>
+                <p>
+                    Many thanks to every who contributes to the sharding research docs hosted on the ethereum Github org. See:
+                    <a href="https://github.com/ethereum/eth2.0-specs/blob/master/specs/core/0_beacon-chain.md" rel="nofollow">
+                        https://github.com/ethereum/eth2.0-specs/blob/master/specs/core/0_beacon-chain.md
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            dart
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            protolith
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/protolambda/singapore" rel="nofollow" target="_blank" title="https://github.com/protolambda/singapore">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

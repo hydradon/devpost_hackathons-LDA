@@ -1,0 +1,170 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/y2NbKYbDNxo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I originally wanted to build something cool with the Myo Armband, but when I looked at the product's API I noticed that the out-of-the-box Myo only recognized five hand gestures, and no arm gestures! I was shocked, because this really limited what I could do with the armband, so I immediately decided to work on a project that would make the Myo more useful.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Myo Gesture extends the Myo API to provide support for user-defined custom gestures. A developer enters training data for a certain gesture by running the
+                    <code>
+                        CollectRaw
+                    </code>
+                    executable. He/she then runs the
+                    <code>
+                        ProcessRaw
+                    </code>
+                    executable to train the model for the gestures inputted.
+                </p>
+                <p>
+                    Once this simple procedure has been followed to define custom gestures, it is easy to use the API. Simply include
+                    <code>
+                        gesturedevicelistener.h
+                    </code>
+                    , and let your device listener class extend
+                    <code>
+                        GestureDeviceListener
+                    </code>
+                    , instead of extending
+                    <code>
+                        myo::DeviceListener
+                    </code>
+                    . Your device listener class should work just as if it were extending
+                    <code>
+                        GestureDeviceListener
+                    </code>
+                    except that (1), whenever you call
+                    <code>
+                        hub.run(int)
+                    </code>
+                    for a Myo Hub
+                    <code>
+                        hub
+                    </code>
+                    , you should also call
+                    <code>
+                        collector.recData()
+                    </code>
+                    immediately afterward (where
+                    <code>
+                        collector
+                    </code>
+                    is your instance of your device listener class), and (2) when you override
+                    <code>
+                        GestureDeviceListener
+                    </code>
+                    's methods, override the methods with a 2 at the end of the name (e.g.,
+                    <code>
+                        void onAccelerometerData2(myo::Myo* myo, uint64_t timestamp, const myo::Vector3&lt;float&gt;&amp; acceleration) { }
+                    </code>
+                    instead of
+                    <code>
+                        void onAccelerometerData(myo::Myo* myo, uint64_t timestamp, const myo::Vector3&lt;float&gt;&amp; acceleration) { }
+                    </code>
+                    .
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I wrote it in C++. I used Myo's C++ bindings and Nick Gillian's GRT machine-learning library.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Initially, I tried to code the machine-learning algorithm myself. One of the mentors (Q) in the hardware lab gave me the idea to convolve short, pre-recorded snippets of movement with the running stream of Myo sensor data so that if the Myo's output aligned with one of the pre-recorded gestures then the value of the convolution would spike, allowing me to detect the gesture. I coded this in a few hours, but it had limited success. There was a great deal of noise in the predictions, so for the approach to be successful I would have had to complicate matters, using some kind of filter to reduce noise in the measurements and doing tedious and error-prone calculations: such as how variations in the Euler angles led to a different direction for the gravitational field in the Myo's x-y-z frame. Given time I would certainly have done this, but due to the lack thereof I chose to throw Nick Gillian's wonderful GRT machine-learning library at it instead.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The API gives pretty robust results! Gestures are almost always detected, and detected correctly at that!
+The project is also lightweight and easy to use for client applications. For instance, given the code and the API produced, it is a relatively simple matter to create a sign-language interpreter that uses the Myo Armband, or to interface the Myo Armband with a video game, or to set up, say, a home environment in which a user can control wireless devices and appliances via gestures.
+                </p>
+                <p>
+                    MyoGesture could also lead to some great hackathon projects by future teams! Starting out with simple API calls that do the machine-learning and the high-level gesture detection for you leaves you a lot of time for creativity.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about some pretty cool machine-learning algorithms -- in particular, the Dynamic Time Warping algorithm which I used to classify gestures. I also got a lot of experience with the Myo API and had fun writing my own machine-learning algorithm during the first half of the hackathon.
+                </p>
+                <h2>
+                    What's next for Myo Gesture
+                </h2>
+                <p>
+                    First off, I'll try out other machine-learning algorithms (feature-detecting algorithms, hidden Markov models,  neural networks, etc...) to see if they are more suitable for the job. I'll also try to preprocess the data better to give more robust results. Possibilities include: automatically trimming the trailing edges of the training data to get purer training data, and accounting for the direction of the gravitational field in the frame, given the Euler angles. Finally, I'll add support for gestures that involve more than one Myo on each arm and for gestures that depend on EMG data as well as acceleration and orientation data. A slightly nicer interface for gesture training may also be a good addition. I may also port it to Linux -- currently it only works on Windows.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            a-lot-of-love
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/myo">
+                                myo
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/eboix/Myo-Gesture" rel="nofollow" target="_blank" title="https://github.com/eboix/Myo-Gesture">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

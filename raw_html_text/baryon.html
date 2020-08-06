@@ -1,0 +1,211 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/1yNPHG9HTWs?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="850154" data-title="Baryon gives you a power to build simple ui view of glued Nodes in a intuitive manner" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/850/154/datas/original.jpg">
+                            <img alt="Baryon &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/850/154/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Baryon gives you a power to build simple ui view of glued Nodes in a intuitive manner
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Hidden relationships among things bug me all the time. Node-edge-graph is impressive at first, but hard to inspect deeper. I wanted to visualize relations among EVERYTHING in a fun and intuitive way. I named Baryon after a physics particle. Baryon in physics is a subatomic particle composed with quarks. If you compare graph nodes to quarks, you can think of this react component as a structure composed of multiple quarks, just like a baryon.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Baryon is a react component to compose organized ui view for your neo4j graph that allows you to inspect simply and intuitively. This enables users to explore further relations from one node to another.
+                </p>
+                <ul>
+                    <li>
+                        Baryon provides you a simple ui to inspect neo4j graph data
+                    </li>
+                    <li>
+                        Subject node appears in the main area
+                    </li>
+                    <li>
+                        Relationships appear in a list
+                    </li>
+                    <li>
+                        Each relationship is expressed in sentence powered by RDF triple
+                    </li>
+                    <li>
+                        Each node or relationship can have start-date and end-date
+                    </li>
+                    <li>
+                        Relationships are sorted by start-date of relationships, then start-date of nodes
+                    </li>
+                    <li>
+                        Secondary relationships on each connected node is listed below the node
+                    </li>
+                    <li>
+                        Secondary relationship list can be configured to be On / Off
+                    </li>
+                    <li>
+                        Each node-label has their node-label-properties(*1)
+                    </li>
+                    <li>
+                        Relations are categorized depending on relationship-types
+                        <ul>
+                            <li>
+                                Each node-label-property is a collection of relationship-types
+                            </li>
+                            <li>
+                                ex: Both BROTHER_OF and SISTER_OF go into sibling node-label-property
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        URL path to Baryon ui on your app can be configured
+                    </li>
+                </ul>
+                <p>
+                    (*1):  node-label-properties are not the properties in neo4j terms. node-label-properties are semantic types belong to labels, for instance Person has Parents, Children and so on.
+                </p>
+                <p>
+                    To implement Baryon into your own react app, all you need to do is, calling Baryon component in your JSX, and passing name of node in quark_name props. Now Baryon renders your neo4j graph data in a organized ui view.
+                </p>
+                <pre class="language-javascript"><code>import Baryon from '@bit/euonymus.baryon.baryon';
+
+function App() {
+return (
+&lt;Baryon quark_name="The Matrix"
+connection={{
+uri: 'bolt://{domain}:{port}',
+user: '{username}',
+password:'{password}'
+}}
+hasSecondLevel={true}
+graphPath={false} /&gt;
+);
+}
+</code></pre>
+                <p>
+                    hasSecondLevel and graphPath props are optional
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used create-react-app to generate a bootstrap, and divided Baryon part into a folder, so that I can separately work on Baryon component itself and wrapping app to test it. I implemented Storybook so I could work on individual components in baryon one by one, then I used Chromatic, In order to do snapshot test. To isolate baryon component from the wrapping app, I used bit-bin.
+                </p>
+                <p>
+                    When it comes to the data modeling, I designed relationships between node-labels and node-label-properties; node-label-properties and relationship-types. So each node-labels can have node-label-properties, such as Parents, Children or Spouse in Person for instance. Both SON_OF and DAUGHTER_OF relationship-types can be categorized in Children node-label-property.
+I generalized node data and relationship data by giving consistent properties, such as name, description, image_path, start_date, end_date, start_accuracy, end_accuracy, is_momentary, and url. As long as you keep this criteria, you can visualize any kinds of nodes in Baryon.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    To let anyone use Baryon, I struggled with designing generalized data structure, so that any nodes in any situation can be applied. Categorizing node-label-properties was especially hard part, such as.
+                </p>
+                <ul>
+                    <li>
+                        What node-labels have what node-label-properties.
+                    </li>
+                    <li>
+                        What node-label-properties have what relationship-types.
+                    </li>
+                </ul>
+                <p>
+                    Another challenge was language translation. Even though I used RDF triple to generate sentences in relationships, it was hard to apply to all the languages at once. Because different languages have different order and constructions.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        In this product, I applied "time-oriented graph theory", which I advocate. So now you have power to sort and filter nodes.
+                    </li>
+                    <li>
+                        I achieved to design Baryon component being used with a very simple sole parameter, the name of subject node.
+It was difficult to generalize those diverse data into one formatted view.
+                    </li>
+                    <li>
+                        I succeeded to express relations in sentences by the power of RDF triple.
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    This was done with a strong awareness of contributions to HOW I CAN ATTRACT PEOPLE TO USE NEO4J OR THEM INTERESTED IN NEO4J. I assume why graph database is used by analysts or scientists, but not people in general is that the use cases are too academic or businesslike. I would like to push up neo4j to be used in a media like things those people see everyday life.
+                </p>
+                <h2>
+                    What's next for Baryon
+                </h2>
+                <p>
+                    Right now Baryon is local private use only. Because Baryon connects to neo4j directly, so if you publish your project, your ID / password will be exposed. I'm planning to combine Baryon component with GraphQL backed API and make it possible to publish your project.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/neo4j">
+                                neo4j
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/euonymus/baryon" rel="nofollow" target="_blank" title="https://github.com/euonymus/baryon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

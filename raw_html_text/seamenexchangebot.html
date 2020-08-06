@@ -1,0 +1,168 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/3ecT96CmyeU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    SeamenExchangeBot built to provide the user with information regarding Marine industry. Unlike search engines which give thousands of answers to a simple request this bot answers exactly the question asked. Focused answering behavior important for specific areas of knowledge such as Marine Engineering and Navigation.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The bot answers  User's questions regarding various entities/terms from Marine Industry. It expects questions in a natural way f.e &laquo;What is Main Engine&raquo;, &laquo;Who is Captain&raquo;, &laquo;Tell me about superstructure&raquo;. 
+If the bot is unable to give the exact answer for a specific question it gives few most relevant suggestions.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    SeamenExchangeBot consists of 4 parts:
+                </p>
+                <p>
+                    <strong>
+                        1. Amazon Lex bot
+                    </strong>
+                    It has few Intentions which separate utterances by similarity. This approach was chosen because Intent containing utterances of  significantly different structure  fails to parse the Slot
+                </p>
+                <p>
+                    <strong>
+                        2. Amazon Lambda
+                    </strong>
+                    It handles user input: checks for a slot to be filled and passes it to the SeamenExchange.com for answer matching. If the slot was not filled by Amazon Lex a Lambda tries to parse the Slot from raw user input and process it. Suggested answers received from the SeamenExchange.com API filtered by relevance and exact match or 3 most relevant answers returned to the Amazon Lex bot.
+                </p>
+                <p>
+                    <strong>
+                        3. SeamenExchange.com website - a knowledge base
+                    </strong>
+                    It has a simple API which is used by Amazon Lambda for retrieving an information. The site runs within Amazon C2 instance as modified version of Bitnami OSQA engine (Django  + Postgres SQL). The website receives requests from Amazon Lambda via HTTP GET request to
+                    <a href="http://www.SeamenExchange.com/terms/search" rel="nofollow">
+                        www.SeamenExchange.com/terms/search
+                    </a>
+                    API. The knowledge base pre-filled with formatted Marine industry terms. Requested term matches tagged with calculated relevance and returned to Lambda as JSON array.
+                </p>
+                <p>
+                    <strong>
+                        4. Facebook page SeamenExchange
+                    </strong>
+                    It connected with the Amazon Lex bot. Facebook was chosen as the front end because the relevant page was already functioning for some time and hopefully some subscribers volunteer to test the Bot.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I had to split utterances across Intent by similarity and make a general question form intent to make bot able to handle different forms of questions.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The bot could be useful for marine professionals and amateur yachtsmen as well as students and trainees onboard vessels. Supporting knowledge base consists of 3000+ terms some of them rarely used and therefore not all even professional seamen fully aware of their meaning.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    It was great to learn how to build a chatbot with Lex and Lamda. This 2 technologies helped me to complete the task efficiently and fast. I discovered the power Lamda in reducing task complexity. My next step will be to dive deeper in bot creation to make it a more handy and useful assistant.
+                </p>
+                <h2>
+                    What's next for SeamenExchangeBot
+                </h2>
+                <p>
+                    The current version submitted to this Challenge is a starter. Marine industry knowledge well developed but not structured enough yet for convenient accessibility. AI will definitely show its potential in this field. My intention is to improve the next version of bot to be a real advisory assistant capable of advising on various technical operational and maintenance procedures, troubleshooting, safety issues and more. Relevant seq2sec and word2vec models are under development and testing at the moment.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-ec2">
+                                amazon-ec2
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            bitnami-osqa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.facebook.com/SeamenExchange/" rel="nofollow" target="_blank" title="https://www.facebook.com/SeamenExchange/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.facebook.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/vbily/SeamenExchange" rel="nofollow" target="_blank" title="https://github.com/vbily/SeamenExchange">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/vbily/SeamenExchangeBot" rel="nofollow" target="_blank" title="https://github.com/vbily/SeamenExchangeBot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

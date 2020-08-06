@@ -1,0 +1,217 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="558824" data-title="Handy" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/558/824/datas/original.jpg">
+                            <img alt="Handy &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/558/824/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Handy
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="555352" data-title="The hand holding some candy" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/555/352/datas/original.jpg">
+                            <img alt="Handy &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/555/352/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The hand holding some candy
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="555354" data-title="The hand in my hand" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/555/354/datas/original.jpeg">
+                            <img alt="Handy &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/555/354/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The hand in my hand
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    For the deaf community, translation from speech to sign language has become extremely important. Translators are relied upon in lectures, conferences, and even in daily conversations. Unfortunately, translators are not accessible to everyone, especially in the less fortunate communities.
+                </p>
+                <p>
+                    We wanted to create a robot that can translate speech into sign language that is displayed on a set of mechanical hands.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We have created Handy: a set of two human-like hands and arms that are articulated in exactly the same way as normal human hands from the elbow down. This gives our robot incredible versatility allowing it to do anything from communicating in sign language to even playing rock-paper-scissor shoot.
+                </p>
+                <p>
+                    It is capable of translating English speech into ASL signs using the Google Cloud speech to text API.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We arrived on site with pre-printed 3D components and set to work building the hands (20 servos in total).
+                </p>
+                <p>
+                    At the same time, we started to develop an abstraction for an ASL database that provides heuristic features about each sign. We ran our code on the 800 most frequently used words to extract about 10 unique identifiers for each sign. We then converted these features into angular rotations on each robotic joint, and finally into a custom-designed machine code which would generate the desired motions on the robot in real time. A custom protocol was created to allow the python code running on a mac to be transmitted, via a serial port, to the Arduino which sends out i2c data to two 16 channel PWMmodules that control the servos.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Our initial idea was to include a camera and recognize sign language via a convolutional neural network and even have our robot respond to it via a chatbot. We realized that this would be impossible for us to achieve in the short time frame. With many signs being very similar and the databases very restrictive, there was a very low probability of success. We, therefore, had to shift our idea to something more realistic in a short time frame.
+                </p>
+                <p>
+                    While we were working on the abstraction for the 3D movements from the ASL database, we realized that the databases that are available are not nearly as refined as we thought. This meant that we lost detail on some wrist motions and we had to generalize the bigger movements (for example, the major location of the move).
+                </p>
+                <p>
+                    We also had to overcome the limitations in having the robotic elbow fixed at one position. Something as basic as tracing a circle could not be done; instead, we used some math to create a perception of a circle (but in reality an ellipse was drawn).
+                </p>
+                <p>
+                    We also faced the difficult challenge of creating our own machine code, that unlike most, used an interdependent polar system, with one servo rotating the next, rotating the next.... Considerable math work had to be done to approximate all possible R^3 positions onto what was essentially the curves of two circles (a sphere that rotates in time).
+                </p>
+                <p>
+                    Finally, the hardware ended up being a weak link and with no possibility of buying replacement parts, we had to think on the fly to keep the hands in working order.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Sure there are a few bugs here and there, but it works and it's amazing. When we first thought of the idea, we thought it would be impossible to complete in 36 hours. But things went somewhat smoothly and everything worked out in the end.
+                </p>
+                <p>
+                    With 3 members of our team being first-time hackers and one member being bogged down over the digital recognition stuff that didn't work out for most of the time, we are extremely proud of our achievement.
+                </p>
+                <p>
+                    All things considered, the fact that we have a working prototype is really awesome.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    <strong>
+                        No task is too big when you have an endless supply of candy and energy drinks
+                    </strong>
+                </p>
+                <p>
+                    With only one member of our team being used to hardware, it was a big learning experience to play with the Arduino and even creating our own machine code and transmission protocol.
+                </p>
+                <p>
+                    The whole abstraction of an entire database was also new to us and it ended up being an interesting aspect.
+                </p>
+                <h2>
+                    What's next for Handy
+                </h2>
+                <p>
+                    Definitely a V2 of the hardware...
+Also, find a better more detailed database to have unique detailed signs.
+                </p>
+                <p>
+                    Also, (though it is definitely really tough) a way for the computer to take input from a sign language user and be able to understand the signs through computer vision.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cleverbot-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            database
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/servo">
+                                servo
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            speech-recognition
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/arjunkhare/Handy" rel="nofollow" target="_blank" title="https://github.com/arjunkhare/Handy">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,73 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    Inspiration:
+The increasing competition in the post-industrial society is making people more and more stressed. Many people have some kind of mental health problem and they haven&rsquo;t realized the importance of it. That kind of mental health issues can manifest themselves in subtle behavioral and physiological cues. It&rsquo;s important to have a convenient and automatic method for crisis intervention that incorporates these data. There also need to be a way to timely inform their doctors whenever these cues occur. Our app, Baymax (it is called Baymax like the health consultant robot in the movie), analyzes data from Apple&rsquo;s built-in HealthKit to form a model based on long-term regularities in the person&rsquo;s behavior. It visualizes the data for the users and generate alerts to the person&rsquo;s physician when there is an alert.
+                </p>
+                <p>
+                    What it does:
+Our app obtains data from Apple&rsquo;s built-in HealthKit and analyzes them using a Multivariate Gaussian Model, which is fitted using a data set of historical activities. The z-score and probability density along each dimension is computed as well as the joint probability. This is compared to a criterion set by the user (physician). Each data point from also graphed onto a radar chart along different dimensions along with the confidence interval. The data is forwarded to a physician and anomalous data raises an alert.
+                </p>
+                <p>
+                    How we built it:
+We mainly worked with Xcode to build this application. We use apple&rsquo;s query classes to access different types of health related data and set a time schedule for daily data collection. The data are further collected into a dictionary and passed to the anomaly detection algorithm built with Multivariate Gaussian Model, which takes in a judging criterion. A dictionary of Boolean values is generated which indicates whether there is an anomaly for each dimension of data based on the criterion, and a joint measure from all the dimensions is also reported.
+                </p>
+                <p>
+                    Challenges we ran into:
+Not all relevant data are available due to the lack of hardware resources (Applewatch, etc.). We use a reasonable toy dataset generated with R to test our algorithm. 
+There is a potential risk for privacy violations. To reduce the risk to the minimum, we ask for users&rsquo; agreement before accessing the data. The data is also planned to be forwarded to the physicians only.
+Swift doesn&rsquo;t have an optimized statistics package, so operations like estimating the cumulative probability function is hard. We avoid that by using the z-score of each data point on each dimension instead. We also assume that the underlying distribution of the data is a normal distribution, which makes the model less robust. Other methods like Bootstrap are considered, but eventually discarded due to limit of time.
+It&rsquo;s also hard to generate a robust base-line simply based on a person&rsquo;s past data. There need to be more explicit ways of computing such base-line which is based on expertise of nutritionists, etc.
+                </p>
+                <p>
+                    Accomplishments we are proud of:
+We managed to integrate health data that are already present in Apple&rsquo;s system and analyze them to make judgements about future data. We also managed to visualize the data to make it more accessible. In addition, we set up an alert system to the doctor. Different from traditional apps about mental health, which only analyze subjective self-reports from the users, our app serves as an objective way to analyze data using statistical methods and reflect data both statically and dynamically. Also, the software mainly runs in background, creating little distraction to the users.
+                </p>
+                <p>
+                    What we learned:
+We improved our programming skills with Swift (and OOP in general) a lot. We learned how to think creatively in design, how to solve problems through discussions and research and how to collaborate with teammates to achieve optimal efficiency.
+                </p>
+                <p>
+                    What&rsquo;s next for:
+We will also make the user terminal for doctors, so that they can monitor the health conditions of multiple patients more closely. More statistically-rigorous criteria for alert will be added based on the doctor&rsquo;s expertise. We will also update our data collection to incorporate data on more useful dimensions, reduce correlated dimensions to create a more compact model and incorporate prior knowledge from experts to generate a more reasonable base line condition with which daily activity will be compared. Other languages like Python and Octave might be used to achieve better performance.
+                </p>
+                <pre class="language-nolang"><code>                              By Zinan Chi, Shuhao Li, Michael Wang and Sherlock Shi
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/SchrodingersDog9/PsychoTest.git" rel="nofollow" target="_blank" title="https://github.com/SchrodingersDog9/PsychoTest.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

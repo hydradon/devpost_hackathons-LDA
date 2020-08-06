@@ -1,0 +1,178 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/E7NobCi5BLU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="868140" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/868/140/datas/original.png">
+                            <img alt="Word Scrambler &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/868/140/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    ISP Inclusion
+                </h2>
+                <p>
+                    The Purchasable product in this game is a subscription, and it unlocks many new features that enhance the overall experience.
+                </p>
+                <p>
+                    <strong>
+                        First, it grants access to twice as many unique word sets as a normal player.
+                    </strong>
+                    Every month there are ten new letters sets for users to play through, and a premium player gains access to double that number. Each letter set comes with its own built in leaderboard as well as tracking against the global leaderboard of all players around the world.
+                </p>
+                <p>
+                    <strong>
+                        Second, the subscription gives players additional hint slots and faster recovery of hints.
+                    </strong>
+                    For a normal player, hints recover at a rate of one hint every nine minutes with a max of three hints stored at any given moment. A premium player recovers hints at a rate of one every three minutes and can store up to five hints to be used in their game!
+                </p>
+                <p>
+                    <strong>
+                        Lastly, it grants access to more user slots.
+                    </strong>
+                    Non-premium players can have two users on the account at any given time. Each user has their own full tracking system across all leaderboards and are tracked separately. Players can also turn on local play which constantly swaps the players for head to head battles. For premium players the number of available user slots is bumped up to five. This means five household players per account can be tracked on the leaderboards as well as head to head battles with five people.
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've always enjoyed playing word search games. They are an excellent way to test ones vocabulary as well as strengthen ones problem solving abilities. I am a brand new father still counting my babies age in weeks, but I'm already thinking about how I can help her to be prepared to face the world, and part of that is envisioning ways to make learning fun for her.
+                </p>
+                <p>
+                    I also enjoy challenges around trying something new. I wanted to build a system that would be as accurate as possible while remaining fun and interesting. It wasn't enough for me to just throw out a bunch of letters and have users guess a word, I wanted for them to be able to see their progress against all words in a combination, as well as their abilities against other players in the world.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Word Scrambler is a word search game where a player will receive a random set of letters and be tasked with finding as many possible words as they can. It can also be used to search definitions of either any word the user would like to learn about either by requesting a definition directly or asking for the definition of their most recent word. Screen users, in fact, gain immediate access to examples, definitions, and etymology of their most recent words all at a glance.
+                </p>
+                <p>
+                    The game is designed to be played by one person competing against the world. It can, however, also be used by a group of friends with local round-robin local play. Playing locally will still count your score of unique words tracked against all players, so there is no penalty to playing with friends.
+                </p>
+                <p>
+                    Every unique player will be tracked with a global score that continues month by month as well as scores for every unique letter combination. Each month there are ten available letter combinations for users to compete within, and premium users gain access to ten extra sets.
+                </p>
+                <p>
+                    All of the leaderboards can also be viewed on my website.
+                </p>
+                <p>
+                    There are also hints users can ask for, and the hints are dynamically generated. If a hint can be located, it will tell you what letter a word starts with as well as its definition.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I built the scoring and tracking system using Elasticache with Redis for speed. This way I can look up the individual score and find local scores to display in the APL as well as unique sets for accuracy tracking.
+                </p>
+                <p>
+                    For the leaderboards, I track a users currently found set as well as permanent set for each letter set. Basically, this means that even if a user changes from one set to another and comes back, their permanent score on the leaderboards will be reflective of every time they have played. Finding the same word on two different play throughs won't give you double the score. This makes it both fair for global leaderboard tracking as well as giving players the ability to replay different word sets or reset to compete against friends while simultaneously tracking their global state.
+                </p>
+                <p>
+                    My recognition system for Word Scrambler has a lot of moving parts. At its core there is a 150,000 + word list that generates unique sets for each word combination to determine what is available. This set is stored in Redis and used as comparisons against words the user already tracked to determine a 'dynamic' set. This set is then passed to the user as a dynamic list of up to 100 words to enhance accuracy.
+                </p>
+                <p>
+                    However, my recognition system even goes further than that. In cases where a user submits a word I don't already know about and track I utilize multiple dictionary APIs to determine if the word is valid anyway. If it is, I add it to my full list of known words and regenerate the valid list for tracking.
+                </p>
+                <p>
+                    Finally, I have additional accuracy compensation built in. Many times, words come through the voice recognition that aren't quite right because they are homonyms. For example: week and weak. More often than not, even with dynamic inclusion of 'weak' as an expected response from the user, I receive the word week instead.
+                </p>
+                <p>
+                    To compensate for this I have implemented additional tools to seek out homonyms for the word the system thought the user said and then track against those as well as the original word in cases where the recognition technology initially guessed wrong.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I ran into challenges with homonyms and accuracy that forced me to think outside the box and create powerful solutions. I want to err on the side of assuming the user is correct in their guess to make the game more fun to play.
+                </p>
+                <p>
+                    I also ran into difficulties around tracking and used Redis Pipes to pull down a lot of data while moving things quickly. I wanted to maintain speed while also having a lot of data to show the user about how well they are doing.
+                </p>
+                <p>
+                    Such data, though, is difficult to display. Another challenge I had to overcome was related to what to show/tell the user. I wanted the game to be playable quickly, but I also wanted to give useful information. For example, it will occasionally tell users the score, their percent of words found, their percent ranking vs other players, or other tidbit useful information. The only thing it will consistently read out is the letter set itself.
+                </p>
+                <p>
+                    Visuals were also difficult to work out. I had to build different APL forms for different devices and include information in different ways. I wanted to show things like definitions, leaderboards, and more which was a challenge.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was able to overcome accuracy limitations of the voice system by using a combination of tools and services, and being able to achieve all of this while remaining fast in my responses is something I'm very proud of. I was also able to reuse many of my solutions to these problems to display unique and additional information on the APL display. For example, since I already looked up the words to see if they were real I was able to easily include definitions, lexical categories, examples, and etymology in the display. This was in addition to the leaderboards.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned how to integrate new tools into my design such as Redis, various dictionary and homonym apis, and a persistent database to store long term information. I also learned how to track global users on the leaderboard and report finely tuned information the users.
+                </p>
+                <h2>
+                    What's next for Word Scrambler
+                </h2>
+                <p>
+                    Next up I'm planning on adding some new features and words to the game to give players new things to strive toward. I want to keep the game engaging and add in a system where speed is key. I would like to add the ability to not only turn on local play but to also turn on a rotating word mode. This would continually loop players through their playable word sets and allow them to guess a best scoring word from each set. At the end of ten rounds, an ongoing leaderboard would show who did the best out of all ten words with one guess.
+                </p>
+                <p>
+                    This would allow players to play locally against all other players who are logged in at the same time, but there are more kinks I need to work out related to how quickly players interact with the game.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://llitd.com/skills/word-scrambler" rel="nofollow" target="_blank" title="https://llitd.com/skills/word-scrambler">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                llitd.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

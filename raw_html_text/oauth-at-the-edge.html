@@ -1,0 +1,184 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Implementing OAuth across mutliple backend services leads to a lot of code duplication and is cumbersome to build, maintain and scale.
+                </p>
+                <p>
+                    This project implements the Okta OAuth APIs on Fastly's VCL service, that executes code at the edge. This allows any backend origin server to be automatically secured via Okta's Authorization Service and prevents cross site scripting attacks. Maintaining OAuth across entire services is extremely useful and does not need any code change.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The Fastly VCL takes a Varnish Format and rewrites requests to the Okta server if an access token or cookie does not exist. See this fastly fiddle for the code implementation:
+                    <a href="https://fiddle.fastlydemo.net/fiddle/ca918f37" rel="nofollow">
+                        https://fiddle.fastlydemo.net/fiddle/ca918f37
+                    </a>
+                </p>
+                <p>
+                    Once a user logs in via Okta, the redirect URI hits fastly where the token is checked and sent to an OAuth proxy server for retrieving the access token.
+                </p>
+                <p>
+                    The origin server is set to example.com (this can be multiple services of your site), and an OAuth proxy on Glitch that sends the Basic Auth header to Okta and sends back the token to Fastly. This token is then attached to every subsequent request that is sent to the upstream origin servers. The token also respect's Okta's expiry header.
+                </p>
+                <p>
+                    This allows any backend service to have a one-click Oauth enabled on the service. All you have to do is attach the backend server as an upstream origin on Fastly.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used the following:
+                </p>
+                <ol>
+                    <li>
+                        Fastly VCL
+                    </li>
+                    <li>
+                        Okta's Server side OAuth Flow:
+                        <a href="https://developer.okta.com/authentication-guide/implementing-authentication/auth-code/" rel="nofollow">
+                            https://developer.okta.com/authentication-guide/implementing-authentication/auth-code/
+                        </a>
+                    </li>
+                    <li>
+                        Glitch for the OAuth Proxy Nodejs Service:
+                        <a href="https://glitch.com/%7Eokta-auth-edge" rel="nofollow">
+                            https://glitch.com/~okta-auth-edge
+                        </a>
+                    </li>
+                </ol>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Implementing the OAuth protocol at the edge was very challenging. I had to figure out how to rewrite and transform request headers and backend servers, learn the varnish syntax and implement the Okta api.
+                </p>
+                <p>
+                    The token exchange API takes POST body data, so I could not modify it directly within Fastly VCL, since it does not grant access to POST bodies. I wrote a quick OAuth proxy service in nodejs to write the POST body and authenticate with Okta.
+                </p>
+                <p>
+                    Glitch has a limitation to point custom domain names on it, so the fastly domain tends to 404. However, other services that allow custom domains should work.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ol>
+                    <li>
+                        Running OAuth at the edge!
+                    </li>
+                    <li>
+                        Implementing the Okta APIs
+                    </li>
+                    <li>
+                        Integrating Okta into Fastly for a CDN level authorization.
+                    </li>
+                </ol>
+                <h2>
+                    What I learned
+                </h2>
+                <ol>
+                    <li>
+                        OAuth end to end implementation for backend services
+                    </li>
+                    <li>
+                        Fastly VCL
+                    </li>
+                </ol>
+                <h2>
+                    What's next for oauth-at-the-edge
+                </h2>
+                <ol>
+                    <li>
+                        The capabilities of OAuth at the Edge are exciting. I plan to use Okta's JWT with React and verify the JWT Tokens in Fastly VCL, since these don't need the POST body to be modified.
+                    </li>
+                    <li>
+                        Implementing other forms of authentication via Okta at the edge. Seemingly every API Okta has to offer can be implemented at edge servers including services like Cloudfare workers and AWS Cloudfront's Lambda"edge
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/fastly">
+                                fastly
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/okta">
+                                okta
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            varnish
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://oktaatedge-devpost-hackathon.com.global.prod.fastly.net" rel="nofollow" target="_blank" title="http://oktaatedge-devpost-hackathon.com.global.prod.fastly.net">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                oktaatedge-devpost-hackathon.com.global.prod.fastly.net
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://fiddle.fastlydemo.net/fiddle/ca918f37" rel="nofollow" target="_blank" title="https://fiddle.fastlydemo.net/fiddle/ca918f37">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                fiddle.fastlydemo.net
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://repl.it/@imalhi/okta-edge-auth" rel="nofollow" target="_blank" title="https://repl.it/@imalhi/okta-edge-auth">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                repl.it
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://glitch.com/edit/#!/okta-auth-edge" rel="nofollow" target="_blank" title="https://glitch.com/edit/#!/okta-auth-edge">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                glitch.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,125 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="797608" data-title="Application Core Selection Screen, FPGA with Encrypted Data Shown" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/797/608/datas/original.jpg">
+                            <img alt="SiloBase &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/797/608/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Application Core Selection Screen, FPGA with Encrypted Data Shown
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Our team wanted to do a hack that combined hardware and software, most specifically working with an FPGA. At first, we started working on using the partial reconfiguration component of an FPGA to dynamically change processing power for individual cores based on the current task it had. However, after a lot of deliberation and the potential of having a high hardware reconfiguration time, we decided to pivot to a different use for the FPGA. We decided to utilize soft-core processors that we configured onto the FPGA to create siloed processing environments with authentication for data access and a failed credential system to keep the data safe.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    What we made was a smaller scale demonstration of how a data system may use this type of protection In order to access processors and the data with secure access and a failed credential system that if triggered moves the user into a different siloed core with dummy data.
+                </p>
+                <p>
+                    In order to use the SiloBase, you open up the iOS app that interfaces with the FPGA. Once open you can choose to access two different siloed processors on the FPGA. Once you choose the processor, in this case, Core 1 or Core 2 the iOS app connects you to that processor. The user is then moved to a screen where the Processor creates a unique set of keys to allow you to encrypt and send it data. The FPGA sends the user a Public Key that is viewed on the screen but is also internally stored for the encryption.
+                </p>
+                <p>
+                    The user can then input data in the range of 1-20 that will be encrypted, once the encryption process is complete, the phone sends the encrypted data to the FPGA to be stored until decryption. Once the FPGA receives the data it displays on a 7-segment display the encrypted data and it sends a password to the phone that is needed to decrypt it. The password is displayed in the decimal form and the user needs to enter the binary equivalent on the FPGA switches to decrypt and view the data. Lastly, the decrypted data is shown to the user for 10 seconds before the FPGA resets.
+                </p>
+                <p>
+                    If however, a user inputs a wrong binary access key, then the FPGA shows them a separate core that contains dummy data to simulate as if the unauthorized user got access to real data. On the FPGA it will show the dummy data until the system is reset.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The main technologies that we used were the NEXYS 4 DDR FPGA with the Xilinx SDK and Vivado Design Suite in the programming language C. We built the iOS App in the XCODE IDE with Swift and used Bluetooth LE to interface communication between the phone and the processors. We then made another visual representation of the cores with Python and serial communication with the FPGA.
+                </p>
+                <p>
+                    To start we split the work into two areas at first. Hardware and iOS Software. On the hardware side, we had to determine how many soft-core processors we wanted to make on the FPGA. Once that was decided, we then created the FPGA design in the Vivado Design Suite. This took roughly 6 hours before we could start writing the code for the processors, communication and encryption/decryption on the hardware side. During this 6 hours, we wrote the iOS application to communicate with the two different processors out of the 3 we created. This involved creating logic to connect to the Bluetooth that was specific to each processor. Once that logic was completed work began on receiving data from the FPGA and going through a series of logic processes to encrypt the entered data and then sending it back to the FPGA. At this point, FPGA firmware development began and we were able to reach a point where we could begin communication testing with the phone and the processors. This development took was about another 6 hours. After this development, we began bug testing and running many different data inputs within the range to ensure that the system continued to work. The very last thing we worked on was implementing another visualization screen to show total counts of successful processor access and failed attempts.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Many of the challenges we ran into were in the hardware configuration stage of SiloBase. Our team had a beginner to Intermediate understanding of FPGAs from school work but never had down a more customized approach with FPGAs. Another challenge with the FPGAs was the amount of memory and the total amount of bits that variables can store. This was a problem since the private and public keys that are generated each time are extremely large numbers. In order to combat this we can to set a limited range for the key generation, although it works on a small scale on a larger scale we would utilize the full range available to create the keys.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are extremely proud that were able to complete our envisioned system on a small scale with the knowledge that we had.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    At the start our software development skills in aggregate heavily outweighed our skills in hardware, however, since building SiloBase, The team grew exponentially in FPGA development and we further improved software skills. We learned how to reprogram Bluetooth Modules for selective pairing and communication as well.
+                </p>
+                <h2>
+                    What's next for SiloBase
+                </h2>
+                <p>
+                    The next step would be to scale the system bigger with an FPGA array that can have many processors with more memory and more refined user interaction. Testing would be done with integrating this into data centers to help secure processes and data, and tools can be used to track the unauthorized user who gains access to the isolated dummy data and processing.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            fpga
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            verilog
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vivado
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

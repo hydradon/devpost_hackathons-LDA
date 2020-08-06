@@ -1,0 +1,240 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/gtSHrm3yi8Y?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="900379" data-title="Warnings when you are about to send a potentially harmful message" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/900/379/datas/original.png">
+                            <img alt="Kaiwa Sensei &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/900/379/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Warnings when you are about to send a potentially harmful message
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="900380" data-title="Simple chat interface" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/900/380/datas/original.png">
+                            <img alt="Kaiwa Sensei &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/900/380/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Simple chat interface
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="900381" data-title="Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/900/381/datas/original.png">
+                            <img alt="Kaiwa Sensei &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/900/381/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When you're messaging anyone, sometimes it can be a bit difficult to read the mood and the situation of the conversation. Think about when you were talking to someone you liked, or perhaps it was to someone new in a professional environment.
+                </p>
+                <p>
+                    And sometimes, when we are entangled in tough and stressful situations like chasing a deadline or in a heated debate, as humans, we sometimes make the mistake of firing hurtful or negative comments; if only we could have a second chance, or if only there was someone to tell us to slow down, think again, asking, "are you sure you want to send it?".
+                </p>
+                <p>
+                    Through these thoughts, we have developed Kaiwa Sensei, a small chat service that helps you by providing the conversation mood and also, giving you that second chance!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Kaiwa Sensei is a chat extension on Facebook Messenger that users can open up to chat with other Facebook users. It accomplishes two main things.
+                </p>
+                <p>
+                    Firstly, Kaiwa Sensei utilises Natural Language Processing (NLP) to conduct sentiment analysis on messages that a user wishes to send, allowing it to detect whether the message is positive or negative. If Kaiwa Sensei determines that the message is negative, it prompts the user that their message may be potentially hurtful or insensitive and asks if they wish to continue. The user can then choose whether to send their original message or edit it. Kaiwa Sensei even points out specific words in your message that might be construed as being negative or being positive!
+                </p>
+                <p>
+                    Secondly, Kaiwa Sensei taps on the pre-trained NLP model TorchEmoji to determine the emoji usually associated with the messages being sent by the two users in the conversation. It then displays this emoji on the bottom, visible to both users. This makes the &lsquo;vibe&rsquo; of the conversation more transparent and enables people to better understand the impact that their messages could have on the other party.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            Decision to build on top of a Web Extension 
+In order to build a service that sits in between two people whilst they're having a discussion, we needed to port all the messages from the webhook server into a separate server with more flexible APIs. We chose to build our own web interface and link it to messenger through the Web Extension. 
+In this sense, what we provide with Kaiwa Sensei is a chat inside a chat and by doing so we were able to apply further processing on the messages that users send to each other. We hosted this Web interface through ngrok port tunnelling that exposes our messenger messages to our chat server.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Providing the chat service with our Node.JS chat server 
+The chat service is all served on a Node.JS server which is also tunnelled to the Internet using ngrok. Once the service gets the messages it serves 3 purposes:
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    a. Takes the message and dynamically updates the web interface to allow the two users to communicate to one another.
+                </p>
+                <p>
+                    b. Takes the message and parses the message through our python script which run the message through a pre train model that gives us the mood of the message. The pretrained model is called TorchMoji; it takes a string and outputs emojis. We needed to map the emojis to moods (there is where we would introduce some kind of bias) and use the result to give response to the users on what the mood of the conversation is.
+We then also take this information and check if the mood of the message is a negative one, if so, we will parse the string to notify the user which of the words in the sentence could be changed to alter the negative connotation of the sentence, and also give feedback to the user that the message is deemed negative and hope the user would reconsider.
+                </p>
+                <p>
+                    c. The chat service then also manages the storage of users and user messages where we used SQLite.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    As none of us had experience in PyTorch or Messenger, the Hackathon has been a challenging but enriching experience over all. We had no experience in networking fundamentals either, hence Heroku and ngrok were novel tools for us as well.
+                </p>
+                <p>
+                    Our initial ideas were ambitious and fun, however the more we started to develop, the more we realised that some of the ideas were unachievable currently with our level of expertise in PyTorch and tight deadline. Therefore we had to improvise our solutions on many occasions which made the overall vision of the product waver, as well as create numerous frustrating bugs to fix.
+                </p>
+                <p>
+                    Trouble with Messenger:
+We felt that the Messenger tutorials weren&rsquo;t clear, and there were many links and variations of the tutorial to create a chat bot. There were too many links that led to the same web page or section, which made the steps convoluted and confusing at times. 
+Some tutorials asked us to use heroku, some asked us to use ngrok, therefore it was very troubling to debug as the tutorials only provide a brief overview of the code, not providing the explanations. There was a caching issue with our website as well while we were testing out our ngrok server, a certain .env variable was refusing to be updated and we were scratching our head the entire time, so it would be preferable in the future if there was an indication of this particular caching issue.
+                </p>
+                <p>
+                    Trouble with PyTorch:
+The PyTorch tutorials have been helpful, however 2-days only allowed our team to gain a shallow understanding of the platform and applications, making it difficult to create anything remotely useful with ML. There were certain intricate use cases that bypassed our NLP sorting algorithm which we did not know how to fix due to our limited understanding of PyTorch.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We originally wanted a messenger bot between two people to carry out the functionality mentioned above. Unfortunately, this was not possible. Additionally, we wanted to conduct sentiment analysis on a user&rsquo;s text messages before the other party received it. This was also not possible because there was no webhook for it.
+However, we managed to create an innovative solution with a chat extension. This extension allowed users to interact easily while still enabling us to flag out potentially harmful negative messages.
+                </p>
+                <p>
+                    The idea for the NLP engine to process and give us the mood of the sentence was comfortably achieved through the pretrained TorchMoji model. However, when we wanted to highlight which words the user should change in the case that the application decides the user should review the message, we realised how difficult it is to grammatically classify a sentence. Instead we opted to create our own static dictionary of negative and positive words. We then checked every word of the sentence to identify whether the word carries a negative or positive connotation. Doing so allowed to identify which words the user might be interested in changing.
+                </p>
+                <h2>
+                    What's next for Kaiwa Sensei: Sentiment Analysis of Messenger messages
+                </h2>
+                <p>
+                    The app will display different possible "vibes" for the conversation and the user will be able to select the desired vibe. Then, the app will give sugestions about which words can be changed
+show a flowchart with the most 5 dominant emotions allow the user to chose the tone of the conversation (formal, semiformal, informal) and warn the user when the other party changes the tone display statistics representing daily, weekly and monthly vibes of conversations display users' engagement in conversations warn the user when the message contains opposite emotions (e.g. detect irony).
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/facebook-messenger">
+                                facebook-messenger
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/github">
+                                github
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ngrok
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pytorch">
+                                pytorch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sentiment-analysis
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/shu8/Facebook-Conversational-AI-Hackathon-2019" rel="nofollow" target="_blank" title="https://github.com/shu8/Facebook-Conversational-AI-Hackathon-2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://pytorchmessengerhackathon.splashthat.com/" rel="nofollow" target="_blank" title="https://pytorchmessengerhackathon.splashthat.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                pytorchmessengerhackathon.splashthat.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

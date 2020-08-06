@@ -1,0 +1,226 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="734787" data-title="Shard A/Block0 (A0) sends a message, shard B/Block0 (B0) receives it, and shard B/Block1 (B1) applies the transaction" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/734/787/datas/original.png">
+                            <img alt="StretchVM - The CBC Casper cross-shard messaging &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/734/787/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Shard A/Block0 (A0) sends a message, shard B/Block0 (B0) receives it, and shard B/Block1 (B1) applies the transaction
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="734788" data-title="After the above flow (a message sent from ShardA/Block0) we see that the contract is called in the next block (setting X to 8, for example)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/734/788/datas/original.png">
+                            <img alt="StretchVM - The CBC Casper cross-shard messaging &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/734/788/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                After the above flow (a message sent from ShardA/Block0) we see that the contract is called in the next block (setting X to 8, for example)
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    While there have been a lot of research and discussions around how Ethereum could soon see its transaction processing capacity increase dramatically through the use of so-called 'sharding', we took a pragmatic approach to create, what we call, a Stretch VM (Stretch is part of the Ghostly Trio, with Casper and friends), which supports for the first time, cross-shard messaging, which is build into the block structure.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It is a fully compliant Ethereum Virtual Machine, that allows for the first time the ability to send messages between shards (using the shard_id), as part of the block structure.
+                </p>
+                <p>
+                    Specifically, we added a new VM type, called StretchVM. Stretch VM  that has cross shard messages (XMessages) built into the block structure... so that it's super easy to send and/or receive such messages across shards.
+                </p>
+                <p>
+                    We are able to demonstrate 2 types of X-Shard transactions:
+                </p>
+                <ol>
+                    <li>
+                        An ETH transfer,
+and,
+                    </li>
+                    <li>
+                        A contract call.
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    From scratch, we implemented the CBC Casper sharding specification and defines 3 new block fields:
+                </p>
+                <ul>
+                    <li>
+                        Sent XMessage Log Root: The root of the sent XMessage trie, which are sent in this block
+                    </li>
+                    <li>
+                        Received XMessage Log Root: The root of the received XMessage trie, which are received in this block
+                    </li>
+                    <li>
+                        ShardID: An int identifier for which the shard to which the block belongs
+                    </li>
+                </ul>
+                <p>
+                    Any transaction that has a destination address in another shard is processed as a sent XMessage.
+A sent XMessage is seen by the receiving shard in the Sent XMessage Logs of that blocks, and then is inputed as a received XMessage in their shard. This will be processed, and the appropriate transaction will be applied in the receiver shard while also putting the XMessage in the Received XMessage Logs.
+                </p>
+                <p>
+                    The X-Shard contract calls work seamlessly, just like any other transaction. This is due to the transaction data being transmitted as-is through the sent XMessage into the received XMessage, and finally into a transaction applied on the destination shard.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        Lack of sleep
+                    </li>
+                    <li>
+                        It took a while to add a custom BlockHeader in StretchVM.
+                    </li>
+                    <li>
+                        We needed to make our own header called StretchBlockHeader with some new fields such as Sent XMessage Log Root, Received XMessage Log Root and Shard ID.
+                    </li>
+                    <li>
+                        In order to incorporate our changes we had to take a deep dive into the codebase and modify the Chain, VM and the RLP serialization and encoding for the XMessages.
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to extend an existing Ethereum VM, to support the ability to exchange (send and receive) messages across shards, as a new transaction type, in a way that will allow us and others to implement both CBC Casper as well other protocols, while keeping the same workflow and lifecycle of Ethereum transaction processing.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned the depth and details about the full lifecycle of Ethereum transactions, but now, from within the EVM.
+We spent a considerable amount of time on making sure that our implementation is built as a "first class citizen" of the VM, by leveraging the hierarchy of Chains, VMs, their coordination, as well as their State.
+                </p>
+                <p>
+                    It took us multiple iterations to get the design right - and now we believe that this layer can be used out of the box, both for our research, for follow up implementations as well as other protocols that will leverage sharding, at scale.
+                </p>
+                <h2>
+                    What's next for StretchVM - The CBC Casper EVM
+                </h2>
+                <p>
+                    Let's begin from the end:
+                    <strong>
+                        An Upstream Pull Request back to the py-evm project
+                    </strong>
+                    , as well as:
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            CBC Casper client
+This implementation is built to implement the EVM for the Casper CBC sharding proposal. We will use it to implement a CBC Casper client (after a suitable network stack is built), and to run network emulation tests to determine the performance of the sharding proposal!
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Book-keeping Manager
+There are a lot of discussions about automatic sharding and ongoing sharding optimization algorithms. We would like to create an automated tool that will let users submit normal transaction as XMessages, by filling in the bookkeeping information involved in these XMessages
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Optimized Serialization
+While this was done very quickly through a hackathon, there are probably ways to construct (and serialize) the XMessages better, by choosing an optimal serialization encoding, and structure.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Research, Research, Research!
+Apart from this implementation, there is research to be done to make the specification better (&amp; more complete). For example, coming up with (&amp; implementing) a light client protocol for this proposal!
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            An Upstream Pull Request (PR) back to the EVM project
+Since we worked very hard on the design this solution, not just as a one-off hack, but as work that will be contributed back to the community, the extended project (of py-evm) so that others can use it - seamlessly.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Does this actually work? Can I see it?
+                </h2>
+                <p>
+                    <strong>
+                        Yes and Yes!
+                    </strong>
+                </p>
+                <p>
+                    Please clone
+                    <a href="https://github.com/cbc-casper/py-evm" rel="nofollow">
+                        https://github.com/cbc-casper/py-evm
+                    </a>
+                    by executing
+'git clone
+                    <a href="https://github.com/cbc-casper/py-evm" rel="nofollow">
+                        https://github.com/cbc-casper/py-evm
+                    </a>
+                    ', and run:
+                </p>
+                <p>
+                    <strong>
+                        python3 tests/cbc/test.py
+                    </strong>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ethereum's-evm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            py-evm
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/cbc-casper/py-evm" rel="nofollow" target="_blank" title="https://github.com/cbc-casper/py-evm">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

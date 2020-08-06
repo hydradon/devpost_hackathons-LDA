@@ -1,0 +1,110 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    All of our group members currently use Monzo, and so when we saw that they had set a task, we though it would be interesting to get an insight into how the application works. The idea of having receipts in the app is something we all though would be very useful, and so we said that trying to integrate this with Gmail and and OCR would be a fun challenge which is something we know we would all use.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The application displays recent transactions to the user, and if the user clicks the "Add Receipt" button, then it will use the Gmail API to scan their emails, find the correct one, and gather the receipt data, adding this to the Monzo application. It is also possible to have pictures of receipts if they are physical and not in your emails, and then the same algorithm is run on the text data gathered from the receipt using Microsoft Azrure OCR to get the equivalent information and add it to the transaction in the Monzo app. This however is only available in the GitHub repo, and is not available on the web interface as of yet.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We build it using the Monzo API and the Gmail API. We also used Microsoft Azure OCR to allow for pictures of receipts to be taken and translated. 
+As it is infeasible to demonstrate the project with live transactions, we decided to create a basic web interface which can list historic transaction data, and from this, the user can select a transaction which has an online receipt, and with the click of a button can generate a receipt in the Monzo app. This is done using the Gmail API by finding the appropriate email using date and time, as well as merchant information such as name. We the use a regular expression to parse this email and extract the appropriate information, which includes items, prices, quantities, vat, as well as promotions and discounts applied. This is all then fed into the Monzo API, where it is added as a reciept to the appropriate transaction.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One major challenge we had was parsing the different types of receipts and email types. This is because different companies format these differently, and so we tried to make a regex which covered the majority of cases, but worked extremely well with some major companies such as Amazon.
+                </p>
+                <p>
+                    Discounts such as gift cards were specific examples of problem areas, because they would be displayed in unusual places in the emails, and also may cause issues with summation of receipts in the application, so we had to spend time working around these issues, and eventually came up with a solution which was logical.
+                </p>
+                <p>
+                    A final challenge was integrating the OCR with the web interface. As we decided this wasn't an integral part of our application, we didn't put this into the web interface, however we managed to get receipts to be converted to text successfully locally.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud that we integrated the Monzo and Gmail APIs well as we intended, and also managed to extend it to use OCR using the Microsoft Azure Cognitive Services. We also managed to make the application much more generalised than we initially planned, as the regex worked on many receipts and emails from various companies, despite us initially just focussing on parsing Amazon receipts. However, after looking at some other companies, we found lots of similarities and were able to generalise it without jeopardising the functionality on existing companies we got it to work for such as Amazon.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about using APIs, for example having to read documentation to find the correct names for variables etc. HTTP requests were another area which we weren't particularly familiar with, but through using the Monzo and Gmail APIs are now much more fluent.
+                </p>
+                <h2>
+                    What's next for Monzo Receipts
+                </h2>
+                <p>
+                    Next, we would like to implement automatic receipt detection in emails. This is not particularly difficult at all, however we just did not focus on it because we knew it would require live purchases to demonstrate, which is infeasible, and therefore opted for a model which allowed uploading of historical receipts. Automatic receipt detection in emails would only require the existing application to be triggered once a transaction occurs, but we would probably leave a small delay for the email to be received. We would also like to incorporate the OCR into the web interface, or potentially allow users to upload photos directly in the Monzo application.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sqlite">
+                                sqlite
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/et-tamen-compilat/monzo-receipts" rel="nofollow" target="_blank" title="https://github.com/et-tamen-compilat/monzo-receipts">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

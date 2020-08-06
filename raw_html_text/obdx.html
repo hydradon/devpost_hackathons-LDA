@@ -1,0 +1,229 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/MPsNLl6NWbo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="741452" data-title="Demo Overview" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/741/452/datas/original.png">
+                            <img alt="OBDX - Vehicle onboard diagnostics (OBD) data exchange &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/741/452/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Demo Overview
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="741455" data-title="Car Setup" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/741/455/datas/original.png">
+                            <img alt="OBDX - Vehicle onboard diagnostics (OBD) data exchange &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/741/455/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Car Setup
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Traditional approaches to access control generally require one point of trust, e.g., a centralized server managed by a data custodian or a hardware security module. NuCypher presents a departure from this trust-dependent paradigm to introduce a decentralized network for managing permissions over encrypted data, powered by threshold proxy re-encryption. With NuCypher, data originally encrypted under a public key can be re-encrypted by a group of proxies in the network, each of them only transforming a &ldquo;fragment&rdquo; of the original ciphertext. In such a system the data owner can maintain full control over who has access to their data. Blockchain is used by the nucypher network for coordination of nodes and for outlining access permissions, making the access control auditable.
+                </p>
+                <p>
+                    What if vehicle owners could securely share their vehicle onboard diagnostics data (OBD) with entities in an auditable fashion while maintaining full control of data by being able to grant and revoke access to the data? One example could be an Insurance company. Sharing the data could yield cheaper insurance rates, provide predictive maintenance analytics, or resolve a conflict regarding a vehicular accident. NuCypher&rsquo;s proxy re-encryption technology and decentralized proxy network make this possibility a reality.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Alicia has a vehicle with an onboard diagnostics (OBD) device that measure various components and outputs this data in encrypted form.  At some point in the future, Alicia may want to share this data with her Insurance company perhaps for reduced insurance premiums or to resolve a dispute regarding an accident that she was involved in. What if this could be done in a performant manner and such that Alice maintains full control over who can and can&rsquo;t access her data
+                </p>
+                <p>
+                    Since Alicia thinks that she may want to share this data in the future, she uses NuCypher to create a
+                    <em>
+                        policy public key
+                    </em>
+                    for the OBD device to use, so she can read and delegate access to the encrypted data as she sees fit. The OBD device uses this public key to produce encrypted records of sensor measurements; this encrypted data is stored using MQTT and then pulled into a database - alternatively, it could be directly stored in a database which can be located on some storage service (e.g., IPFS, S3, whatever).
+                </p>
+                <p>
+                    At some point, she wants to share this information her Insurance company (Bob). Once she obtains her Insurer's public keys, she can create a policy in the NuCypher network to grant access to him. Through the power of NuCypher&rsquo;s re-encryption network, her Insurer can now obtain the encrypted data (which is populated by the OBD device) and request a re-encrypted ciphertext for each measurement, which can subsequently be decrypted with the Insurer's private key. Additionally, the Insurer&rsquo;s access can be revoked by Alicia at any point which will disallow access to real-time data from the revocation time forward.
+                </p>
+                <p>
+                    This simple use case showcases many interesting and distinctive aspects of NuCypher:
+                </p>
+                <ul>
+                    <li>
+                        Alicia can create policy public keys
+                        <strong>
+                            before knowing
+                        </strong>
+                        who can be the potential consumers.
+                    </li>
+                    <li>
+                        Alicia, or any entity with the policy public key (e.g., the OBD device), can produce encrypted data that belongs to the policy. Again, this can happen before granting access to any consumer.
+                    </li>
+                    <li>
+                        As a consequence of the previous point, Data Sources, like the OBD device, are completely unaware of the recipients. In their mind, they are producing data
+                        <strong>
+                            for Alicia
+                        </strong>
+                        .
+                    </li>
+                    <li>
+                        Alicia never interacts directly with the Insurer: she only needs the Insurer's public key.
+                    </li>
+                    <li>
+                        Alicia only interacts with the NuCypher network for granting access to the Insurer. After this, she can even disappear from the face of the Earth.
+                    </li>
+                    <li>
+                        The Insurer never interacts with Alicia or the OBD device: he only needs the encrypted data and some policy metadata.
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built the demo on top of NuCypher&rsquo;s proxy re-encryption network library called
+                    <code>
+                        nucypher
+                    </code>
+                    .
+                </p>
+                <p>
+                    In order to obtain real vehicular diagnostics data, we developed a script to be run in a Raspberry Pi connected to an ODBII device. The script can read data from the onboard diagnostic bus of the car and encrypt it directly. We have also created a session around the Ada Byron research building in Malaga, Spain, that can be played back to see the code in action without the need for an actual OBDII device. The car service uses MQTT to communicate with all other parties and only needs the public key of the owner of the data, Alicia, to start sending the encrypted data.
+                </p>
+                <p>
+                    Each of Alicia&rsquo;s OBD diagnostic values at a particular timestamp is encrypted using a symmetric key, and the symmetric key is encrypted using a policy public key. This data is pushed to MQTT and is then pulled by an Enrico subscriber to a database. When Bob wants to gain access to the sensor data, he must use nucypher&rsquo;s network of proxies to re-encrypt each set of measurements (each row in the database) so that it is made decryptable by Bob&rsquo;s private key, all without the data ever being decrypted or exposed to the proxy, as is typical for regular public key encryption.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    NuCypher&rsquo;s proxy re-encryption network is not yet public. However, we have been testing it using an internal federated testnet network. Unfortunately, the federated proxy network went through an overhaul and introduced changes that prevented the network from interacting with the demo. Instead, we use a single local proxy node to perform the re-encryption. Even though the node is local it acts the same way as it would within the nucypher network - the only difference being that network only has one node and requests are made to a local IP.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Integrating all of these various technologies was challenging.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    The OBD-II interface and the types of data that could be collected by vehicles was something new for us. MQTT provided a way for us to have the Raspberry time send real time data from the OBD-II device in the car to the demo. We also simulate the real-time collection of data and recorded driving session. Also, we used the Plotly Dash library to provide a UI for the demo which was something we learned on the fly.
+                </p>
+                <h2>
+                    What's next for OBDX
+                </h2>
+                <p>
+                    Code cleanup
+Better visualizations of data by Bob
+Use the demo to showcase the power of nucypher&rsquo;s proxy re-encryption technology with projects focused on the vehicle IoT space. These projects could integrate nucypher&rsquo;s technology into their stack - eg. the AutoPi project:
+                    <a href="https://www.autopi.io/" rel="nofollow">
+                        https://www.autopi.io/
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            mqtt
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nucypher
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            obd
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/plotly">
+                                plotly
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            proxy-re-encryption
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sqlite">
+                                sqlite
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/nucypher/vehicle-data-exchange" rel="nofollow" target="_blank" title="https://github.com/nucypher/vehicle-data-exchange">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://docs.google.com/presentation/d/1PZNgZcLaUU3TQpxN6--gT1gPSgXojtmD3erYLRp-7aI/edit?usp=sharing" rel="nofollow" target="_blank" title="https://docs.google.com/presentation/d/1PZNgZcLaUU3TQpxN6--gT1gPSgXojtmD3erYLRp-7aI/edit?usp=sharing">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                docs.google.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

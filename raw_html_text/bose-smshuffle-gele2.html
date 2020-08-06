@@ -1,0 +1,488 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Bose SMShuffle
+                </h1>
+                <h4>
+                    What is Bose SMShuffle? Well, it is a text service that will allow anyone in any location to search/play/skip and much more via SMS. Currently works with
+                    <a href="http://www.deezer.com/" rel="nofollow">
+                        Deezer
+                    </a>
+                    .
+                </h4>
+                <h3>
+                    <strong>
+                        Technology Used:
+                    </strong>
+                </h3>
+                <ol>
+                    <li>
+                        <a href="http://products.bose.com/api-developer/index.html" rel="nofollow">
+                            Bose SoundTouch API
+                        </a>
+                        - API used for controlling Bose Wi-Fi/SoundTouch enabled devices (
+                        <a href="http://www.bose.com/controller?url=/shop_online/wifi_music_systems/soundtouch_music/soundtouch_20/index.jsp" rel="nofollow">
+                            Example of Devices
+                        </a>
+                        )
+                    </li>
+                    <li>
+                        <a href="https://ngrok.com/" rel="nofollow">
+                            NGROK
+                        </a>
+                        - Software used to tunnel Bose speaker's personal localhost to a public IP
+                    </li>
+                    <li>
+                        <a href="http://flask.pocoo.org/" rel="nofollow">
+                            Flask
+                        </a>
+                        - A microframework for Python used as our server side "
+                        <strong>
+                            Command Center
+                        </strong>
+                        " to routing and managing sms messages.
+                    </li>
+                    <li>
+                        <a href="https://www.twilio.com/" rel="nofollow">
+                            Twilio
+                        </a>
+                        - API SMS service used to send text messages to our Python server
+                    </li>
+                </ol>
+                <h3>
+                    <img alt="Phone Icon" data-canonical-url="https://cdn4.iconfinder.com/data/icons/comfi-telecom-icons/sms.png" src="https://res.cloudinary.com/devpost/image/fetch/s--HgGK5acC--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://cdn4.iconfinder.com/data/icons/comfi-telecom-icons/sms.png">
+                    Current Number: (
+                    <strong>
+                        PRIVATE
+                    </strong>
+                    )
+                </h3>
+                <hr>
+                <h3>
+                    <strong>
+                        The Process
+                    </strong>
+                </h3>
+                <h4>
+                    Step 1: Bose SoundTouch API
+                </h4>
+                <ul>
+                    <li>
+                        Research API structure
+                    </li>
+                    <li>
+                        Find/Test commands in order to "Search" "Play"
+"Pause" "Skip"
+                    </li>
+                </ul>
+                <h4>
+                    Step 2: NGROK
+                </h4>
+                <ul>
+                    <li>
+                        Create tunnel path from localhost "Bose Speaker" to Public Live IP Address
+                    </li>
+                </ul>
+                <h4>
+                    Step 3: Server Side (Flask)
+                </h4>
+                <ul>
+                    <li>
+                        Convert Twilio "text messages" to readable APIq calls for Bose Speaker
+                    </li>
+                    <li>
+                        Command Center ~ Controlling user's texts message in a queueing sort
+method
+                    </li>
+                </ul>
+                <h4>
+                    Step 4: Twilio
+                </h4>
+                <ul>
+                    <li>
+                        Allow users to send SMS to phone number in order to relay message to Server side.
+                    </li>
+                </ul>
+                <hr>
+                <h4>
+                    <a href="https://github.com/Daraghmeh/Bose-SMShuffle/blob/master/documentation/SoundTouchAPI_WebServices_v1.0.1.pdf" rel="nofollow">
+                        API Documentation
+                    </a>
+                </h4>
+                <hr>
+                <h3>
+                    <strong>
+                        Instructions to get Bose speaker onto Wi-Fi network:
+                    </strong>
+                </h3>
+                <ol>
+                    <li>
+                        Simultaneously press Preset 2 &amp; Vol - for 5 seconds until the countdown is complete and the wifi LED is orange
+                    </li>
+                    <li>
+                        On your computer, phone or tablet, connect to the BOSE Soundtouch...
+                    </li>
+                    <li>
+                        Open a browser and go to 192.168.1.1 and follow the instructions
+                    </li>
+                </ol>
+                <p>
+                    After successful connection, the wifi LED on device should be
+                    <strong>
+                        white
+                    </strong>
+                    .
+                </p>
+                <h4>
+                    <strong>
+                        To get the IP:
+                    </strong>
+                </h4>
+                <ol>
+                    <li>
+                        Simultaneously press Preset 5 &amp; Vol - for 5 seconds
+                    </li>
+                    <li>
+                        Use the Vol-/+ keys to scroll through the content until you see the IP Address
+                    </li>
+                </ol>
+                <hr>
+                <h3>
+                    <strong>
+                        How to Run:
+                    </strong>
+                </h3>
+                <ol>
+                    <li>
+                        Download/Clone Repo via GitHub
+                        <a href="https://github.com/Daraghmeh/Bose-SMShuffle" rel="nofollow">
+                            Here!
+                        </a>
+                    </li>
+                    <li>
+                        <strong>
+                            Installing Dependencies
+                        </strong>
+                        &gt; pip install Flask
+Missing Pip, go
+                        <a href="https://pip.pypa.io/en/latest/installing.html" rel="nofollow">
+                            Here!
+                        </a>
+                    </li>
+                    <li>
+                        Go to Twilio Site, see below section
+                        <strong>
+                            How to setup Twilio
+                        </strong>
+                    </li>
+                    <li>
+                        Run ngrok.exe in root
+                    </li>
+                    <li>
+                        Within ngrok run command
+                        <code>
+                            ngrok.exe http 5000
+                        </code>
+                        &gt; This will make the "tunnel" between Twilio and your Python Server. Keep running!
+                    </li>
+                    <li>
+                        Copy the Forwarding Address (Ex:
+                        <a href="http://941f0664.ngrok.io" rel="nofollow">
+                            http://941f0664.ngrok.io
+                        </a>
+                        ) This will be used for Step 8 in the section below.
+                    </li>
+                    <li>
+                        Edit the file, CONFIG.ini
+Change
+                        <code>
+                            speakerAddress
+                        </code>
+                        under
+                        <code>
+                            [config_searchandplay]
+                        </code>
+                        to the address from your Bose speaker itself in the steps above. 
+Do the same for the
+                        <code>
+                            webViewAddress
+                        </code>
+                        in the same file. 
+The value for
+                        <code>
+                            webViewAddress
+                        </code>
+                        comes from ngrok.exe under
+                        <strong>
+                            Web Interface
+                        </strong>
+                        .
+                    </li>
+                    <li>
+                        Within Repo open a command line (Run as Admin)
+                    </li>
+                    <li>
+                        <p>
+                            In
+                            <strong>
+                                CMD
+                            </strong>
+                            run command
+                            <code>
+                                python server.py
+                            </code>
+                            You will see something like this:
+                        </p>
+                        <p>
+                            <img alt="StartUp" data-canonical-url="http://imgur.com/9c5Jpko.png" src="https://res.cloudinary.com/devpost/image/fetch/s--Zx4kYLBQ--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://imgur.com/9c5Jpko.png">
+                        </p>
+                    </li>
+                </ol>
+                <h3>
+                    <strong>
+                        Done!
+                    </strong>
+                </h3>
+                <h3>
+                    Easy Method: Virtualenv
+                    <em>
+                        (Linux)
+                    </em>
+                </h3>
+                <ol>
+                    <li>
+                        Install virtualenv, either
+                        <code>
+                            sudo apt-get install python-virtualenv
+                        </code>
+                        or
+                        <code>
+                            sudo pip install virtualenv
+                        </code>
+                    </li>
+                    <li>
+                        Run virtualenv with Python 3.X interpreter,
+                        <code>
+                            virtualenv -p python3 envname
+                        </code>
+                        Change envname to whatever you like, we will use Bose-SmShuffle
+                    </li>
+                    <li>
+                        Now activate virtualenv,
+                        <code>
+                            source Bose-SmShuffle/bin/activate &amp;&amp; python -V
+                        </code>
+                    </li>
+                    <li>
+                        Open directory,
+                        <code>
+                            cd Bose-SmShuffle
+                        </code>
+                    </li>
+                    <li>
+                        Now for the python modules Twilio and Flasks
+                    </li>
+                    <li>
+                        Twilio,
+                        <code>
+                            easy_install Twilio
+                        </code>
+                    </li>
+                    <li>
+                        Flask,
+                        <code>
+                            easy_install Flask
+                        </code>
+                    </li>
+                    <li>
+                        Finally run,
+                        <em>
+                            python server.py
+                        </em>
+                    </li>
+                </ol>
+                <h3>
+                    <strong>
+                        Okay, now it is really done!
+                    </strong>
+                </h3>
+                <hr>
+                <h3>
+                    <strong>
+                        How to setup
+                        <a href="https://www.twilio.com/" rel="nofollow">
+                            Twilio
+                        </a>
+                        :
+                    </strong>
+                </h3>
+                <ol>
+                    <li>
+                        Create an Account
+                    </li>
+                    <li>
+                        Create a Number # (With Capabilities set to ANY)
+                    </li>
+                    <li>
+                        Now go to Account Settings (Upper Right Corner)
+                    </li>
+                    <li>
+                        Copy your AccountSID (Ex: ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) and replace the value
+                        <code>
+                            account_sid
+                        </code>
+                        in the file
+                        <code>
+                            CONFIG.ini
+                        </code>
+                    </li>
+                    <li>
+                        Copy your AuthToken (Ex: 5eXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX) and replace the value
+                        <code>
+                            auth_token
+                        </code>
+                        in
+                        <code>
+                            CONFIG.ini
+                        </code>
+                    </li>
+                    <li>
+                        Finally for configuring variables, change
+                        <code>
+                            from_
+                        </code>
+                        in
+                        <code>
+                            CONFIG.ini
+                        </code>
+                        to your Twilio number.
+                    </li>
+                    <li>
+                        On the Twilio Site, go to
+                        <strong>
+                            Numbers
+                        </strong>
+                        (Main Black bar on Twilio site)
+                    </li>
+                    <li>
+                        Click your # &gt; Scroll Down to
+                        <code>
+                            SMS &amp; MMS
+                        </code>
+                    </li>
+                    <li>
+                        Replace Request URL with your NGROK value (Ex:
+                        <a href="http://941f0664.ngrok.io" rel="nofollow">
+                            http://941f0664.ngrok.io
+                        </a>
+                        )
+                    </li>
+                </ol>
+                <h3>
+                    <strong>
+                        Commands
+                    </strong>
+                    :
+                </h3>
+                <ol>
+                    <li>
+                        Song &amp; Artist (takes a string) Ex:
+                        <code>
+                            Michael Jackson - Beat It
+                        </code>
+                    </li>
+                    <li>
+                        Volume (takes an integer, 0-100) Ex:
+                        <code>
+                            Volume 20
+                        </code>
+                        or
+                        <code>
+                            Volume Up
+                        </code>
+                        or
+                        <code>
+                            Volume Down
+                        </code>
+                    </li>
+                    <li>
+                        Boo (Allows users of the speaker to vote on skipping a song) Ex:
+                        <code>
+                            Boo
+                        </code>
+                    </li>
+                </ol>
+                <p>
+                    <img alt="" data-canonical-url="http://i.imgur.com/RWyJrql.png" src="https://res.cloudinary.com/devpost/image/fetch/s--iMJa8sF5--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/RWyJrql.png">
+                </p>
+                <hr>
+                <h4>
+                    Team: Andrew Bauer, Mohammad Daraghmeh, Umair Ghazi, &amp; Michael Lynch.
+                </h4>
+                <p>
+                    <img alt="The Team" data-canonical-url="http://imgur.com/4aFXcjh.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--iGRxKXtA--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://imgur.com/4aFXcjh.jpg">
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bose-soundtouch">
+                                bose-soundtouch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ngrok
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://daraghmeh.github.io/Bose-SMShuffle/" rel="nofollow" target="_blank" title="http://daraghmeh.github.io/Bose-SMShuffle/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                daraghmeh.github.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

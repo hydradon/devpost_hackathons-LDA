@@ -1,0 +1,246 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/0_UKQz8kloI?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="507120" data-title="project structure" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/507/120/datas/original.png">
+                            <img alt="Teacher substitution schedule &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/507/120/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                project structure
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Disclaimer
+                </h2>
+                <p>
+                    This skill acts as a companion for our app developed prior to the hackathon but the skill itself was completely new created within the submission period of the hackathon.
+So although the development of the skill was a project itself some time after the development of the server backend and the mobile app, we will still refer to both in this whole story because the skill would not exist without the prior project due to the inspiration as well as its dependance on the previous project.
+                </p>
+                <h2>
+                    Inspiration and motivation to do this project
+                </h2>
+                <p>
+                    As explained in the video we started the project motivated by the user unfriendly experience at that time newly available teacher substitution schedule website for our German high school provided.
+                </p>
+                <p>
+                    After we discovered Alexa on a Rasperry Pi and getting into Alexa development with Python, we started discussing how Alexa could benefit the substitution schedule project. The idea about waking up and asking Alexa about possible canceld lesson was exciting. For the Alexa skill itself we got inspired to futher improve the accesibility and comfort to access this information via VUI when we first heard about the Alexa skills kit.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It enables you to ask Alexa for your personalized substitution information.
+It's best to see the functionality in the demo video but basically the skill functions as a easier method to get the substitution information of our app.
+To register you select the class and course you participate in the app and our application filters, saves and send you only the substitution information concerning you.
+The Alexa skill that is the subject of this submission is linked to your app account which enables it to tell the user wether the student has any substitution concerning him and if so dictate him all relevant information.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <h4>
+                    Preface
+                </h4>
+                <p>
+                    We started by building a parser for the online schedule a year ago. It collects the entries regularly and saves them in our MongoDB database. This Java application also checks if the users saved in the database are affected by entries on the schedule. During that time we developed many different solutions for notifing users about their entries. The project evolved to an hybrid mobile App for iOS and Android. This app uses our NodeJS backend for retrieving data from the server.
+                </p>
+                <h4>
+                    Getting started with Alexa
+                </h4>
+                <p>
+                    We started by reading the Alexa skills kit documentation and watched different tutorials on using the Alexa skills kit and flask-ask. Flask-ask and python seemed the easiest framework for beginners after an overview of the available solutions. So we chose this method and started to build it with the most basic intents, utterances needed and served it using ngrok while developing it. To allow interaction with our server we needed to expand our REST-API and create a account linking method. The creation of this account linking method to link accounts of an Alexa user with the users of our app got the most complicated building the skill. After implementing most basic intents, further developing the API and deploying it to AWS lambda with zappa (which seemed the easiest and most reliable for Alexa skills) we tried to submit the skill for certification for the first time.
+                    <br>
+                    This first try failed with some complaints including concerns on VUI implementation, security validation of requests and especially account linking.
+                    <br>
+                    Therefore we fixed the criticised points, further enhanced the VUI interface with built in intents like the cancel and help intents and interaction prompts for launch only intents, rebuilt the complete account linking flow and followed all available blogs and docs on pre-certification checklists.
+                    <br>
+                    After fixing those points and making sure our skill followed all certification guidelines we submitted the skill for certification again and it passed.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        The parser for the online schedule had some uncalculated bugs but because we are not asociated with the school there was no other way to get the data.
+                    </li>
+                    <li>
+                        The online teacher substitution schedule is written by one of the teachers so it's subject to sudden syntax/markup changes which made the development of the parser even more complicated.
+                    </li>
+                    <li>
+                        Developing a reliable communication between the user of the app/Alexa and our server via an API was a task new to both team members.
+                    </li>
+                    <li>
+                        The account linking flow using existing oauth providers (we use login with amazon) and linking these instances to app users which are only identified by their unique push message provider ID was not easy to figure out. At creating this process we struggled with some lacking information in documentation (in contrast to all other aspects of the Alexa Skills Kit).
+                    </li>
+                    <li>
+                        We started with strong differences in skill and experience levels which led to an imbalance of work at first while developing the initial backend and parser. This was later indemnified after the project experience balanced the skill levels and a strong interest in Alexa Skills motivated David to develop this Alexa skill to enhance the pre-existing base backend and mobile app.
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        David newly learned multiple modern technologies for example the use of NoSQL (MongoDB), NodeJS Web Development with express.js, hybrid app development with Ionic Cordova
+                    </li>
+                    <li>
+                        It was the first Alexa skill that any of our team members built and it taught us many things about developing with the Alexa skills kit platform e.g. the concept of intents, utterances, SSML and development of custom skills with Flask Ask.
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    The main part of the project was learning to develop an Alexa skill. Furthermore we exteded our knowlede in NodeJS development while developing backend extensions for the skill.
+                </p>
+                <p>
+                    Main things we learned among others include:
+                </p>
+                <ul>
+                    <li>
+                        Alexa Skill development
+                    </li>
+                    <li>
+                        Web development with express.js and templating with handlebars
+                    </li>
+                    <li>
+                        Basics of NoSQL with MongoDB
+                    </li>
+                    <li>
+                        Login with Amazon implicit grant flow
+                    </li>
+                    <li>
+                        A bettter understanding of networking
+                    </li>
+                    <li>
+                        Using AWS Lambda
+                    </li>
+                    <li>
+                        Zappa
+                    </li>
+                </ul>
+                <h2>
+                    What's next for "Teacher substitution schedule"
+                </h2>
+                <p>
+                    In future we plan to further brainstorm about the possibilites for us to integrate upcoming features that are still in testing phases for the app into the Alexa skill.
+                    <br>
+                    Many features like the plan for upcoming exams and tests which consists of a PDF made available by the school don't seem to be suitable for voice interaction. Other features like the still very experimental function to search for other schoolmates having a free period simultaneously to yourself are more suited to be integrated in future.
+                </p>
+                <h2>
+                    Translation of German skill store descriptions
+                </h2>
+                <h4>
+                    Short skill description
+                </h4>
+                <blockquote>
+                    <p>
+                        App zur sprachlichen Nachfrage nach dem Vertretungsplan der App "Vertretungsplan Newsletter" f&uuml;r die Rabanus Maurus Schule Fulda.
+                    </p>
+                </blockquote>
+                <p>
+                    App to ask for the substitution schedule of the app "Vertretungsplan Newsletter" for the "Rabanus Maurus" school Fulda
+                </p>
+                <h4>
+                    Full skill description
+                </h4>
+                <blockquote>
+                    <p>
+                        Dieser Skill erm&ouml;glicht die personalisierten Vertretungsinformationen der RMS Fulda schnell und unkompliziert abzufragen und stellt somit die Sprach Companion zur "Vertretungsplan Newsletter" App f&uuml;r Android (
+                        <a href="https://goo.gl/74UZsU" rel="nofollow">
+                            https://goo.gl/74UZsU
+                        </a>
+                        ) und iOS (
+                        <a href="https://goo.gl/RqvHrR" rel="nofollow">
+                            https://goo.gl/RqvHrR
+                        </a>
+                        ) der Rabanus Maurus Schule Fulda dar. Weitere Schulen der Region mit dem Untis Online Vertretungsplan werden eventuell folgen. Zur Benutzung dieses Skill muss in den Einstellungen der genannten App  das Feature "Alexa/Echo Support" angehakt sein und die Einstellungen gespeichert werden. Der in der App angezeigte PIN wird sp&auml;ter beim Pairing des Alexa Skill gebraucht, um ihn einzugeben.
+                    </p>
+                </blockquote>
+                <p>
+                    This skill enables you to fast and straightforwardly find out your personalised substitution information of the "RMS Fulda" and it therefore represents the speech companion to the "Vertretungsplan Newsletter" app for Android (
+                    <a href="https://goo.gl/74UZsU" rel="nofollow">
+                        https://goo.gl/74UZsU
+                    </a>
+                    ) and iOS (
+                    <a href="https://goo.gl/RqvHrR" rel="nofollow">
+                        https://goo.gl/RqvHrR
+                    </a>
+                    ).
+More schools using the Untis Online substitution schedule might be implemented in future.
+To use this skill you have to activate the feature "Alexa/Echo Support" in the settings of the app and save. The PIN displayed in the app has to be entered later when the skill gets paired.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            flask-ask
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

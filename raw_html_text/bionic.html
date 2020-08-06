@@ -1,0 +1,213 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="564964" data-title="Bot development library" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/564/964/datas/original.png">
+                            <img alt="Bionic &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/564/964/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Bot development library
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    There are many chat bot development frameworks out there, but non could give me the level of abstraction i needed and at the same time, they did not support some features that were specific to my needs, so I decided to write my own library.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <ul>
+                    <li>
+                        It wraps around the
+                        <strong>
+                            Messenger APIs
+                        </strong>
+                        to make chat bot development a breeze.
+                    </li>
+                    <li>
+                        It provides a developer with expressive ways of listening for different events sent to their webhook.
+                    </li>
+                    <li>
+                        It provides a developer with different apis for building different chatbot features using messeger native elements.
+                    </li>
+                    <li>
+                        It removes the friction of a developer having to deal with the messenger APIs directly.
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    It is driven by a very simple but powerful event dispatching library
+                    <a href="https://github.com/igorw/evenement" rel="nofollow">
+                        &Eacute;v&eacute;nement
+                    </a>
+                    ,
+                    <a href="https://github.com/guzzle/guzzle" rel="nofollow">
+                        Guzzle
+                    </a>
+                    a PHP HTTP client that makes it easy to send HTTP requests and also utilizes the messenger API.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    No challenges
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I feel proud for having built this library with many features to offer
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned how to use appropriate design patterns where necessary to achieve the best performance
+                </p>
+                <h2>
+                    What's next for Bionic
+                </h2>
+                <p>
+                    Am adding support for more messenger features and other messaging platforms and also port it to other languages i.e. python, node.js
+                </p>
+                <h2>
+                    Basic example
+                </h2>
+                <pre class="language-php"><code>&lt;?php
+use Andre\Bionic\Bionic;
+use Andre\Bionic\Plugins\Messenger\Messages\Message\Nlp;
+use Andre\Bionic\Plugins\Messenger\Messages\Message\QuickReply;
+use Andre\Bionic\Plugins\Messenger\Messages\Message\Text;
+use Andre\Bionic\Plugins\Messenger\MessengerPlugin as Plugin;
+use Andre\Bionic\Plugins\Messenger\Messages\EndPoint\Sender;
+use Andre\Bionic\Plugins\Messenger\Messages\EndPoint\Recipient;
+use Andre\Bionic\Plugins\Messenger\Messages\Message\Attachments\Image;
+
+/* validate verify token needed for setting up web hook */
+if (isset($_GET['hub_verify_token'])) {
+if ($_GET['hub_verify_token'] === 'your verify token') {
+echo $_GET['hub_challenge'];
+return;
+} else {
+echo 'Invalid Verify Token';
+return;
+}
+}
+
+$data = json_decode(file_get_contents('php://input'), true);
+
+$config = [
+'page_access_token' =&gt; 'your page access token',
+// 'graph_api_version' =&gt; 'v2.10' optional and defaults to v2.10
+];
+
+$bionic = Bionic::initialize()
+-&gt;setPlugin(Plugin::create($config));
+
+// register your event listeners before calling the 'receive' method on the bionic instance
+// $bionic-&gt;listen($event_name, $event_listener);
+$bionic-&gt;listen('message.attachments.image', function (Plugin $plugin, Sender $sender, Recipient $recipient, Image $image, $channel){
+
+// $plugin - current plugin being used i.e. MessengerPlugin
+// $sender - sender of the message i.e. Messenger user
+// $recipient - recipient of the message i.e. Your facebook page
+// $image - Image attachment that was sent
+// $channel - event delivery channel, messaging or standby
+
+// this sends the attachment as a message back to the sender
+$plugin-&gt;sendAttachment($image, $sender);
+
+})-&gt;listen('message.text', function (Plugin $plugin, Sender $sender, Recipient $recipient, Text $text, QuickReply $quickReply = null, Nlp $nlp = null, $channel) {
+
+$text-&gt;getText();
+if ($quickReply)
+$quickReply-&gt;getPayload();
+
+if ($nlp)
+$nlp-&gt;getEntities();
+
+$plugin-&gt;sendText($text, [], $sender);
+
+})-&gt;listen('exception', function (Exception $exception) {
+
+});
+
+$bionic-&gt;receive($data);
+return http_response_code(200);
+
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            evenement
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            guzzle
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            messenger-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mpaannddreew/bionic-php" rel="nofollow" target="_blank" title="https://github.com/mpaannddreew/bionic-php">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://packagist.org/packages/andre/bionic" rel="nofollow" target="_blank" title="https://packagist.org/packages/andre/bionic">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                packagist.org
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

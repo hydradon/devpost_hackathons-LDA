@@ -1,0 +1,198 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/zYkfrJ9udHg?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="501200" data-title="Game Goals" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/501/200/datas/original.png">
+                            <img alt="Scavenger Hunt &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/501/200/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Game Goals
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="502060" data-title="Example of Website" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/502/060/datas/original.jpeg">
+                            <img alt="Scavenger Hunt &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/502/060/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Example of Website
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've always loved to play scavenger hunt with my family and friends. With all of the advances in artificial intelligence, I started to wonder - how could technology enhance the game that has been around for generations?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    There are two pieces to this game.
+                </p>
+                <p>
+                    First is an Alexa Skill called
+                    <a href="https://www.amazon.com/dp/B06ZZ6F91T" rel="nofollow">
+                        Scavenger Hunt
+                    </a>
+                    .  When initially loaded, instructions are given to the user on how to play the game, and two pieces of information are given - a four digit game code, as well as a set of ten items to go find.  A timer is initiated that gives the user one hour to complete the "mission", to capture and upload photos of the items.
+                </p>
+                <p>
+                    Second is a companion website called
+                    <a href="http://scavengerskill.com" rel="nofollow">
+                        scavengerskill.com
+                    </a>
+                    .  This is used to upload photos of the objects that are provided by the Alexa skill, ideally from a mobile device that has a camera.  The game code is provided as part of the upload, which enables this to be a team activity versus just a single player.  Once the images are uploaded, they are scanned, and matched back to the ten items that were read by Alexa.
+                </p>
+                <p>
+                    At any time the user can go back to the Alexa skill to get a game update.  The skill will check to see what images have been uploaded for the particular game code, and compare back to the original set given at the onset.  It's using image recognition software in the background to determine what is in the actual photos.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The Alexa skill has been published to the Amazon store, and can be found
+                    <a href="https://www.amazon.com/dp/B06ZZ6F91T" rel="nofollow">
+                        here
+                    </a>
+                    . It makes extensive use of SSML to merge together short sound clips with the Alexa voice.  The skill is written in nodeJS, and hosted on Amazon Lambda.  The sound clips are stored in the Amazon S3 object storage service.  Here's the interaction between Alexa and the AWS services.
+                </p>
+                <p>
+                    <img alt="scavengerSite" data-canonical-url="https://s3.amazonaws.com/scavengerhuntskill/promotional/websiteArch.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--FTOZqlwz--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/scavengerhuntskill/promotional/websiteArch.jpg">
+                </p>
+                <p>
+                    The website is hosted on AWS, and uses a javascript library called
+                    <a href="https://github.com/felixge/node-formidable" rel="nofollow">
+                        formidable
+                    </a>
+                    that enables images to be uploaded from a mobile device to an EC2 instance, then to an AWS S3 bucket. The backend is a serverless framework, and gets driven by the event of images loading into the S3 bucket.  A Lambda function invokes the AWS Rekognition service to scan the image, and record which items have been found in a AWS DynamoDB table.  This is then made available to the Alexa skill when the user checks back in for a status update.
+                </p>
+                <p>
+                    Here's how it all ties together with the different services.
+                </p>
+                <p>
+                    <img alt="scavengerSite" data-canonical-url="https://s3.amazonaws.com/scavengerhuntskill/promotional/advImageArch.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--Oa1C0y0v--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/scavengerhuntskill/promotional/advImageArch.jpg">
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Image recognition is still maturing, so it was important to test out actual scenarios of different objects versus just picking things that were around me.  Some common items were difficult to do image matching, for example a fork, scissors, and cereal were all items that I couldn't reliably get the service to recognize.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The game was published on the Alexa platform in both the US &amp; UK, and is being actively used.  It's fun to create a game like this that others can enjoy, and many have completed the challenge of finding ten objects in under an hour!
+                </p>
+                <p>
+                    The voice user experience is really solid.  It demonstrates how flexible the Alexa SDK is, and how advanced of interaction you can create for users. In addition to the Alexa voice, the skill plays sounds and incorporates one of the voices from the new Polly service.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Mixing together sounds and voice using SSML improved the gameplay, and was great to learn.  This is not just a programming challenge, rather it also includes sound editing.  I also used the new AWS-Polly service for the first time to record some short audio clips of a "partner" for Alexa that has an English accent.
+                </p>
+                <h2>
+                    What's next for Scavenger Hunt
+                </h2>
+                <p>
+                    I'm tracking usage of it, and based on analytics, adjusting the parameters of the game.  As the image recognition software improves, I will be adding more items that can be randomly selected for the game.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-rekognition
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://scavengerskill.com" rel="nofollow" target="_blank" title="http://scavengerskill.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                scavengerskill.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

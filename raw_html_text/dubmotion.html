@@ -1,0 +1,138 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="392113" data-title="Example of the script's output. The emotion, then a dic {&quot;snip_key&quot;:sentimentOfEmotion}. Then the best snipId and the audio link." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/392/113/datas/original.png">
+                            <img alt="DubMotion &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/392/113/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Example of the script's output. The emotion, then a dic {"snip_key":sentimentOfEmotion}. Then the best snipId and the audio link.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We want to allow users to react easier to snips. We also want to allow them to discover new snips which they would never have searched for.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The python script takes an image url as a parameter and analyzes the face on the given image. One out of 7 emotions is returned. Based on this a snip is chosen. Therefore we search dubsmash for the snips which are tagged with the given emotion or feature it in their name and analyze the snip's text. This snip is returned to the user and he can express his feelings with this random but fitting snip.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The facial recognition and the analysis of the facial expression is done by using Microsoft Azure via RESTful API. Because the tags and names of the snips are not necessarily correctly annotating the snip we decided to analyze them by ourselves. We only use the tag/name as a first filter step. We downloaded a set of 100 snips for every emotion we feature. Then we convert the audio files to a format suitable for the Bluemix/Watson platform's Speech-to-text unit. This is run in the cloud and does an emotion analysis on the transcript of the snip. The sediments of the single emotions are returned. On our client we evaluate all returned sediments for the given emotion and choose the snip with the highest value. The link to the respective audio file is returned and the snip can be played in the browser.
+                </p>
+                <p>
+                    Please note that our application cannot be started from the given Github link because we had to erase several API-keys in order to keep them private.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    It was not easy to get the data in a format which was suitable to analyze them properly. The main problem was the aac/m4a encoding of the files, while Watson only accepts wav, flac and ogg. Because there was no free API available we were forced to do this locally. In order to access the converted files we had to upload them to a AWS S3 cloud storage.
+Another problem was the missing JSON structure of our computed data. At this point we had the emotional annotations for every snip but were not able to process them properly. Our solution is a (somewhat hacky) string manipulating python script which just gets the highest ranked snip for the given emotion.
+Our plan to use the precomputed data as a learning set for a local machine learning algorithm in order to predict the emotion of the trending snips was applicable because of the lack of time and the missing structure of our data.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to find matching snips for different emotions. While testing we found out, that the emotion our system proposed was matching the expressed emotion way better than the emotion given by the user in the tag. Additionally we had to cope with a lot of problems concerning data incompatibility but could solve most of it although we are data analytics/machine learning beginners.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that it is not easy to work with given data received via a API. The data was partly missing critical values, was tagged falsely and the audio files were not encoded correctly for our use case. But we also learned that most of the time there is a workaround to convert the data to fit our needs.
+                </p>
+                <h2>
+                    What's next for DubMotion
+                </h2>
+                <p>
+                    Analyze more snips for every emotion. Use the analyzed snips as a learning set in order to predict the emotion for other snips. Discuss acqui-hire offering from Google.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluemix">
+                                bluemix
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/RobNE/HackHPI2016" rel="nofollow" target="_blank" title="https://github.com/RobNE/HackHPI2016">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

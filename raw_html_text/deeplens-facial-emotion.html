@@ -1,0 +1,267 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/jz7A1YzM74M?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602794" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/794/datas/original.png">
+                            <img alt="Deeplens Facial Emotion &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/794/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602795" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/795/datas/original.png">
+                            <img alt="Deeplens Facial Emotion &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/795/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    An AWS Deeplens Challenge Submission to Measure a Viewer's Facial Reaction to Funny Media
+                </p>
+                <h2>
+                    The Goal
+                </h2>
+                <p>
+                    The main goal of the project is to replace the "focus group" movie studios would have to perform when a new comedy movie comes out. Instead of having a small group of people from a mall in Iowa determining if a movie is subjectively funny, our goal is to use the Deeplens to look at viewers' reactions and simply measure their smiles and laughs more quantitatively using Deeplens. Also, by automating the process of gauging a viewer's reaction while watching media, we can allow many more subjects to participate since we aren't limited to human facilitators to run the experiment.
+                </p>
+                <p>
+                    To achieve this we need a project that will identify users in the Deeplens view as they screen a movie, and a model which will detect their reaction. Our Deeplens project will detect faces in a frame and use a Convolutional Neural Network to determine if they are smiling in a particular frame. These results can then be sent up using IoT to aggregate data about their reaction to viewing a movie.
+                </p>
+                <p>
+                    All that would be required of a subject is to have a Deeplens viewing their reaction while the subject herself is watching the movie the studio is trying to put in front of a test audience.
+                </p>
+                <p>
+                    Since there is no pre-made models of facial expressions (we could find) we need to train out own model using AWS Services.
+                </p>
+                <h2>
+                    Training Set Creation
+                </h2>
+                <p>
+                    Before we can train a model to check for smiles, we need a dataset. Using the
+                    <a href="http://vis-www.cs.umass.edu/lfw/" rel="nofollow">
+                        Labelled Faces in the Wild
+                    </a>
+                    dataset, we have 13,000 faces in various states of expression.
+                </p>
+                <p>
+                    However, we need these images labelled to have a "smile" or not and since we didn't really have time to manually check these we decided to make use of
+                    <a href="https://aws.amazon.com/rekognition/" rel="nofollow">
+                        Amazon Rekognition
+                    </a>
+                    to label the images for us.
+                </p>
+                <p>
+                    While this means our model's accuracy will have an upper bound of Rekognition's accuracy, we have great faith in the Amazon AI team's work.
+                </p>
+                <p>
+                    Using Rekognition, we get a payload of each of the 13,000 images which look like:
+                </p>
+                <pre class="language-nolang"><code>{
+        "Smile": {
+        "Value": false,
+        "Confidence": 93.7759780883789
+  },
+  "Emotions": [
+  {
+  "Type": "HAPPY",
+  "Confidence": 91.7003402709961
+  },
+  {
+  "Type": "CALM",
+  "Confidence": 12.208562850952148
+  },
+  {
+  "Type": "SAD",
+  "Confidence": 9.688287734985352
+  }
+  ]
+}
+</code></pre>
+                <p>
+                    While eventually we'd like to make use of other emotions for other ranges of film work, for now we're just focused on smiling and laughing for comedies. The Deeplens networks were not about to handle more than one output up until less than a week before the due date :-P.
+                </p>
+                <p>
+                    In order to focus the learning of the model on faces, we make us of
+                    <a href="https://docs.opencv.org/3.3.0/d7/d8b/tutorial_py_face_detection.html" rel="nofollow">
+                        OpenCV's Haar Cascades
+                    </a>
+                    to crop the images to just the faces, as seen below:
+                </p>
+                <p>
+                    <img alt="Al_gore_before" data-canonical-url="https://s3.amazonaws.com/deeplens-smile-model/public/Al_Gore_0001.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--m1nr158M--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/deeplens-smile-model/public/Al_Gore_0001.jpg">
+                </p>
+                <p>
+                    <img alt="Al_gore_cropped" data-canonical-url="https://s3.amazonaws.com/deeplens-smile-model/public/Al_Gore_resized.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--sXwpzz_U--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/deeplens-smile-model/public/Al_Gore_resized.jpg">
+                </p>
+                <p>
+                    We wrap up the 13,000 cropped images (split into training and validation sets) into
+                    <a href="https://mxnet.incubator.apache.org/tutorials/basic/image_io.html" rel="nofollow">
+                        rec files
+                    </a>
+                    with all the labels we've parsed for easier training with Gluon. Though, we'll just train on smiles for now.
+                </p>
+                <pre class="language-nolang"><code>python im2rec.py   ~/deeplens-facial-emotion/listfile-train.lst ~/deeplens-facial-emotion/cnn-face/
+python im2rec.py   ~/deeplens-facial-emotion/listfile-val.lst ~/deeplens-facial-emotion/cnn-face/
+</code></pre>
+                <p>
+                    All this work can be seen in the
+                    <code>
+                        dataset-creation.ipynb
+                    </code>
+                    notebook.
+                </p>
+                <h2>
+                    The Custom Model (Smile Net)
+                </h2>
+                <p>
+                    With our 2 Rec files for training in validation, we can then train a modified
+                    <a href="https://en.wikipedia.org/wiki/AlexNet" rel="nofollow">
+                        AlexNet
+                    </a>
+                    to make a Convolutional Neural Network (with the last 2 dense layers lightened to bring down model size) for training.
+                </p>
+                <p>
+                    After 30 epochs and about an 80% accuracy rate, we can then output the model to S3 for use in our Deeplens project.
+                </p>
+                <p>
+                    All this work can be seen in the
+                    <code>
+                        face-detection-model-creation
+                    </code>
+                    notebook.
+                </p>
+                <p>
+                    The outputted models can be seen in the
+                    <code>
+                        models
+                    </code>
+                    folder with the
+                    <code>
+                        smile-net
+                    </code>
+                    prefix.
+                </p>
+                <h2>
+                    The Lambda Function
+                </h2>
+                <p>
+                    Our lambda function to run inference is based off the "face-detection" example. However, our function uses the model optimizer on load and uses the OpenCV's Haar Cascade to detect faces first instead of the model.
+                </p>
+                <p>
+                    For each face detected using the Haar cascade, we use our optimized
+                    <code>
+                        smile-net
+                    </code>
+                    model to determine if the cropped face area is smiling.  The model we use is our created
+                    <code>
+                        smile-net
+                    </code>
+                    model which we run on each individual face that is detected. For each face that is "smiling", we draw a blueish frame around the face, and for each neutral face we draw an orange frame around the discovered face.
+                </p>
+                <p>
+                    The
+                    <code>
+                        lambda_package
+                    </code>
+                    folder contains the modified
+                    <code>
+                        greengrassHelloWorld.py
+                    </code>
+                    file, and the
+                    <code>
+                        haarcascade_frontalface_alt.xml
+                    </code>
+                    file.
+                </p>
+                <p>
+                    <img alt="Neutral" data-canonical-url="https://s3.amazonaws.com/deeplens-smile-model/public/neutral.png" src="https://res.cloudinary.com/devpost/image/fetch/s--DK3hD7cV--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/deeplens-smile-model/public/neutral.png">
+                </p>
+                <p>
+                    <img alt="Smiling" data-canonical-url="https://s3.amazonaws.com/deeplens-smile-model/public/smiling.png" src="https://res.cloudinary.com/devpost/image/fetch/s--zxAgpNWu--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/deeplens-smile-model/public/smiling.png">
+                </p>
+                <h2>
+                    Demo Video
+                </h2>
+                <p>
+                    <a href="https://youtu.be/jz7A1YzM74M" rel="nofollow">
+                        AWS Deeplens Challenge - facial emotion detector
+                    </a>
+                </p>
+                <h2>
+                    Further Work
+                </h2>
+                <ul>
+                    <li>
+                        Obviously a better initial dataset would help training.
+                    </li>
+                    <li>
+                        More effort into the emotion model would be useful as its 80% accuracy probably isn't enough for what we'd want out system to do
+                    </li>
+                    <li>
+                        Right now we're just uploading one "face" to the IoT event. For this to work better, we'd want to individually assign faces when we get them and track them through the field of view.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            gluon
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/imackinn/deeplens-facial-emotion" rel="nofollow" target="_blank" title="https://github.com/imackinn/deeplens-facial-emotion">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

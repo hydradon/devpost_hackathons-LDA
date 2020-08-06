@@ -1,0 +1,311 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/zRiU89Hjwes?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    aws_iot_mailbox
+                </h1>
+                <p>
+                    A simple project that demonstrates the power of IoT along with an Alexa Skill to check mail.
+                </p>
+                <p>
+                    It has 2 main components
+                </p>
+                <ul>
+                    <li>
+                        A Mailbox IOT device that acts as a shadow for a physical mailbox. For the purpose of this project, it is a virtual IOT device.
+                    </li>
+                    <li>
+                        An Alexa Skill to check whether there are any mails and to reset the state of the mailbox.
+                    </li>
+                </ul>
+                <p>
+                    The Mailbox state management logic is relatively straight-forward for the purpose of illustration. A more complex logic can be built using multiple sensors,
+such as, a photo sensor in combination with the open/close sensor.
+                </p>
+                <ul>
+                    <li>
+                        The Mailbox manager lambda sets the mailbox state to having mail if it is opened within the delivery schedule.
+                    </li>
+                    <li>
+                        If opened more than once within the delivery schedule or post delivery schedule, the mailbox state is reset (i.e., mail has been cleared).
+                    </li>
+                </ul>
+                <p>
+                    <img alt="AWS IoT Mailbox Overview" data-canonical-url="https://github.com/nitinc9/aws_iot_mailbox/blob/master/docs/AWS_IoT_Mailbox_Overview.png?raw=true" src="https://res.cloudinary.com/devpost/image/fetch/s--va8JQIe0--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/nitinc9/aws_iot_mailbox/blob/master/docs/AWS_IoT_Mailbox_Overview.png%3Fraw%3Dtrue" title="AWS IoT Mailbox Overview">
+                </p>
+                <h2>
+                    Setup
+                </h2>
+                <h3>
+                    Pre-requisites
+                </h3>
+                <ul>
+                    <li>
+                        Register for an
+                        <a href="https://aws.amazon.com/" rel="nofollow">
+                            AWS Account
+                        </a>
+                    </li>
+                    <li>
+                        Register for an
+                        <a href="https://developer.amazon.com/" rel="nofollow">
+                            Amazon Developer Account
+                        </a>
+                    </li>
+                    <li>
+                        Install and set up
+                        <a href="http://docs.aws.amazon.com/lambda/latest/dg/setup-awscli.html" rel="nofollow">
+                            AWS CLI
+                        </a>
+                    </li>
+                    <li>
+                        Install and set up
+                        <a href="https://developer.amazon.com/docs/smapi/quick-start-alexa-skills-kit-command-line-interface.html" rel="nofollow">
+                            ASK CLI
+                        </a>
+                    </li>
+                </ul>
+                <h3>
+                    Setup Instructions
+                </h3>
+                <h4>
+                    1. Mailbox IOT Device Setup
+                </h4>
+                <h5>
+                    1.1 Create an IOT Role
+                </h5>
+                <pre class="language-nolang"><code>aws iam create-role --role-name iot-role --assume-role-policy-document file://iot_role_trust.json
+</code></pre>
+                <h5>
+                    1.2 Create an IOT Policy and attach Role
+                </h5>
+                <pre class="language-nolang"><code>aws iam create-policy --policy-name "Mailbox-Policy" --policy-document file://mailbox_policy.json
+aws iam attach-role-policy --role-name iot-role --policy-arn "arn:aws:iam::281672010130:policy/Mailbox-Policy"
+</code></pre>
+                <h5>
+                    1.3 Create a Thing Type
+                </h5>
+                <pre class="language-nolang"><code>aws iot create-thing-type --thing-type-name "Mailbox" --thing-type-properties "thingTypeDescription=Mailbox, searchableAttributes=isOpen,hasMail"
+</code></pre>
+                <h5>
+                    1.4 Create a Mailbox Thing
+                </h5>
+                <pre class="language-nolang"><code>aws iot create-thing --thing-name "MyMailbox" --thing-type-name "Mailbox" --attribute-payload "{\"attributes\": {\"isOpen\": \"false\", \"hasMail\": \"false\"}}"
+</code></pre>
+                <h5>
+                    1.5 Create the MailboxManager lambda
+                </h5>
+                <ul>
+                    <li>
+                        Edit the
+                        <code>
+                            mailbox_manager.cfn
+                        </code>
+                        and replace the following.
+                        <ul>
+                            <li>
+                                <strong>
+                                    IOT_BROKER_ENDPOINT
+                                </strong>
+                                : Update this to point to the REST API endpoint of your thing from
+                                <strong>
+                                    Device Details-&gt;Interact
+                                </strong>
+                                .
+                            </li>
+                            <li>
+                                <strong>
+                                    IOT_BROKER_REGION
+                                </strong>
+                                : Update this for your device region.
+                            </li>
+                            <li>
+                                <strong>
+                                    IOT_THING_NAME
+                                </strong>
+                                : The mailbox IOT device name (if different from "MyMailbox").
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Use the
+                        <code>
+                            mailbox_manager.cfn
+                        </code>
+                        to create the lambda that manages the updates to the Mailbox IOT device.
+                    </li>
+                    <li>
+                        After the lambda is created, add a trigger from "Alexa Skills Kit".
+                    </li>
+                </ul>
+                <h5>
+                    1.6 Create a Rule to update Mailbox
+                </h5>
+                <ul>
+                    <li>
+                        Specify the query to fetch data from an IOT topic.
+                        <code>
+                            SELECT isOpen FROM 'mail' WHERE isOpen &lt;&gt; ''
+                        </code>
+                        <strong>
+                            Note
+                        </strong>
+                        : The name of the topic is 'mail'.
+                    </li>
+                    <li>
+                        Specify an action to associate the above lambda (
+                        <code>
+                            MailboxManager
+                        </code>
+                        ) when this rule is triggered.
+                    </li>
+                </ul>
+                <h4>
+                    2. Mailbox Alexa Skill Setup
+                </h4>
+                <ul>
+                    <li>
+                        Run the following command to create a new Mailbox skill in your developer account.
+                        <code>
+                            ask new
+                        </code>
+                    </li>
+                    <li>
+                        Update the
+                        <code>
+                            alexa/lambda/custom/index.js
+                        </code>
+                        for the following.
+                        <ul>
+                            <li>
+                                <strong>
+                                    APP_ID
+                                </strong>
+                                : Update this to use the App ID created above.
+                            </li>
+                            <li>
+                                <strong>
+                                    IOT_BROKER_ENDPOINT
+                                </strong>
+                                : Update this to point to the REST API endpoint of your thing from
+                                <strong>
+                                    Device Details-&gt;Interact
+                                </strong>
+                                .
+                            </li>
+                            <li>
+                                <strong>
+                                    IOT_BROKER_REGION
+                                </strong>
+                                : Update this for your device region.
+                            </li>
+                            <li>
+                                <strong>
+                                    IOT_THING_NAME
+                                </strong>
+                                : The mailbox IOT device name (if different from "MyMailbox").
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Run the following command to set up the Mailbox Alexa Skill.
+                        <code>
+                            cd alexa
+ask deploy
+                        </code>
+                    </li>
+                    <li>
+                        After first deployment edit the deployed IAM role
+                        <code>
+                            ask-lambda-Mailbox
+                        </code>
+                        and attach AWSIoTFullAccess policy to it.
+                    </li>
+                    <li>
+                        Once the skill has been deployed, enable the "Test" button to start testing the skill.
+                    </li>
+                </ul>
+                <h2>
+                    Testing
+                </h2>
+                <ul>
+                    <li>
+                        Use the AWS IoT Console to publish a message to the 'mail' topic. Use the payload below for reference and manipulate the value for "isOpen".
+                        <code>
+                            {
+"isOpen": "false"
+}
+                        </code>
+                    </li>
+                    <li>
+                        Go to the above Mailbox skill-&gt;Testing and try the following utterances.
+                        <code>
+                            check mail
+reset
+                        </code>
+                    </li>
+                </ul>
+                <h2>
+                    Troubleshooting
+                </h2>
+                <p>
+                    Check out the following CloudWatch log groups.
+                </p>
+                <ul>
+                    <li>
+                        MailboxManager: For troubleshooting the Mailbox IOT device events.
+                    </li>
+                    <li>
+                        Mailbox: For the Alexa Skill processing troubleshooting.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alexa-skill
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-iot
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/nitinc9/aws_iot_mailbox" rel="nofollow" target="_blank" title="https://github.com/nitinc9/aws_iot_mailbox">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

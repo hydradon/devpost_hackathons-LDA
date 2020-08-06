@@ -1,0 +1,123 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/F9BzMONXZig?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    It is widely known that journaling helps to flesh out our thoughts and reflect on ourselves. In fact, studies (Klein, 2005) have shown that writing about our emotions when we journal is extremely therapeutic. Participants who wrote about stressful moments in their journals were less mentally harmed by the emotional events and surprisingly less likely to become sick. Despite the potential positives of expressive journaling, these benefits are not fully realized if people are not aware of their emotions. If someone is unclear on how they are feeling about a topic, they are less likely to express these emotions in their writing, thereby reducing the benefits of journaling.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    To combat this problem and help people achieve the huge mental and physical health benefits of journaling, we created Emotif. Emotif learns from user sentiment in their journals over time and adapts to provide appropriate suggestions on what users should reflect deeper on. Using Watson&rsquo;s tone analyzer, Emotif recognizes the emotions in your writing to help you understand how you are feeling each day. Users have the ability to look back on their past journal entries (color-coded green for positive, red for negative, yellow for neutral, blue for sad) to see the general sentiment on each of their posts. The color-coding of each entry intensifies the stronger the emotions are expressed. Emotif uses natural language understanding in conjunction to recognize key topics that user talk often about. Emotif is able to pick up on these keywords and figure out the sentiment that underlies these topics. It uses this keyword and sentiment data to learn what makes users happy and unhappy and give the users suggestions on what topics to introspect about. For example, if Emotif notices that the user has written very negatively about something on their last entry, it may prompt the user to introspect further on what is making them upset. By using both tone analysis and natural language understanding, Emotif is able to provide users a journaling application tailored to their own individual emotions and lives.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We created a fully working web application.  Emotif was made completely from scratch using javascript, the frontend frameworks React and Redux, Express, and Firebase for the backend.
+We added user authentication because Emotif is an account-based application. With javascript, React, and Redux, we were able to create an interactive application that improved the journaling experience with a friendly user interface and user experience. From there, once the user writes a journal entry, we make axios calls to send the entry to Watson&rsquo;s tone analyzer to retrieve general sentiment, valence of the sentiment, and finally sentiment sentence by sentence. We take the sentences with sentiment and feed them to Watson&rsquo;s natural language understanding service in order to find the key words that are causing these emotions. We add these keywords and their associated emotions to a dictionary of the user&rsquo;s individual journal topics that is stored in Firebase. Firebase holds the journal entries and their general sentiments as well as the dictionary of the user&rsquo;s most written about topics and associated sentiments. We are able to display past entries by retrieving them from Firebase and we color code them by positive and negative emotions. The gradient of color comes from multiplying RGB values by the valence scores of each journals entry&rsquo;s general sentiment. To make tailored suggestions, we look at the database to find emotional trends in the most recent journals. We check to see if the last couple of journal entries have been positive or negative, and then make suggestions based on these findings. We pull the most recently talked about topics from the keyword dictionary to help the user decide on what to write about and speed up their introspection process.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We had some difficulty at first deciding what Watson services to use and how to use the services. Both tone analysis and natural language understanding pick up general sentiment, but provide different types of analyses. We ended up deciding to use both to get more detailed sentence by sentence analysis from the tone analyzer service, and then use these sentences to grab keywords through natural language understanding. While creating the app, we came upon numerous bugs and compatibility issues, but eventually were able to work everything out. There were some issues calling the Watson API through axios calls through the frontend, so we had to use Express to make the calls work and retrieve responses from the Watson services. It was somewhat difficult to test the application because it relies completely on user entries. We ended up taking online blog entries and pulling from our own past journal entries to test the functionality of Emotif.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Emotif is a fully functional application. Users can successfully create accounts, post journal entries, and receive tailored writing prompts based on their past emotions and topics of interest. Emotif has a clean interface and we hope that the environment helps create a positive space for self-reflection. From our testing, we have found that Emotif does a pretty good job of recognizing important key words and analyzing them to make suggestions on what to write about. Most of the prompts have come out accurately and relevant to the journal entries that we supplied.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that it is hard to work with NLP APIs because NLP is not in a state that is 100% accurate and smart.  There are still sentiments that can only be picked up by humans because of nuances in the English language.  Moving forward, we will have to be sure to catch some edge cases.
+                </p>
+                <h2>
+                    What's next for Emotif
+                </h2>
+                <p>
+                    Moving forward we would like to make Emotif more detailed. Emotif already provides insight of general journal entry emotion, but we would like to dive deeper into each journal entry. With Watson&rsquo;s tone analyzer and natural language understanding services, this would be possible to do. In addition to color-coding the sentiment analysis of each journal entry, we would provide data on the important keywords, additional sentiment analysis on important sentences, and more nuanced emotional analysis. We would also improve our algorithms to make the tailored journal prompts more detailed and accurate. This may require a restructuring of data structures or incorporating more data from the Watson services. Finally, we would run user experiments to see how people respond to the design and interaction of the app. Running these studies would help us better understand our user&rsquo;s needs and improve the effectiveness and user experience of Emotif.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redux">
+                                redux
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jjanelee97/emotif-hackday" rel="nofollow" target="_blank" title="https://github.com/jjanelee97/emotif-hackday">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/jjanelee97/emotif-backend-hackday" rel="nofollow" target="_blank" title="https://github.com/jjanelee97/emotif-backend-hackday">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,197 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/tOZXd52QJxw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="403472" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/403/472/datas/original.png">
+                            <img alt="Adaptavist ScriptRunner for JIRA Cloud &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/403/472/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Backstory - Origin
+                </h2>
+                <p>
+                    Inspiration - take the ubiquitous ScriptRunner for JIRA platform and port it to the Atlassian Connect Framework
+                </p>
+                <p>
+                    ScriptRunner for JIRA is the 3rd on the Atlassian Marketplace list of top selling JIRA add-ons (inside of 1 year). Due to sheer customer demand, Adaptavist wanted to offer the same functionality through JIRA Cloud.
+ScriptRunner for JIRA Cloud started off as a ShipIt project last year where we achieved a proof of concept. We extended beyond the ShipIt work during the Atlassian Connect week in Amsterdam this year. Now we're ready to launch our fully fledged Cloud add-on.
+                </p>
+                <h2>
+                    Why it's special
+                </h2>
+                <p>
+                    ScriptRunner for JIRA Cloud allows you to extend the functionality of JIRA Cloud, executing scripts to interact with JIRA as Post Functions or Event Listeners. Scripts can take actions such as updating an issue during a transition or performing a calculation and storing the result in a custom field on the issue. Administrators have the power of the Groovy programming language at their disposal to respond to events and transitions, manipulating JIRA using the REST API.
+                </p>
+                <p>
+                    It also allows admins and power users to quickly extend JIRA Cloud functionality to support your business processes in your workflows by scripting post functions without the hassle of writing a fully-fledged Connect Add-on.
+                </p>
+                <h2>
+                    Features include:
+                </h2>
+                <ul>
+                    <li>
+                        Run your own customised Groovy scripts from the Script Console in your JIRA Cloud instance
+                        <ul>
+                            <li>
+                                Built-in Script
+                            </li>
+                            <li>
+                                Copy Custom Field Values
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Built-in Workflow Post Functions like
+                        <ul>
+                            <li>
+                                Clone Issue
+                            </li>
+                            <li>
+                                Create Subtask
+                            </li>
+                            <li>
+                                Conditionally Fast-Track Transition an Issue
+                            </li>
+                            <li>
+                                Transition Parent Issue
+                            </li>
+                            <li>
+                                Modify Issue
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Examples
+                        <ul>
+                            <li>
+                                Do a calculation using existing custom fields and update a calculated field
+                            </li>
+                            <li>
+                                Post a message to HipChat room based on a specific updated issue event
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Script Listeners
+                        <ul>
+                            <li>
+                                Calculated Custom Field
+                            </li>
+                            <li>
+                                Post to HipChat based on a Version Release event
+                            </li>
+                            <li>
+                                Create Issues whenever a project is created (automatically)
+                            </li>
+                            <li>
+                                Extend the JIRA notifications based on specific fields changing in an issue
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Scripts in ScriptRunner Cloud do not execute within the same process as JIRA and so must interact with JIRA using the REST APIs rather than the JAVA APIs. Atlassian Connect is also inherently asynchronous which means that when a script executes the user may see the page load before the script has completed.
+                </p>
+                <p>
+                    Asynchronous execution is at the heart of the Atlassian Connect Framework that ScriptRunner must use to extend JIRA Cloud. JIRA fires webhooks when events and transitions occur and any user interface elements are loaded in iframes. It is not possible to veto, cancel or otherwise prevent JIRA performing an action using ScriptRunner. Scripts themselves are written synchronously, that is REST API calls are made in a blocking style (although async methods are provided too).
+                </p>
+                <p>
+                    All user provided code is executed in an isolated container. ScriptRunner for JIRA Cloud is a service that is shared by many customers so isolation is very important that when executing scripts. Isolation is a goal that has been core to the design of ScriptRunner for JIRA from its inception. Each customer has a container that is theirs and theirs only. It is not possible for the code of one customer to have been run in the container of another. Containers are also designed to be single use, however it is possible that containers will be re-used for execution on occasion, but script writers should not rely on this. Disk storage in these containers is ephemeral, any changes written to the disk will be discarded.
+                </p>
+                <h2>
+                    What's next for ScriptRunner for JIRA Cloud
+                </h2>
+                <p>
+                    We will be looking at all of the functionality available in JIRA Server and working out whether it can be achieved in the Connect Framework and via the REST API.
+                </p>
+                <ul>
+                    <li>
+                        More built-in scripts
+                    </li>
+                    <li>
+                        Add advanced JQL Functions like hasComments, hasAttachments, hasSubtasks, hasLinks, myProjects, recentProjects and more
+                    </li>
+                    <li>
+                        Ability to customise the JIRA User Interface with buttons of your choosing
+                    </li>
+                    <li>
+                        Scheduled jobs like an escalation service
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/atlassian">
+                                atlassian
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            es6
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/groovy">
+                                groovy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jira">
+                                jira
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://marketplace.atlassian.com/plugins/com.onresolve.jira.groovy.groovyrunner/cloud/overview" rel="nofollow" target="_blank" title="https://marketplace.atlassian.com/plugins/com.onresolve.jira.groovy.groovyrunner/cloud/overview">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                marketplace.atlassian.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,183 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="609513" data-title="The team" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/609/513/datas/original.jpeg">
+                            <img alt="Jill Bill Volume IV &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/609/513/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The team
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Disasters - natural or unnatural can be a terrifying experience for the people in it. Helplessness and the need to be rescued and brought out of the horrifying experience creeps in. This motivated us to develop an application to have a remote node at the disaster locations that could identify the people stuck in the disaster premise and send a live stream of the premise to be better prepared for disaster management and people rescue operation. This involves the use technology of Unmanned Vehicles and the technology provided by Freewave to contribute to disaster management use cases like the Californian forest fires incidents.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    To cater to providing better disaster management strategies, we use the RPi Camera and FLIR camera connected to Raspberry Pi to stream a still image for facial recognition and a Video streaming of the premises on a Web Application that runs on a Flask server. The Web application displays essential characteristics about the image such as ethnicity, gender, age and other characteristics. It also identifies temperature profile of the location from the live video stream
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Development Language: Python
+                </p>
+                <p>
+                    The prototype comprises of two Freewave Dev Kits, one that is directly connected to the Ethernet and the other that operates a remote node. The remote node is connected to a Raspberry Pi that has two types of cameras connected to it - The RPi Camera and the FLIR Camera from Sparkfun. To be precise, the chain is as follows:
+                </p>
+                <pre class="language-nolang"><code>         Raspberry Pi1              -&gt;  Remote Freewave   -&gt;    Freewave Node 2           -&gt;  Remote Flask Server running  
+</code></pre>
+                <p>
+                    (With RPi Camera and FLIR)             Node 1                      connected to Ethernet                        Web Application
+                </p>
+                <p>
+                    The Raspberry Pi1 sends 120 frames of IR image and 1 frame of RPi image that could be used for facial recognition over UDP to the Freewave Node 1. This Remote Node1 then communicates the frames over UDP to the Freewave central Node 2. The central node 2 then forwards these to a server running on a host machine over UDP to stream the frames on the Web Page that could later be used for planning out the rescue operations and to get data about the people in the disaster. The 120 frames sent over UDP are merged to generate a Live stream of the premise.
+                </p>
+                <p>
+                    We also connected the joystick to another Raspberry Pi to control camera movements mounted on a remote node.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        Bandwidth issues
+                    </li>
+                    <li>
+                        I/O Interfaces: Less interfaces in Freewave Node demanded the use of Raspberry Pi to collect camera data
+                    </li>
+                    <li>
+                        Joystick - Requirement of a Web GUI by pygame to indicate the joystick movements made debugging the code on Putty difficult
+                    </li>
+                    <li>
+                        Running Flask Server on the Freewave Node could not be a solution since Web GUI on a Flask Server was being host on Local Host
+                    </li>
+                    <li>
+                        Synchronization Issues due to communication between multiple radios and wireless interfaces
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ol>
+                    <li>
+                        A working prototype to enable better disaster management and rescue plans.
+                    </li>
+                    <li>
+                        Successful IR Video streaming
+                        <br>
+                    </li>
+                </ol>
+                <h2>
+                    What we learned
+                </h2>
+                <ol>
+                    <li>
+                        Interfacing Freewave Boards for a very novel application in a span of 24 hours
+                    </li>
+                    <li>
+                        Processing IR Camera data for meaningful temperature sensing from a node with no ethernet connection to it
+                    </li>
+                    <li>
+                        Demonstrated video streaming over limited bandwidth
+                    </li>
+                </ol>
+                <p>
+                    What's next for us:
+                </p>
+                <ol>
+                    <li>
+                        Include Servo motors in the remote node to control the drone
+                    </li>
+                    <li>
+                        Improve image processing to extract more data to make use effective use of radio bandwidth
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flir">
+                                flir
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            freewave-technologies-programmable-platform
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            joystick
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rpi-camera
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/disa6302/HackCU2018.git" rel="nofollow" target="_blank" title="https://github.com/disa6302/HackCU2018.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

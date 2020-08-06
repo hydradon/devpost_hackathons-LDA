@@ -1,0 +1,125 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Many infotainment systems that currently exist within the automotive market do not provide the driver and passengers with useful location recommendations based on the vehicle's current state. Case in point: although many modern vehicles come equipped with GPS and sensors capable of indicating the car is low on gas, infotainment systems don't make use of such data. We see this as a missed opportunity where, for example, infotainment systems could provide the driver with options for refueling before they run out of gas, and perhaps even rank these options by distance or price. To explore this, our team, took on Ford's API challenge to implement this feature on their vehicles' infotainment system, SYNC. We present to you: Smart-Rex!
+                </p>
+                <h2>
+                    Implementation
+                </h2>
+                <p>
+                    Smart-Rex is an Android app that we built using Android Studio, and it leverages the capabilities of a smartphone -- such as a network connection -- that allow it to use Google's Places API to query for nearby gas stations based off of the vehicle's own location provided via SYNC. Smart-Rex uses the Smart Device Link (SDL) software suite (which SYNC is built on top of) to gather data on the vehicle's state. Primarily, our implementation subscribes and listens to the location, fuel level, fuel consumption, and vehicle speed available through SYNC in order to calculate the number of miles until the vehicle will run out of fuel, and recommend which gas stations to refuel at.
+                </p>
+                <p>
+                    At it's simplest, Smart-Rex recommends the driver the closest gas stations. However, Smart-Rex can also keep track of the average miles-per-gallon, and in conjunction with the fuel level, it can determine how far the vehicle can travel given the driver's trend. Using this, the app could be used to provide the user with varied options or greater detail, such as a list of all the gas stations reachable given fuel level and average mpg. Once the app determines a few viable options, it shows buttons on the infotainment system and waits for the user to select which gas station they'd like to visit. If the user chooses to ignore the suggestions, Smart-Rex goes to sleep for a short time so as not to constantly irritate the driver and passengers.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    This was our whole team's first time developing an Android app, as well as working with Ford's SYNC and Google's Places APIs. As such, including time for maturing an idea with reachable goals, it took nearly the first third of the hackathon before the whole team had correctly set up the necessary environments and frameworks; and for one member, updated to a newer operating system capable of running Android Studio, using a painfully slow Wi-Fi connection. The actual implementation of Smart-Rex proved to be challenging, but provided interesting problems.
+                </p>
+                <p>
+                    Firstly, although our implementation can calculate the remaining miles given the fuel level and average mpg, the simulations within the SYNC emulator don't use all of the vehicle data provided by the SDL API. Also, for the data it does use, the simulations are short and the data doesn't change enough to truly calculate average mpg. To get around this for demo purposes, Smart-Rex simply uses the fixed vehicle details of a 2018 Ford Focus -- mainly the average city mpg of 24 mpg and fuel tank size of 12.4 gallons.
+                </p>
+                <p>
+                    Initially, our implementation calculated miles remaining incorrectly. We realized this while poring over the data and saw that the calculated miles remaining metric increased with an increasing speed. This happened because we simplified the problem to
+                    <strong>
+                        distance = velocity * time
+                    </strong>
+                    . Using the instantaneous fuel consumption (taken to be at a rate of once per second), fuel tank size, and conversion factor for microliters to gallons, Smart-Rex back-calculated how long it would take for fuel to run out. Then, that time was simply multiplied by the velocity that the vehicle was traveling at. Obviously, though this checks out dimensionally, it doesn't work. Instead, we opted to keep a running average of the mpg and multiplied it by the amount of fuel remaining to determine how many miles the car could go.
+                </p>
+                <p>
+                    A bulk of the project -- and learning -- came through reading and trying to understand the APIs available to us. This pushed us to play around with the hello_sdl tutorials and understand how to use subscribers and listeners to obtain the vehicle data we desired. Similarly, some of the most challenging portions of the project came about while establishing the project's structure during integration. Each member of the team hacked on a portion of the project on their own machines, but when we tried to integrate the individual pieces, we ran into several dependency issues -- essentially the 100 build errors warned about in the project README. After some help from Jeffrey from Ford, we realized that we could minimize our problems by focusing only on the single file within our project directory where our implementation lived. And, of course, because our implementation employs a few different APIs across SYNC, Google, and Java, we had to take great care in passing data between the subcomponents each member worked on.
+                </p>
+                <h2>
+                    Accomplishments
+                </h2>
+                <p>
+                    This was our team's first hackathon. This was the first time any of us had built an Android app, and for some, our first mobile app. This was the first time some of us had met each other. And this was definitely the first time any of us had experimented with SDL and Ford's SYNC API. We're proud that we were able to quickly come together as a team and formulate an idea we were all passionate about. We're proud that we were able to tackle a difficult and multi-faceted problem that challenged our skillsets as computer scientists and engineers, but also broaden our scope to areas of development we had never touched and domain knowledge of the automotive infotainment market. It was our first time working with all of these APIs and integrating them in a single app was no small feat. We think we have a really cool app, and we're proud to say that we built it.
+                </p>
+                <h2>
+                    Learning
+                </h2>
+                <p>
+                    As our challenges indicate, the most difficult portion of the project was trying to make sense of a primarily domain-specific API in order to create value for the end-user. This meant going from knowing literally nothing about Ford's SYNC powered infotainment system to understanding the intricacies of a subscriber-listener type framework. Ultimately, the project had many large, parallel components, and all 4 of us were new to dealing with such a system. We learned to use Android Studio, gained exposure to the SDL and SYNC APIs, as well as the Google Places and Cloud APIs as we explored which better fit our needs. Most of all, we learned to never stop asking for help, and are thankful for all of the great mentors that took us under their wing to teach us about their systems, and share their tips as we hacked away.
+                </p>
+                <h2>
+                    What's Next?
+                </h2>
+                <p>
+                    We think Smart-Rex could be a powerful vehicle infotainment recommendation system. Currently, its scope is limited to providing the driver with the nearest gas station, but this could be expanded in various ways. As we discussed before, we could use the miles remaining estimate to further tail the gas station recommendations. Perhaps on a long, interstate drive, the recommendation system could use the Google API to check the prices of gas stations along the route to determine the most optimal refueling stop in terms of cost. But because the SYNC framework has access to so much vehicle data, and the user's smartphone can link to the Google Cloud, there is potential for all sorts of personalized recommendations. Data from tire pressure sensors and engine health sensors could be used to recommend and notify drivers of maintenance before damage occurs, and Google reviews could help to recommend ideal mechanics and shops. Factors like location, cost, time limitations, weather, and so much more could be gained from user input and the mobile device. We'd like to see a system like Smart-Rex gain traction in the automotive world.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-places">
+                                google-places
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/maven">
+                                maven
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            smartdevicelink
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sync">
+                                sync
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/tim-nguyen-cs/smart-recs" rel="nofollow" target="_blank" title="https://github.com/tim-nguyen-cs/smart-recs">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

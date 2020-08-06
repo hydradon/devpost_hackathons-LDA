@@ -1,0 +1,166 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Imagine an autonomous future: devices all connected to the Internet of Things, automated services at our disposal, and human-independent machines. These machines could make our future more "intelligent" if not more convenient. One possible use case would be having devices to, say, automatically keep track of groceries in the refrigerator to providing metrics on sleeping habits.
+                </p>
+                <p>
+                    Another promising future is self-driving cars. We could have a fleet of autonomous cars to pick users up. This could be used by service providers, such as Uber and Lyft. No longer would a human driver be needed to confirm the identity of the passenger nor to drive the car. However, if the system were to be autonomous, we would need to provide some form of authentication.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Handshake is a gesture-based authentication system. It is a hardware device that can be implemented into an autonomous car to detect a hand gesture, counting the number of fingers shown to the IR camera to represent numbers in a password PIN number. This would provide for a great user experience (UX) because this PIN number would be used as a proof of identity, allowing users to order rides for themselves (or even other friends!) and prove their identity to the vehicle directly. This would be extremely useful, especially if someone's phone died or someone does not have access to ordering a ride but needs a ride in person.
+                </p>
+                <p>
+                    Because the IR sensor would be inside the vehicle, it would be harder to hack on the hardware side because physical access to the device would be much more difficult. This is an improvement upon touch-based sensors, which would have to be on the outside. Likewise, our device also minimizes Internet connectivity. The PIN number is generated dynamically upon requesting a ride, which would be sent to the vehicle and the client's phone. Our current plan uses an SMS API to send the PIN to a user. The user would then perform a proof-of-identity by gesturing the numbers in the PIN to the device offline (there is no need for any connectivity here, preventing any network-based attacks during authentication). Upon authentication, the door would open, and the user may simply walk into their ride, all in one autonomous process!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The overall architecture is between three systems.
+                </p>
+                <p>
+                    We have the Leap Motion device for detecting hand gestures linked to a Raspberry Pi, which would interface with the server to request a PIN and also LEDs and a speaker for visual and audio feedback, which would allow for a smooth UX for all users, indicating successes, failures, and instructions. This would be especially helpful for people with disabilities, as we try to cover as many senses as possible. Hand gestures are detected by the Leap Motion device, giving us the pose estimation of the hand (positions of each joint). We then ran a neural network to apply machine learning on determining which fingers are closed. We also have a secondary implementation where we analyzed the joint angles directly similarly to a control system.
+                </p>
+                <p>
+                    The user would go to a web app hosted on Google Cloud Platform that would provide a PIN code by a REST API after logging in (to emulate authentication from, say, Uber). The web app would launch an SMS API (Twilio) to then send the PIN to the user. The user would simply have to perform the required hand gestures to the Leap Motion.
+                </p>
+                <p>
+                    The HTTP server on its own is hosted on Google Cloud, hosting a database and the REST API. It will generate the PIN numbers on the backend. We also intend for the use of Docusign for end-to-end encryption and proof-of-identity at the request-level (when the user requests the PIN, not when they authenticate).
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We had issues with running the Leap Motion API. Version 4 is only for a C/C++ implementation, but we wanted a Python implementation to provide a much more high-level and maintainable codebase. Version 3 had the bindings for Python but only for Python 2. We had to port the entire library to Python 3 by grabbing the compiled C extension source. We ran SWIG on the C code to convert it to the proper version before linking the entire library's objects together into a Python dynamically-linked library. We struggled with this for a long time, but we did not get to port the code in Python 2 we wrote.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are very proud of our classical and machine learning approach to finger recognition, which we trained from our own data!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned much about sensors and authentication from a web server as well as using complex APIs (and converting them for compatibility!).
+                </p>
+                <h2>
+                    What's next for Handshake
+                </h2>
+                <p>
+                    We plan to counter having multiple users, a database with built-in locks (we use pickle right now), and a React app UI. We hope for this system to scale up to fully support users on Uber or Lyft with a complete, secure database system for users as well as an improved gesture recognition algorithm (for more speed), and an even more secure networking solution for PIN generation and transfer. Integration of these systems would also be something to improve upon.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docusign">
+                                docusign
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            encryption
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/leap-motion">
+                                leap-motion
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sms
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            web-server
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/OmnInfinity/Handshake" rel="nofollow" target="_blank" title="https://github.com/OmnInfinity/Handshake">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

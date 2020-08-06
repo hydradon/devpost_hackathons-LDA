@@ -1,0 +1,205 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/xDQB6m5Q2GE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="766082" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/766/082/datas/original.PNG">
+                            <img alt="enlightN &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/766/082/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="766110" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/766/110/datas/original.PNG">
+                            <img alt="enlightN &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/766/110/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="766111" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/766/111/datas/original.PNG">
+                            <img alt="enlightN &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/766/111/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The prevalence of fake news has been on the rise. It has led to the public's inability to receive accurate information and has placed a heightened amount of distrust on the media. With it being easier than ever to propagate and spread information, the line between what is fact and fiction has become blurred in the public sphere. Concerned by this situation, we built a mobile application to detect fake news on its websites and alert people when information is found to be false or unreliable, thereby hopefully bringing about a more informed electorate.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    enlightN is a mobile browser with built-in functionality to detect fake news and alert users when the information they are reading - on Facebook or Twitter - is either sourced from a website known for disseminating fake news or known to be false itself. The browser highlights which information has been found to be false and provides the user sources to learn more about that particular article.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    <strong>
+                        Front-end
+                    </strong>
+                    is built using Swift and Xcode. The app uses Alamofire for HTTP networking, and WebKit for the browser functionality. Alamofire is the only external dependency used by the front end; other than that it's all Apple's SDK's. The webpage HTML is parsed and sent to the backend, and the response is parsed on the front end.
+                </p>
+                <p>
+                    <strong>
+                        Back-end
+                    </strong>
+                    is built using Python, Google App Engine, Microsoft Cognitive Services, HTML, JavaScript, CSS, BeautifulSoup, Hoaxy API, and Snopes Archives. After receiving the whole HTML text from front-end, we scrape texts from Facebook and Twitter posts with the use of the BeautifulSoup module in Python. Using the keywords of the texts by Microsoft Key Phrase Extraction API (which uses Microsoft Office's Natural Language Processing toolkit) as an anchor, we extract relevant information (tags for latent fake news) from both Snopes.com's Database and the results getting back from the hoaxy API and send this information back to the front-end.
+                </p>
+                <p>
+                    <strong>
+                        Database
+                    </strong>
+                    contains about 950 websites that are known for unreliable (e.g. fake/conspiracy/satire) news sources and about 15 well-known trustworthy news source websites.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One challenge we ran into was with implementing the real-time text search in order to cross-reference article headlines and Tweets with fact-checking websites. Our initial idea was to utilize Google&rsquo;s ClaimReview feature on their public search, but Google does not have an API for their public search feature and after talking to some of the Google representatives, automating this with a script would not have been feasible. We then decided to implement this feature by utilizing Snopes. Snopes does not have an API to access their article information and loads their webpage dynamically, but we were able to isolate the Snopes&rsquo; API call that they use to provide their website with results from an article query. The difficult part of recreating this API call was figuring out the proper way to encode the POST payload and request header information before the HTTP function call.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to successfully detect false information from any site after especially handling facebook and twitter. The app works and makes people aware of disinformation in real-time!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We applied APIs that are completely new for us - Snopes&rsquo; API, hoaxy API, and Key Phrase Extraction API - in our project within the past 36 hours.
+                </p>
+                <h2>
+                    What's next for enlightN
+                </h2>
+                <p>
+                    Building a fully-functional browser and an app which detects false information on any 3rd party app. We also plan to publicize our API as it matures.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            hoaxy-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ios">
+                                ios
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/memcached">
+                                memcached
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-cognitive-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            snopes
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://enlightN.net" rel="nofollow" target="_blank" title="http://enlightN.net">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                enlightN.net
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/jacobgoldfarb/TreeHacks2019" rel="nofollow" target="_blank" title="https://github.com/jacobgoldfarb/TreeHacks2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

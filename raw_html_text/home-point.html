@@ -1,0 +1,248 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="603370" data-title="Controlling a set of home lights through the NXP board" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/603/370/datas/original.jpg">
+                            <img alt="HomePoint &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/603/370/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Controlling a set of home lights through the NXP board
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="603372" data-title="The interface for our hack" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/603/372/datas/original.jpg">
+                            <img alt="HomePoint &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/603/372/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The interface for our hack
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="606381" data-title="The team at Pennapps!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/606/381/datas/original.jpg">
+                            <img alt="HomePoint &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/606/381/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The team at Pennapps!
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    From Jarvis to GLaDOS, we were inspired by the fictional AIs that made the lives of our heroes so much more pleasant (if you forget about the neurotoxin). Unlike the movies, today&rsquo;s smart assistants offer unnatural forms of interaction which makes it extremely painful for one control the aspects of their home. We want to create a seamless and natural smart home device flow that integrates Augmented Reality and gesture control into a centralized hub. One aspiration was a home that allows you to change the luminosity of a light bulb by pointing at it and turning your arm. We also aspired to set a group of smart home appliances to create group actions (such as a &ldquo;go to bed command&rdquo; to turn off your lights in living room and kitchen).
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    HomePoint allows homeowners to smarten up their home with natural points of interaction. 
+The User Experience in a Nutshell:
+                </p>
+                <ol>
+                    <li>
+                        Set customized smart home control flows on our Google home app. (such as &ldquo;set Go to bed to turn off living room and kitchen lights&rdquo;). You can set as many as possible.
+                    </li>
+                    <li>
+                        Say &ldquo;I am going to bed&rdquo; to the Google Home. The Lutron hub will turn off the living room and kitchen lights real-time.
+                    </li>
+                    <li>
+                        Hold an AR app in front you that will identify which light you are pointing at, point your arm toward a light bulb and tilt to change its luminosity.
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Homepoint is deployed on a Node.js server that uses Firebase&rsquo;s cloud functions to manage all aspects of the smart home. Through the use of Api.ai/DialogFlow, a Google Home pings our node server and relays the requests it receives to control the state of the lights. The Myo armband sends its IMU data (turning speed, correlate to rate of change in luminosity) through BLE to the laptop. In conjunction with image recognition data from the AR App, a request is sent to the server. We used a laptop to pull the server data and transfer it to the Android Things board through serial communication. The Android Things board is connected wirelessly to the Lutron hub, which would receive the signals and turn on/off lights and change its luminosity.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Setting up NXP Android Things development board was painful because the new product lacked tutorials and documentation.
+Learning how to program dialog flow and google home, and integrate all components to communicate through server deployed on Firebase.
+Lutron board has a poor system of connecting to devices. Once we connect the laptop to the router, the laptop lost internet access because the wireless connection is occupied. Thus, we decided to connect the router with an Android Thing board and communicate input signals to Android Things through a serial port. That failed because the poor documentation of Android Things, so we have to attach a touchscreen to Android Things board and demo it manually.
+We were also forced to abandon our original approach with an augmented reality interface because Vuforia and OpenGL refused to display images within Unity.
+                </p>
+                <p>
+                    We also spent time integrating a Myo Armband to change the luminosity of lights via the rotation of one&rsquo;s arm. However, due to complications with reading accurate information on the arm&rsquo;s position, we were unable to complete the integration with the backend server.
+                </p>
+                <h2>
+                    Accomplishments that we are proud of
+                </h2>
+                <p>
+                    We&rsquo;re most proud of connecting the Lutron board to the Android things because our weekend was plagued by router issues and incompatible cables.
+Messed around with lots of hardware that are not designed to work together and tried our best to create integrations for them. 
+Our picture while hacking was posted on
+                    <a href="http://www.thedp.com/article/2017/09/at-pennapps-xvi-students-made-inter-dimensional-robots-and-hung-out-with-the-founder-of-quora" rel="nofollow">
+                        the Daily Pennsylvanian
+                    </a>
+                    !
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Our team could have focused more on a minimum viable product throughout the weekend. We spent too long exploring different methods of creating a cohesive smart home with devices such as the Google Home and the Myo armband. In hindsight, we should have prioritized the interaction between the NXP board and the Litron board. But hey, messing with hardware was really run, especially connecting so many hardware from different companies with different protocols. It is a good skill to practice as smart home and voice assistant are so popular and so diversified from different manufacturers, and the integration of all smart home hardware is extremely important.
+                </p>
+                <h2>
+                    What's next for Home Point
+                </h2>
+                <p>
+                    We hope to use the proper network devices to take advantage of Lutron&rsquo;s wireless capabilities.
+A hub that integrates all kinds of smart home devices with different protocols, smart home speakers to control all your devices in one central location.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            android-things
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/api-ai">
+                                api.ai
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ar-core
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dialogflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            firebase-cloud-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-home
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lutron
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/myo">
+                                myo
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opengl">
+                                opengl
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/vuforia">
+                                vuforia
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/marceloneil/lutron-android-things" rel="nofollow" target="_blank" title="https://github.com/marceloneil/lutron-android-things">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/simonguozirui/pennapps-home-server" rel="nofollow" target="_blank" title="https://github.com/simonguozirui/pennapps-home-server">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

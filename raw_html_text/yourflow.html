@@ -1,0 +1,258 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="888350" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/888/350/datas/original.png">
+                            <img alt="uflo &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/888/350/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="888744" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/888/744/datas/original.png">
+                            <img alt="uflo &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/888/744/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We place a high value on flow state (&lsquo;flow&rsquo;), characterized as being in the zone, completely immersed. Functional near-infrared spectroscopy (fNIRS) technology data enables drawing meaningful insight into one&rsquo;s flow patterns. And we think fNIRS has reached a point of favourable cost:utility. Cost as in: hardware cost &amp; invasiveness, privacy management etc. Utility as in: sample accuracy, new dapp tech (i.e. TEE compute), capacity for fine grained ML user-trajectory influencing, mobile stimuli to close the feedback loop etc.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    uflo steers users toward flow, in private &amp; maximally trustless fashion.
+                </p>
+                <h2>
+                    Data
+                </h2>
+                <p>
+                    uflo obtains data from:
+1) a hardware headset 
+2) a user&rsquo;s phone sensors, 
+3) local device &amp; remote api calls
+                </p>
+                <p>
+                    uflo steers users toward flow - closing the feedback loop - with:
+1) explicit app-directed stimuli(s) - at ETHWaterloo we chose classes of sounds (i.e. binaural beats, classic music, nature) 
+2) actionable analytics 
+3) prediction-provided suggestions on conditions for flow.
+                </p>
+                <p>
+                    With these dapp flow-analytics, we privately train &amp; apply machine learning in the TEE context of an Enigma smart contract. Our Enigma contract performs private computation in response to queries with encrypted inputs - so biometric data &amp; the algorithms/intellectual property applied to this data remain private.
+                </p>
+                <h3>
+                    User Experience Workflow
+                </h3>
+                <ol>
+                    <li>
+                        <p>
+                            Training Phase - triggered:
+a. On 1st usage of app
+b. Whenever user seeks to &lsquo;tune&rsquo; their private ML model.
+This phase collects training data [timestamp,  &Delta;Hb-O2, sound classes] in response to app-applied stimuli (we chose classes of sound for this initial hack), pulls the ambient local conditions (i.e. geolocation, temperature, browsing data), and ambient global conditions (i.e. financial market data, weather).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Application Phase - triggered:
+a. When a sustained exit of flow state occurs [or when such is predicted] - the app renders queued notifications (signal, slack, email etc.).
+b. when &lsquo;flow induction&rsquo; is sought - stimuli (i.e. classes of sounds), changing ambient conditions [classes of sounds, room temp/lighting], and recommendations (i.e. reduce coinmarketcap screentime) are used to induce flow &amp; coordinate group flowhesion.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Continuously available:
+1) A &lsquo;Flow status&rsquo; dashboard, which renders analytics &amp; predictions.
+i.e. &lsquo;are your teammates currently in flow?&rsquo; &lsquo;At what time is peak flowhesion expected?&rsquo;.
+2) Privately computed values obtained from an Enigma contract. Example: relative team flow insights where inspecting the contract data for absolute biometric values is not possible. The inputs, computation, and data related to these computations are private.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We&rsquo;re using the BlueberryX, a military-developed functional neuro infrared spectroscopy hardware (fNIRS) headset (
+                    <a href="https://blueberryx.com" rel="nofollow">
+                        https://blueberryx.com
+                    </a>
+                    ). Our main data stream stream consists of left temporal/prefrontal cortex  &Delta;Hb-O2 concentration over bluetooth (indicator of localized cortical tissue activation) &amp; HR/HR variability. The hardware's stream is downsampled/denoised from a rate of 50hz to 5hz.  The pipeline is: hardware -&gt; android app -&gt; std.in -&gt; socket -&gt; react front end.
+                </p>
+                <p>
+                    We use private machine learning inside an Enigma secret contract to detect which types of ambient conditions &amp; stimuli (audio here) are most effective at inducing a flow state, and to detect when a user has exited flow.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Piping/socketing streams while being constrained by hardware reliant on unmaintained Java libraries. Integrating 3rd party ML libraries within Enigma smart contracts. Getting acquainted with Rust on the fly.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Our team's cohesion, openness &amp; perseverance.
+                </p>
+                <h2>
+                    What's next for uflow:
+                </h2>
+                <ul>
+                    <li>
+                        High efficacy directed closure of the neurofeedback loop.
+                    </li>
+                    <li>
+                        Applications: identity-integration, game-integration, cultivate healthier/more productive work environments, cognitive enhancement etc.
+                    </li>
+                    <li>
+                        In application phase:
+                        <ul>
+                            <li>
+                                Browser extension to pause/queue &amp; render notifications (signal, slack, email etc.)
+                            </li>
+                            <li>
+                                Render opt-in ads - private ad matching for those that minimally disrupt flow.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        In passive phase:
+                        <ul>
+                            <li>
+                                More useful queryable Enigma contract computed fields (i.e. who&rsquo;s max flow, without showing ranking; &lsquo;what stimuli &amp; ambient conditions are predicted to produce max aggregate team flow?&rsquo;).
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Integrate subjective cognition labels.
+                    </li>
+                    <li>
+                        Integration with other biometrics (blood sugar, ketones), bio-inputs (i.e. compound dosages), and stimuli.
+                    </li>
+                    <li>
+                        Multi-sensor hardware (fused EEG-fNIRS for higher resolution, or TDCS concurrent fNIRS for direct brain stimuli).
+                    </li>
+                    <li>
+                        Kiss Java goodbye.
+                    </li>
+                    <li>
+                        <p>
+                            Wifi direct.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Special thank you to John Chibuk of BlueberryX, the Enigma team for their technical support, and the volunteers of ETHWaterloo.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/enigma">
+                                enigma
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ethereum
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rust
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rusty-machine
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            signal-processing
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            websocket
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/moskalyk/eth-wata-loo" rel="nofollow" target="_blank" title="https://github.com/moskalyk/eth-wata-loo">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

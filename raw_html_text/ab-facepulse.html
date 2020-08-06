@@ -1,0 +1,162 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/OJxxkck4DhE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="743002" data-title="Example detection of pulse detection" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/743/002/datas/original.jpg">
+                            <img alt="AB - FacePulse &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/743/002/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Example detection of pulse detection
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="743031" data-title="Screenshot from screen grab" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/743/031/datas/original.jpg">
+                            <img alt="AB - FacePulse &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/743/031/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Screenshot from screen grab
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    People
+                </h2>
+                <ul>
+                    <li>
+                        Arjo Chakravarty - 490
+## Inspiration
+For some time it has been possible to detect pulse using minute fluctuations in color of the forehead. A few projects using this technology have been built at
+                        <a href="https://people.csail.mit.edu/mrub/vidmag/" rel="nofollow">
+                            MIT CSAIL
+                        </a>
+                        . However, AFAIK no-one to date has built a working copy of their algorithms for the phone. I decided to develop an app that performs the same task. Given time constraints, the algorithm used is much simpler, however it can still give pulse rates.
+                    </li>
+                </ul>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This app uses a phone's camera to detect the pulse of multiple people from a distance. This could potentially be used in gyms and exercise halls to monitor user's heart rate. However, for the purpose of the app, the heart rate is displayed directly overhead.
+                    <em>
+                        NOTE: THIS IS EXTREMELY ALPHA QUALITY BUILT IN LESS THAN 24HRS (more like 16HRS since I tried to do something stupid with 74hc ICs but burned too many of them). DO NOT USE FOR MEDICAL DIAGNOSTICS
+                    </em>
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The app is built using Java on the Android platform. Firebase's ML was used for detecting and tracking faces.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Although google claims real time performance of Firebase ML on its phones, I found that in practice the amount of time it takes for Firebase ML to run is at the least 400ms. While this is realtime enough for simple camera applications, pulse detection requires a much higher rate. Given that a user's pulse rate can reach 180bpm the minimum sampling rate has to be 6 frames per second due to nyquist's theorem. Thus I had to create an elaborate system that runs the detector slower on a seperate thread. At the same time I needed to tag users in real time so there were two threads running detection. One for giving a rough face area to render the text and another that actually calulates the pulse. Pulse was also hard to pick up. I had to use a bandpass filter and a very lousy peak counting algorithm. Given more time I would use a FFT based detector to increase accuracy of the pulse.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud of the architecture that I had to come up with to create a perceived real-time effect. I had to develop an interesting pipeline in order to produce something which is perceived as real-time.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a fair deal about parallel programming and signal processing. I also learned to use google's firebase ML API.
+                </p>
+                <h2>
+                    What's next for AB - FacePulse
+                </h2>
+                <p>
+                    There is a scaling issue currently due to time constraints which I was unable to fix. At the same time, I think a move towards the algorithms described in the link to mit csail might significantly improve the performance of the detector.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            computer-vision
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cv
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/arjo129/hacknroll2019_facepulse" rel="nofollow" target="_blank" title="https://github.com/arjo129/hacknroll2019_facepulse">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

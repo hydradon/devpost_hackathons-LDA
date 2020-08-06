@@ -1,0 +1,171 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/GTga-bcCZGw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The original hackathon submission was to use an Aggregator (screen scraper) to validate a business owner&rsquo;s access to a bank account so that a renewal order for cheques could be completed digitally.  Today, the renewal order is done either via fax or an inbound call; the solution created a frictionless digital approach to reorder.
+                </p>
+                <p>
+                    For the Super Hack, we have taken the frictionless and aggregation concepts and have applied it to Fusion Fabric.Cloud in an &ldquo;Aggregator of an Aggregator&rdquo; model.  At issue is inconsistency between Aggregators.  They work with different banks in different countries, have different data exchange formats, collect different data points, are priced differently, and the businesses are of different sizes and maturity.  Fusion Aggregate provides developers, banks and consumers the ability to build once and reliably deploy applications globally.
+                </p>
+                <p>
+                    The application of machine learning in the environment would be leveraged to optimally route requests based on data requirements, price, availability and geography.
+                </p>
+                <p>
+                    The business model exists today whereby aggregators charge a fee for each screen scraped data pull. Research suggests that 1 out of every 10 transaction in online banking platforms are made by an aggregator.  Our model includes a surcharge or a &ldquo;toll&rdquo; on each transaction made through the service and charged to the application owner. Plaid, a privately held aggregator, is currently valued at $2.7B.
+                </p>
+                <p>
+                    As Fusion Fabric.Cloud grows and adds banks to the environment, this solution ultimately displaces aggregators as the routing logic shifts to internally routed requests.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <ul>
+                    <li>
+                        an API, Login control
+                    </li>
+                    <li>
+                        Using login control, which is called with a country code (62 countries supported), customer selects their bank, and logs in with their credentials
+                    </li>
+                    <li>
+                        API routes the request based on geography and bank to the "best fit" aggregator.  Calls routed to either Saltedge (an International aggregator), Flinks (a Canadian aggregator), or FFDC (Astra Bank on FFDC US Retail API)
+                    </li>
+                    <li>
+                        The API returns customer profile information to the application
+                    </li>
+                    <li>
+                        We demonstrate through streaming logs that how the calls are routed
+                    </li>
+                    <li>
+                        We have built 3 mock-up samples that consume the API.  A Canadian e-commerce registration, an investment bot in Singapore, and a US mortgage origination example
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <ul>
+                    <li>
+                        C# for API
+                    </li>
+                    <li>
+                        Azure App services for hosting
+                    </li>
+                    <li>
+                        Node.js for mock-up consumer apps
+                    </li>
+                    <li>
+                        Integration with FFDC Retail banking, Saltedge (international aggregator), Flinks (Canadian aggregator)
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        OpenID implementation
+                    </li>
+                    <li>
+                        Working with 3rd party API - learned some functionality was disabled by default
+                    </li>
+                    <li>
+                        Working in a different time zone / time change adjustment
+                    </li>
+                    <li>
+                        Laptop died day before travel to London - had to re-setup dev tooling!
+                    </li>
+                    <li>
+                        Abandoned implementations.
+                        <br>
+                        --We tried to inject our API into a production app using a Chrome control, had to abandon after many wasted hours.  ---Wasted time trying to re-use markup from production app we were trying to integrate with
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Understand from FFDC platform team we are the first to connect with OpenID with C# on FFDC.  We uncovered an interesting bug, that the FFDC platform team promptly patched for us!
+                    </li>
+                    <li>
+                        Connecting to FFDC
+                    </li>
+                    <li>
+                        Implementing OpenID
+                    </li>
+                    <li>
+                        Taking the concept from whiteboard to PoC
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        OpenID
+                    </li>
+                    <li>
+                        OPEN BANKING: We have learned a lot about aggregation and open banking internationally - something we weren't familiar with at the start of this project - PSD2, consent requirements, UK open banking
+                    </li>
+                    <li>
+                        Understand FFDC's role in Finastra's strategy
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Fusion Aggregate
+                </h2>
+                <p>
+                    We have a use case in Canada for the Aggregator model that the business intends on implementation in to production.
+                </p>
+                <p>
+                    As the Fusion Fabric.Cloud environment matures, developers will require access to data from external sources.  Fusion Aggregate demonstrates this ability to efficiently access data.  The model can be applied to screen scraping, credit bureaus, dark web monitoring and any other data environment that have geographic differences.  Think every credit bureau call for a mortgage application routing through the Fusion Aggregate application. Think every credit card application leveraging Fusion Aggregate.  Think every deposit account application leveraging Fusion Aggregate.  Think every wealth account application leveraging Fusion Aggregate.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ffdc
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            openid
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

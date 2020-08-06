@@ -1,0 +1,190 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to build something purposeful that makes the city more accessible.
+Through research, we found some noteworthy stats pointing towards a clear problem.
+1600 pedestrian accident last year of which 80% of victims are aged 55yo and older.
+Ontario gov sponsored research shows that most of pedestrian accidents come from seniors at major intersections in large cities: Seniors need more time to cross
+No simple answers in city design as increasing crossing time permanently will severely impact traffic in high-density areas.
+                </p>
+                <p>
+                    We then thought, what if we can detect when to allocate more time only when necessary? What do we need to identify those in need and build a dynamic traffic system?
+                </p>
+                <p>
+                    We also wanted to impact a different community through technology. Attempting to understand and accommodate the needs of the broader population is a necessary step for all technologist that wishes the world to be a better place for all, not just a few.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We&rsquo;ve built a working prototype for a novel traffic system as an extension of the current pedestrian traffic system. When a pedestrian is entering the crosswalk, the system recognizes the age of the individual through computer vision. As the normal pedestrian countdown completes, if the system still detects anyone within the crossing aged 55 and older, we display a special &ldquo;Senior citizen&rdquo; sign to alert turning cars and other pedestrians. This will also block the vehicles in the orthogonal direction from moving, resulting in a safer environment for the senior crossing.
+                </p>
+                <p>
+                    If a senior pedestrian is not detected on the crosswalk at the point of completion of the countdown, the pedestrian symbol will proceed as normal:
+                </p>
+                <ol>
+                    <li>
+                        a walking symbol
+                    </li>
+                    <li>
+                        a countdown with a flashing hand symbol
+                    </li>
+                    <li>
+                        a steady hand symbol.
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We&rsquo;ve trained disabilities as well as age categorization network from scratch using the YOLO-DarkNet implementation.
+                </p>
+                <p>
+                    Using the webcam feed as a simulation of a pedestrian traffic camera, we break the stream into individual frames and upload the images to Firebase Storage. The URLs of the images are then sent to Azure Face API for age recognition as we have found through massive amount of experimentation that this solution worked the best when both accuracy and responsiveness was taken into consideration. Other attempts will be outlined in &ldquo;Challenges We Ran Into&rdquo;.
+                </p>
+                <p>
+                    The callback from the Azure API will then be analyzed and processed to &ldquo;box&rdquo; the face within the video stream with a tag on the age of the individual. If recognized persons are identified as seniors, that information will be logged to potentially impact the path of future user flow. The working prototype inner workings can be best described as a series of states. Depending on the sensory information detected or undetected as the user experience the system, we will move down specific paths of state flow.
+                </p>
+                <p>
+                    We designed the user experience of the new traffic system to seamlessly integrate with the existing pedestrian crossing system in Toronto. Users as both pedestrians and vehicles experiences must not be out of the norm unless they have to be. We did this by mapping out the user experience flow of the current traffic system and looking at where we can interject our platform with the maximum benefit and minimum disturbance.
+                </p>
+                <p>
+                    We&rsquo;ve purposely built our product concept and then looked at what technologies were needed to power it as we believe that was the best approach in tackling a product issue. Though not suggesting that insights into parameters of technology did not help with choices.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Training, researching, and finding a suitable model to cater to our product needs was a difficult task. Models we trained had difficulty converging due to the small sizes of the data sets. Though less responsive, we found that the Azure face API offered better accuracy for the purpose of the Hackathon.
+                </p>
+                <p>
+                    The Azure API only supported image recognition and the need of our product was based on live video recognition. To accommodate this discrepancy, we created a pipe-and-filter architecture using Google Firebase Storage to direct the flow of image recognition without requiring to multiple uploads and downloads of images as our data goes through multiple APIs. This system required minimum delay to be &ldquo;real-time&rdquo; detection and we were able to accomplish that.
+                </p>
+                <p>
+                    One challenge we ran into was planning the pedestrian signal in a way that would benefit when the need is apparent rather than increasing the crosswalk time in all intersections, which could dramatically disrupt traffic flow.  Another challenge was deciding how to show the senior pedestrian symbol in a way that was ambiguous so to not invite other pedestrians to cross the street while increasing the driver&rsquo;s attention when turning.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Something we&rsquo;re proud of is that we built this for a group of users that it can truly benefit. We went from ideation to a finished prototype and plans for future development. We&rsquo;ve failed many many times and succeeded only really a few. But we&rsquo;ve finished a complete product for a purpose that we all believe in.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Through this project, our team reflected on what attracted us to this idea. It was because it focused on people rather than a product. Every decision we made in tech and design can be traced to how it will make someone&rsquo;s life better (rather than KPI of engagement in a website). It felt as if we&rsquo;re really trying to make the world a better place instead of just saying that.
+                </p>
+                <p>
+                    We rapidly explored different APIs and evolved a decision-making system of making rapid architecture and design choices to accommodate or fully utilize the extent of available technology/time.
+                </p>
+                <h2>
+                    What's next for Cityzen
+                </h2>
+                <p>
+                    In the medium term, we hope to expand the recognition technology to encompass disabled individuals and other individuals in need &ndash; allowing for a broader service.
+                </p>
+                <p>
+                    In the long term, we hope to collect non-identifiable data about the city to infer smarter and safer choices in future plans. For example, if we know a certain area that has a high traffic volume of seniors, we can make permanent architecture decisions to accommodate these individuals such as pedestrian dedicated walkways.
+                </p>
+                <p>
+                    We believe that looking ahead into the future is vital for this problem as this problem will most likely get worse. As Canadians, we are experiencing a changing age distribution with the rest of the world. It&rsquo;s estimated that 25% of our population will be 65 and older by 2041, up from 16% to date. As pioneers in technology, now&rsquo;s a great time to look at those who need our help the most.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/excel">
+                                excel
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            illustrat
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/powerpoint">
+                                powerpoint
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sketch">
+                                sketch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/karpkarp/cityzen" rel="nofollow" target="_blank" title="https://github.com/karpkarp/cityzen">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

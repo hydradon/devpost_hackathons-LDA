@@ -1,0 +1,232 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    mastermind
+                </h1>
+                <p>
+                    RESTful Mastermind as part 1 of Axion-Zen's challenge at VanHackathon May 2016
+                </p>
+                <h2>
+                    Create a game
+                </h2>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        PUT /games
+{"user":"ensjo"}
+                    </p>
+                </blockquote>
+                <p>
+                    No logging-in/authentication method was implemented in this prototype.
+                </p>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo",null],"colors":8,"slots":8,"status":0,"round":null,"guessed":null,"winners":null}
+                    </p>
+                </blockquote>
+                <p>
+                    Status = 0 means the game is still waiting for players to join.
+                </p>
+                <p>
+                    The secret code is created randomly. It's kept in the database, but is not disclosed.
+                </p>
+                <h2>
+                    Get an array of games from the database
+                </h2>
+                <p>
+                    So another player can find existing games to join.
+                </p>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        GET /games
+                    </p>
+                </blockquote>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        [
+  {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo",null],"colors":8,"slots":8,"status":0,"round":null,"guessed":null,"winners":null}
+]
+                    </p>
+                </blockquote>
+                <h2>
+                    Join an existing game
+                </h2>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        PUT /games/57421b518f1f81a401f753f8/players
+{"user":"zjan"}
+                    </p>
+                </blockquote>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo","zjan"],"colors":8,"slots":8,"status":1,"round":1,"guesses":{"zjan":[]},"guessed":{"ensjo":false,"zjan":false},"winners":null}
+                    </p>
+                </blockquote>
+                <p>
+                    When all players have joined, the game begins automatically (status = 1) and are allowed to guess.
+                </p>
+                <p>
+                    While the game is ongoing, a player can only see his own guesses.
+                </p>
+                <h2>
+                    Get a game from the database
+                </h2>
+                <p>
+                    Players may check this URL periodically to check the game status and if they are allowed to guess.
+                </p>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        GET /games/57421b518f1f81a401f753f8
+                    </p>
+                </blockquote>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo","zjan"],"colors":8,"slots":8,"status":1,"round":1,"guessed":{"ensjo":false,"zjan":false},"winners":null}
+                    </p>
+                </blockquote>
+                <p>
+                    While the game is ongoing, no guesses are not disclosed.
+                </p>
+                <h2>
+                    Make a guess
+                </h2>
+                <p>
+                    A guess is provided as an array with integer numbers (0, 1, 2...) representing the different colors.
+                </p>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        PUT /games/5740bfd93e8709ac800687a7/guesses
+{"user":"ensjo","guess":[0,1,2,3,4,5,6,7]}
+                    </p>
+                </blockquote>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo","zjan"],"colors":8,"slots":8,"status":1,"round":1,"guesses":{"ensjo":[{"guess":[0,1,2,3,4,5,6,7],"feedback":{"correct":2,"misplaced":3}}]},"guessed":{"ensjo":true,"zjan":false},"winners":null}
+                    </p>
+                </blockquote>
+                <p>
+                    The user guess is recorded, feedback is calculated.
+                </p>
+                <h2>
+                    Make a guess (end of round)
+                </h2>
+                <p>
+                    When all players have guessed and nobody found the secret code, a new round begins.
+                </p>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        PUT /games/5740bfd93e8709ac800687a7/guesses
+{"user":"zjan","guess":[7,6,5,4,3,2,1,0]}
+                    </p>
+                </blockquote>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo","zjan"],"colors":8,"slots":8,"status":1,"round":2,"guesses":{"zjan":[{"guess":[7,6,5,4,3,2,1,0],"feedback":{"correct":1,"misplaced":4}}]},"guessed":{"ensjo":false,"zjan":false},"winners":null}
+                    </p>
+                </blockquote>
+                <p>
+                    The game proceeds with the players making guesses until one or both of them makes a correct guess.
+                </p>
+                <h2>
+                    Make a guess (end of game)
+                </h2>
+                <h3>
+                    Request
+                </h3>
+                <blockquote>
+                    <p>
+                        PUT /games/5740bfd93e8709ac800687a7/guesses
+{"user":"zjan","guess":[5,0,1,2,5,0,1,2]}
+                    </p>
+                </blockquote>
+                <h3>
+                    Response
+                </h3>
+                <blockquote>
+                    <p>
+                        {"_id":"57422c6568c8bba318626b1d","created":"2016-05-22T22:02:13.141Z","creator":"ensjo","players":["ensjo","zjan"],"colors":8,"slots":8,"status":2,"round":3,"guesses":{"ensjo":[{"guess":[0,1,2,3,4,5,6,7],"feedback":{"correct":2,"misplaced":3}},{"guess":[4,5,6,7,4,5,6,7],"feedback":{"correct":0,"misplaced":2}},{"guess":[5,0,2,3,5,0,1,2],"feedback":{"correct":8,"misplaced":0}}],"zjan":[{"guess":[7,6,5,4,3,2,1,0],"feedback":{"correct":1,"misplaced":4}},{"guess":[0,1,2,3,0,1,2,3],"feedback":{"correct":2,"misplaced":4}},{"guess":[5,0,1,2,5,0,1,2],"feedback":{"correct":6,"misplaced":1}}]},"guessed":{"ensjo":true,"zjan":true},"winners":["ensjo"]}
+                    </p>
+                </blockquote>
+                <p>
+                    The game ends (status = 2), the winner(s) is announced and all the guesses are disclosed.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ensjo/mastermind2" rel="nofollow" target="_blank" title="https://github.com/ensjo/mastermind2">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

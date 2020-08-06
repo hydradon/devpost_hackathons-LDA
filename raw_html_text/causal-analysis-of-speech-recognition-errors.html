@@ -1,0 +1,256 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="515359" data-title="Causal model of recognition errors." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/515/359/datas/original.png">
+                            <img alt="Causal Analysis of Speech Recognition Errors &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/515/359/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Causal model of recognition errors.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Motivation
+                </h2>
+                <p>
+                    Automatic Speech Recognition (ASR) of meetings is an important task for analysis and summarization of spoken content involving multiple individuals.  It remains, however, a challenging task due to the nature of conversational speech and dialog between parties.  Our goal is to understand the source of ASR errors when decoding meeting based speech and ultimately improve ASR transcription of meetings.  We perform an error analysis on an ASR transcription of the
+                    <a href="http://groups.inf.ed.ac.uk/ami/corpus/" rel="nofollow">
+                        AMI Meeting Corpus
+                    </a>
+                    through a causal discovery of the effects of word based features on ASR transcription.
+                </p>
+                <h2>
+                    Methods
+                </h2>
+                <p>
+                    Conversational speech in groups tends to have variability due to a number of factors: high level of disfluency, non-canonical pronunciation, acoustic and prosodic variability, and speech dynamics of group dialog.   Any one or more of these factors may trip up a typical ASR.  For this project, our goal was to identify word-level features most likely to results in error.
+                </p>
+                <p>
+                    We used a state-of-the-art time-delay neural network based speech recognizer in the
+                    <a href="http://kaldi-asr.org/" rel="nofollow">
+                        Kaldi toolkit
+                    </a>
+                    which achieved a Word Error Rate (WER) of 24.2%.  This performance is comparable with reported performance in the research literature.  Based on the decoded transcripts, we extracted a number of features falling in the a few groups:
+                </p>
+                <p>
+                    <strong>
+                        Disfluency features.
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        <em>
+                            Filled pauses
+                        </em>
+                        : words, such as "uh" and "um", which tend to have no meaning but have specific phonetic forms usually employed to delay speech.  We extracted Boolean features which indicated whether a word was a filled pause,  or whether it preceded or followed a filled pause.
+                        <br>
+                    </li>
+                    <li>
+                        <em>
+                            Fragments
+                        </em>
+                        : partially spoken words, such as "wh-".  We extracted Boolean features for the word and the preceding/following word (as above).
+                    </li>
+                    <li>
+                        <em>
+                            Repetitions
+                        </em>
+                        : multiple utterances of the same word,  We extracted Boolean features as above.  In addition, we extracted Boolean features indicating whether a word was first, last, or in the middle of, a repeated sequence,
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Pronunciation features.
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        <em>
+                            Word length
+                        </em>
+                        : the length of a word in phones.
+                        <br>
+                    </li>
+                    <li>
+                        <em>
+                            Number of pronunciations
+                        </em>
+                        : the number of different pronunciations of a word in a phonetic dictionary (we used the
+                        <a href="http://www.speech.cs.cmu.edu/cgi-bin/cmudict" rel="nofollow">
+                            CMU dictionary
+                        </a>
+                        ).
+                    </li>
+                    <li>
+                        <em>
+                            Number of homophones
+                        </em>
+                        : the number of words in a phonetic dictionary with the same pronunciation.
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Prosodic features.
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        <em>
+                            Speech rate
+                        </em>
+                        : the rate of phones uttered for the given word.
+                    </li>
+                    <li>
+                        <em>
+                            Pitch
+                        </em>
+                        : the pitch (fundamental frequency) of the utterance which was estimated using
+                        <a href="http://audeering.com/technology/opensmile/" rel="nofollow">
+                            OpenSMILE
+                        </a>
+                        .  We used summary statistics of the estimated pitch: maximum, minimum, mean, logarithm of range, and standard deviation.
+                    </li>
+                    <li>
+                        <em>
+                            Intensity
+                        </em>
+                        : the intensity of the word utterance, also estimated using
+                        <a href="http://audeering.com/technology/opensmile/" rel="nofollow">
+                            OpenSMILE
+                        </a>
+                        and using summary statistics as above.
+                    </li>
+                    <li>
+                        <em>
+                            Duration
+                        </em>
+                        : the logarithm of word duration in seconds, as well as logarithm of duration of the utterance containing the word.
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Metadata features.
+                    </strong>
+                </p>
+                <p>
+                    This included speaker characteristics including identity, gender, age, and native language.  In addition, we used the location of the conversation and meeting scenario, which were available from the AMI corpus metadata.
+                </p>
+                <p>
+                    <strong>
+                        Target features.
+                    </strong>
+                </p>
+                <p>
+                    Although our target feature is a Boolean presence or lack of an error relative to the reference transcription, we also included the types of error (insertion, substitution or deletion error) for a given word, in case this was useful for further analysis.
+                </p>
+                <h2>
+                    Causal Model
+                </h2>
+                <p>
+                    We used
+                    <a href="http://www.phil.cmu.edu/tetrad/" rel="nofollow">
+                        TETRAD
+                    </a>
+                    to search for a causal model explaining which features caused errors to occur.  Our data was missing metadata for a number of features and we chose to ignore such data instances.  We also balanced the data based with respect to presence of error.  This provides us with 35,000 instances and 40 features.
+                </p>
+                <p>
+                    We used TETRAD's
+                    <em>
+                        knowledge box
+                    </em>
+                    to impose constraints on our model by creating three tiers.  The first tier contained metadata features.  These features were largely speaker or demographic  characteristics and, while they may explain errors, they are usually mediated through linguistic or acoustic characteristics which we wish to identify.  Thus, the second tier contained all linguistic or acoustic features above, while the third tier contained the target features.  We employed the FGES algorithm in TETRAD with a penalty discount of 2 to discover a causal model.
+                </p>
+                <h2>
+                    Results
+                </h2>
+                <p>
+                    The image (attached to this submission) shows the causal graph discovered by TETRAD.  We adjusted the layout of the graph to group nodes in clusters based on feature types mentioned above.  There are a number of items worth noting.
+                </p>
+                <p>
+                    As we expected, a large number of effects due to speaker characteristics (top left) are mediated by word level features, especially prosodic features (bottom center and left).  However, as pointed out by the Joe Ramsey during the presentation, the relative density of the edges may indicate the presence of confounding variables which have not been identified.  The GFCI algorithm may be used to identify likelihood of latent and confounding variables.
+                </p>
+                <p>
+                    There are only six variables which have a direct effect on the errors:
+                    <em>
+                        word is backchannel
+                    </em>
+                    ,
+                    <em>
+                        log word duration
+                    </em>
+                    ,
+                    <em>
+                        number of homophones
+                    </em>
+                    ,
+                    <em>
+                        speech rate in phones
+                    </em>
+                    ,
+                    <em>
+                        word length in phones
+                    </em>
+                    ,
+                    <em>
+                        word follows repetition
+                    </em>
+                    ,
+                    <em>
+                        word precedes repetition
+                    </em>
+                    .  These have likely explanations, for example a word following a repetition will tend to be enunciated more clearly, while a word preceding a repetition is likely to have been mispronounced or not clearly uttered.  However, it is still interesting how few of the examined variables have direct effects on error and.  Coupled with observation of confounding latent variables, we suspect that this model is incomplete with respect to variables.  There are also some variables which may have little to no effect on error, such as filled pauses.  This was surprising, and we plan to examine the literature as well as more data to confirm whether this holds generally.
+                </p>
+                <p>
+                    Using the six variables above, and their associated 8 variables (e.g. all backchannel related variables), for a total of 14 variables, yields a logistic regression model which is on par with performance from a L1-regularized logistic regression model using all variables.  We found that duration and repetition increased the likelihood of error by 7% and 9%, respectively, while backchannel and number of pronunciations decreased the likelihood of error by 25% and 26%, respectively.
+                </p>
+                <h2>
+                    Future Directions
+                </h2>
+                <p>
+                    Although this was a first attempt at a causal analysis, it is exciting to to see the relative strengths of hypotheses concerning word-level features of speech and their effect on recognition error.  There are several avenues to pursue as we continue our investigation.  We plan to use a different search algorithm determine the possibility of confounding and latent variables.  We would also like to follow up with using more features motivated by linguistic and acoustic accounts of speech.  Finally, we would like to examine possibilities related to group level interactions which manifest in speech which may account for recognition errors.  Our ultimate goal is improve speech recognition for meetings and this has been an fruitful first step in that direction.  We are grateful to the
+                    <a href="http://www.ccd.pitt.edu/" rel="nofollow">
+                        Center for Causal Discovery
+                    </a>
+                    for the short course on causal discovery and hosting the datathon which helped make this possible.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            kaldi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tetrad
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

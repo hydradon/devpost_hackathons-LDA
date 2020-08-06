@@ -1,0 +1,145 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Visio
+                </h1>
+                <p>
+                    The discohue project analyzes music played to the device running the script and translates the music into commands for the Philips Hue device. For a smooth user experience the music can be started via amazon Alexa.
+A basic workflow looks like this:
+                </p>
+                <ol>
+                    <li>
+                        Start the script
+                    </li>
+                    <li>
+                        Tell amazon Alexa to turn on music
+                    </li>
+                    <li>
+                        The script analyzes the music and translates it into a fitting light response. For slower music, the light response will be slow and smooth, for faster music faster and more abrupt.
+                    </li>
+                    <li>
+                        If you don't want anymore light response, stop the script.
+                    </li>
+                </ol>
+                <h2>
+                    Installation
+                </h2>
+                <p>
+                    <code>
+                        pip install -r requirements
+                    </code>
+                </p>
+                <h2>
+                    Run
+                </h2>
+                <p>
+                    <code>
+                        python input.py
+                    </code>
+                </p>
+                <p>
+                    Use python 2.7
+                </p>
+                <p>
+                    If you get an error when starting the script, try running
+                    <code>
+                        sudo pip input.py
+                    </code>
+                    o
+                </p>
+                <h2>
+                    Known issues
+                </h2>
+                <ul>
+                    <li>
+                        The Philips Hue bridge cannot take more than 10 commands per second per light
+                    </li>
+                    <li>
+                        latency issues on the network sometimes delay the response by the bridge. If we send commands quicker than the bridge can receive we get a delay in response
+                    </li>
+                    <li>
+                        Latency on the network cause a slight delay between music and light response
+                    </li>
+                    <li>
+                        If the music is too loud, the colour calculated from the volume of the music can be out of the limited colour range of the Philips Hue lights.
+                    </li>
+                </ul>
+                <h2>
+                    Workarounds for issues:
+                </h2>
+                <ul>
+                    <li>
+                        Threads are used to mitigate response times. If all lights are still occupied by a command at the time the next command comes in, the current command gets skipped. This is because commands get queued on the Philips Hue device otherwise which eventually leads to the device getting badly out of sync with the music.
+                    </li>
+                    <li>
+                        The colour range problem is solved by "going in the other direction" as soon as a colour is out of range. This means that the colour response for a sound that is slightly above the volume treshold will be the same as for a sound slightly below the volume treshold.
+                    </li>
+                </ul>
+                <h2>
+                    File structure:
+                </h2>
+                <ul>
+                    <li>
+                        input.py: Main script, takes input and works on it, calls all other scripts
+                    </li>
+                    <li>
+                        visio/bridge.py: Ansteuerungsskript f&uuml;r die Philips Bridge, vewrantwortlich f&uuml;r die Steuerung des Hue devices.
+                    </li>
+                    <li>
+                        visio/.env: environment variables for configuration, can be overloaded the the scriptvendor
+                    </li>
+                    <li>
+                        visio/
+                        <strong>
+                            init
+                        </strong>
+                        .py: helper functions
+                    </li>
+                    <li>
+                        visio/vendor/rgb2xy.py: helper script to change between rgb and other colour spaces
+                    </li>
+                </ul>
+                <h3>
+                    Team :
+                </h3>
+                <p>
+                    Disco Hue
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/simonre/discohue" rel="nofollow" target="_blank" title="https://github.com/simonre/discohue">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

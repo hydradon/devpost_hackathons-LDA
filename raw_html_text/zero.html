@@ -1,0 +1,198 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="307470" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/307/470/datas/original.jpg">
+                            <img alt="Zero &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/307/470/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="307471" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/307/471/datas/original.jpg">
+                            <img alt="Zero &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/307/471/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="307472" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/307/472/datas/original.jpg">
+                            <img alt="Zero &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/307/472/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our application uses user-submitted queries to find keywords and articles that the user might be interested in. Using the
+                    <strong>
+                        Bing Search API
+                    </strong>
+                    , we retrieve and aggregate related articles. We then apply our custom summarization algorithm to the article, allowing us to display the key sentences and sentiments for every article.
+                </p>
+                <h2>
+                    How We Built It
+                </h2>
+                <p>
+                    Our summarization algorithm uses an extractive method, identifying the top sentences that best summarize a given article. To do this, we compute a
+                    <em>
+                        centrality
+                    </em>
+                    and a
+                    <em>
+                        relevancy
+                    </em>
+                    score for every sentence in the file. The relevancy score is a weighted linear combination of various attributes that have been shown, across various studies, to be a good basis for the relevancy of articles. The attributes that we use include key-word frequency, title frequency, document position and sentence length as indicators of relevance.
+                </p>
+                <p>
+                    We think that the most interesting of these attributes is the frequency score, in which we calculate the sentence-based feature selection score and the density-based feature selection score -- combining the scores to get a relevancy score.
+                </p>
+                <p>
+                    To calculate the centrality score we create a vertex for every sentence in the article and draw edges between every vector (giving us a complete graph). The weights of the undirected edges are the cosine similarities of the tf-idf vectorizations of the sentences. Given this graph, represented as an adjacency matrix, we then applied Google's
+                    <strong>
+                        PageRank
+                    </strong>
+                    algorithm to the matrix, giving us a centrality ranking for every single sentence.
+                </p>
+                <p>
+                    We then computed the overall score by taking the square root of the product of the centrality score and relevancy score for every sentence. However, getting our summarizing sentences wasn't as simple as just taking the topmost relevancy scores. What we did was apply a maximal marginal relevance selection algorithm, allowing us to ignore redundant sentences while still choosing relevant sentences.
+                </p>
+                <p>
+                    Our end result was a great number of relevant and interesting summaries. To add to our idea of letting people know what's going on with respect to their favourite topics, we also query relevant Twitter posts. This allows our users to get insight on what others are saying about their interests.
+                </p>
+                <h2>
+                    Challenges We Ran Into
+                </h2>
+                <p>
+                    One big challenge for us was finding an idf (inverse document frequency) score for words. As we don't have massive servers and a great amount of computational power, we needed a way to acquire idf scores efficiently.
+                </p>
+                <p>
+                    Another problem that we encountered was the fact that the centrality scores (being the result of PageRank) weren't normalized between 0 and 1. This often meant that they were less spread out and had a lesser effect on the overall score than relevancy did. In order to resolve this problem, we needed to normalize the weights between 0 and 1 in such a way that preserves relationships between sentences.
+                </p>
+                <h2>
+                    Accomplishments That We're Proud Of
+                </h2>
+                <p>
+                    We're proud of building a clean, sharp web application that provides contextual and relevant summarizations of recent news articles. We personally designed and developed each one of our methods and had a lot of fun doing so!
+                </p>
+                <h2>
+                    What We Learned
+                </h2>
+                <p>
+                    We learned a lot about Natural Language Processing, Text Mining and solving difficult problems given unique constraints. We can honestly say that we're leaving this weekend a lot more knowledgeable than we went into it.
+                </p>
+                <h2>
+                    What's Next For Zero
+                </h2>
+                <p>
+                    Given that we're relying on Bing News Search to acquire our relevant articles, not everything is in our hands. We're definitely planning on building on this awesome creation and learning about additional options and ways we can find the absolute best articles for readers.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bing-search-api">
+                                bing-search-api
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cosine-similarities
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lexrank
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pagerank
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scipy">
+                                scipy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tf-idf-vectorization
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://github.com/shikib/summarizer" rel="nofollow" target="_blank" title="http://github.com/shikib/summarizer">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

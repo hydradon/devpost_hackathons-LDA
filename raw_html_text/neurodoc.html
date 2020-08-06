@@ -1,0 +1,117 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Degenerative disorders &mdash; Alzheimer&rsquo;s disease, amyotrophic lateral sclerosis (ALS) and Parkinson&rsquo;s disease, among others &mdash; affect more than 45 million people worldwide. These diseases often strike older adults and are characterized by progressive deterioration of nerve cells, eventually leading to cell death. 
+Degenerative nerve diseases can be serious or life-threatening. It depends on the type. Most of them have no cure. Treatments may help improve symptoms, relieve pain, and increase mobility.
+Early detection of these diseases may help the patient be better prepared for the situation ahead. 
+Certain common symptoms to these disorders are: Resting tremor ( which usually abates during voluntary movement), Very soft and low voice, Impairment of postural balance leading to disturbances in gait and falling, Bradykinesia (slowness and poverty of movement) and others. We use these symptoms and check them through tests involving very basic exercises related to their speech, handwriting, degree of body tremors, etc. The collected data&rsquo;s analysis may be done using efficient machine learning algorithms (which have proved worthy for such tasks), thereby providing the user a probability of having these disorders. 
+If we can provide pertinent recommendation related to these disorders to someone in his/her earlier stages, they might get saved via appropriate medication. Every life matters and if NeuroDoc can save even a single life, we will consider it a winner.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We, at NeuroDoc, strive to bridge the initial person-doctor interaction by making the patient to take three web-based tests. In test 1, the user is asked to wear a Myo Arm Band whose accelerometer can detect gestures. What we are really interested in, is the amount and degree of tremors (shakes) in a person&rsquo;s hand while s/he has been asked not to move the hand for about 20-30 seconds. NeuroDoc can detect the amplitude of these tremors through the band and then applies machine learning to classify people with no tremors and the ones with high degree of tremors.
+                </p>
+                <p>
+                    NeuroDoc then moves to Test 2, which involves asking the user to record and upload his latest speech sample. Generally, people with degenerative neurological disorders have stuttered speech and they tend to stammer more often than the other healthy people. NeuroDoc has the ability to classify these patients by detecting and analyzing number of stuttered instances in the speech sample provided by the user. Our implementation uses Fast Fourier Transforms to generate an effective analysis.
+                </p>
+                <p>
+                    In Test 3, the user is asked to upload a handwriting sample. We chose the user&rsquo;s signature to be the testing measure for this examination as their new signature sample is easier to match with their signatures on file: forms, bills, etc. Again, Machine Learning comes into picture and here NeuroDoc classifies handwriting samples of people who do not have the disorder against those who have.
+                </p>
+                <p>
+                    All these tests give some confidence value for the user. It basically generates a probability that the user might be suffering through one of these neurological disorders. NeuroDoc, then, suggests whether the user should immediately contact the doctor or should start/continue treatment by analyzing the generated probabilities.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Matlab was used for the backend of the main signal processing / pattern recognition. While Matlab was used to develop the algorithms, the open source equivalent, Octave, was used to interface with the web-app. The algorithms themselves use a range of signal processing techniques. For the accelerometer data, a CSV file was read in and parsed using built-in matlab functions. The accelerometers' three axis data was combined using a simple sum of squares approach and subtracting the mean. The output of this was then compared with a threshold. The sum of values larger than the threshold was computed and scaled by the length of the output. This gives a final score for the accelerometer. 
+The handwritten data was processed using a completely different strategy. The image of a signature sample is read in. This image is first rotated  by finding the angle that the principal component makes with the horizontal. A rotation matrix is computed and applied to the binarized signature sample. The image is also scaled before comparing it to a dictionary of known good signatures. As long as the image matches at least one of the dictionary images well it will return a high score. 
+The speech data analysis was one of most non-trivial and trickiest problem. The audio file is first divided up into sections of 0.15s. The fast fourier transform (fft) of each of these subsets is computed. The fft of one subsection is compared to all the others. The closer the closest matching fft is to the current subsection, the higher its score. This is also scaled by the length of the segment to make it comparable. HTML, CSS,  javascript and python were used to construct the front-end (web-app).
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The core of our work was development of efficient machine learning techniques. We believe coming up with three independent learning algorithms that handle, speech, text and gesture at a hackathon is quite challenging. This forced us to iterate over our algorithms several times (especially Speech analysis). We had to write several equations and read research papers. Our goal of working for a cause proved challenging, yet satisfying.
+The secondary issue we faced was lack of a strong front-end developer. So, due to this we spent around 20% of our time creating the simple layouts. But, again this is learning !
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We developed three novel algorithms for detecting neuro-degenerative diseases, particularly parkinson&rsquo;s. Each of these algorithms process a different type of data and is able to determine a score to represent the likelihood that the data was collected by someone who is experiencing tremors. These algorithms alongwith the wearable technology they use, can help to solve one of the pre-dominant disease hovering over the human population.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Probably the most important thing we learned was to reach out to other for help. There are a lot of very talented and knowledgable people here who know the answers to our questions, we need only ask. At the same time, we learned that there were a lot of things that we were capable of solving ourselves by thinking creatively and continuing to pursue the problem. We feel happy that a single hackathon helped us to create innovative algorithms aimed at helping the human population.
+                </p>
+                <h2>
+                    What's next for NeuroDoc
+                </h2>
+                <p>
+                    Since all of our backgrounds were in Machine Learning and Pattern Recognition, we want to expand NeuroDoc to the next level - Gait detection and Retina Analysis. The problems in machine learning are usually only made tractable with large data sets which we didn&rsquo;t have for our problem. We would love to extend our project to make use of larger data sets in order to train algorithms which can better solve our problem. In particular, using Long-Short Term Memory networks or Neural Turing Machines to address the speech stuttering problem. The accelerometer data was easily separated but, our next task can be to find the ideal threshold which minimizes error across a range of data sets.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/matlab">
+                                matlab
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

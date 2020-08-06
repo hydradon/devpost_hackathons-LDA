@@ -1,0 +1,133 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Basically we wanted to find something cool we could do by combining different pieces of hardware. The basis of our resulting idea was to create an augmented reality setup where you could see a Roomba go around a room but have it replaced by a person or dog within your augmented reality. After deciding that that project was too impractical for a weekend, especially with no 3d graphics or VR experience, we eventually got to our current idea. Our plan was to create a puppy. It would use your hand gestures and spoken commands to command a dog to do any of the things a dog would normally do (maybe not eat...) and more.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Currently, the puppy is able to respond to a number of different gestures for different tasks. There are two separate modes of interaction with the puppy. The first, simple one is the Control Mode which allows for direct control, telling the puppy to go forward, turn, and stop by using command gestures. Using the double-tap gesture, you can toggle modes to the Command Mode where you can accomplish some more complex commands. Though more are planned, the only currently working complex command is to sing a song. The puppy can sing you a classic Mario tune or prepare you for a tasty treat by playing the same song that ice cream vans do. You can select the song by waving your hand to one side.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Currently the project uses C++ to control the Myo Gesture Control Armband and Python to deal with iRobot's Create2 Roomba-style device. The C++ side of the project mostly just detects Poses from the Myo device and passes them through a pipe to the Python side. It also deals with and calculates a lot of other data which isn't fully utilized in the current version such as arm angle and arm position relative to initialization position. After the Python side reads the relevant data, it uses the given gesture to decide what command to pass to the Create2. The Python is based in a Tkinter app which provides a GUI for connecting to the Create2 and entering character-based events. Those events are then simulated by our pose mapper to send the required serial commands to the Create2. Data on the movement of the Create2 is also gathered in a similar way.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The first of our challenges was deciding what technology to use. Even with most of our idea, there were a bunch of different aspects that could use similar or related technologies. For instance, we were originally planning to use a Kinect to keep track of the user's position. This would allow us to calculate the relative positions and angles of the  puppy to the user so that we could do more interesting commands like throwing/fetching a ball or telling the puppy to clean a certain area. We instead decided that it would be simpler to integrate the accelerometer data from our Myo to calculate the position of the user relative to his initial position which would be synced right above the puppy. This issue with this however, is that the error introduced by integrating our acceleration into a position ended up causing a massive drift over time, rendering it extremely difficult to estimate your actual change in position.
+We spent quite a long time on the math to actually calculate a destination that the user points to based up the user's gesture and the puppy's position. This ended up being a whole whiteboard full of trigonometry to find something that's doesn't work in the current version.
+Some more specific problems is that we spent 6+ hours trying to get the serial commands to work for the Create2. We started off with a working application and tried to recreate its same features in our own but simply failed to actually get our new methods to work properly. For at least two hours all we could give it was the Clean command.
+We also didn't have a great work setup. We did the majority of our work on a single laptop with people switching off at various points.
+In order to actually get the puppy to sing, we could only give 16 midi notes at a time so we basically had to stream the music data to our puppy. Compared to a lot of the other problems, it was very satisfying having this work and just listening to the ice cream van music.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I just
+                    <em>
+                        freakin'
+                    </em>
+                    made a puppy. What is there not to be proud about? In particular I'm proud that one of our random, almost nonsense ideas ended up being so complicated, interesting, and yet somewhat doable. It was really nice as well to be able to create this application that combines multiple languages and complicated pieces of hardware and actually uses a lot of the capabilities of both. We're also proud of our wakefulness. Our two largest contributors have had a total of about 4 hours of sleep between them since 8 AM Friday.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned a lot of fairly basic things about C++ and Python about file interactions. Besides that we learned specifically how to deal with our hardware and just generally learned some strategies for dealing with new hardware in general. For both our main hardware components we basically had to read through all of their documentation to accomplish what we were trying to do but a lot of it just boiled down to using what was already there and working towards adapting it to our needs.
+We also had do some math research to make sure we got all of the trigonometry and the integrals (acceleration -&gt; velocity -&gt; position) correct.
+                </p>
+                <h2>
+                    What's next for Ice Cream Puppy
+                </h2>
+                <ol>
+                    <li>
+                        More commands, possibly having some facilitated by additional hardware. For instance, some way of more easily tracking the user's position. It could be something like a wi-fi triangulation system, a sonar system, or a mounted camera but that would allow us to give way more complex orders. I mentioned some examples earlier such as throwing a ball that it could calculate some of the trajectory of and go find or like pointing to tell the dog to go clean up that dirty spot on the ground.
+                    </li>
+                    <li>
+                        More songs, the Create2 also had some small amount of lighting built in that we never got to try out which would have been nice.
+                    </li>
+                    <li>
+                        Along with adding more complex commands with the gestures we have, we could also use the gyroscope and accelerometer data from our Myo to create our own gestures like waving to someone or clenching your fist as you punch forward. This could allow for a much easier spectrum of control compared to adding more modes than we already have.
+                    </li>
+                    <li>
+                        Voice commands! This was something we really wanted to do but didn't have the time to implement. We had intended to create another module which would use some form of speech recognition (such as Microsoft or IBM) to allow us to give commands like that as well. For instance, maybe the puppy would only go get a thrown ball if you told him to "fetch" beforehand. It would also make it easier to switch modes and might make it more reasonable to simulate the puppy's moods or something like that.
+                    </li>
+                    <li>
+                        It's possible that we would add some sort of idle behavior where the puppy wanders around. It could also just clean while idle.
+                    </li>
+                    <li>
+                        Another possibility for the puppy would be to actually keep track of the mapping of a house so that it could navigate it more like a Create2 does by default when cleaning where it will bump into things and then move around. With ideal mapping, the puppy would eventually learn to avoid all the obstacles and go around those it does hit.
+In an ideal world we'd go back to that first idea I mentioned and turn the puppy into a realer (not sure if it even counts as realer in VR) augmented reality puppy that you could actually see run around listening to your commands.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            create2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/myo">
+                                myo
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            roomba
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Khalory/Ice-Cream-Puppy" rel="nofollow" target="_blank" title="https://github.com/Khalory/Ice-Cream-Puppy">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,257 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/pBL8HlQpAlQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="523249" data-title="Wiring Diagram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/249/datas/original.jpg">
+                            <img alt="waterwatch2.0 &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/523/249/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Wiring Diagram
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    waterwatch2.0
+                </h1>
+                <p>
+                    Intel Hacks 2017
+                </p>
+                <h2>
+                    Mission Statement and Goals
+                </h2>
+                <p>
+                    Streams are really important. They provide essential functions such as drinking water, crop irrigation, recreation, habitat for aquatic ecosystems, and hydroelectric power. 
+The world of environmental monitoring, especially in regards to citizen science
+monitoring, is fairly labor intensive, time consuming, and often requires
+expensive equipment and sensor kits. With Water Watch 2.0, we're looking to
+ease the data collection process by creating a customizable solution that is
+more accessible than traditional scientific equipment.
+                </p>
+                <p>
+                    WaterWatch 2.0 is able to wirelessly update data to a visual display on a
+computer, which reduces the need for constant sensor supervision, data
+documentation, and manual data entry. By increasing the ease with which we
+understand surrounding stream environments, the better we are able to
+understand the complex processes and cycles within our natural ecosystem. For
+example, temperature fluctuations can have impacts on dissolved oxygen levels
+in the water, which in turn dictates the insects and fish that inhabit the
+stream.
+                </p>
+                <h2>
+                    Installation and Requirements
+                </h2>
+                <h4>
+                    Hardware
+                </h4>
+                <ul>
+                    <li>
+                        Arudino 101
+                    </li>
+                    <li>
+                        Grove Sensor Starter Kit (Base Shield, temperature, light, sound sensors)
+                    </li>
+                    <li>
+                        USB battery pack
+                    </li>
+                    <li>
+                        USB cable
+                    </li>
+                    <li>
+                        Computer with Bluetooth Low Energy (BLE) capabilities
+                    </li>
+                </ul>
+                <p>
+                    Make sure you have the sketch file
+                    <code>
+                        streamwatch.ino
+                    </code>
+                    downloaded onto the Arduino, and the Arduino
+hooked up as shown in the picture below.
+                </p>
+                <h4>
+                    Software
+                </h4>
+                <p>
+                    You need git, npm and node.js installed. You will also need the node modules noted in
+                    <code>
+                        package.json
+                    </code>
+                    .
+                </p>
+                <h2>
+                    Running our Demo
+                </h2>
+                <p>
+                    Start the Arduino with the sketch file loaded and move over to the computer.
+                </p>
+                <pre class="language-nolang"><code>$ git clone git@github.com:mlliou112/waterwatch2.0.git
+$ cd waterwatch2.0
+$ node enviro.js
+</code></pre>
+                <p>
+                    The server will be up and running searching for the bluetooth device with the correct name. The program will then print out the characteristics that it has found and tell you that it has subscribed for
+notifications of updates from the sensors.
+                </p>
+                <p>
+                    Once subscribed, the website can be viewed at
+                    <code>
+                        localhost:3000
+                    </code>
+                    . You will see a description of our project and goals on the first part of the website, and three graphs corresponding to the sensor values
+on the Arduino in the "Data" section.
+                </p>
+                <h2>
+                    Technology Details
+                </h2>
+                <p>
+                    The backend was written in
+                    <a href="https://nodejs.org/en/" rel="nofollow">
+                        Node.js
+                    </a>
+                    , using
+                    <a href="https://github.com/sandeepmistry/noble" rel="nofollow">
+                        Noble
+                    </a>
+                    to simulate a BLE Central device. The data received on the server is pushed to the client over
+                    <a href="https://socket.io/" rel="nofollow">
+                        socket.io
+                    </a>
+                    for real-time updates and the front-end is rendered with the help of
+                    <a href="http://getbootstrap.com/" rel="nofollow">
+                        bootstrap
+                    </a>
+                    and
+                    <a href="https://d3js.org/" rel="nofollow">
+                        d3.js
+                    </a>
+                    .
+                </p>
+                <p>
+                    The Arduino uses bluetooth to report the sensor values. It is programmed to only update values when the
+value has changed, and will only check every two seconds. This can be configured in the provided sketch file.
+                </p>
+                <h2>
+                    Future Extensions
+                </h2>
+                <p>
+                    Additional sensors can be added to the Arduino, such as Dissolved Oxygen, or Flow Rate sensors to be
+placed inside the water. Furthermore, the range can be modified by transmitting the data over radio to a router and centralized on a website. It is also possible to monitor many streams at once with many IoT devices and create an aggregated view of all streams in the area.
+                </p>
+                <p>
+                    We believe this project is a first step for the future of environmental monitoring and citizen science
+that will improve reproducibility and cut costs.
+                </p>
+                <h2>
+                    Acknowledgements
+                </h2>
+                <p>
+                    Thanks to Intel and Devpost for making this opportunity possible.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluetooth">
+                                bluetooth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/d3-js">
+                                d3.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mlliou112/waterwatch2.0" rel="nofollow" target="_blank" title="https://github.com/mlliou112/waterwatch2.0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

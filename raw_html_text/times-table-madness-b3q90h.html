@@ -1,0 +1,171 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/cNzSJGk8GPI?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The idea behind Times Table Madness was to make it
+                    <em>
+                        fun
+                    </em>
+                    and
+                    <em>
+                        exciting
+                    </em>
+                    for kids to practice their times tables. I wanted to build a skill that moved away from the usual repetitive questions that can quickly bore both children and parents to tears. My aim was to create something that really entertains kids, and also genuinely helps them to learn.
+                </p>
+                <p>
+                    So, I thought about the different ways I've tried to motivate my own children over the past few years, when there&rsquo;s a task they really don&rsquo;t want to do. Two things came immediately to mind:
+                </p>
+                <ul>
+                    <li>
+                        Make the task funny, wacky or absurd; or
+                    </li>
+                    <li>
+                        Make it into a competition or a race.
+                    </li>
+                </ul>
+                <p>
+                    So that led me to Times Table Madness - a wacky times table game that lets you see how quickly you can get them all right.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Times Table Madness asks you to answer six
+                    <em>
+                        wacky
+                    </em>
+                    times table questions, such as, "What is ten times eight pineapples?&rdquo; or, "What is seven times twelve smelly socks?" To score points you need to answer with the correct number and silly item, such as, &ldquo;Eighty pineapples,&rdquo; or "Eighty four smelly socks."
+                </p>
+                <p>
+                    When you open the skill, Alexa gives a clear explanation of what will happen and how you need to phrase your answers. She then asks you to choose a times table to be tested on. To take a times table challenge, you need to say, "Test me on [seven]" (or any other number you choose). You can ask Alexa to test you on any times table, so if you
+                    <em>
+                        really
+                    </em>
+                    fancy a challenge, you can test your skills on the 256 times table or even higher.
+                </p>
+                <p>
+                    After you have answered all the questions, Alexa gives you a final score and tells you how long it took you to answer all the questions. Depending on how well you scored and how quickly you completed the test, she will give you one of four comments. For example: "You got them all right, and that was really fast too...well done!" or "You didn't get them all right. Try slowing down a bit until you know them all really well."
+                </p>
+                <p>
+                    When the skill ends, Alexa tells you that you can try the quiz again by saying, "To play again, say...Alexa... ask times table madness to test me on...and then a number of your choice." This allows users to skip the more detailed introduction that they received on their first attempt.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used the Alexa Skills Kit to develop the Voice User Interface. This ensures that Alexa can understand when a user tells her the times table they want to try, or provides an answer to a times table question. I used the ready-made amazon.number slot-type to ensure that she could recognize any number that a user might wish to attempt.
+                </p>
+                <p>
+                    My lambda function uses node.js. I used the &ldquo;Quiz Game Skill&rdquo; demo, available on the Amazon Developer website, as a template to get started.
+                </p>
+                <p>
+                    I made sure that all descriptions and messages Alexa could say were in clear language that kids could understand. I also chose a number of silly objects that Alexa could say clearly in both American and UK English.
+                </p>
+                <p>
+                    When the user expresses an intent to start a times table test, the code stores the number they ask to be tested on as a session variable. It then creates a random order for the questions, so that Alexa doesn't just ask "what is 1 times x", then "what is 2 times x", and so on, every time you play. The code also ensures that the same times table can't be asked twice on the same test.
+                </p>
+                <p>
+                    At the time the player starts a test, the code also retrieves a timestamp from the intent, so it can calculate the time taken to complete the quiz once all questions have been answered.
+                </p>
+                <p>
+                    The code then generates a question based on the times table requested by the player, the random order of questions generated earlier, and a random object from the list of silly objects. It also generates a correct answer to the question, which is stored in the session attributes so it can be retrieved when a player answers.
+                </p>
+                <p>
+                    When the player answers, the AnswerIntent code is activated, which retrieves the correct answer and compares this with the player's answer. If the player is correct, the 'score' (also saved as a session attribute) is increased by one. If incorrect, Alexa tells the player what the correct answer should have been.
+                </p>
+                <p>
+                    Once the counter reaches six (this is set to zero when the test starts and increases with every question), the question-answer loop ends and the code calculates a final score and the time taken to complete the test (the difference between two timestamps). The code then tells Alexa to read out the final score, time and invite users to play again.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I'm very new to building Alexa skills, so to be honest, everything was a bit of a challenge.
+                </p>
+                <p>
+                    Some of the most memorable challenges were:
+                </p>
+                <ul>
+                    <li>
+                        Working out how to extract a time difference from two timestamps in the format that Alexa provides them;
+                    </li>
+                    <li>
+                        Creating the random ordering for the questions and ensuring there were no repeats.
+                    </li>
+                </ul>
+                <p>
+                    There were also some challenges I couldn't overcome. For example, I'd have liked to make it possible for the user to respond with just a number (rather than also saying the silly object) if they preferred. However, I couldn't find a way to do this whilst also using Alexa&rsquo;s 'required slots' (which ensure that Alexa actually hears a meaningful response from you). It seems that these two features aren't yet compatible on Alexa - it's one or the other.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I only started writing Alexa skills in December, so I'm really pleased to have completed an entry for this competition. I think it's a fun skill that kids will enjoy playing, and hopefully they'll learn something too.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    That it can be both really exciting and quite frustrating to try and develop a skill in a field that is relatively new. There aren't as many Alexa developers out there as there for something like Javascript, so it's much harder to find help on developer blogs or websites.
+                </p>
+                <p>
+                    I also learned that coding for a voice interface is utterly different from coding for a visual interface. With a website, the user can see lots of information at any given time, and can refer back to it as often as they like. With a voice interface, once something has been said, it can no longer be seen or heard. This totally changes the way developers have to interact with users. Clear messages in relatively short chunks are absolutely essential.
+                </p>
+                <h2>
+                    What's next for Times Table Madness
+                </h2>
+                <p>
+                    I'd love to add more features to this skill. My top few would be:
+                </p>
+                <ul>
+                    <li>
+                        Give kids the option of whether to do a silly version or a normal version of the test;
+                    </li>
+                    <li>
+                        Allow a choice between 'learning' a times table and 'practising' a times table;
+                    </li>
+                    <li>
+                        Add in some more jokes and silly features to make it even more fun.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,137 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/ouY5JG3zbJg?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    TextToObamaSpeech can give users customized Obama speeches. A user can enter a string of words that they would like to hear Obama say and we will return a video of stitched together clips of Obama saying each word.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    This project is built on top of AWS to leverage their immense compute power and uses ReactJS for the front-end and Spring Boot/Web/MVC for the back-end server. In Spring, we defined our own RESTful API to request the videos based the text entered.
+                </p>
+                <p>
+                    For building the videos, we have a large repository of repository of Obama's speeches and use a utility called FFMpeg for all of our video manipulations. As a prerequisite for the set-up for our server, we have several jobs that when kicked off, use IBM's BlueMix APIs to identify words from videos which we then use to build a giant map of each word said in all of the speeches, along with the time stamps of when those words were said. Then, we a user makes a request for a particular string of words, we can use that map to reference the videos and start splicing together clips for the user.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The biggest challenge we ran into was speed. Videos are generally large things and when you have a lot of them and have to search through them for words, grab specific clips from them, and then splice all of those clips together into one continuous video, it takes some time. A lot of time. That's where PipeDream comes in. PipeDream is our own custom MapReduce pipeline. Based on the historic MapReduce 2004 Paper by Jeff Dean, by leveraging AWS compute power, PipeDream allows us to execute huge amounts of video processing in parallel and cutting our run-time into a mere fraction of what it would be.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    In addition to PipeDream, we also created a smart caching solution we call Fa$tCache so that if a word or phrase has already been asked, building the video the second time around will go much faster.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that Video processing is hard, but rewarding. Also, Obama apparently has some interesting opinions (at least according to our videos).
+                </p>
+                <h2>
+                    What's next for TextToObamaSpeech
+                </h2>
+                <p>
+                    The next steps would to be add other people to our video repository. We choose Obama because he has a lot of publicly available speeches to draw from, but our project can take videos of any person, as long as there is enough recorded audio of them to build speeches out of. Who know's what politician/celebrity we'll try next, but feel free to give us some recommendations!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            bluemix-apis
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            java8
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mapreduce
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redux">
+                                redux
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/spring">
+                                spring
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            webpack
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/hellaballer/front-end" rel="nofollow" target="_blank" title="https://github.com/hellaballer/front-end">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,258 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/361587639?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="848014" data-title="Landing page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/014/datas/original.png">
+                            <img alt="GenMetrix - Analytics &amp; Infograph for people w/ existing DNA &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/014/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Landing page
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Several years ago, my girlfriend suffered from chronic fatigue syndrome and random hematomas. Giant, discolored bruises all over her body for no discernable reason.
+                </p>
+                <p>
+                    She mentioned she had her raw genome available and that there were some tools out there you could do digging with. So over the next
+                    <strong>
+                        few months I did a deep-dive into genomics. I connected with Professor of Bioinformatics Lasse Folkersen via email over several months and we had a very productive mentorship.
+                    </strong>
+                </p>
+                <p>
+                    Through this, one of the most useful things I was able to discover was that
+                    <strong>
+                        she had a genotype related to drug metabolism that presented singnificant risk for gastrointestinal bleeding with any NSAID (Ibuprofen, Aspirin, Naproxen, etc)
+                    </strong>
+                    consumption -- which her
+                    <strong>
+                        doctors has been prescribing her in high doses for years.
+                    </strong>
+                    We stopped the NSAID use,
+                    <strong>
+                        <em>
+                            and the hematomas have not returned since
+                        </em>
+                    </strong>
+                    .
+                </p>
+                <p>
+                    Ever since then, I Have felt like the space for a
+                    <strong>
+                        personalized, accessible, and easy-to-consume personal genomics platform was a void
+                    </strong>
+                    . So I set out on a vision --
+                    <strong>
+                        how close in a weekend could I get to a minimum viable product that provided this value?
+                    </strong>
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    GenMetrix has a guided-tour that
+                    <strong>
+                        walks users through the process of uploading their genome for the first time.
+                    </strong>
+                    After which, information for the various traits/categories can be accessed from
+                    <strong>
+                        the sidebar  menu entries for each.
+                    </strong>
+                    The overarching dashboard for a page
+                    <strong>
+                        contains three primary features:
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        A
+                        <strong>
+                            traits card page
+                        </strong>
+                        which presents the
+                        <strong>
+                            information in the most accessible and straightforward format possible
+                        </strong>
+                    </li>
+                    <li>
+                        A
+                        <strong>
+                            data-table for more savvy users
+                        </strong>
+                        that condenses this trait information into a barebones and digestiable format
+                    </li>
+                    <li>
+                        A chart for
+                        <strong>
+                            visualizing the weight/impact that a specific gene has
+                        </strong>
+                        , compared to others in the same category
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The
+                    <strong>
+                        backbone of the project revolves around a Node/JS utility I use to parse and serialize raw genome text files from the most common providers
+                    </strong>
+                    (23andMe, Ancestry, MyHeritage, and FamilyTree). It takes a text file the contents thereof, and does a
+                    <strong>
+                        clean mapping to a plain JSON object, creating something resembling a Dict structure
+                    </strong>
+                    where the keys are snp identifiers.
+                    <strong>
+                        Each keyed gene object provides the genotype for the given gene, plus some additional metadata.
+                    </strong>
+                </p>
+                <p>
+                    The
+                    <strong>
+                        file upload is handled via HTML5 native FileReader API
+                    </strong>
+                    , using a standard HTML input element and creating a reader, then consuming the file with
+                    <code>
+                        myRead.readAsText(input)
+                    </code>
+                    .
+                </p>
+                <p>
+                    The
+                    <strong>
+                        front-end is a plain HTML + JS + CSS templated landing page
+                    </strong>
+                    , with
+                    <strong>
+                        Vue.js, Vuex for state management, and a Vue admin template
+                    </strong>
+                    plus some addition
+                    <strong>
+                        utility libraries and components
+                    </strong>
+                    to build against rapidly.
+                </p>
+                <p>
+                    In production or if the product were to do public access release, the
+                    <strong>
+                        genome utilities and serializer would be moved to the server-side
+                    </strong>
+                    , and I would use
+                    <strong>
+                        Node + Polka (much more performant than Express)
+                    </strong>
+                    to serve the
+                    <strong>
+                        static index.html of my built Vue frontend and landing page, with a single API endpoint as a handler for the genome parsing
+                    </strong>
+                    .
+                </p>
+                <p>
+                    The parsing function
+                    <strong>
+                        would be offloaded to parallelized web/service workers to keep them off the main event thread, because it is fairly resource intense to parse and serialize a roughly ~16mb text file
+                    </strong>
+                    . I think with efficieny optimization tactics and distributed workers,
+                    <strong>
+                        the processing time could merge towards near-zero.
+                    </strong>
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Design inspiration was very difficult for me, so I needed to gather opinions on how best to present our analytics and data in an accessible and digestible manner to someone without context or background.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    I felt like given the time frame and ad-hoc collaboration, a lot of work got done. In my mind, this is a minimum viable product and completely demo-able. That in and of itself is a huge win, espcially given the timeframe and lack of manpower.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    You are much better off identifying people who can fill your weaknesses, to form a better group as a whole, faaaar in advance. 
+Also, entire genome datasets being loaded in-browser will definitely brick your system if you are not picky about how you pass that data along (it needed to be sifted through and all riffraff discarded immediately in the parse callback, before it gets sent to the store as stateful data. Elsewise, bad newz bearz for your memory usage ;..;)
+                </p>
+                <p>
+                    Its really, really awful to not sleep and stay up for days while trying to use your brain. Owie.
+                </p>
+                <h2>
+                    What's next for GenMetrix - Analytics &amp; Infographs for people with their DNA
+                </h2>
+                <p>
+                    Who knows what the future may hold?
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            charts.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            polka
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tailwindcss
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vue
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vuex
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

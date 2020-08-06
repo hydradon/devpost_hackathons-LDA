@@ -1,0 +1,173 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/fK5ksaOk-Dw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="366749" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/366/749/datas/original.png">
+                            <img alt="Wtr: Water Tracking Resource &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/366/749/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="366750" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/366/750/datas/original.png">
+                            <img alt="Wtr: Water Tracking Resource &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/366/750/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="366751" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/366/751/datas/original.png">
+                            <img alt="Wtr: Water Tracking Resource &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/366/751/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The California water drought crisis is entering its fourth year, and showing little signs of slowing. I wanted to use the Artik board to create a solution that would allow the average person to make a difference. I got my inspiration from the constant complaints from my parents about the long showers my brother and I always take. It got me to thinking about how something as simple as water usage in a shower could be managed &ndash; and then it expanded into the bigger picture of managing water usage. A key idea behind this project is that awareness will bring action. If users are aware of how they consume water, they will be able to better manage that usage -- whether it be for a personal reason like saving money, or to help combat the California water drought crisis.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Wtr puts the power of water use and conservation in the hands of a commercial or residential water customer. From understanding water use associated with a device connected to the plumbing to overall water consumption, a user can not only monitor water usage, but interact directly with the device using water, by forcibly stopping its water usage.
+                </p>
+                <p>
+                    Wtr consists of physical hardware, an Android app, and a web-app. The hardware includes the Artik 10 board, a water flow meter, a water shutoff valve, and a motor. For the demo, I only had one Aqua Point set up; however, multiple points can be supported at one time.
+                </p>
+                <p>
+                    The Android application allows users to monitor their current and previous water usages, control their Aqua Points, and get daily, weekly, monthly, and yearly overviews of their water usage. In the Current and Previous Water Usage sections, you can see how much water was used, the duration of the water usage, and which Aqua Point used the water.
+                </p>
+                <p>
+                    The Home Overview Dashboard (web-app) displays all key metrics associated with water usage on a tablet-sized screen which could be placed on a wall like a thermostat. Because the the Artik currently does not support this display, I have the Dashboard running on my laptop.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I have three python servers running on the back end, all of which are restful, a PostgreSQL database, and Arduino code that handles the water flow meters. One server talks with an Android app to display the water usage and to control the motors. Another server talks directly to the database on the Artik board, adding a layer of security to the Wtr. The last of the three handles the web-app. The physical hardware includes a water flow meter and a water shutoff valve that is connected to a motor.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The biggest challenge I faced was getting enough test data on the Artik. I aimed for 54,000 points of data (for water usage) to emulate the Artik&rsquo;s database for a family of four after one year of use. This was difficult to achieve because every time I tried to put all of the data into my database at once, by pushing about 10,944 points of data (via POST requests), the Artik stopped responding. So, I had to break up the requests into smaller groups to avoid this issue. Another challenge was the water shutoff valve. The one in the video is the second one I bought, because the first one's static coefficient of friction prevented my motors from being able to turn the shutoff valve. I had to resort to using the smaller shutoff valve which isn't ideal because it greatly restricts the flow of water.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm proud of the fact that I was able to complete almost everything I set out to do.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned more about Linux as a whole, Fedora in particular. I also learned a lot more about Android than before, and I discovered some weird interactions with the Arduino WiFi lib and cyclone (a python web server). For some reason, whenever the Artik sends a signal to the main server saying that there is an Aqua Point using water, it will send a Malformed HTTP Request. However, it will send everything correctly, even though it is malformed. When I fixed the issue, it would not send any data in the body of the POST request. I still don't fully understand why it would drop the body data, or why my requests are considered malformed.
+                </p>
+                <h2>
+                    What's next for Wtr: Water Tracking Resource
+                </h2>
+                <p>
+                    As the deadline neared, I realized it would be extremely handy to have "timers" or "limits" on an Aqua Point. For example, allowing the user to limit how much water a shower will use before it automatically turns itself off. I had originally planned for the Artik to send up all of the water usage data to an AWS instance at the end of each day. This would allow the user to compare their water consumption against that of people in the state, city, zip code, etc. By adding this feature, I could implement a Fitbit-esque point system that rewards households for less water usage (relative to the average of similar households). In addition to the above, I would like to revisit how I display the previous water usages. I feel there may be a better way to display and load the data. I might implement a tab system similar to the home overview section or have it sort by Aqua Point. Lastly, I want to make it possible to customize how the user receives push notifications. For example, being able to receive push notifications for a shower using water, but not for a toilet. I plan on adding all of these features in the future.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/artik">
+                                artik
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/postgresql">
+                                postgresql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

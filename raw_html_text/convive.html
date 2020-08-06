@@ -1,0 +1,208 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="883579" data-title="home page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/883/579/datas/original.PNG">
+                            <img alt="convive &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/883/579/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                home page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="883597" data-title="chat room" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/883/597/datas/original.PNG">
+                            <img alt="convive &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/883/597/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                chat room
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="883577" data-title="we used google forms for account creation" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/883/577/datas/original.PNG">
+                            <img alt="convive &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/883/577/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                we used google forms for account creation
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    <a href="https://en.wikipedia.org/wiki/Political_polarization" rel="nofollow">
+                        Political polarization
+                    </a>
+                    is becoming an increasingly significant issue within American society. People are sorting themselves into political echo chambers both on and off the internet. This in turn makes the issue worse, as people fail to ever genuinely interact with those that differ from them ideologically.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Convive seeks to solve political polarization by building potentially lasting relationships between people that differ in political beliefs. When creating their account, a user provides information about their interests/hobbies and political views. They are then randomly paired with a user that aligns with their interests, but not with their views. This ideally means the users can connect on things they care about with someone that lies beyond their political echo chamber.
+                </p>
+                <p>
+                    Once a chat session is complete, we used natural language machine learning to determine how positive the conversation was. Users are awarded a crypto-currency (called "change") that we built. A very positive conversation equates to more of our currency given. The objective of this is to encourage users to both use the platform as well as participate in productive and friendly conversation.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    On account creation, the users can select from a list of interests they have. They also answer a few questions to determine where they lie on the political spectrum. The questions are binary, thus the user either moves farther "left" or "right" with each answer. This is done via Google Forms, which in turn spits out the data to a Google Sheet. A Python script harvests the data and creates user documents on our MongoDB.
+                </p>
+                <p>
+                    A (text) chat session is created for two users that have overlapping interests but lie on opposing sides of the spectrum. The users are free to speak with each other for however long they desire. The chats and messages are saved in our MongoDB.
+                </p>
+                <p>
+                    After a chat session is complete, a Python script interfacing with the GCP APIs sends the chat log off for processing. Google returns information regarding the sentiment of the log, which we condense to a number that denotes how successful the interaction was and how much "change" to reward the two users.
+                </p>
+                <p>
+                    The crypto-currency was built from a small implementation known as "
+                    <a href="https://github.com/conradoqg/naivecoin" rel="nofollow">
+                        NaiveCoin
+                    </a>
+                    ." It runs on an Ubuntu VM from GCP. There are 4 components: the miner, the operator, the blockchiain, and the node. A node can be linked to other nodes to exchange the blockchain. The operator is a blockchain user with wallet and address IDs. The miners are users who verify the transactions as legitimate in exchange for coins.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Beyond the necessary bug squashing that comes with any code, we had issues arise from using technologies we were unfamiliar with and attempting to link them all together in a cohesive user experience.
+                </p>
+                <ul>
+                    <li>
+                        Directing users from the log in page
+                    </li>
+                    <li>
+                        Using promises in JS
+                    </li>
+                    <li>
+                        Properly authenticating with GCP
+                    </li>
+                    <li>
+                        Grabbing the correct messages for a given chat room
+                    </li>
+                    <li>
+                        Juggling various APIs and tools, then fitting everything together
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    This was a large endeavor, thus the completion of everything we originally outlined is something to take pride in. We also worked well as a team, having moved efficiently to accomplish everything while having fun doing it.
+                </p>
+                <p>
+                    We also managed an appropriate amount of sleep.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        A lot about building a full stack platform
+                    </li>
+                    <li>
+                        How to interface with GCP, including sheets and ML APIs
+                    </li>
+                    <li>
+                        How to operate a crypto-currency
+                    </li>
+                </ul>
+                <h2>
+                    What's next for convive
+                </h2>
+                <p>
+                    The platform in its current state is too rough for production, however it could be an enjoyable long-term project to build it upon a better infrastructure with the goal of a polished user experience. There are a few things we failed to finish due to time constraints.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            crypto
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://159.89.190.51" rel="nofollow" target="_blank" title="http://159.89.190.51">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                159.89.190.51
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

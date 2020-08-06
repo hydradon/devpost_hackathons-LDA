@@ -1,0 +1,113 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    Maze Solver &ndash; Code Instructions &amp; Documentation
+I. Running the Code and the GUI
+a. Run MazeApp.java, which will open a new GUI called MazeSolve
+                </p>
+                <p>
+                    i. Screen: displays the mazes and solutions
+ii. Load: opens a dropdown of maze files located in Mazes directory; click to load a maze file
+iii. Progressive Solve: toggles between solving/displaying instantly and incrementally
+iv. Textbox (HEIGHT, WIDTH): enter desired height and width of randomly generated maze (see Prims-Generator)
+v. Prims-Generator: creates a new perfect maze with specified height/width, and writes it to primsgeneratedfile.dat; open using Load
+vi. Solve: solves the maze using the recursive backtracking method
+vii. SolveStack: solves the maze using stacks
+viii. SolveA*: solves the maze using the A* method
+ix. SolveQueue: solves the maze using queues
+x. Reset: resets the maze to its original state; removes all solution paths
+xi. Solving Speed: changes the solution path laying speed in real time; has no effect if Progressive Solve is unchecked
+II. Elements of the Maze
+a. Maze Squares
+i. Square objects keep track of their type (wall, empty space, start square, end square, solution path, solution branch, or visited location) using string characters (# SE*?.)
+                </p>
+                <ol>
+                    <li>
+                        The maze solving algorithms begin at the start square (green) and try to reach the end square (red)
+                    </li>
+                    <li>
+                        The solution is shown using path squares (orange)
+ii. Squares keep track of their color, which is assigned based on its type
+b. Maze 2D Array
+i. The maze stores Squares in a 2D array
+ii. Coordinate objects are used to transfer information about Square locations (x, y) aka (row, col)
+III. Maze Solving Algorithms
+a. Recursive Backtracking
+i. Start at start square of maze
+ii. At every intersection, choose a random direction to proceed
+iii. If you reach a dead end or a previously visited square, backtrack to previous intersection and choose different direction
+b. Depth-first Search (Stack)
+i. Start at start square of maze
+ii. Keep expanding, marking each intersection as an interesting node
+iii. Keep going until a dead end is reached
+iv. Begin the same process with the last node that you created until the end is reached
+v. Trace back the path to the start
+c. Breadth-first Search (Queue)
+i. Start at start square of maze
+ii. At every intersection, spread out into all possible directions
+iii. Flood fill the maze until the solution is reached by one of the locations at which point it traces back all of its preceding nodes until it gets to the start.
+d. A*
+i. A* is an informed search algorithm meaning that it solves problems by searching among all possible paths to the solution for the one that incurs the smallest cost (least distance travelled, shortest time, etc.), and among these paths it first considers the ones that appear to lead most quickly to the solution
+ii. Essentially the algorithm expands the nodes closest to the goal before those farther away leading to less memory consumption
+IV. Prim's Maze Generating Algorithm
+a. Each square is either an empty space or a wall
+b. Keep track of "frontier" squares which will become empty spaces and will connect to existing empty spaces; frontiers will be 2 squares away from an existing empty space
+c. Generates "perfect" mazes (only one solution)
+                    </li>
+                </ol>
+                <p>
+                    d. Start with maze of wall squares only
+e. Choose random square within borders of maze; add to frontiers collection
+f. While frontiers collection is not empty:
+i. Remove random frontier from collection
+ii. If it is a wall, change to empty space
+iii. Change the square in between the frontier and its previous empty space square to an empty square
+iv. Add new frontier square to frontiers collection
+                </p>
+                <p>
+                    g. Our version will add a start square to the top-leftmost corner and an end square to the bottom-rightmost corner. Then it will modify the borders of the maze to make sure the maze is completely enclosed in a single layer of wall squares. Finally it will write the maze content to primsgeneratedfile.dat
+V. Found Bugs
+a. Once the maze height is too large, it will be cut off at the bottom
+b. The maze size can be limited by Java's default heap size
+c. A solving algorithm can still be run even when the maze still displays a solution
+d. The start and end squares are replaced by solution path squares (orange) when solving
+i. This was temporarily fixed by replacing the start/end squares after the solution has been found
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/roger778876/MazeSolver-Stuyhacks2017" rel="nofollow" target="_blank" title="https://github.com/roger778876/MazeSolver-Stuyhacks2017">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

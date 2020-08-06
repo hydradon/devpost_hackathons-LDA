@@ -1,0 +1,96 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've been interested in adblockers for a long time, and I've been looking for a reason to make one of my own. The way adblockers work is that they check all outgoing requests from your browser against a list of regular expression rules, preventing any requests that match the rules from going out. The list of rules used by uBlock Origin, EasyList, is around 90k. This is not very efficient, so I looked for a way to improve this.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Research shows that the average user only uses a small portion (5-10%) of the 90k rules contained in EasyList (seen at
+                    <a href="https://arxiv.org/pdf/1810.09160.pdf" rel="nofollow">
+                        https://arxiv.org/pdf/1810.09160.pdf
+                    </a>
+                    ). HawkBlock is an adblocking chrome extension that maintains a cache of rules that have been recently used. When a rule is tripped, it gets added to the queue. If the queue is at max capacity (currently 100 rules), the oldest rule in the queue is removed and the new one is added. HawkBlock checks the cached list of rules before the massive list of regex rules, allowing for much faster identification and blocking of these requests, which in turn speeds up page load time.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    HawkBlock started with a fork of uBlock Origin (which is open source under the GPL 3.0 license). From there, I tracked down where and how the extension filters requests. Through lots of trial and error, I was able to store the regular expressions being used. From there, I manually checked these stored rules before where they would normally be parsed through.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I had no prior experience with browser extensions. Because of this, I spent more time trying to figure out debugging with chrome devtools and working through errors than I did anything else. Debugging in a live environment was tricky, but very useful in the long run. One major issue I faced because of this was the browser resetting the extension memory upon page reload. To solve this problem I initialized the cache in browser memory and updated the cache stored in the browser when a page was being disposed, so that when the cache was re-initialized in the extension it would pull the up-to-date cache from the browser memory.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It was very exciting to test my extension and see it speed up compared to normal uBlock Origin. For requests that matched regular expressions in the cache, it took less than half the time than it would before to process and block the request.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about creating browser extensions, as I had to learn everything regarding how they were integrated into the browser and how to install my own. I also learned a lot about HTTP requests and how the browser processes them, as well as how adblockers work.
+                </p>
+                <h2>
+                    What's next for HawkBlock
+                </h2>
+                <p>
+                    There are still more optimizations I can make to make HawkBlock even faster. For example, if the rule is already in the cache when it's tripped, the rule stays in the same place in the queue (possibly at the end). Optimally, it would be moved to the front of the queue so that it isn't removed if another rule enters. There are also techniques that can be used to compare the url to the regular expression more quickly.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            chromium
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ublock-origin
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jgeati/HawkBlock" rel="nofollow" target="_blank" title="https://github.com/jgeati/HawkBlock">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

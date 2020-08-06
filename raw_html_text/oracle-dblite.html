@@ -1,0 +1,148 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/eRf2jeyjhOY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="276731" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/276/731/datas/original.png">
+                            <img alt="Oracle DBALite Splunk App &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/276/731/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="276732" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/276/732/datas/original.png">
+                            <img alt="Oracle DBALite Splunk App &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/276/732/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="276733" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/276/733/datas/original.png">
+                            <img alt="Oracle DBALite Splunk App &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/276/733/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Our non-dba performance engineers and testers spent hours pulling together data to answer the question &lsquo;How did the Oracle database perform during that test?&rsquo; They used multiple xymonprd screens to get host performance stats, multiple Oracle AWR reports to get database performance stats, and sometimes Oracle&rsquo;s OEM tool as well. Much time was spent going from one source and screen to another, wading through more detail than they needed trying to get a coherent picture of performance covering both host servers and database.
+We wanted to speed up the process significantly and improve the quality of the analysis.  We decided to create our own set of fundamental performance statistics covering both the host and database performance and place it in one basic summary page with drill down for finer details.  Since Splunk provides easy searching and presentation functionality and we already had it licensed in-house, we decided to create it in Splunk
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    The general approach of the solution is that 4 stored procedures run in the Oracle database. The Stored procedures read Oracle performance views and write the data out to operating system text files. Splunk consumes the text performance data and the DBALite app presents the Splunk data via simple xml views. The Host performance stats are obtained from the &lsquo;nix add-on for Unix and Linux. 
+With this tool I can confidently look at the app&rsquo;s Performance Summary page to find out how the DB is performing.  It is easy to compare current performance to a period in the past, as dates are entered for both a baseline and &ldquo;current&rdquo; time window.  So a recently completed test can be compared side_by_side with a baseline test.  Or a period of bad performance can be compared side by side with a period of good performance to see what changed.
+Often, I go no further than the Summary page, BUT for example:
+&bull; if I see an elevated host cpu utilization I can click through to the &lsquo;Investigate CPU&rsquo; page and check whether it was User, IOWAIT or System utilization underlying it. I can even see if something in the test elevated the context switching
+&bull; If I see elevated memory utilization, I quickly determine if it involved a high use of swap space or database PGA process memory utilization was the cause
+&bull; I can see whether deadlocks were an issue or if there was significant blocking lock activity
+&bull; I can see if io durations were longer than expected and whether they were sequential reads, scattered reads or direct reads
+&bull; In the performance graphs and tables on the Summary page, if I see a sql with questionable performance (high disk reads or high cpu for example) I can click and the runstats for that sql for both baseline and &ldquo;current&rdquo; period will display in a new window
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The biggest challenge was that I was completely new to Splunk and so had to learn absolutely everything.  I early on received the advice to stick to simple xml, which I struggled to do, but later decided we&rsquo;d convert to using the web framework (a future enhancement) to get richer scripting and interactivity.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Decreased the usual time to gather and report database performance post-test from 3 or 4 hours to half hour or less.
+Gave non-dba&rsquo;s a tool that makes the Oracle database seem less intimidating and its performance more graspable.
+Gave prod support a tool that allows them to be more proactive with respect to database issues as well as more empowered to diagnose and help resolve database issues.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned much about how to write an app for Splunk.  There is much I would do differently now that I have experienced creating an app.  We have enhancements and improvements in mind.
+                </p>
+                <h2>
+                    What's next for Oracle DBLite
+                </h2>
+                <p>
+                    We will be adding pages for performance analytics &ndash; with the info we are gathering now we should be able to use queuing theory to help us answer the question &ldquo;how much can we increase the workload before we expect a significant performance degradation?&rdquo;  &ldquo;And how many cpu&rsquo;s do we need to add to meet expected growth in workload?&rdquo;
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            nix-add-on
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            oracle-db-jobs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            oracle-stored-proceduce
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            splunk-xml-views
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/NordPerfEngg/OracleDBALite" rel="nofollow" target="_blank" title="https://github.com/NordPerfEngg/OracleDBALite">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,216 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Pneumonia is a common disease, affecting 5 million Americans per year, and is the 6th leading cause of death in the United States. Patient survival improves significantly when pneumonia is diagnosed and treated within 4 hours of the patient arriving at the hospital. And a key part of the diagnostic algorithm is accurate and timely interpretation of chest radiographs.
+                </p>
+                <ul>
+                    <li>
+                        Help radiologists improve their working efficiency. Our machine learning model can be a support tool to help radiologists diagnosis X-ray picture. Given the X-ray picture, our model will return the probability of most common thoracic diseases observed in chest X-rays. Our deep learning model can help radiologists/ doctors find the lesions that are hard to find by eyes.
+                    </li>
+                    <li>
+                        Reliable computer diagnosis of pneumonia can help with patients in under-served or remote areas For patients in remote or rural areas, access to a clinic or small hospital with basic x-ray machinery is relatively available. It can still be difficult for those patients to have their images interpreted within the preferred 4-hour window.
+                    </li>
+                </ul>
+                <p>
+                    Similarly, detection of lesions from CT Scans with visible eye is not very accurate so we wanted develop something that solved that problem.
+                </p>
+                <h1>
+                    What it does
+                </h1>
+                <ol>
+                    <li>
+                        It detects, using IBM Watsons Core ML, Image Classification, whether the X Ray scans of a lung will show a disease and early detection of pneumonia.
+                    </li>
+                    <li>
+                        It detects, using U Net, the presence of lesion cells from CT scan images. That is then used to plot and display a heatmap to show the most likely location and radius of the lesion.
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Part 1: X-Ray Detector
+We do this by creating two image classification models using IBM Watson's Core ML. We do this by training the first model to differentiate between a healthy and a diseased lung and the second model to differentiate between three common lung conditions: atelectasis, infiltration and effusion.
+                </p>
+                <p>
+                    Part 2: Lesion Segmentation
+To do this we used a U-Net Network, which is a convolutional neural network that was developed for biomedical image segmentation. The network is based on the fully convolutional network and its architecture was modified and extended to work with fewer training images and to yield more precise segmentations.
+                </p>
+                <p>
+                    Part 3: Web App Development
+Used Firebase, google app engine and Flask to develop the app and do the page routing.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Part 1: The original data had 16 image classifications and each image had the possibility of being labeled by two labels. For example, an x-ray could show carteglamy and effusion. We decided, because of the time constraint of our project, that it would be best to take the most common diseases and help develop an algorithm to quickly identify between three different types of diseases. This can be improved with further training and more accumulation of data.
+                </p>
+                <p>
+                    Part 2: 
+Determining what deep learning model to use on the type of data we were to work with.
+Normalizing for the images in the data to be the same size.
+Radius of the legion was not explicitly mentioned and had to be calculated.
+The x, y and z location variables of the lesion were to be extracted from a single column in the dataset.
+Not being able to establish pipelines between other parts of the projects.
+                </p>
+                <p>
+                    Part 3:
+Working with Firebase and Javascript when we had never used it before. This made the task very challenging and we had a lot of roadblocks along the way.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        We were able to segment the lesion by a high accuracy of 57.44% which is higher than the national average of detection by human eyes of 52%.
+                    </li>
+                    <li>
+                        We were able to use IBM Watson to create two different models that can potentially be used for:
+                    </li>
+                    <li>
+                        detection of healthy vs unhealthy lung
+                    </li>
+                    <li>
+                        detection of type of mass, pneumonia, atelectasis
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        We learned how to quicly deploy a machine learning solution using IBM Watson
+                    </li>
+                    <li>
+                        We learnt how to clean medical imaging data and can use this knowledge in the future to work with similar types of data.
+                    </li>
+                    <li>
+                        We learnt how to segment a part in an image.
+                    </li>
+                    <li>
+                        How to find anomalies in medical imaging (CT Scan) using deep learning.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Deep XT
+                </h2>
+                <ul>
+                    <li>
+                        when training the deep learning model: training each body type separately for higher accuracy.
+                    </li>
+                    <li>
+                        training on more data.
+                    </li>
+                    <li>
+                        refining the number of tests carried out and the accuracy of these tests.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            colab
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-app-engine">
+                                google-app-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            matplotlib
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            skimage
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tidyverse
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/shaswat01/deep_XT" rel="nofollow" target="_blank" title="https://github.com/shaswat01/deep_XT">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

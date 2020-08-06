@@ -1,0 +1,307 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/9kC8_n0gJxk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="508579" data-title="Account Linking" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/579/datas/original.png">
+                            <img alt="SprachBox &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/579/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Account Linking
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="508580" data-title="Accessing the voice mail" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/580/datas/original.png">
+                            <img alt="SprachBox &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/580/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Accessing the voice mail
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="508581" data-title="Playing the recorded voice" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/581/datas/original.png">
+                            <img alt="SprachBox &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/581/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Playing the recorded voice
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In Germany Telekom Deutschland GmbH is the leading telecommunication operator and is transforming its land line telephone access to all IP (already 50% of its 20.2 Million Customers are migrated), which also migrates the classic voice mail system to a cloud based one. Years ago, I was one of the first migrated customers. There was no dedicated iPhone app, so I made one which reads the voicemail system, stores the messages on the phone and can play them. The login is stored in the app. So when I got the Echo and there was no skill it was natural to port my app as a skill to my echo.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The skill first needs an account link (login data for the ip voice mail system). Then it can query the number of messages (status), give information about a single specific message and can even play the recorded voice.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I made a php script which is connected to a mysql database.
+                </p>
+                <p>
+                    The account linking script checks the login data against the voicemail system and if everything is ok, stores the login in data inside the database. The login is encrypted by the generated authentication token and two hashes (with different salt) are used as search id.
+                </p>
+                <p>
+                    The skill script gets the authentication token from Alexa, generates the search id to look up the login data from the database and uses the authentication token to decrypt the login credentials. Then it can query the voicemail system.
+                </p>
+                <p>
+                    The voicemessage is provided by a third script as MP3 to the audio player. This script shares the server session with the skill script. The skill script codes the session parameter to the url, which is provided to the audio player. So the MP3 PHP script gets the access token and id of the message to play from the server session.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        There is no public oAuth2 Service or anything like this for the VoiceMail System, so I build this as an intermediate.
+                    </li>
+                    <li>
+                        There is no URL of the VoiceMail System to stream the voice record as MP3, so I have to build it as well. This works on the fly (no voice record is stored at my intermediate server), to strengthen privacy.
+                    </li>
+                    <li>
+                        German language is more diverse than English. So Alexa does not get all tweeks, when it comes to ordinal numbers by gender (see what I learned).
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        High security standard, for the login and voicemail data. Database content is useless whiteout the access token which is stored at amazon. So an attacker needs access to different servers (Script on Webserver, DB Server and Amazon) which is unlikely.
+                    </li>
+                    <li>
+                        Incorporate two special skill features (account linking and audio player) and managed that complexity.
+                    </li>
+                    <li>
+                        Build the skill with PHP, while this is not supported by an official SDK.
+                    </li>
+                    <li>
+                        The skill is live in Germany since end of march and has over 200 active users six weeks later.
+                    </li>
+                    <li>
+                        Telekom Deutschland GmbH is release partner of echo in Germany. It sell Echo at its retail store and offers a smart home skill for their smart home solution - but not for their voice message system, yet. This skill is not built on behalf of TD nor supported by TD - it's just made on my own.
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    A lot about the tweeks of voice recognition. In german there three kinds of nouns (male, female and neutral) and ordinal numbers like first and second changes for them.
+                </p>
+                <ul>
+                    <li>
+                        Input: Alexa only recognizes the male form, but message is female. So second message is not "zweiter Nachricht" it is "zweite Nachricht". But if Alexa is asked to match "zweite" to a number, it tries to match it to a male form, which results in twelve. Here I made an own type for female ordinal numbers. This enables me to add nick names like "letzte" (last), "vor letzte" (second last), "neuste" (newest) to those numbers, so that the user has more variances in calling the skill.
+                    </li>
+                    <li>
+                        Output: I could not just put "... 2. ..." into the response, I created an array with the correct word for an amount of numbers. While creating the response, I invoke a function with the number. If the number is inside the range of the array elements, it uses the number as index and responses the word. If the number exceeds the array, it responses the number with a dot. So for most numbers it will be correct German - but in rare cases (common is to have under 10 messages in a voice mail system, and if more, only those 10 last are the one of interest), it will at least give back the information with a bit of bad German ;-)
+                    </li>
+                </ul>
+                <h2>
+                    What's next for SprachBox
+                </h2>
+                <p>
+                    New Functionality:
+                </p>
+                <ul>
+                    <li>
+                        Delivering a card for answers.
+                    </li>
+                    <li>
+                        Delivering a card with the information of the playing message (Caller, Timestamp, length of Message)
+                    </li>
+                </ul>
+                <p>
+                    More conversation style:
+                </p>
+                <ul>
+                    <li>
+                        after playing a message asking if going on to the next.
+                    </li>
+                    <li>
+                        after playing the last message asking if starting from the beginning.
+                    </li>
+                    <li>
+                        asking to directly play a specific message.
+                    </li>
+                    <li>
+                        asking for the number of messages with a recorded voice
+                    </li>
+                    <li>
+                        asking about information / playing a specific messages with a recorded voice
+                    </li>
+                    <li>
+                        asking for the number of messages without a recorded voice
+                    </li>
+                    <li>
+                        asking about information / playing a specific messages without a recorded voice
+                    </li>
+                    <li>
+                        deliver more Information about the message (who was the caller)
+                    </li>
+                    <li>
+                        asking for the number of messages of a specific caller
+                    </li>
+                    <li>
+                        asking about information / playing a specific messages of a specific caller
+                    </li>
+                </ul>
+                <p>
+                    More features using the "heard" flag of the voicemail system:
+                </p>
+                <ul>
+                    <li>
+                        after playing a message mark it as heard
+                    </li>
+                    <li>
+                        asking for the number of un-heard message
+                    </li>
+                    <li>
+                        asking about information / playing a specific un-heard message
+                    </li>
+                    <li>
+                        asking for the number of heard message
+                    </li>
+                    <li>
+                        asking about information / playing a specific heard message
+                    </li>
+                    <li>
+                        asking to mark a specific message as un-heard
+                    </li>
+                </ul>
+                <p>
+                    More features using a VTT (voice to text) on the recorded voice message:
+                </p>
+                <ul>
+                    <li>
+                        Delivering a card with the information of the playing message, including the transcripted voice record.
+                    </li>
+                </ul>
+                <p>
+                    More features using Deleting of Messages:
+                </p>
+                <ul>
+                    <li>
+                        delete a specific message
+                    </li>
+                    <li>
+                        delete a message after hearing it
+                    </li>
+                    <li>
+                        delete all messages without a recorded voice
+                    </li>
+                    <li>
+                        delete all messages prior to a specific date
+                    </li>
+                    <li>
+                        delete all messages older x days
+                    </li>
+                    <li>
+                        delete all messages older y weeks
+                    </li>
+                    <li>
+                        delete all messages older z month
+                    </li>
+                    <li>
+                        delete all messages
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mp3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mysql">
+                                mysql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            voicemailsystem
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.de/Emil-Thies-SprachBox/dp/B06XJLHKSR" rel="nofollow" target="_blank" title="https://www.amazon.de/Emil-Thies-SprachBox/dp/B06XJLHKSR">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.de
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

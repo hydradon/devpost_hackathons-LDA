@@ -1,0 +1,223 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/FLasEddqA4Q?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="535101" data-title="0) A single image frame. 1) Stitched text frames using accelerometer and inferred directional flow. 3) Affine normalization and denoising." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/535/101/datas/original.png">
+                            <img alt="Hilite &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/535/101/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                0) A single image frame. 1) Stitched text frames using accelerometer and inferred directional flow. 3) Affine normalization and denoising.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    With rapid development of technology coming our way, digitalizing our lives and our content has never been so simple.
+                </p>
+                <p>
+                    Cameras produce the videos and photography which litter our social networks; tablets gives us the degrees of freedom necessary for us to bring artistic expression onto a blank digital canvas.
+                </p>
+                <p>
+                    All of these innovative technologies arise from the combination of sensors which lets us bring information from the real world onto the Internet.
+                </p>
+                <p>
+                    Yet, not one piece of technology allows us to digitalize, highlight, and analyze the plethora of text which is imminently available to us in the real world.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Hilite is an extremely affordable text OCR-based scanner which allows its beholder to pick and bring text from the real world into the digital world.
+                </p>
+                <p>
+                    By simply swiping Hilite across any piece of text on a newspaper, novel, or even a box, Hilite will decipher said text into a digital representation, analyzing it to simplify a wide variety of scenarios any user would experience in their daily lives.
+                </p>
+                <p>
+                    Looking to record some key points from a newspaper or textbook?
+Looking to record calories or nutrient information from store-bought food products on a daily basis?
+Looking to record payment information/cryptocurrency addresses from people or retail stores?
+                </p>
+                <p>
+                    Hilite has it all covered for you in a snap, and is notably accustomed and tailored to assisting with tasks related to either business, education, or personal healthcare.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Hilite extensively makes use of OpenCV to normalize and stitch together webcam frames of text into a single panorama which best represents a sentence or text phrase from any real-world object.
+                </p>
+                <p>
+                    _ Text OCR scanners which simply use high-frequency cameras rather than computer vision techniques cost &gt;USD$160 while ours works with a cheap consumer webcam and can easily go for ~USD$20! _
+                </p>
+                <p>
+                    Accelerometer and gyroscope information, alongside inferred directional image gradient flow is used to normalize recorded image frames and stitch them together accordingly.
+                </p>
+                <p>
+                    A convolutional-recurrent neural network (C-RNN) architecture with text embeddings and information incorporated from Indico.io and Google Cloud NLP developed using TensorFlow was used to perform text-spotting &amp; OCR on the yielded stitched text image to cheaply digitalize any form of text from the real world within close reach.
+                </p>
+                <p>
+                    The paper to be referenced for the architecture can be located here:
+                    <a href="https://arxiv.org/pdf/1705.05483.pdf" rel="nofollow">
+                        https://arxiv.org/pdf/1705.05483.pdf
+                    </a>
+                </p>
+                <p>
+                    The parameters for the linear layer and C-RNN model were determined through cross-validation and train-test ratio splits of 90:10 using a synthetic dataset of ~2000 samples. The C-RNN model was trained on the ICDAR2013 dataset.
+                </p>
+                <p>
+                    Text embeddings from Indico.io are then incorporated on a simple feed-forward linear (logistic regression) layer to classify OCR'd text to relate to either business, education, or personal healthcare.
+                </p>
+                <p>
+                    The Android app. to be paired with the highlighter/pen was made using React Native &amp; Expo.
+                </p>
+                <p>
+                    Firebase Database, Authentication &amp; Storage was used for the entire infrastructure, saving and processing final OCR results alongside pre-processings necessary to make said results. As a result, notification of OCR results are realized on the app. in real-time.
+                </p>
+                <p>
+                    The actual scanner/highlighter itself was built using an Arduino 101, some buttons, a webcam and a lot of hot glue.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Stitching together and normalizing several frames of text in real-time was a large pain.
+Finding a decent webcam to use, and adjusting it to the right location on our
+                    <code>
+                        highlighter
+                    </code>
+                    was difficult.
+Preprocessing and training the two ML models we had, alongside verifying its generalization to necessary tasks for our project took quite a plethora of time.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The OCR, text stitching, real-time Firebase architecture, and ML models actually work :').
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    A couple of primers on real-time architecture, machine learning, and computer vision.
+                </p>
+                <h2>
+                    What's next for Hilite
+                </h2>
+                <p>
+                    Further improve the stitching and simplifying the hardware down to something commercial and aesthetic.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/expo-io">
+                                expo.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-cloud-nlp
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react-native">
+                                react-native
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/kipply/hack-the-north-2017-app" rel="nofollow" target="_blank" title="https://github.com/kipply/hack-the-north-2017-app">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/iwasaki-kenta/hack-the-north-2017" rel="nofollow" target="_blank" title="https://github.com/iwasaki-kenta/hack-the-north-2017">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

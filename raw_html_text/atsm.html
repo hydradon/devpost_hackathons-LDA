@@ -1,0 +1,231 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/DIDPKWqbAyQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="608989" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/608/989/datas/original.png">
+                            <img alt="atsm &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/608/989/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    atsm stands for Anti-Theft Suitcase Mod
+                </p>
+                <p>
+                    (I couldn't think of a better name)
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Wanted to do something embedded IoT with the Dragonboard. Searched lists of projects online and they were all overdone and suddenly thought of this.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Connect the main unit (in this case, the Dragonboard) to the suitcase (in production it might be embedded in the suitcase), and connect the slave unit(s) (in this case, the Raspberry Pi) to your important items that are in your check-in luggage. If someone tries to remove an item from your suitcase, a loud obnoxious "beep" will be played and a text message will be sent to you with the suitcase's GPS coordinates.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Dragonboard as the main board that keeps a Bluetooth connection alive with the slave board which is a Raspberry Pi. Uses transmit power level (TPL) to determine distance. Raspberry Pi simply opens up a Bluetooth socket and listens.
+                </p>
+                <p>
+                    Dragonboard communicates to buzzer (and reset switch) over GPIO. It continuously monitors the Bluetooth TPL and if it maxed out, ring the buzzer. Also uses Twilio to send a text message. The text message includes GPS coordinates. In actuality, they are obtained through geolocation, using Google's geolocation API, using a ruby script, and the output nicely formatted to be sent by text over Twilio.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    RSSI was supposed to be used to measure Bluetooth signal strength; it was continuously maxed out.
+                </p>
+                <p>
+                    The Dragonboard's built-in GPS was too weak or the firmware wasn't operational, and there was no USB GPS module. For this reason, the GPS coordinates rae obtained from Google's geolocation API, and the text messages are sent through WiFi (just for this hack).
+                </p>
+                <p>
+                    For some reason, the Grove button and touch sensor both were stuck sending a high voltage, so I had to use a light sensor as a substitute "reset" switch.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Actually getting the whole thing to work!
+                </p>
+                <p>
+                    Modularity; every small component of the project was in a different script file, so getting the entire thing to work was a matter of making them run together.
+                </p>
+                <p>
+                    Total 205 lines of code! And 4 lines of config!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Sometimes it's good to use premade/precompiled disk images for speedy development.
+                </p>
+                <h2>
+                    Installation/Configuration tips/requirements
+                </h2>
+                <p>
+                    Bash is practically the only dependency. Dragonboard requires Ruby.
+                </p>
+                <p>
+                    Within the kernel config, GPIO and Bluetooth are required on both boards.
+For this hack, WiFi is required on the Dragonboard as well.
+Both the Raspberry Pi and the Dragonboard Debian default kernels come with them.
+                </p>
+                <h3>
+                    Raspbery Pi
+                </h3>
+                <ul>
+                    <li>
+                        Set autologin console-only
+                        <code>
+                            raspi-config
+                        </code>
+                    </li>
+                    <li>
+                        Add the following three lines to
+                        <code>
+                            .bashrc
+                        </code>
+                        <code>
+                            bash
+if tty | grep tty; then
+sudo /home/pi/script
+fi
+                        </code>
+                    </li>
+                    <li>
+                        This runs the script at boot, but after userspace has been completely loaded
+                    </li>
+                </ul>
+                <h3>
+                    Dragonboard
+                </h3>
+                <ul>
+                    <li>
+                        Add
+                        <code>
+                            /home/linaro/atsm/boot
+                        </code>
+                        to
+                        <code>
+                            /etc/rc.local
+                        </code>
+                    </li>
+                    <li>
+                        Of course, don't forget the api key in file
+                        <code>
+                            get_coords
+                        </code>
+                    </li>
+                    <li>
+                        Ruby is required
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bash">
+                                bash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluetooth">
+                                bluetooth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dragonboard
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google--2">
+                                google
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gpio
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            grove-sensors
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Rahi374/atsm" rel="nofollow" target="_blank" title="https://github.com/Rahi374/atsm">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

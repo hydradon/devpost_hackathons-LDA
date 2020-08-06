@@ -1,0 +1,414 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/6kv78AHt2fA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Rails Quickstart adapted for Code Healthy Hackathon
+                </h1>
+                <p>
+                    Basic Epidemiology app able to give health advice on outbreaks e.g. Zika and potential dangers. Also capable of further expansion e.g. authentication, search optimisation. Linked to my own app on the old Openshift. I acknowledge work done on the rails quickstart for the old openshift and the next gen openshift platform.
+The app now includes basic authentication and search optimisation.
+                </p>
+                <p>
+                    Old readme now.
+                </p>
+                <p>
+                    This is a quickstart Rails application for OpenShift v3 that you can use as a starting point to develop your own application and deploy it on an
+                    <a href="https://github.com/openshift/origin" rel="nofollow">
+                        OpenShift
+                    </a>
+                    cluster.
+                </p>
+                <p>
+                    If you'd like to install it, follow
+                    <a href="https://github.com/openshift/rails-ex/blob/master/README.md#installation" rel="nofollow">
+                        these directions
+                    </a>
+                    .
+                </p>
+                <p>
+                    The steps in this document assume that you have access to an OpenShift deployment that you can deploy applications on.
+                </p>
+                <h2>
+                    OpenShift Considerations
+                </h2>
+                <p>
+                    These are some special considerations you may need to keep in mind when running your application on OpenShift.
+                </p>
+                <h3>
+                    Assets
+                </h3>
+                <p>
+                    Your application is set to precompile the assets every time you push to OpenShift.
+Any assets you commit to your repo will be preserved alongside those which are generated during the build.
+                </p>
+                <p>
+                    By adding the
+                    <code>
+                        DISABLE_ASSET_COMPILATION=true
+                    </code>
+                    environment variable value to your BuildConfig, you will disable asset compilation upon application deployment.  See the
+                    <a href="http://docs.openshift.org/latest/dev_guide/builds.html#buildconfig-environment" rel="nofollow">
+                        BuildConfig
+                    </a>
+                    documentation on setting environment variables for builds in OpenShift V3.
+                </p>
+                <h3>
+                    Security
+                </h3>
+                <p>
+                    Since these quickstarts are shared code, we had to take special consideration to ensure that security related configuration variables are unique across applications. To accomplish this, we modified some of the configuration files. Now instead of using the same default values, OpenShift can generate these values using the generate from logic defined within the template.
+                </p>
+                <p>
+                    OpenShift stores these generated values in configuration files that only exist for your deployed application and not in your code anywhere. Each of them will be unique so initialize_secret(:a) will differ from initialize_secret(:b) but they will also be consistent, so any time your application uses them (even across reboots), you know they will be the same.
+                </p>
+                <p>
+                    TLDR: OpenShift can generate and expose environment variables to your application automatically. Look at this quickstart for an example.
+                </p>
+                <h3>
+                    Development mode
+                </h3>
+                <p>
+                    When you develop your Rails application in OpenShift, you can also enable the 'development' environment by setting the RAILS_ENV environment variable for your deploymentConfiguration, using the
+                    <code>
+                        oc
+                    </code>
+                    client, like:
+                </p>
+                <pre class="language-nolang"><code>    $ oc env dc/rails-postgresql-example RAILS_ENV=development
+</code></pre>
+                <p>
+                    If you do so, OpenShift will run your application under 'development' mode. In development mode, your application will:
+                </p>
+                <ul>
+                    <li>
+                        Show more detailed errors in the browser
+                        <br>
+                    </li>
+                    <li>
+                        Skip static assets (re)compilation
+                        <br>
+                    </li>
+                </ul>
+                <p>
+                    Development environment can help you debug problems in your application in the same way as you do when developing on your local machine. However, we strongly advise you to not run your application in this mode in production.
+                </p>
+                <h3>
+                    Installation:
+                </h3>
+                <p>
+                    These steps assume your OpenShift deployment has the default set of ImageStreams defined.  Instructions for installing the default ImageStreams are available
+                    <a href="http://docs.openshift.org/latest/admin_guide/install/first_steps.html" rel="nofollow">
+                        here
+                    </a>
+                    .  Instructions for installing the default ImageStreams are available
+                    <a href="http://docs.openshift.org/latest/admin_guide/install/first_steps.html" rel="nofollow">
+                        here
+                    </a>
+                    .  If you are defining the set of ImageStreams now, remember to pass in the proper cluster-admin credentials and to create the ImageStreams in the 'openshift' namespace.
+                </p>
+                <ol>
+                    <li>
+                        Fork a copy of
+                        <a href="https://github.com/openshift/rails-ex" rel="nofollow">
+                            rails-ex
+                        </a>
+                    </li>
+                    <li>
+                        Clone your repository to your development machine and cd to the repository directory
+                    </li>
+                    <li>
+                        <p>
+                            Add a Ruby application from the rails template:
+                        </p>
+                        <pre class="language-nolang"><code>$ oc new-app openshift/templates/rails-postgresql.json -p SOURCE_REPOSITORY_URL=https://github.com/&lt; yourusername &gt;/rails-ex 
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Depending on the state of your system, and whether additional items need to be downloaded, it may take around a minute for your build to be started automatically.  If you do not want to wait, run
+                        </p>
+                        <pre class="language-nolang"><code>$ oc start-build rails-postgresql-example
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Once the build is running, watch your build progress
+                        </p>
+                        <pre class="language-nolang"><code>$ oc logs build/rails-postgresql-example-1
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Wait for rails-postgresql-example pods to start up (this can take a few minutes):
+                        </p>
+                        <pre class="language-nolang"><code>$ oc get pods -w
+</code></pre>
+                        <p>
+                            Sample output:
+                        </p>
+                        <pre class="language-nolang"><code>NAME                    READY     REASON         RESTARTS   AGE
+postgresql-1-vk6ny                   1/1       Running        0          4m
+rails-postgresql-example-1-build     0/1       ExitCode:0     0          3m
+rails-postgresql-example-1-deploy    1/1       Running        0          34s
+rails-postgresql-example-1-prehook   0/1       ExitCode:0     0          32s
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Check the IP and port the rails-postgresql-example service is running on:
+                        </p>
+                        <pre class="language-nolang"><code>$ oc get svc
+</code></pre>
+                        <p>
+                            Sample output:
+                        </p>
+                        <pre class="language-nolang"><code>NAME             LABELS                              SELECTOR              IP(S)           PORT(S)
+postgresql                 template=rails-postgresql-example   name=postgresql                 172.30.197.40    5432/TCP
+rails-postgresql-example   template=rails-postgresql-example   name=rails-postgresql-example   172.30.205.117   8080/TCP
+</code></pre>
+                    </li>
+                </ol>
+                <p>
+                    In this case, the IP for rails-postgresql-example rails-postgresql-example is 172.30.205.117 and it is on port 8080.
+                    <br>
+                    <em>
+                        Note
+                    </em>
+                    : you can also get this information from the web console.
+                </p>
+                <h3>
+                    Debugging Unexpected Failures
+                </h3>
+                <p>
+                    Review some of the common tips and suggestions
+                    <a href="https://github.com/openshift/origin/blob/master/docs/debugging-openshift.md" rel="nofollow">
+                        here
+                    </a>
+                    .
+                </p>
+                <h3>
+                    Adding Webhooks and Making Code Changes
+                </h3>
+                <p>
+                    Since OpenShift V3 does not provide a git repository out of the box, you can configure your github repository to make a webhook call whenever you push your code.
+                </p>
+                <ol>
+                    <li>
+                        From the Web Console homepage, navigate to your project
+                    </li>
+                    <li>
+                        Click on Browse &gt; Builds
+                    </li>
+                    <li>
+                        Click the link with your BuildConfig name
+                    </li>
+                    <li>
+                        Click the Configuration tab
+                    </li>
+                    <li>
+                        Click the "Copy to clipboard" icon to the right of the "GitHub webhook URL" field
+                    </li>
+                    <li>
+                        Navigate to your repository on GitHub and click on repository settings &gt; webhooks &gt; Add webhook
+                    </li>
+                    <li>
+                        Paste your webhook URL provided by OpenShift
+                    </li>
+                    <li>
+                        Leave the defaults for the remaining fields - That's it!
+                    </li>
+                    <li>
+                        After you save your webhook, if you refresh your settings page you can see the status of the ping that Github sent to OpenShift to verify it can reach the server.
+                        <br>
+                    </li>
+                </ol>
+                <h4>
+                    Enabling the Blog example
+                </h4>
+                <p>
+                    In order to access the example blog application, you have to remove the
+                    <code>
+                        public/index.html
+                    </code>
+                    which serves as the welcome page and rebuild the application.
+Another option is to make a request directly to
+                    <code>
+                        /articles
+                    </code>
+                    which will give you access to the blog.
+                </p>
+                <p>
+                    The username/pw used for authentication in this application are openshift/secret.
+                </p>
+                <h3>
+                    Hot Deploy
+                </h3>
+                <p>
+                    In order to dynamically pick up changes made in your application source code, you need to set the
+                    <code>
+                        RAILS_ENV=development
+                    </code>
+                    parameter to the
+                    <a href="https://docs.openshift.org/latest/cli_reference/basic_cli_operations.html#basic-cli-operations" rel="nofollow">
+                        oc new-app
+                    </a>
+                    command, while performing the
+                    <a href="https://github.com/openshift/rails-ex#installation" rel="nofollow">
+                        installation steps
+                    </a>
+                    described in this README.
+                </p>
+                <pre class="language-nolang"><code>$ oc new-app openshift/templates/rails-postgresql.json -p RAILS_ENV=development
+</code></pre>
+                <p>
+                    To change your source code in the running container you need to
+                    <a href="https://docs.openshift.org/latest/cli_reference/basic_cli_operations.html#troubleshooting-and-debugging-cli-operations" rel="nofollow">
+                        oc rsh
+                    </a>
+                    into it.
+                </p>
+                <pre class="language-nolang"><code>$ oc rsh &lt;POD_ID&gt;
+</code></pre>
+                <p>
+                    After you
+                    <a href="https://docs.openshift.org/latest/cli_reference/basic_cli_operations.html#troubleshooting-and-debugging-cli-operations" rel="nofollow">
+                        oc rsh
+                    </a>
+                    into the running container, your current directory is set to
+                    <code>
+                        /opt/app-root/src
+                    </code>
+                    , where the source code is located.
+                </p>
+                <p>
+                    To set your application back to the
+                    <code>
+                        production
+                    </code>
+                    environment you need to remove
+                    <code>
+                        RAILS_ENV
+                    </code>
+                    environment variable:
+                </p>
+                <pre class="language-nolang"><code>$ oc env dc/rails-postgresql-example RAILS_ENV-
+</code></pre>
+                <p>
+                    A redeploy will happen automatically due to the
+                    <code>
+                        ConfigChange
+                    </code>
+                    trigger.
+                </p>
+                <p>
+                    <strong>
+                        NOTICE: If the
+                        <code>
+                            ConfigChange
+                        </code>
+                        trigger is not set, you need to run the redeploy manually:
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>$ oc deploy rails-postgresql-example --latest
+</code></pre>
+                <h3>
+                    License
+                </h3>
+                <p>
+                    This code is dedicated to the public domain to the maximum extent permitted by applicable law, pursuant to
+                    <a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="nofollow">
+                        CC0
+                    </a>
+                    .
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/coffeescript">
+                                coffeescript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/nariekalo/rails-ex" rel="nofollow" target="_blank" title="https://github.com/nariekalo/rails-ex">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://rails-postgresql-example-epidemapp.0ec9.hackathon.openshiftapps.com/" rel="nofollow" target="_blank" title="http://rails-postgresql-example-epidemapp.0ec9.hackathon.openshiftapps.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                rails-postgresql-example-epidemapp.0ec9.hackathon.openshiftapps.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

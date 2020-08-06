@@ -1,0 +1,161 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="872947" data-title="Spectograms for phase shifts &amp; canny edge detection" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/872/947/datas/original.png">
+                            <img alt="TremBULL &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/872/947/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Spectograms for phase shifts &amp; canny edge detection
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="872949" data-title="Using OpenCV Image Segmentation to find event duration &amp; frequency shifts" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/872/949/datas/original.png">
+                            <img alt="TremBULL &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/872/949/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Using OpenCV Image Segmentation to find event duration &amp; frequency shifts
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="872950" data-title="A highly-filtered spectogram that eliminates noise &amp; allows for further data analysis" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/872/950/datas/original.png">
+                            <img alt="TremBULL &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/872/950/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A highly-filtered spectogram that eliminates noise &amp; allows for further data analysis
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The US government gathers seismic data globally and must be capable of efficiently parsing the data and quickly deriving insights. Currently, individuals are hired to continuously watch the data throughout the day. With modern technology, this is not necessary and likely does not result in ideal, consistent performance. Our solution automates an anomaly detection solution that extracts up and down-shifts within the frequency domain of seismic data.
+                </p>
+                <p>
+                    Our scripts analyze seismic data from sensors placed throughout the world. When there is a signal of importance, shown by changes in the frequency of high amplitude signals, we detect the anomaly using a hybrid Machine Learning and Digital Signal Processing approach. We can then notify the correct personnel and provide insight about the signal. Our solution is designed to preform as much analysis of that data as possible to minimize the amount of human capable necessary to understand the signals. Accordingly, our solution provides the bandwidth of the signal and time at which it occurred.
+                </p>
+                <h2>
+                    Key Components
+                </h2>
+                <p>
+                    This project identifies anomalies in seismographic information via two main approaches.  The first approach is entirely based in computer vision.  Given a generated seismograph, a variety of convolutions and filters are applied to find distinct lines, which correspond to the anomalies we are looking for.  From here, we extract the frequency and duration and have exported those for further analysis.  In addition, each of these graphs are then clustered, allowing us to categorize these anomalies by their duration, frequency, etc.
+                </p>
+                <h4>
+                    Workflow:
+                </h4>
+                <ul>
+                    <li>
+                        Generated spectrogram from sensor-derived .wav or .sac files
+                    </li>
+                    <li>
+                        Converted spectrogram to image
+                    </li>
+                    <li>
+                        Extracted up/downshifts (anomalous events) by applying convolutional filters for edge detection
+                    </li>
+                    <li>
+                        Derived durations and frequency ranges of shifts using object detection/image segmentation
+                    </li>
+                    <li>
+                        Clustered processed images to assign images to 5 distinct event classes
+                    </li>
+                    <li>
+                        Appended derived data into a dataframe &amp; performed data exploration
+                    </li>
+                    <li>
+                        Given additional time at the end of the Hackathon, we developed a more mathematically based approach to event detection, interfacing with the raw spectrogram data. These results can be fed into a similar clustering approach for event grouping. We have confidence that this improves performance
+                    </li>
+                </ul>
+                <p>
+                    The second approach is more heavily based on signal filtering.  Essentially, we recognized that the anomalies we are looking for can be characterized by relatively constant amplitude, with changing frequency with respect to time.  We located these anomalies by taking &ldquo;slices&rdquo; of the data at constant amplitude.  From there we applied filters to find the parts of these slices that were continuous and changing over time.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    In terms of our vision processing approach we had trouble with filtering properly.  It took a while to realize that we couldn&rsquo;t rely on color, rather we had to consider edge detection.  After this main roadblock vision processing went well.  In terms of the signal processing approach, we struggled for a while to visualize our data.  We were plotting large amounts of data in 3D to get an intuition of what an anomaly would like.  It took many hours, but eventually we became comfortable enough with the data to realize that our slicing approach would work very well.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We were all very happy to gain practical experience in signal processing, especially since half of the team had never dealt with it before.  The team was immensely effective at spreading expertise.  For instance, some of us were experienced in DSP, but others were experienced in vision processing, and together we effectively taught each other whatever we needed to know. We are super proud that we got the algorithms working and correctly detecting signals!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            jupyternotebooks
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/matlab">
+                                matlab
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Jordan-Rodrigues/SeismicData" rel="nofollow" target="_blank" title="https://github.com/Jordan-Rodrigues/SeismicData">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

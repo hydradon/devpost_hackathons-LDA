@@ -1,0 +1,297 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/7GQLw-8AwsQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    <img data-canonical-url="./img/logo.png" src="https://res.cloudinary.com/devpost/image/fetch/s--LOPwD0Ik--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/v1/./img/logo.png">
+                    Kubeapps
+                </h1>
+                <p>
+                    <a href="https://travis-ci.org/kubeapps/kubeapps" rel="nofollow">
+                        <img alt="Build Status" data-canonical-url="https://travis-ci.org/kubeapps/kubeapps.svg?branch=master" src="https://res.cloudinary.com/devpost/image/fetch/s--SETkii0o--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://travis-ci.org/kubeapps/kubeapps.svg%3Fbranch%3Dmaster">
+                    </a>
+                </p>
+                <p>
+                    Kubeapps is a set of tools written by
+                    <a href="https://bitnami.com" rel="nofollow">
+                        Bitnami
+                    </a>
+                    to super-charge your Kubernetes cluster with:
+                </p>
+                <ul>
+                    <li>
+                        Your own application
+                        <a href="https://kubeapps.com/" rel="nofollow">
+                            dashboard
+                        </a>
+                        , allowing you to deploy Kubernetes-ready applications into your cluster with a single click.
+                    </li>
+                    <li>
+                        <a href="http://kubeless.io/" rel="nofollow">
+                            Kubeless
+                        </a>
+                        , a Kubernetes-native Serverless Framework, compatible with
+                        <a href="https://serverless.com" rel="nofollow">
+                            serverless.com
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        <a href="https://github.com/bitnami/sealed-secrets" rel="nofollow">
+                            SealedSecrets
+                        </a>
+                        , a way to encrypt a Secret into a SealedSecret, which is safe to store...even for a public repository.
+                    </li>
+                </ul>
+                <h2>
+                    Quickstart
+                </h2>
+                <p>
+                    Kubeapps assumes a working Kubernetes (v1.7+) with RBAC enabled and
+                    <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" rel="nofollow">
+                        <code>
+                            kubectl
+                        </code>
+                    </a>
+                    installed and configured to talk to your Kubernetes cluster. Kubeapps binaries are available for both Linux and OS X, and Kubeapps has been tested with both
+                    <code>
+                        minikube
+                    </code>
+                    and Google Kubernetes Engine (GKE).
+                </p>
+                <blockquote>
+                    <p>
+                        On GKE, you must either be an "Owner" or have the "Container Engine Admin" role in order to install Kubeapps.
+                    </p>
+                </blockquote>
+                <p>
+                    The simplest way to try Kubeapps is to deploy it with the Kubeapps Installer on
+                    <a href="https://github.com/kubernetes/minikube" rel="nofollow">
+                        minikube
+                    </a>
+                    . Assuming you are deploying a binary installer on Linux, here are the commands to run:
+                </p>
+                <pre class="language-nolang"><code>curl -s https://api.github.com/repos/kubeapps/kubeapps/releases/latest | grep linux | grep browser_download_url | cut -d '"' -f 4 | wget -i -
+sudo mv kubeapps-linux-amd64 /usr/local/bin/kubeapps
+sudo chmod +x /usr/local/bin/kubeapps
+kubeapps up
+kubeapps dashboard
+</code></pre>
+                <p>
+                    These commands will deploy Kubeapps in your cluster and launch a browser with the Kubeapps dashboard.
+                </p>
+                <p>
+                    <img alt="Dashboard main page" data-canonical-url="img/dashboard-home.png" src="https://res.cloudinary.com/devpost/image/fetch/s--ljDe2w_n--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/v1/img/dashboard-home.png">
+                </p>
+                <p>
+                    To remove Kubeapps from your cluster, simply run:
+                </p>
+                <pre class="language-nolang"><code>kubeapps down
+</code></pre>
+                <h2>
+                    Installation
+                </h2>
+                <p>
+                    Get the latest release of Kubeapps Installer on the
+                    <a href="https://github.com/kubeapps/kubeapps/releases" rel="nofollow">
+                        Github releases
+                    </a>
+                    page.
+                </p>
+                <p>
+                    Alternatively, when you have configured a proper Go environment (refer to the first two steps of
+                    <a href="#build-from-source" rel="nofollow">
+                        Build from Source
+                    </a>
+                    section), the latest Kubeapps Installer can be get-able from source:
+                </p>
+                <pre class="language-nolang"><code>go get github.com/kubeapps/kubeapps
+</code></pre>
+                <h2>
+                    Build from Source
+                </h2>
+                <p>
+                    The Kubeapps Installer is a CLI tool written in Go that will deploy the Kubeapps components into your cluster.
+You can build the latest Kubeapps Installer from source by following the steps below:
+                </p>
+                <ul>
+                    <li>
+                        Visit
+                        <a href="https://golang.org" rel="nofollow">
+                            the Go website
+                        </a>
+                        , download the most recent
+                        <a href="https://golang.org/dl/" rel="nofollow">
+                            binary distribution of Go
+                        </a>
+                        and install it following the
+                        <a href="https://golang.org/doc/install" rel="nofollow">
+                            official instructions
+                        </a>
+                        .
+                    </li>
+                </ul>
+                <blockquote>
+                    <p>
+                        The remainder of this section assumes that Go is installed in
+                        <code>
+                            /usr/local/go
+                        </code>
+                        . Update the paths in subsequent commands if you used a different location.
+                    </p>
+                </blockquote>
+                <ul>
+                    <li>
+                        Set the Go environment variables:
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>  export GOROOT=/usr/local/go
+        export GOPATH=/usr/local/go
+  export PATH=$GOPATH/bin:$PATH
+</code></pre>
+                <ul>
+                    <li>
+                        Create a working directory for the project:
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>  working_dir=$GOPATH/src/github.com/kubeapps/
+        mkdir -p $working_dir
+</code></pre>
+                <ul>
+                    <li>
+                        Clone the Kubeapps source repository:
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>  cd $working_dir
+        git clone https://github.com/kubeapps/kubeapps
+</code></pre>
+                <ul>
+                    <li>
+                        Build the Kubeapps binary and move it to a location in your path:
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>  cd kubeapps
+        make binary
+  cp kubeapps /usr/local
+</code></pre>
+                <h2>
+                    Next Steps
+                </h2>
+                <p>
+                    <a href="docs/dashboard.md" rel="nofollow">
+                        Use the Kubeapps Dashboard
+                    </a>
+                    to easily manage the deployments created by Helm in your cluster and to manage your Kubeless functions, or
+                    <a href="docs/components.md" rel="nofollow">
+                        look under the hood to see what's included in Kubeapps
+                    </a>
+                    .
+                </p>
+                <p>
+                    In case of difficulties installing Kubeapps, find
+                    <a href="docs/install.md" rel="nofollow">
+                        more detailed installation instructions
+                    </a>
+                    .
+                </p>
+                <p>
+                    For a more detailed and step-by-step introduction to Kubeapps, read our
+                    <a href="docs/getting-started.md" rel="nofollow">
+                        introductory walkthrough
+                    </a>
+                    .
+                </p>
+                <h2>
+                    Useful Resources
+                </h2>
+                <ul>
+                    <li>
+                        <a href="docs/getting-started.md" rel="nofollow">
+                            Walkthrough for first-time users
+                        </a>
+                    </li>
+                    <li>
+                        <a href="docs/install.md" rel="nofollow">
+                            Detailed installation instructions
+                        </a>
+                    </li>
+                    <li>
+                        <a href="docs/dashboard.md" rel="nofollow">
+                            Kubeapps Dashboard documentation
+                        </a>
+                    </li>
+                    <li>
+                        <a href="docs/components.md" rel="nofollow">
+                            Kubeapps components
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/makefile">
+                                makefile
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://kubeapps.com" rel="nofollow" target="_blank" title="https://kubeapps.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                kubeapps.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ervin210/kubeapps" rel="nofollow" target="_blank" title="https://github.com/ervin210/kubeapps">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

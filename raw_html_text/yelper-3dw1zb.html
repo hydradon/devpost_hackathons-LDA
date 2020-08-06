@@ -1,0 +1,355 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/tpUclenv8Zo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="365220" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/365/220/datas/original.jpg">
+                            <img alt="Yelper &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/365/220/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Yelper
+                    <strong>
+                        DEVELOPMENT
+                    </strong>
+                </h1>
+                <p>
+                    A series of ways to use Yelp as an Alexa Skill for the Amazon Echo/Tap/Dot.
+                </p>
+                <h2>
+                    Introduction
+                </h2>
+                <p>
+                    Yelper is a series of ways to use Yelp on your Amazon Echo device. It is meant as a foundation to keep building more and more convenient uses for Yelp on a brand new platform that is neither web nor mobile.
+                </p>
+                <h3>
+                    Example Dialog
+                </h3>
+                <p>
+                    User: "Alexa, open Yelper"
+                </p>
+                <p>
+                    Echo: "For a Yelp reviewed restaurant recommendation, tell me you are hungry"
+                </p>
+                <p>
+                    User: "I am hungry"
+                </p>
+                <p>
+                    Echo: "You should check out Tadu Ethiopian. They have Ethiopian food. Would you like to hear more about Tadu Ethiopian?"
+                </p>
+                <p>
+                    ---------------------- TO DO ------------------------------
+User: "Nah"
+                </p>
+                <p>
+                    Echo: "You could also try Da Lian. They have Chinese food."
+                </p>
+                <p>
+                    User: "Show me more"
+                </p>
+                <p>
+                    Echo: "Today's specials at Da Lian are Sweet and Sour Chicken and Siu Mai. Would you like a menu?"
+                </p>
+                <p>
+                    User: "Yes"
+                </p>
+                <p>
+                    Da Lian's menu get's sent to the user's phone.
+                </p>
+                <p>
+                    Echo: "Would you like to give them a call?"
+                </p>
+                <p>
+                    User: "Yes"
+                </p>
+                <p>
+                    Echo: "Calling...."
+                </p>
+                <p>
+                    Call is routed between the user and the Echo with Twilio.
+                </p>
+                <h2>
+                    Setup
+                </h2>
+                <p>
+                    To run on local server,
+                </p>
+                <p>
+                    0.5 Have the latest versions of npm and node installed on your system.
+                </p>
+                <ol>
+                    <li>
+                        Set up alexa-app-server from
+                        <a href="https://github.com/matt-kruse/alexa-app-server" rel="nofollow">
+                            https://github.com/matt-kruse/alexa-app-server
+                        </a>
+                    </li>
+                </ol>
+                <ul>
+                    <li>
+                        This will allow for quick local development before testing with an actual Echo.
+                    </li>
+                </ul>
+                <ol>
+                    <li>
+                        <p>
+                            Pull my entire repo and save it in alexa-app-server/examples/apps/
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Run npm install
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Create your own api_key.js file and set your unique Yelp API credentials as module.exports variables. This just keeps my key safe.
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    5 (Optional). Now to test locally, change directories to alexa-app-server/ and run node server.js from terminal.
+                </p>
+                <h2>
+                    For AWS Lambda Functions
+                </h2>
+                <p>
+                    To try the skill on your own Echo device, set up a AWS Lambda Function.
+                </p>
+                <ol>
+                    <li>
+                        Sign in to AWS console on
+                        <a href="http://aws.amazon.com/" rel="nofollow">
+                            http://aws.amazon.com/
+                        </a>
+                    </li>
+                    <li>
+                        On top right of the nav bar in the console, select US East (N. Virginia) as your location.
+                    </li>
+                    <li>
+                        Select Lambda under
+                        <em>
+                            Compute
+                        </em>
+                        in the console. It should be orange.
+                    </li>
+                    <li>
+                        Click
+                        <em>
+                            Create a Lambad function
+                        </em>
+                        . It should be blue.
+                    </li>
+                    <li>
+                        Skip the
+                        <em>
+                            Select blueprint
+                        </em>
+                        part.
+                    </li>
+                    <li>
+                        Give this a name. I named it something very dull to spur the imagination.
+                        <ul>
+                            <li>
+                                Give it a description. "Do crazy Yelp stuff with Echo"
+                            </li>
+                            <li>
+                                Select Runtime as Node.js
+                            </li>
+                            <li>
+                                Select the Upload zip file option in
+                                <em>
+                                    Code entry type
+                                </em>
+                            </li>
+                            <li>
+                                Leave Handler as index.handler
+                            </li>
+                            <li>
+                                Set Role as Basic execution role
+                            </li>
+                            <li>
+                                Select Next. Another blue button
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Now go to the Event Sources tab.
+                        <ul>
+                            <li>
+                                Select Add event source
+                            </li>
+                            <li>
+                                Our event source here is Alexa Skills Kit
+                            </li>
+                            <li>
+                                Hit save.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Copy and save the ARN on the top right corner. We'll need it to create our Alexa Skill.
+                    </li>
+                </ol>
+                <h2>
+                    To Create and Alexa Skill
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            Go to
+                            <a href="https://developer.amazon.com/edw/home.html#/" rel="nofollow">
+                                https://developer.amazon.com/edw/home.html#/
+                            </a>
+                        </p>
+                        <ul>
+                            <li>
+                                Select Alexa Skills Kit
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            Click the Add a New Skill button. Should be a big yellow button.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Here we give the skill a name. It needs to be set to Yelper, unless you decided to change the name in the code.
+                        </p>
+                        <ul>
+                            <li>
+                                Invocation Name is also yelper
+                            </li>
+                            <li>
+                                EndPoint should be set to the ARN we copied earlier.
+                            </li>
+                            <li>
+                                Hit Save. Go on to next.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            Intent Schema
+                        </p>
+                        <pre class="language-nolang"><code>{
+"intents": [
+{
+"intent": "hungry",
+"slots": []
+}
+]
+}
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Sample Utterances
+                        </p>
+                    </li>
+                </ol>
+                <pre class="language-nolang"><code>hungry hungry
+hungry I'm hungry
+hungry I am hungry
+hungry show me more
+hungry so hungry
+hungry I'm starving
+
+</code></pre>
+                <ol>
+                    <li>
+                        <p>
+                            Go to Test.
+                        </p>
+                        <ul>
+                            <li>
+                                Enter Utterance: "ask yelper".
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            If the test passes, you should be able to try it on your device to.
+                        </p>
+                        <ul>
+                            <li>
+                                Say, "Alexa, open yelper"
+                            </li>
+                            <li>
+                                Dialogue begins
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alexa-skills-kit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/yjkimjunior/yelper-safe" rel="nofollow" target="_blank" title="https://github.com/yjkimjunior/yelper-safe">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

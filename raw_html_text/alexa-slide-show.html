@@ -1,0 +1,213 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/265995979?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="640720" data-title="Connection ID" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/640/720/datas/original.jpg">
+                            <img alt="Alexa Slide Show &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/640/720/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Connection ID
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I wanted to make it easier for teachers, students and corporates to present there slideshows. Alexa can make it easier for them by allowing control of presentations by voice alone and in the process, providing more features than existing hand held remote controls.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It allows users to control reveal.js presentations using voice commands. Users start a reveal.js presentation on a Chrome web browser and use a simple method to connect the presentation to their Alexa device with this skill. Once connected, users of the Alexa device can easily navigate the slides, mark slides and go to slides by a search query.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I wrote a Java web server running on EC2 that could handle requests from Alexa. The webserver also has a websocket endpoint which presentation controlling software on the user's computer connect to. For this skill, the client side software is the Alexa Slide Show extension for Google Chrome (
+                    <a href="https://chrome.google.com/webstore/detail/alexa-slide-show/pbkhbffepaafbjepmpplemjhhjkdleed" rel="nofollow">
+                        https://chrome.google.com/webstore/detail/alexa-slide-show/pbkhbffepaafbjepmpplemjhhjkdleed
+                    </a>
+                    ) which can detect and control reveal.js presentations (eg. presentations on
+                    <a href="https://slides.com/explore" rel="nofollow">
+                        https://slides.com/explore
+                    </a>
+                    ).
+                </p>
+                <p>
+                    Here's how it works:
+                </p>
+                <ul>
+                    <li>
+                        The Chrome extension connects to the websocket server on Amazon EC2
+                    </li>
+                    <li>
+                        The websocket server gives the extension a random, unique four digit number as a "connection ID" which is shown to the user
+                    </li>
+                    <li>
+                        The user starts the Slide Show skill on Alexa and asks it to connect to the connection ID.
+                    </li>
+                    <li>
+                        The Alexa endpoint server communicates with the websocket server and associates the Alexa device ID with the websocket connection of the Chrome extension. We chose the device ID because the skill is intended to be used by multiple users sharing the same Alexa device - for example in an auditorium where presenters may come up one by one and use the same device.
+                    </li>
+                    <li>
+                        When the user gives commands through Alexa, the web server converts the commands to an internal representation and sends over to the Chrome extension using a simple request format.
+                    </li>
+                    <li>
+                        The Chrome extension performs the action and returns a result to the web server, which them a response to the Alexa device.
+                    </li>
+                </ul>
+                <p>
+                    Since the protocol used between the Chrome extension and the websocket server is simple, it's pretty easy to extend this to other presentation software as well (for example, Microsoft Powerpoint, LibreOffice Impress, PDF document viewers, etc).
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        How to make it easy for a user to associate their presentation with the Alexa device. We wanted a simple method where the presenter didn't need to have an account anywhere, but was still able to get setup within a minute.
+                    </li>
+                    <li>
+                        Providing a method for client side software to link to Alexa, and designing a simple generic protocol for it.
+                    </li>
+                    <li>
+                        Figuring out what was the best way to demonstrate the concept. Google Chrome and reveal.js is pretty widely used, so it was a good choice for users to get started quickly (just install the extension on any platform and that's it).
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We were very happy to see our voices being able to manipulate things on a computer which wasn't even in close promixity. We think other people would be impressed as well when they're able to see the impact that they can have with just their voice.
+                </p>
+                <p>
+                    The design that we came up with worked well, both in terms of technology and in terms of giving users a good user experience.
+                </p>
+                <p>
+                    Our other accomplishments were learning about multiple things that were need to make this project successful - Alexa skill development, Google Chrome extensions, Javascript, websockets.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned voice design and about writing Alexa Skills mainly, and then about all the related technologies that were needed to make this possible. A neat and clean interface can really make a difference to the users!
+                </p>
+                <h2>
+                    What's next for Alexa Slide Show
+                </h2>
+                <ul>
+                    <li>
+                        This will now be extended to other slideshow applications, such as LibreOffice Impress, Microsoft office, PDF viewers etc.
+                    </li>
+                    <li>
+                        The concept can also be used to write other kinds of skills that can be used to do things on a computer using voice commands to Alexa.
+                    </li>
+                    <li>
+                        We'll add more features - for example, making it easier to iterate over search results in the slide shows, getting Alexa to read out presentations etc.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chrome">
+                                chrome
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ec2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/spring">
+                                spring
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/websockets">
+                                websockets
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://chrome.google.com/webstore/detail/alexa-slide-show/pbkhbffepaafbjepmpplemjhhjkdleed" rel="nofollow" target="_blank" title="https://chrome.google.com/webstore/detail/alexa-slide-show/pbkhbffepaafbjepmpplemjhhjkdleed">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                chrome.google.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ChithraBoopalan/AlexaSlideShowChromeExtension" rel="nofollow" target="_blank" title="https://github.com/ChithraBoopalan/AlexaSlideShowChromeExtension">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ChithraBoopalan/AlexaSlideShowWebServer" rel="nofollow" target="_blank" title="https://github.com/ChithraBoopalan/AlexaSlideShowWebServer">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

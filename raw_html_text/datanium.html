@@ -1,0 +1,300 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Datanium
+                </h1>
+                <p>
+                    <strong>
+                        A large scale, human-powered, data transfer network powered by Raspberry Pis,
+backed by Twilio, DialogFlow, and GCP.
+                    </strong>
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    According to
+                    <a href="https://www.broadbandcommission.org/Pages/default.aspx" rel="nofollow">
+                        UN Broadband Commission for Sustainable Development
+                    </a>
+                    ,
+nearly 4 billion people do not have any internet access
+                    <a href="https://www.itu.int/dms_pub/itu-s/opb/pol/S-POL-BROADBAND.18-2017-PDF-E.pdf" rel="nofollow">
+                        (1)
+                    </a>
+                    . As the world moves
+further into the information age, the benefits from advances in AI, Big Data,
+High Performance Computing, and other data-reliant fields are only available to
+those with the bandwidth.
+                </p>
+                <p>
+                    However, according to the
+                    <a href="https://www.gsmaintelligence.com/" rel="nofollow">
+                        GSMA Intelligence Agency
+                    </a>
+                    , over 5 billion
+people have access to mobile phones with a non-data cellular connection. Our
+project takes advantage of this fact to connect the next billion people to the
+information that we consider so essential to our everyday lives. We do this by
+leveraging the limited communication bandwidth available through SMS, and the
+existing person-to-person commerce networks to allow people in remote areas to
+request essential data.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Datanium is a network of Raspberry Pis which allow for human-powered transfer of
+data between places with internet access and places which do not. In the
+Datanium ecosystem, there are two different types of users: consumers and
+couriers. Consumers request data, and Datanium ensures that couriers move the
+requested data to the Datanium Node closest to the consuming user.
+                </p>
+                <p>
+                    For consumers, the flow is similar to the following:
+                </p>
+                <ol>
+                    <li>
+                        First, the consumer visits their local Datanium Node. These local nodes host
+a local Wi-Fi network where users can browse through a list of available
+software, offline internet archives, and other media. Users then text the
+Datanium service to request the data that they want to receive.
+                    </li>
+                </ol>
+                <p>
+                    <img alt="" data-canonical-url="https://gitlab.com/ColoradoSchoolOfMines/datanium/raw/master/graphics/screenshots/request.png" src="https://res.cloudinary.com/devpost/image/fetch/s--yTOMgfzR--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://gitlab.com/ColoradoSchoolOfMines/datanium/raw/master/graphics/screenshots/request.png">
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Then, the Datanium Network coordinates couriers to bring the data from a
+Datanium Node connected to the internet to the Datanium Node closest to the
+requester's location.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Once it arrives, the user receives a text informing them that their data has
+arrived at their local Datanium Node and that they can download it using the
+one-time security token which is provided to them over text.
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    For couriers, the flow is similar to the following:
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            The courier registers their intent to go between town A and town B. They can
+also indicate the amount of money they want to be paid to make that trip.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The courier receives a message letting them know that there is data at
+Datanium Node in town A which needs to be taken to Datanium Node in town B.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The courier goes to the Datanium Node in town A and downloads it to their
+device using a code sent to them over SMS. For security purposes, the
+couriers never know what this data is, just that it exists.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The courier takes the data to the Datanium Node in town B and connects to the
+local Datanium Node. The courier uploads the data to the Datanium Node in
+town B, and then receives a one-time-passcode from the node. The courier then
+sends an SMS message to the Datanium server where the transaction is
+validated and the user's Datanium account is credited.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Our solution's architecture is built with highly volatile and sporadic network
+conditions in mind. Generally, the architecture can be modeled as a graph.
+                </p>
+                <p>
+                    There are three main parts of the architecture: the Datanium Node hardware, the
+Datanium Node software, and the coordinating server software.
+                </p>
+                <p>
+                    Inside the Datanium Node, the backing hardware is a Raspberry Pi controlling the
+Wi-Fi hotspot, an Arduino controlling the visual feedback indicators including
+the flag, LED strip, and LCD screen.
+                </p>
+                <p>
+                    The Datanium Node software is written in Python and provides a web interface for
+users on the local network. The frontend is written using Bootstrap and some of
+it is procedurally generated server-side to facilitate dynamic content without
+using excessive bandwidth. The backend is a Python web server running the Bottle
+framework. Effectively, this server provides an easy UI for people to transmit
+data between their devices and the Datanium Nodes.
+                </p>
+                <p>
+                    The coordinating server is written in Python and responds to requests from
+Twilio. When texts are received by the coordinating server, we use DialogFlow to
+parse the message so that we can take advantage of the powerful natural language
+processing available through that platform.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Some of the main challenges we ran into include:
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            <strong>
+                                Integrating dialog interaction with the rest of the application.
+                            </strong>
+                            One of
+the most confusing parts of integrating DialogFlow was understanding how
+dialog state is persisted. Once we understood the paradigm, DialogFlow proved
+to be a powerful too for language processing.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Metadata management.
+                            </strong>
+                            One of the most difficult architectural problems in
+this application was managing file metadata. In transit, files must store
+metadata about their destination, file information, and other file metadata.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Python version differences.
+                            </strong>
+                            As always, many of our issues arose from
+differences between the production and development environments. One of the
+primary problems was that we are running Arch Linux on our laptops and so we
+were developing in Python 3.7, however the Python version on the RPi was
+Python 3.5. Therefore, some of the newest features of Python were not
+available to us.
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are extremely proud of our project because we implemented a very
+sophisticated network which will revolutionize peoples' access to data in the
+underdeveloped world.
+                </p>
+                <h2>
+                    What's next for Datanium
+                </h2>
+                <p>
+                    In the future, we would like to extend Datanium by creating a native Android
+application to replace our prototype web application. We would also like to
+harden the authentication protocol for our project. We have designed the system
+in such a way that adding extra security at the authentication protocol layer is
+simple, but for the sake of time and a proof-of-concept, we neglected to flesh
+out that aspect of our project.
+                </p>
+                <p>
+                    One major extension to our idea that we are interested in is creating an easy
+way to connect content sellers to people in emerging markets through our
+network. This will likely take the form of a content partner structure where
+content sellers can sell their content through our platform.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dialogflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gcp
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rpi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://gitlab.com/ColoradoSchoolOfMines/datanium" rel="nofollow" target="_blank" title="https://gitlab.com/ColoradoSchoolOfMines/datanium">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                gitlab.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

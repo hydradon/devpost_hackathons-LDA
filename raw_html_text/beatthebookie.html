@@ -1,0 +1,142 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    A friend of mine lost a significant chunk of money on gambling sadly so I thought of building this model to not only help him make more informed choices in the future but also make everyone including me some cash!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The purpose of the model is to predict English Premier League's full-time football match results.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The approach taken is Attribute-Based Classification which involves importing training data from 'epl-training.csv' before preprocessing it(Scaling, Dimensionality Reduction, Visualization, Improving Class Imbalance) followed by cross-validation to calculate optimal hyperparamters to train classifiers and finally writing the predicted results to epl-test.csv after estimating attributes(in the same format as the model was trained on) for matches in Week 25.
+                </p>
+                <p>
+                    The classifiers trained were k-Nearest Neighbors and SVM with SVM performing best at an accuracy of 0.60 (+/- 0.04).
+                </p>
+                <p>
+                    The reason behind use of Pandas package is it's easy-to-use data structures and data analysis tools providing high performance.
+                </p>
+                <p>
+                    The HTR categorical attribute in the csv training file has been binarized in order to reveal information that would be otherwise hidden to the classifier(especially linear ones) and improve classification accuracy.
+                </p>
+                <p>
+                    After converting csv training file into Pandas Dataframe, it is transformed into a numpy array(this is the format accepted by standard classifiers) before scaling all column values from 0 to 1. The main advantage of scaling is to avoid attributes in greater numeric ranges dominating those in smaller numeric ranges so that classifiers like K Nearest Neighbors and SVM who calculate distance between two points by Euclidean distance perform better.
+                </p>
+                <p>
+                    This is followed by visualization of rank of attributes in decreasing order of their importance. This task was particularly useful to leave out attributes that caused a large gap between train and test error and hence reduce overfitting. Prior to using the current set of attributes, the model was experimented with attributes like HomeFansAttendance, AwayFansAttendance (using the Stadium_Capacity.csv file in the submission) and AwayTeamDistanceTravelled but these attributes failed to generalise in any of the classifiers implemented so were eventually left out.
+                </p>
+                <p>
+                    Then SMOTE (a form of oversampling package) is applied to the training data to reduce class imbalance. The difference can been seen in LDA visualizations before and after applying SMOTE. The LDA also helps in attribute elimination.
+The most challenging task of this assignment was addition of HomeForm, AwayForm attributes. These could have made a significant difference to the model if successfully implemented. My attempt at these is demonstrated in the final cell of this notebook.
+                </p>
+                <p>
+                    Moving onto Model Training and Validation, each classifier was trained on hyperparamters calculated by K-Fold Cross Validation(CV). K-Fold is a CV technique where the data is split into k equal sized folds where each fold acts as the validation set once &amp; acts as the training set k-1 times and average performance on the validation set is used as estimate for test set performance. This was done to ensure generalisation so that the model behaves on test data more or less the same as it did on training data.
+                </p>
+                <p>
+                    After this, results from different classifiers are compared and one is picked not on basis of classification accuracy but on basis of how well it is able to generalise i.e. have a small gap between train and test accuracy rate and also represent class imbalance in predictions.
+                </p>
+                <p>
+                    In the final section, the attributes of test data matches are estimated in the same format as train data matches using the following algorithm:
+"Take HomeTeam's all games played at Home and AwayTeam's all games played Away".
+                </p>
+                <p>
+                    This approach gives double weight to matches played Head2Head between HomeTeam and AwayTeam. The best classifier chosen on basis of generalization and class imbalance representation makes predictions along with probability scores of each outcome and the FTR is written to epl-test.csv file.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Differentiating among which features were useful and which weren't, data organisation in Excel, data pre-processing in Python, choice of classifier, cross-validation etc.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Bookies like Bet365, Betfair etc tend to get predictions correct only 53% of times but my model beats these bookies with an accuracy of 56%.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Python, Machine Learning, Terminal, Anaconda, Teamwork, Collaboration, Problem-Solving, Debugging etc.
+                </p>
+                <h2>
+                    What's next for BeatTheBookie
+                </h2>
+                <p>
+                    To evolve the model into a momentum based model i.e. making predictions only on the basis of past x number of games rather than years of data. This would address black swan events like Leicester City winning the league in 2016!
+                </p>
+                <p>
+                    It is also worth spending time in the future to extract attributes like starting lineups for each match with each team's and player's various skill scores from the Kaggle European Soccer Database.
+                </p>
+                <p>
+                    After training a classifier on these, the attributes mentioned above can be obtained for a test match instance using the following live API (it's free for under 15 calls a month) because it returns starting lineups 30 mins before kickoff which should be sufficient to look up corresponding player attributes from the Kaggle Database.
+                </p>
+                <p>
+                    Also worth consulting academics or experts in SVM regarding making visualizations for SVM Polynomial GridSearchCV to reveal optimal hyperparameters that generalize the model well.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            svm
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/chaitanya-agrawal/BeatTheBookie.git" rel="nofollow" target="_blank" title="https://github.com/chaitanya-agrawal/BeatTheBookie.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

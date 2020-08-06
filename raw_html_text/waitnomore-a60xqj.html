@@ -1,0 +1,183 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="758820" data-title="The app at the end of the hackathon." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/758/820/datas/original.png">
+                            <img alt="WaitNoMore &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/758/820/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The app at the end of the hackathon.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="758821" data-title="a 4:45am we've-finally-finished selfie" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/758/821/datas/original.jpg">
+                            <img alt="WaitNoMore &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/758/821/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                a 4:45am we've-finally-finished selfie
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The idea for this app first came when, as we were moving into our dorm room for the first time, Qi Tao mentioned to Garrett how annoying it is that you never know if there are any parking stalls open in the Templin hall parking lot before you drive all the way up here.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    WaitNoMore uses a Raspberry Pi-powered camera to monitor a parking lot (or lots) to track available stalls and accessible parking. This data are pushed to a mobile app which can help people find places to park with greater ease.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    WaitNoMore is comprised of three core pieces of software. First is the camera backend. This is written in Python and runs on a Raspberry Pi with a webcam attached to it. When the backend is loaded, it pulls its configuration from the admin panel, then it takes images of the parking lot every few seconds and compares each parking stall to a reference area to determine the likelihood that the stall is in use. If said likelihood falls above a given threshold, then it updates the parking stall's status.
+                </p>
+                <p>
+                    The app is the next major component. Written in Flutter to enable cross-platform use, the app communicates with the backend to get the general layout of the tracked parking lots, then it renders each stall as a square in the UI, and changes the color based on availability. Clicking the squares will give additional information, such as whether or not the stall is designated accessibility parking.
+                </p>
+                <p>
+                    The final piece of the proverbial WaitNoMore pie is the web-based administration panel. This panel allows site administrators to create new lots by uploading reference images of them, then mapping the individual stalls using a pointer-based GUI. The web panel is also responsible for the creation of centrally managed config profiles that are pushed to the Raspberry Pi units.
+                </p>
+                <p>
+                    WaitNoMore uses Firebase Cloud Firestore as its storage driver. Data is organized by lot, then by stall. This allows data to be shared in real time between the three components of the platform.
+                </p>
+                <h5>
+                    Image Processing
+                </h5>
+                <p>
+                    The image recognition is done by computing the average color of a specified region. That average color is then compared to the average color of a specified reference region. The three RGB channels are then run through a quartic-root normalization formula to yield a value (internally referred to as &Ecirc;) that quantifies the probability that a given region is occupied.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Image Processing was a big challenge. The initial plan was to use TensorFlow or similar to track stalls by recognizing cars/pedestrians/bicycles/etc as they arose. However, we quickly discovered that, no matter how hard we tried, TensorFlow would not accept the fact that our model cars were, in fact, cars and not cell-phones (72.681335%). The second plan was to use image differentials to compute areas where the image would have changed from one time to the next. However, due to our low-quality webcam having very high levels of noice, this proved... impractical. Garrett finally settled on using the average color method.
+                </p>
+                <p>
+                    The Flutter application was also a major challenge. Never having programmed in Dart or with asynchronicity, Thomas had a steep learning curve on how to properly retrieve and display information from the Firebase in the appropriate context while still attempting to maintain good coding practices.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Well, it works. That was up in the air for a long time. None of us had ever participated in a hackathon before, and we fully expected to fall flat on our faces with this one. Also, the application successfully ports to both iOS and Android. We also made use of version control throughout the entire process, which helped with testing along the way.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that hackathons are a surprising amount of fun. We learned how to work as a group when it comes to programming and creating a project while simultaneously trying not to break each-other's code. We also learned the path to Wal-mart after 11pm. Twice. Seriously. We learned a lot about how image processing works and the mathematics behind it. Also, we learned that changing hardware in the middle of a project can pose a serious issue (we got a better web-cam).
+                </p>
+                <h2>
+                    What's next for WaitNoMore
+                </h2>
+                <p>
+                    We want to clean up the UX in the mobile app and tie down integration with the database better. We want to expand the accessibility tools and implement a reservation system with Push notifications. Cleaning up the code base in general and making it more friendly to maintain and expand is also a must. We have also considered designing a device that can be placed at each stall to indicate whether it is accessible or reserved, as well as to assist with enforcement of parking laws.
+                </p>
+                <h4>
+                    Declaration
+                </h4>
+                <p>
+                    This application is designed to relieve some of the little stresses of every-day life to help us all go about our days in just a bit better of a mood. Our integration for designating accessible parking is designed to empower those of all walks of life.
+                </p>
+                <p>
+                    This application is the copyright of its respective developers.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flutter">
+                                flutter
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/git">
+                                git
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/laravel">
+                                laravel
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://git.glmdev.tech/WaitNoMore" rel="nofollow" target="_blank" title="https://git.glmdev.tech/WaitNoMore">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                git.glmdev.tech
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

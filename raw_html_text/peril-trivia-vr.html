@@ -1,0 +1,161 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Here's the whole story
+                </h2>
+                <h3>
+                    What it does
+                </h3>
+                <p>
+                    Peril! VR Trivia is a voice-enabled, virtual reality game show experience that you can enjoy from your own home.
+                </p>
+                <h4>
+                    Features
+                </h4>
+                <ul>
+                    <li>
+                        Each game features a random set of categories and questions sourced from
+                        <a href="https://opentdb.com/" rel="nofollow">
+                            Open Trivia DB
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Answer questions and interact with the AI game show host with your voice.
+                    </li>
+                    <li>
+                        Custom Amazon Lex chatbot supports 11 categories and can scale up to 10,000 questions.
+                    </li>
+                    <li>
+                        AI game show host reacts with gestures and speech powered by Amazon Sumerian and the Lex chatbot.
+                    </li>
+                    <li>
+                        AI competitors speak with unique voices powered by Amazon Polly.
+                    </li>
+                    <li>
+                        In-game TV displays categories and questions.
+                    </li>
+                </ul>
+                <h3>
+                    How I built it
+                </h3>
+                <ul>
+                    <li>
+                        Amazon Sumerian: Game client
+                    </li>
+                    <li>
+                        Amazon DynamoDB: NoSQL data store for trivia questions, game states
+                    </li>
+                    <li>
+                        Amazon API Gateway: REST API for game logic and Lex model generation
+                    </li>
+                    <li>
+                        Amazon Lambda: Handlers for game logic REST API, handler for Lex model generation, validation hook for Lex bot
+                    </li>
+                    <li>
+                        Amazon Lex: Chatbot for validating category and answer input from players
+                    </li>
+                </ul>
+                <h3>
+                    Challenges I ran into
+                </h3>
+                <ul>
+                    <li>
+                        Sending metadata from Sumerian to Lex: The Sumerian state machine doesn't support passing metadata in the built-in Lex actions. This was solved by integrated with the Lex postContent and postText APIs programatically to attach metadata like the game state.
+                    </li>
+                    <li>
+                        Lex model constraints: Modeling the data using one question per intent was not scalable as Lex only supports 100 intents per bot. This problem was solved this by modeling the intents after categories with slot types as questions.
+                    </li>
+                    <li>
+                        Multiplayer: Websockets integration was attemptedbut I ran into latency issues.
+                    </li>
+                </ul>
+                <h3>
+                    Accomplishments that I'm proud of
+                </h3>
+                <ul>
+                    <li>
+                        Squeezing the juice out of Lex model: The bot model can support up to 10,000 trivia questions the way the data is currently modeled.
+                    </li>
+                    <li>
+                        Cloud native: API Gateway + Lambda REST APIs are used for a portion of the game logic, meaning the client doesn't need to be republished.
+                    </li>
+                    <li>
+                        Debugging with visual state machine: The way the logic is modeled in the Sumerian client makes it easy to debug.
+                    </li>
+                </ul>
+                <h3>
+                    What I learned
+                </h3>
+                <p>
+                    This was my first time working with:
+                </p>
+                <ul>
+                    <li>
+                        API Gateway
+                    </li>
+                    <li>
+                        Websockets
+                    </li>
+                    <li>
+                        Lex
+                    </li>
+                    <li>
+                        Sumerian
+                    </li>
+                </ul>
+                <h3>
+                    What's next for Peril! VR Trivia
+                </h3>
+                <ul>
+                    <li>
+                        Multiplayer
+                        <ul>
+                            <li>
+                                Co-presence powered by Websockets
+                            </li>
+                            <li>
+                                Live chat powered by WebRTC
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        A larger trivia database
+                    </li>
+                    <li>
+                        Use a buzzer to opt in for the question
+                    </li>
+                    <li>
+                        Better visuals
+                    </li>
+                </ul>
+                <h3>
+                    Compatibility Notes
+                </h3>
+                <p>
+                    Tested on Google Chrome version 71.0.3578.98 with hardware acceleration enabled.
+                </p>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://2531941a2d4b452bb7d8fb5b1f91b59f.us-west-2.sumerian.aws/?" rel="nofollow" target="_blank" title="https://2531941a2d4b452bb7d8fb5b1f91b59f.us-west-2.sumerian.aws/?">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                2531941a2d4b452bb7d8fb5b1f91b59f.us-west-2.sumerian.aws
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

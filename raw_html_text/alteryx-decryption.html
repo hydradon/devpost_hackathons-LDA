@@ -1,0 +1,212 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Strategy
+                </h2>
+                <p>
+                    This breakdown of our deciphering process illustrates how we utilized alteryx at HackCU.
+                </p>
+                <h3>
+                    First Step
+                </h3>
+                <p>
+                    <em>
+                        Characterize letter frequencies:
+                    </em>
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://msdn.microsoft.com/en-us/library/az24scfc(v=vs.110).aspx" rel="nofollow">
+                            Regular expressions
+                        </a>
+                        were used to parse the original ciphertext into rows of 2 character pairs
+                    </li>
+                    <li>
+                        A Frequency Table Node was then applied to these rows to determine the relative frequencies of each character pair.
+                    </li>
+                </ul>
+                <h3>
+                    Second Step
+                </h3>
+                <p>
+                    <em>
+                        Compare known letter frequencies
+                    </em>
+                </p>
+                <ul>
+                    <li>
+                        A record ID node was used to structure our data prior to comparison
+                    </li>
+                    <li>
+                        The relative frequencies of english letters was compared to the histogram that was created on our 2 character pairs.
+                    </li>
+                </ul>
+                <h2>
+                    What does Pig Latin do to letter frequencies?
+                </h2>
+                <p>
+                    The number of occurrences of any given letter in the English language is thrown off when translated into Pig Latin. This is due to the fact that every word becomes translated into a similar version of itself with the letters
+                    <strong>
+                        A
+                    </strong>
+                    and
+                    <strong>
+                        Y
+                    </strong>
+                    appended to the word.
+                </p>
+                <p>
+                    Considering this fact, it is important to note that the frequencies we observed in the ciphertext will not line up perfectly with what you would expect out of a normal frequency analysis.
+                </p>
+                <h2>
+                    A note about Pig Latin Dialects
+                </h2>
+                <p>
+                    According to
+                    <a href="https://en.wikipedia.org/wiki/Pig_Latin" rel="nofollow">
+                        the internet
+                    </a>
+                    , Pig Latin can take on a few different forms. Some dialectics have different rules about what happens to words that start with vowels.
+                </p>
+                <p>
+                    <strong>
+                        Some say:
+                    </strong>
+                    Ocean   --&gt;    Ocean
+                    <strong>
+                        way
+                    </strong>
+                </p>
+                <p>
+                    <strong>
+                        Others say:
+                    </strong>
+                    Ocean   --&gt;    Ocean
+                    <strong>
+                        ay
+                    </strong>
+                </p>
+                <p>
+                    With a bit of analysis on our data following some attempts on decoding the ciphertext, it became obvious that this particular set of Pig Latin utilizes a dialect in which words starting with vowels are translated in the following way:
+                </p>
+                <p>
+                    Ocean   --&gt;    Ocean
+                    <strong>
+                        yay
+                    </strong>
+                </p>
+                <p>
+                    After making this discovery, it became trivial to fill in mappings between 2 character pairs and actual Pig Latin letters.
+                </p>
+                <h2>
+                    But what about data loss?!?
+                </h2>
+                <p>
+                    Digging into things, we made the discovery that Pig Latin has some fatal encoding flaws. 
+The issue is that when translating words that have consonant clusters at the front, multiple characters must be moved to the back of the word to create the Pig Latin equivalent. This creates a problem when attempting to return back from the Pig Latin, since there is no unique identifier to indicate that the original word contained one or several consonants as a prefix.
+                </p>
+                <p>
+                    In other words, translating words to and from Pig Latin is not a
+                    <a href="http://www.math.toronto.edu/preparing-for-calculus/4_functions/we_3_one_to_one.html" rel="nofollow">
+                        one-to-one relationship.
+                    </a>
+                </p>
+                <p>
+                    To investigate the impact of this issue, we went ahead and wrote a python script to enumerate all of the potential words found in the original text which conflict due to consonant clusters.
+                </p>
+                <h3>
+                    Results:
+                </h3>
+                <p>
+                    Counting the occurrences, we found a total of
+                    <strong>
+                        118 words with conflicts in the provided text.
+                    </strong>
+                    If you account for positioning of apostrophes, this number goes up to
+                    <strong>
+                        186 words!
+                    </strong>
+                </p>
+                <p>
+                    Take a look at the gists below to see all collisions:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://gist.github.com/mguida22/7a997eaa3e04dd838cb0b86f97dc7eca" rel="nofollow">
+                            Collisions without quote issues
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://gist.github.com/mguida22/6dbe05e583d70b25c58d45d2cbefbff1" rel="nofollow">
+                            Collisions with quote issues
+                        </a>
+                    </li>
+                </ul>
+                <h2>
+                    Tooling
+                </h2>
+                <p>
+                    We used a lot of python scripts to help solve the initial encoding of characters. All python files can be found at
+                    <a href="https://github.com/mguida22/alteryx-crypto" rel="nofollow">
+                        github.com/mguida22/alteryx-crypto
+                    </a>
+                    and the alteryx workflow was submitted by email.
+                </p>
+                <h2>
+                    Contributors
+                </h2>
+                <ul>
+                    <li>
+                        Ben Williams
+                    </li>
+                    <li>
+                        Michael Guida
+                    </li>
+                    <li>
+                        Andrew Gentry
+                    </li>
+                    <li>
+                        Travis Benson
+                    </li>
+                    <li>
+                        Collin Berg
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alteryx">
+                                alteryx
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mguida22/alteryx-crypto" rel="nofollow" target="_blank" title="https://github.com/mguida22/alteryx-crypto">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

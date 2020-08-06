@@ -1,0 +1,183 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="792243" data-title="toxicity comment technology" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/792/243/datas/original.jpeg">
+                            <img alt="Detoxify &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/792/243/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                toxicity comment technology
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Seeing such a surge of internet trolls in the recent years we wanted to protect people how might see some harmful comments on the internet that are hateful, ill-intended, nonconstructive to the general dialogue. That is why we've decided to build this tool.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The browser extension filters out harmful/toxic text's found online - currently only youtube.com/* is supported but extending it should be easy.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The are two important parts to our solution - the browser extension and the classifier.
+The browser extension was build using standard coding practices for web frontend development, keeping in mind recent API changes for multi-browser support.
+The classifier, was trained using the Kaggle "Toxic Comment Classification Challenge"
+                    <a href="https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge" rel="nofollow">
+                        link
+                    </a>
+                    dataset.
+From there we preprocess the text dataset in javascript and export it to a local file.
+The local file with the preprocessed classification text's is loaded into a jupyter notebook and a classifier is trained using scikit-learn. Our approach consists of converting the dataset to bag-of-ngrams (bigrams) and training the model on that -- this conversion allows us to deal with varied lengths of comments in datasets as well as detecting "misspelled" toxic words.
+                    <br>
+                    For our problem we used AdaBoostClassifier with a DecisionTreeClassifier as a base estimator - as we found it fits the data well.
+                </p>
+                <p>
+                    Once the classifier is trained, we use a transpiler that creates a javascript output of out trained model (with the trained weights and base estimators).
+                </p>
+                <p>
+                    Finally, we load the classifier into the browser extension. Before invoking it we also do a trivial word match for the easiest class of toxic comments (those containing heavy language) -- considering we are running out model in a web browser, this is a welcome optimization.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    On the browser extension side of things:
+                </p>
+                <p>
+                    Youtube is a Single page application (SPA) so there were issues determining various URL changes
+                </p>
+                <p>
+                    furthermore, since Youtube is a SPA, loading comments is difficult to do well because they are loaded dynamically once the user scrolls to them (requests them)
+                </p>
+                <p>
+                    Making sure It's cross-browser compatible
+                </p>
+                <p>
+                    On the classifier training side:
+                </p>
+                <p>
+                    Various issues concerning training the model (The training text data varies greatly in length, heavily unbalanced labels, highly unstructured comments written by users, etc...)
+                </p>
+                <p>
+                    Efficiently training the model in javascript as there are is no good software support for dealing with matrices, arrays, etc.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We've finished it with a quite well performance! .. 2 guys in 24 hours made a ML model trained on ~150k data that runs in a browser :D
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We've never before written an extension for a browser, considering this was our first time it was a bit of a hassle  :)
+                </p>
+                <p>
+                    We can train a model in a browser extension
+                </p>
+                <p>
+                    Tons of great javascript libraries like
+                    <code>
+                        compose
+                    </code>
+                    and
+                    <code>
+                        browserify
+                    </code>
+                </p>
+                <h2>
+                    What's next for detoxify
+                </h2>
+                <p>
+                    The research community would benefit greatly if a user of our extension could submit feedback about classification (if a text was wrongly classified, or similar). That would allow for continuous creation of label data which could in turn be used to improve the extensions models.
+                </p>
+                <p>
+                    It would be great to see this project come alive as an open source project. A community driven toxic comment classifier where anyone can know why and how was something classified as toxic or non-toxic. Nowadays, freedom of speech has been exploited by the anonymity that internet provides -- thankfully we have the tools to combat that.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            jupyter-notebook
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/fsaina/detoxify" rel="nofollow" target="_blank" title="https://github.com/fsaina/detoxify">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

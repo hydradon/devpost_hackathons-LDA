@@ -1,0 +1,51 @@
+[
+    {
+        "url": "https://api.github.com/repos/ericklikan/Capriccio-Backend/pulls/comments/324418523",
+        "pull_request_review_id": 288314325,
+        "id": 324418523,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyNDQxODUyMw==",
+        "diff_hunk": "@@ -12,12 +12,23 @@ def is_rgb_value_similar(value1, value2):\n     return False\n \n \n-im = Image.open('../image/image.jpg') # Can be many different formats.\n-pix = im.load()\n-x,y = im.size\n-print(im.size)  # Get the width and hight of the image for iterating over\n-mid = x / 2\n-for i in range(y):\n-    #print(str(i) + \" \" + str(pix[mid,i]))\n-    if is_rgb_value_similar(pix[mid,i], RGB_BLACK):\n-        print(\"This pixel is black: \" + str(i))\n+def find_staff_coordinates(image :str) -> list:\n+    im = Image.open(image)\n+    pix = im.load()\n+    x, y = im.size\n+    mid = x / 2\n+\n+    line_count = 0\n+    staff_coordinates = []\n+\n+    for i in range(y):\n+        if is_rgb_value_similar(pix[mid, i], RGB_BLACK):\n+            y_coord = i\n+            if line_count == 0 or abs(y_coord - staff_coordinates[line_count - 1]) > 10:\n+                staff_coordinates.append(y_coord)\n+                line_count += 1\n+\n+    return staff_coordinates\n+\n+\n+print(find_staff_coordinates('../image/image.jpg'))",
+        "path": "api/staffRecognizer.py",
+        "position": 41,
+        "original_position": 32,
+        "commit_id": "44fa88d32d9c8e882426132bbb1a9ac7956acbe8",
+        "original_commit_id": "38b9dd6e81613b6329063d806e7bd54cebdb18de",
+        "user": {
+            "login": "ericklikan",
+            "id": 20330693,
+            "node_id": "MDQ6VXNlcjIwMzMwNjkz",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/20330693?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/ericklikan",
+            "html_url": "https://github.com/ericklikan",
+            "followers_url": "https://api.github.com/users/ericklikan/followers",
+            "following_url": "https://api.github.com/users/ericklikan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/ericklikan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/ericklikan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/ericklikan/subscriptions",
+            "organizations_url": "https://api.github.com/users/ericklikan/orgs",
+            "repos_url": "https://api.github.com/users/ericklikan/repos",
+            "events_url": "https://api.github.com/users/ericklikan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/ericklikan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "why u hard code",
+        "created_at": "2019-09-14T09:15:54Z",
+        "updated_at": "2019-09-14T09:18:04Z",
+        "html_url": "https://github.com/ericklikan/Capriccio-Backend/pull/3#discussion_r324418523",
+        "pull_request_url": "https://api.github.com/repos/ericklikan/Capriccio-Backend/pulls/3",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/ericklikan/Capriccio-Backend/pulls/comments/324418523"
+            },
+            "html": {
+                "href": "https://github.com/ericklikan/Capriccio-Backend/pull/3#discussion_r324418523"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/ericklikan/Capriccio-Backend/pulls/3"
+            }
+        }
+    }
+]

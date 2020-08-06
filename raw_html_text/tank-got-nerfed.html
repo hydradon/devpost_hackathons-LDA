@@ -1,0 +1,158 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/PSAYKGNazgU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="698361" data-title="The front of the Nerf Tank. The thermal camera is looking right at you!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/361/datas/original.jpeg">
+                            <img alt="Tank Got Nerfed &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/361/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The front of the Nerf Tank. The thermal camera is looking right at you!
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="698362" data-title="All those wires.... It's a good thing we know how to manage them all....." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/362/datas/original.jpeg">
+                            <img alt="Tank Got Nerfed &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/362/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                All those wires.... It's a good thing we know how to manage them all.....
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="698363" data-title="Circuits for both sensors and the motor controllers. " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/363/datas/original.jpg">
+                            <img alt="Tank Got Nerfed &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/363/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Circuits for both sensors and the motor controllers.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The main purpose of this project was to create a toy and have fun with friends. Nerf wars are a huge part of many individuals' childhood. We wanted to create a toy for us and for children to enjoy.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It is an autonomous robot on tank tracks. Its thermal camera and proximity sensors let it path around and seek a target. Once a target is found, it fires until the target is gone or it is out of ammo.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used an old set of RC tank tracks. All the motor controls, sensor circuitry and mechanical workings were built from the ground up. We programmed it using the Arduino libraries.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We ran into many challenges with circuitry, hardware and software. Completing a project like this in 36 hours is a stretch because so many things can go wrong that are out of our control.
+                </p>
+                <p>
+                    The first issue we ran into was creating a motor controller. We did not have parts to create one, so we had to create one using various transistors. After we constructed an H bridge, we noticed the logic levels for our micro-controller were not high enough to drive our MOSFETs. So, we used an operational amplifier that saturated at a higher voltage. Since it is a non-inverting amplifier, this isolated our micro-controller pins from the rest of the circuit and let us provide a high enough voltage to the gate of the MOSFET. Our H bridge then worked very well, but the motors did not have enough torque on start up. Adding a 0.1 uF capacitor in parallel fixed this. It helped the motors have more torque on start up allowing them to get moving more quickly.
+                </p>
+                <p>
+                    Another hardware issue we had is that current would shoot back from the DC motors and affect our sensor readings. We fixed this in the software by simply stopping the motors for 2 milliseconds before reading the sensors.
+                </p>
+                <p>
+                    The tank tracks did not like to move forward very well because the track would become tight if it stood still for too long. We fixed this with software. By moving the robot backwards for a little bit when the program first starts, it loosens the tracks and it can move forwards more easily.
+                </p>
+                <p>
+                    Software for this project proved to be very tricky. We started with building blocks of code. But in bringing them together, we found a lot of timing issues. It takes time for the micro-controller to preform certain functions. Reading the thermal camera is by far the most resource-intensive process for the small processor. Since the data comes in on a I2C serial line, the processor has to read each pixel one bit at a time. This caused issues with the timing in moving the robot and updating the state machine. We had to do a lot of troubleshooting to find out which order we need to read sensors, move and update states. The order and timing of these things had a huge impact on the robot's functionality.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Our robot is completely autonomous. It can avoid collisions and edges, searching rooms until it finds a target. It will then track that target until it loses sight of it or runs out of ammo. We are very proud of all the engineering that went into making it work. From the placement of sensors to the mechanical workings, everything had to be carefully considered.
+                </p>
+                <p>
+                    We are also very happy with how well our teamed worked together. We were composed of a computer science major, an electrical engineer, a materials engineer and an aerospace engineer. We had different experiences and backgrounds to bring to the team. But due to our specialties, each one of us had skills to offer that no other member could. It proved to be very valuable to have so many different skills to draw upon. Also, our diversity greatly added to the overall creativity of our team. We are very happy and very proud of how well we worked together.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Since we all came from different backgrounds, we had much to teach each other. Many of us learned hands-on skills like soldering and breadboarding. Some of us had never built a circuit, but quickly learned how to both build and troubleshoot one. Many of us were new to C programming and had never programmed anything that interacted with the real world. For many of us it was a novel experience.
+                </p>
+                <p>
+                    The thing we learned most was teamwork and communication. Since not all of us came from the same background, we had to use different terminology to communicate what we needed to have done. It took a lot of trust to turn coding or circuit-building over to somebody we not only just barely met, but who also did not have any experience in that particular area. Each of member of the team proved they were capable of learning and adapting quickly. We learned how to communicate, plan and delegate. If it were not for those things, we would not have completed the project.
+                </p>
+                <h2>
+                    What's next for Tank Got Nerfed
+                </h2>
+                <p>
+                    We would like to rebuild our motor controllers and make our circuitry more compact. Putting it on a printed circuit board would greatly reduce the amount of wires running all over the place.
+                </p>
+                <p>
+                    Also, we would like to control this robot remotely as well. Sometimes, kids get sick and end up not being able to play  with their friends. We would love to attach an actual camera and have a different controller that is wifi-enabled. In doing so, kids could remote in and have nerf war with their friends despite being sick at home or in a hospital.
+                </p>
+                <p>
+                    The purpose of this project was to remember to have fun and remember our childhood. We hope to make a more refined version to later share with kids. It is important to have fun and spend quality time with friends, nerf wars being a good way to do so.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/igneousstar/hackISU2018" rel="nofollow" target="_blank" title="https://github.com/igneousstar/hackISU2018">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,202 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/jN4U8ppRYJ0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="737862" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/737/862/datas/original.png">
+                            <img alt="CurtnCall &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/737/862/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The world is full of talented people that never get the chance to share their talents with the world. Today, if a performer wants to be discovered, they can either hope to overcome stiff competition and be featured on a traditional television program, or they can use websites like YouTube or Facebook and hope to go viral and stand out among an endless flood of digital content. CurtnCall was borne out of the idea that every performer deserves a chance to perform for the world.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    CurtnCall creates the first time-limited, turn-based live video performance site on the Internet, meaning only one performer can perform for a fixed amount of time on the site. During the performance, viewers react to the performance using a reaction panel (with reactions such as applause and laugh). After the performance, viewers vote on the performance with a simple like or dislike (we call them money or tomato). Performers can immediately re-watch their performance to see how viewers reacted to their video in real-time. Performers compete to top the CurtnCall leaderboards.
+                </p>
+                <p>
+                    CurtnCall is unique in that it introduces scarcity to live video on the Internet. By limiting the amount of time the user can take over the site, performers are pushed to create entertaining content while having the opportunity to perform for more viewers than they typically would using other platforms. Viewers take part in a shared live experience, where they see different performers try to entertain them, one at a time.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    CurtnCall is a complex, internet of things, real-time web application built on modern messaging, video streaming and event-driven, open source technologies.  In building CurtnCall, we had to answer:
+                </p>
+                <ul>
+                    <li>
+                        How do we maintain and communicate real-time state for the audience and the performer in scalable fashion?
+                    </li>
+                    <li>
+                        How do we facilitate real-time, seamless turn-based video across many performers in a scalable fashion?
+                    </li>
+                    <li>
+                        How do we capture audience feedback to help performers understand their efficacy since the performer does not have a live, in-person audience?
+                    </li>
+                </ul>
+                <p>
+                    To support the real-time and data layer, we utilize GraphQL and interface between a real-time Redis database and MongoDB for longer persistence.  As events come into our data layer, such as a new performer getting in line to perform, an audience member reacting to a performer by selecting a laugh emoticon, or a performer&rsquo;s time running out, we update our application&rsquo;s state and communicate that in real-time to all visitors on the site using AWS Internet of Things technology.  The broadcast and state logic sits in AWS Lambda functions, which utilizes push notifications to communicate directly with the audience and performer immediately.  CurtnCall timestamps are associated with every event, and enable us to communicate to performers how their performance evolved over time in terms of audience feedback.  We also run regular jobs to update CurtnCall aggregate statistics for the performance (how many total laughs), performer (how many total viewers have watched the performer?) and for CurtnCall as a whole (which performer leads CurtnCall in all-time laughs?).
+                </p>
+                <p>
+                    To support real-time video, we utilize Agora.IO's WebRTC SDK.  The video server receives WebRTC input from the current performer and publishes the WebRTC feed to the viewers in real-time.
+                </p>
+                <p>
+                    To construct the web application component, we utilize React, Redux, and NodeJS for a full-stack Javascript approach.  React and Redux support the display of Curtncall&rsquo;s current state across for the audience and performers, and the handling of performer and audience events.  Components are styled using styled-components.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One challenge I ran into was initializing the recording server and performing post-processing on the the clips. All recordings of a performance happen client-side and then they upload their performance to S3.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm proud that CurtnCall records a performance and gives performers the ability to see the reactions happen in real-time. It's great that the recorded performance is delivered almost instantly and all the video processing takes place without using a server.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned how to build a front-end with React,  how to pass data between React components with Redux, communicating between client and server in a more structured way with Apollo and GraphQL, managing and accessing data quickly with Redis, and publishing and receiving video in the browser with Agora.IO.
+                </p>
+                <h2>
+                    What's next for CurtnCall
+                </h2>
+                <p>
+                    We&rsquo;d like to take CurtnCall public and see how performers and viewers interact with the website.
+                </p>
+                <p>
+                    If many performers use the channel and time becomes more scarce, CurtnCall could expand from being a single channel launchpad for performers to becoming a decentralized, audience-driven Internet broadcast network with multiple channels that are scheduled or turn-based.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            agora.io
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amplify">
+                                amplify
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            appsync
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lamba
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redux">
+                                redux
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sequence
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            styled-components
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/webrtc">
+                                webrtc
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,138 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="334651" data-title="Rev 1 Schematic" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/334/651/datas/original.png">
+                            <img alt="Propane FueLevel &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/334/651/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Rev 1 Schematic
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    This is an unformatted version of a larger document, whose link is listed below. 
+A Brief Description of Contents
+This is a simple, but complex, and yet elegant, and bewildering product developed in the span of 24 hours during the 2016 Dragon Hacks Hack-A-Thon. The collection of microcontrollers and modules is designed to carefully meet the industry needs in the monitoring of propane tanks. Great stress was exhausted to ensure that there was an external system for: level detection, leak detection, wireless communication, and energy storage. The complete process is applicable to both rural and industrial needs, and should fall neatly under any corporate budget. 
+On location, the steel propane tank will have a small, stream-lined, weather-proof plastic enclosure stuck to it with permanent magnet (rare-earth) feet. The enclosure contains an ultrasonic transducer pair, which uses well-defined technology to measure the level of the liquid propane inside the tank. The tank also comes equipped with solar cells, to generate energy, and piezoelectric contact microphones, for use specifically with detecting leakage. A wireless module, as well, is included, for communication.
+The propane tank, or tanks, can connect to a main hub either on location or up to 1mi away, which then acts as a server. The information (liquid level, temperature, leak warnings, etc) is stored on the network, creating a &ldquo;cloud&rdquo; interface, which an administrator can access through a dashboard. 
+This low-profile, micropower solution is well integrated and is very expandable. 
+Introduction
+Now that our &ldquo;keywords&rdquo; are out of the way (any schmuck can write keywords!) we would like to present, in more detail, each subsection of the project in detail, as well as plans for further work.
+Propane Board
+The first version of the propane tank circuit board cost approximately $40 each, including wireless modules and sensors. The majority of the cost and power draw, of course, comes from the wireless module, which is a ZigBit product. These are available quickly off the shelf and at a good price, and as such they met our criteria. The second rev. of the board swapped the microcontroller, eliminated one of the timer chips, and increased speed, saving over $7 per board in the process. 
+The board works in a fairly simple and almost linear fashion. It uses ultrasonic sensors, with the TDC1000 XP from Texas Instruments, to measure reflections off the boundaries  within the tank. By measuring the time in between pulses with either the microcontroller, or the TDC7200 timer chip, the height of the water tank can be approximated by the equation:
+D=H - (tc2)
+to find the distance from the sensor to the boundary of the liquid propane, where t is the time elapsed, and c is the speed of sound in liquid propane (about 1000m/s) and H is the height of the tank.
+The microcontroller we have decided on is the PIC16F720, which draws minimal power. It has communication capabilities with SPI for the TDC1000 chip, and UART for connection with the ZigBit module. 
+The ultrasonic transducers used have a resonant frequency found by 
+fclk2TXFREQDIV+1 
+where fclk is the clock frequency of the TDC1000, and TXFREQDIV is the frequency division implemented in the firmware within the TDC1000. 
+In order to monitor potential leaks, a number of possible methods were considered. The most cost-effective and simple method was the use of piezoelectric &ldquo;contact microphone&rdquo; transducers with a resonant frequency is the 2.7kHz range. In this way, the piezoelectric element (usually some form of NZT, quartz, or other  piezoelectric materials) will resonate with the vibrations of the tank whenever a prolonged &ldquo;hissing&rdquo; sound (associated with a gas leak) propagates through the steel tank. A time-gate is necessary to minimize false-alarms and if need be, the microcontroller can provide finer digital signal processing. 
+The board runs off of a 3.3V power supply. The energy is obtained through an Li-Ion battery cell rated at 600mAh, and 3.7V. In addition to this battery, solar cells will provide charging energy to the board. This limits the need for manual recharging. 
+Going further, it may be possible to use other modes of energy harvesting, such as vibration-harvesting in ultra-micropower wireless transmitters. This is a growing area of research today, and as such the technology was not fit for this commercial project. It would result in greater price, and higher complexity, but would have benefits such as eliminating the need for batteries.
+                </p>
+                <p>
+                    Rev 1.0 of the propane tank board
+Improvements made in rev 2.0:
+New MCU: PIC16F720
+Cheaper
+Minimum features (SPI, UART) necessary
+More IO (17)
+Optimal usage of SPI between MCU and TDC1000
+Elimination of TDC7200, reducing price $6 each
+Selected parts for piezoelectric elements centered at 2.7kHz to detect hissing
+Wireless ZigBee UART communication
+Buzzer interface
+                </p>
+                <p>
+                    Wireless Modules
+The propane board connects wirelessly to a &ldquo;hub&rdquo; or &ldquo;server&rdquo; located within 1mi of the propane tank site. The board itself connects to the hub via 2.4GHz serial communication, whereupon the hub connects itself to the internet to store the data in a cloud-format using IBM&rsquo;s Bluemix. 
+This was, of course, the most demanding requirement, in terms of cost, power usage, and complexity. After looking into the possibility of avoiding a hub, it was decided that the hub would have a wired or wireless connection to the internet, though it may be placed up to 4000ft away. The wireless module of choice is the XB24CZ7PIT-004, a 2.4GHz transceiver that boasts nearly 1mi range, at only 30mA of transmitting current. Other promising, though obsolete, options included the ATBZ-900-B0 module, which used 900MHz signal frequency real-estate to work back and forth between the hub and the tank. Since this part is now obsolete, the XB24 was used instead.
+The power of the wireless component in the system is its extendability. In a rural setting, one only needs some sort of wired connection within a mile of the tank in order to send away information on the tank. In an industrial setting, many tanks may be managed at once by a single hub, saving cost and reducing complexity of the system.
+The hub is made up of a microprocessor, such as that used in the Raspberry Pi, which we found to be a very convenient prototyping tool. Since more commercialized versions of these boards exist (i.e. without headers, prototyping tools, bells, and whistles) they are definitely being considered for the commercial product.
+                </p>
+                <p>
+                    Server-Side
+On the server side, an embedded linux computer acts as an IOT device. It sends the tank id and level in mm over the internet using the versatile and secure mqtt protocol. Receiving this data is IBM bluemix which is used to interpret and organize the data in a meaningful way. The data can be analyzed for trends and can be viewed from any location with an internet connection. Bluemix also allows for email notifications when the tank level drops below a certain threshold.
+                    <br>
+                    Conclusion
+This comprehensive solution-in-a-system, tirelessly pieced together by the Freshman members of our team at Drexel University, is an effective solution to a real-world problem. We have successfully integrated a number of components in a way such that the level of propane in any given tank may be monitored, leaks detected, and information managed. From the Internet of Things, to IBM&rsquo;s Bluemix server, and cutting edge measurement techniques, the system is a self-contained, cost effective, and easy to use problem-solver in the propane industry.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/linux">
+                                linux
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mcus
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tdc1000-from-ti
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            zigbees
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/nfarnesi4/dragonhacks2016" rel="nofollow" target="_blank" title="https://github.com/nfarnesi4/dragonhacks2016">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://docs.google.com/document/d/1wBCzxAzTLJQ1ufBNulbKriiSgfmo0c_ms5j9JEBiHjQ/pub" rel="nofollow" target="_blank" title="https://docs.google.com/document/d/1wBCzxAzTLJQ1ufBNulbKriiSgfmo0c_ms5j9JEBiHjQ/pub">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                docs.google.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

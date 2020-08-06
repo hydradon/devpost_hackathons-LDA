@@ -1,0 +1,167 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As an aspiring quant, I always wanted to experiment with stock market data and use AI to analyse it as exposure to the industry. Recently, I got my hands on some order book data that I have been wanting to play around with for a while. Hence, I used this hackathon as a platform for me to use AI to predict some aspect of the order book and trade using it.
+                </p>
+                <h2>
+                    Overview
+                </h2>
+                <p>
+                    OrderBookAI uses
+                    <em>
+                        machine learning methods
+                    </em>
+                    to
+                    <em>
+                        predict the midprice movements
+                    </em>
+                    of the order books and uses that prediction to build a trading strategy. The pipeline works as follows:
+                </p>
+                <ol>
+                    <li>
+                        Obtain order book data (in our case the data is preloaded)
+                    </li>
+                    <li>
+                        Feature Engineering and Preprocessing
+                    </li>
+                    <li>
+                        Train Random Forest model
+                    </li>
+                    <li>
+                        Test model predictions
+                    </li>
+                    <li>
+                        Use the model predictions to develop a trading strategy
+                    </li>
+                </ol>
+                <p>
+                    The following graph summarises the order book data.
+                </p>
+                <p>
+                    <img alt="alt text" data-canonical-url="https://engfinance.files.wordpress.com/2019/01/price-dynamics.png" src="https://res.cloudinary.com/devpost/image/fetch/s--yMjN-RoH--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://engfinance.files.wordpress.com/2019/01/price-dynamics.png" title="Price Dynamics">
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Analysing order book data is often very hard due to the frequent jumps in the data. So, in order to extract more information from the order books, I engineered features that have predictive value. The following features were engineering:
+                </p>
+                <ul>
+                    <li>
+                        Bid-Ask Spread
+                    </li>
+                    <li>
+                        Midprice
+                    </li>
+                    <li>
+                        Volume Imbalance
+                    </li>
+                    <li>
+                        Smart price
+                    </li>
+                    <li>
+                        Difference between current ask price and previous ask price
+                    </li>
+                    <li>
+                        Difference between current bid price and previous bid price
+                    </li>
+                    <li>
+                        The log return of the price of instrument
+                    </li>
+                    <li>
+                        The 'rate/volume' of previous trade
+                    </li>
+                    <li>
+                        Realised spread
+                    </li>
+                    <li>
+                        Midprice momentum
+                    </li>
+                </ul>
+                <p>
+                    Subsequently, I used the Random Forest classifier to predict if the midprice is going to increase, decrease or stay constant over the next time steps. This model was fit with over 3 million data points, and gave an overall test set accuracy of 97.0% in classifying the direction of the midprice movement. In particular, P(midprice moves up correctly) = 0.705, P(midprice moves down correctly) = 0.762 and P(midprice stays constant correctly) = 0.973.
+                </p>
+                <p>
+                    Using this prediction, I developed a trading strategy that looks at past values of the data and the prediction to buy or short the stock.
+                </p>
+                <p>
+                    As an additional challenge, I attempted to build a market making strategy that uses reinforcement learning (TD learning). However, the strategy struggled to find a mapping from the feature space to the policy space. Hence, the results were limited. I hope to improve on this after the hackathon.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    In terms of challenges, the biggest challenge was choosing how to use the prediction in the trading strategy. Simple strategies such as buying and selling according to the midprices only did not work due to crossing the bid-ask spread too frequently. However, when used in conjunction with other features, the results were much better.
+                </p>
+                <p>
+                    Another challenge was to find features that worked. The engineered features were researched in cutting edge research papers on the subject, but due to the secretive nature of the industry, the information was quite limited.
+                </p>
+                <h2>
+                    Results
+                </h2>
+                <p>
+                    The following summarises the results of the strategy:
+                </p>
+                <p>
+                    <img alt="alt text" data-canonical-url="https://engfinance.files.wordpress.com/2019/01/portfolio-value.png" src="https://res.cloudinary.com/devpost/image/fetch/s--7LHxDG_i--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://engfinance.files.wordpress.com/2019/01/portfolio-value.png" title="Portfolio Value">
+                </p>
+                <h2>
+                    Limitations and Outlook
+                </h2>
+                <p>
+                    Although the performance of the strategy looks promising, the main issue that has not been addressed is the modelling of market impact and transaction costs, which play a critical role is the PnL of any strategy, especially in the high frequency realm. Furthermore, the latency slippage was not considered and that would affect the PnL significantly.
+                </p>
+                <p>
+                    Subsequently, I am aiming to model the market impact and slippage and incorporate it into the strategy. Furthermore, I would like work on further on the reinforcement learning to perform market making.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            high-frequency-data
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/stock-market-data">
+                                stock-market-data
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

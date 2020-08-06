@@ -1,0 +1,153 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/84zV_Y0Agho?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="552761" data-title="Board Connection" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/552/761/datas/original.jpg">
+                            <img alt="Morsealator &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/552/761/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Board Connection
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="552775" data-title="Circuit Set up" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/552/775/datas/original.jpg">
+                            <img alt="Morsealator &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/552/775/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Circuit Set up
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Since I just started my 3rd year at college for Computer Engineering, I've been introduced to all the upper level classes with all the cool features. One of the things I've just started learning about are Microcontrollers, so when I came to this event and I saw that Arduino boards were available for checkout I was excited to mess around with it. I had no knowledge at all for this board, so I started with a simple program of just creating a circuit and having a LED flash on and off. While playing with timing delays and voltage to it, I turned it into a strobe light and that is where I got the idea of using it as a Morse Code translator.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This program uses the Twitch IRC Chat API to listen to the chat channels for specific streams and based on a user toggle-able option you are able to convert chat messages to Morse Code. Within the Twitch Chat Bot it uses a whitelist to determine whom messages are sent to the micro controller and what messages are to be converted into Morse Code. The intended purpose is to have the streamer's messages trigger the Morsecode and just add a cool effect to when they are talking as it then interacts with the real world. This is only the simplest implementation of what the intended goal for this project is.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I initially just started with a simple project of having a blinking light but once I learned I can actually get really good precision when toggling the LED, I got inspired to try and build something with the LED representing Morse Code. I tried to have the Arduino running on the bare min, so all it does on its own is convert each char that is passed to it (VIA Serial) into the corresponding Dots and Dashes for that specific alphanumeric character. Once it converts that it blinks the LED and times it with the delay to create the dots and dashes. The other half of the program is done in Java, what it does is utilize the Twitch IRC Chat API to listen in to the chat channel and pass all those values to the Java program. Once I have all the text I am able to do a comparison to the whitelist and if the user that typed is on the whitelist it passes the data to the Arduino VIA Serial (There is also a "*" name which sends every chat to the Arduino).
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One of the starting challenges I had was to get the dots, dashes, and breaks to be timed correctly. After doing some research on Morse Code itself, I found out there was a specific formula to calculate the delay for everything. They are all multiplicative of a base number, so I set the time unit to a default of 100ms and multiplied it by a factor to get the values for the other time units. Another issue that I encountered was the lack of Network Interfaces on the board itself, so there was no inherent way to get the data from the Twitch API onto the board. After looking around and talking to a developer here, he suggested that I use the Serial cable (the one I used to load the program onto the board) to transfer data to the board. Due to some limitations of Java, the "official" resource by Sun that allowed me to interact with Serial ports was severely outdated and didn't work with my system. I had to do some searching and I eventually found a lightweight 3rd party API that allowed me to access the COM3 Serial Port (port for the Arduino on my local machine) and thus able to write to it using Java. Another issue I had was when I was debugging the Arduino using the IDE, I was able to open a connection on the COM3 Serial Port there, but if the Arduino IDE was holding that open my Java program wasn't able to run due to the port already being in use, and vice versa.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The accomplishments that I am proud of was the fact I was able to set up the bridge between the two programs. So far most of my programming projects have been entirely in one language (with bits and pieces from another like MySQL, JSON, etc) and at this hackathon I was forced to expand my horizon and write code in C++ for the Arduino and write code in Java for the Twitch IRC Chat API.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot from this hackathon, I originally wanted to do just a pure Java made chat bot but I felt like that wouldn't be as fun as working with a Microcontroller. After I set up the Chat bot in Java I thought of ways of using that data on the Arduino and using a LED as a Morse Code indicator popped into my mind. Although this doesn't utilize the other aspects of the Twitch API, I do want to implement that in the future so in my code I have support to get the JSON objects through the Twitch API request. I ran into issues with the Client-ID and the OAuth, but I eventually figured out how to do the curl and get requests within Java. Overall I learned a lot about the Twitch API and how powerful it is to have all the data at your fingertips, about Arduinos and how to write code and set up circuits with it, and how to utilize different languages so that it all comes together to create an amazing final project.
+                </p>
+                <h2>
+                    What's next for MorseTwitch
+                </h2>
+                <p>
+                    The next goal for MorseTwitch is to complete the LED integration and have different modes to grab data from Twitch. My original intention for this project was to control LED strips for a setup and have the LEDs change based on information from the Twitch API. If it is a streamer's peak hours and they have tons of people in chat typing and stuff the LEDs would be a bright color to symbolize the mood and energy, whereas if they are playing late at night and just having a chill time with their viewers the LED would change to a soothing color. It would be a reactive program that changes the LED's based on information gathered from Twitch API. I would want this to be completely user programmable so they can choose how their desk space and surrounding area changes based on what is happening within the stream. This would be a great way to allow more interaction between the Twitch stream and real life, really allowing you to fully immerse yourself with the stream.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serial-communication
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twitch">
+                                twitch
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/97WaterPolo/twitchmorse" rel="nofollow" target="_blank" title="https://github.com/97WaterPolo/twitchmorse">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

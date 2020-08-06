@@ -1,0 +1,202 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/nEyEwUfuslo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My baby girl is in pre-school and is learning the alphabet the traditional way; by repeating it as a song. Sometimes she misses letters so I developed a skill that would let her say the alphabet slowly as a song that she could follow along (Alexa's native Alphabet response is a bit too fast for her). I also wanted her to learn to pronounce the letters clearly (which sometimes doesn't happen with the song) as well as practicing identify the sequence (what letter comes after the letter D for example). I added the two more advanced sets of functionality (which letters randomly before or after a letter and which letter is at the numbered position of the alphabet) when I looked forward at my baby girl's schooling and saw the types of exercises she would be expected to do. The numbered position of the alphabet functionality was just to mess with the older kids and adults who think they know the alphabet (myself included).
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It helps your kid practice the alphabet.
+                </p>
+                <p>
+                    Alphabet Practice lets your child practice the alphabet from A to Z. On easy mode the skill prompts your child to repeat the letter of the alphabet. In medium mode it expects the child to indicate what the next letter of the alphabet is. In hard mode, it randomly asks for the letter that comes before or after the specified letter. In extreme mode, it asks the child what letter is at the indicated position of the alphabet.
+                </p>
+                <p>
+                    When not in a game, you can also ask Alphabet Practice to recite the alphabet in a number of different speeds. To hear the alphabet quickly say 'Alexa, ask Alphabet Practice to say the alphabet quickly'. To hear the alphabet at normal speed, say 'Alexa, ask Alphabet Practice to say the alphabet'. If you want your child to repeat the letters of the alphabet, you can say 'Alexa, ask Alphabet Practice to say the alphabet slowly'. To have Alexa say the alphabet even more slowly say 'Alexa, ask Alphabet Practice to say the alphabet very slowly'.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Very carefully. Initially I built a spaghetti mess of code with function calls and callbacks all over the place. That was not easy to maintain, so I redesigned it using an OOP approach taking advantage of Javascript's class and object functionality.
+                </p>
+                <p>
+                    I knew I needed some sort of game engine that would abstract out the lower level plumbing code and somehow match the intent to the logic of how the game should work. I created two classes, an AlphabetGame class that contains all the game logic and prepares the responses for the user and an AlexaGameEngine class that was responsible for setting up the environment in a consistent way for the AlphabetGame class as well as building the ultimate JSON response that Alexa would be giving the user.
+                </p>
+                <p>
+                    I also decided that I would pass as few parameters as necessary to functions that needed to be called, instead using the properties of an object that would be passed in as a single parameter. This reduced the amount of time needed to refactor code as I can add a parameter without changing the function signature and only the function that needed the parameter would use it. This was useful as the same object could be passed along the chain of a function call, a callback, another function call another callback etc.
+                </p>
+                <p>
+                    Native Alexa sessions are great, but I couldn't figure out how to easily serialize the session variables into something like dynamodb and then deserialize them when the user started another session. So, I wrote two functions that provide the plumbing to load user info and game info when the session starts and two more functions that provide the plumbing to save user info and game info when the session ends.
+                </p>
+                <p>
+                    Doing this abstraction also allowed for better error checking by the AlphabetGame class to allow only the intents that were logical to be triggered. You wouldn't change the game difficulty in the middle of a game by accident as the list of allowed Intents wouldn't include the one that allows you to change the game difficulty.
+                </p>
+                <p>
+                    Finally, to make the interaction a little less sterile, I constructed a series of string arrays that contained lists of responses for getting questions correct, feedback if they were wrong, prompts for answering questions and included a randomize function that randomly picked from the responses to make the complete sentence relatively unique while still conveying the correct overall response.
+                </p>
+                <p>
+                    In the end the architecture worked well to help provide a more consistent experience and something kids could easily use.
+                </p>
+                <p>
+                    An example outline of the Javascript interface developed can be seen below:
+                </p>
+                <pre class="language-javascript"><code>/**
+
+    Copyright 2017 Christopher Ottley.
+
+*/
+
+'use strict';
+
+var doc = require('dynamodb-doc');
+
+/*
+ * Class tracks difficulty, score and prepares responses
+ */
+class AlphabetGame {
+constructor(userInfoTableName, gameInfoTableName) {   }
+...
+}
+
+/*
+ * Class tracks session, gives responses
+ */
+class AlexaGameEngine {
+constructor(gameRules) {   }
+
+process(event, context) {   }
+
+
+/**
+* Called when the session starts.
+*/
+onSessionStarted() {   }    
+
+/**
+* Called when the skill is launched.
+*/
+onLaunch() {    }
+
+/**
+* Called when the skill has an intent.
+*/
+onIntent() {    }    
+
+
+/**
+* Called when the session ends.
+*/
+onSessionEnded() {    }    
+
+getUserInfo(useroutputcallback) {    }
+
+setUserInfo(useroutputcallback) {    }    
+
+getUserGameInfo(useroutputcallback) {    }
+
+setUserGameInfo(useroutputcallback) {    }
+
+buildSSMLSpeechletResponse(title, output, repromptText, shouldEndSession) {    }
+
+buildSSMLSpeechletResponseWithoutCard(output, repromptText, shouldEndSession) {    }
+
+buildSpeechletResponseWithCard(speechoutput, cardtitle, cardoutput, repromptText, shouldEndSession) {    }
+
+buildSpeechletResponse(title, output, repromptText, shouldEndSession) {    }
+
+buildSpeechletResponseWithoutCard(output, repromptText, shouldEndSession) {    }
+
+buildResponse(sessionAttributes, speechletResponse) {    }
+
+}
+
+exports.handler = function (event, context) {
+var gameRules = new AlphabetGame("userinfo-table", "games-table");
+var alphabetGameEngine = new AlexaGameEngine(gameRules);
+
+alphabetGameEngine.process(event, context);
+};
+</code></pre>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Time. With my wife and I having full time jobs and handling a 2 year old when we get home, getting time for developing this skill was difficult.
+                </p>
+                <p>
+                    On a more technical note, it was interesting trying to abstract away the callback pattern in node.js into something simple so I could focus in the logic of the game.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I wrote a simple Javascript-based game engine specifically for this skill. It let me abstract away the interface specifics of worrying about what JSON I was returning for Alexa to process as well as allowing easy saving and retrieval of user profile and game status information from the dynamodb backend.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Sometimes it is best to start over. The original code I wrote ended up being very difficult to debug and maintain. Callbacks were mixed up with logic which were mixed up with dynamodb calls mixed up with building the responses. I sometimes test my code maintainability by stopping in the middle of it and leaving it for a few days. If I can pick up where I left off easily, it's maintainable. I wasn't able to easily pick up. If it's not maintainable, it probably has bugs which would at best provide a poor user experience and at worse, not pass certification.
+                </p>
+                <h2>
+                    What's next for Alphabet Practice
+                </h2>
+                <p>
+                    I am open for suggestions. I am thinking of learning a bit of German as they basically have the English alphabet with 3 umlauts (&Auml;,&Ouml;,&Uuml;) and one ligature (&szlig;). That way I can translate the responses and the code to support German as well.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,178 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/85TZXZlaU3s?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="269884" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/269/884/datas/original.png">
+                            <img alt="FWNUA &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/269/884/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="269885" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/269/885/datas/original.png">
+                            <img alt="FWNUA &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/269/885/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="269886" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/269/886/datas/original.png">
+                            <img alt="FWNUA &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/269/886/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    ...Working on a helpdesk trying to walk a user through telling you their IP or computer name so you can remote in to help them.
+                </p>
+                <p>
+                    ...Working in infosec. trying to complete a system access investigation, where you need to know who had an IP at a specific time.
+                </p>
+                <p>
+                    ...Working in Higher Ed., trying to justify if you need more computer labs based on use of your current labs.
+                </p>
+                <p>
+                    ...Trying to track down a file that may have been saved on the C:\ of a computer in a common use lab environment, and your customer forgot which PC it might be on.
+                </p>
+                <p>
+                    ...Frustrated by trying to determine if the windows security event log is an actual logon or something else, because they all kind of look the same.
+                </p>
+                <p>
+                    ...You have a gajillion PCs with horrible names that don't mean anything and you would like to organize them into logical AD OU's
+                </p>
+                <p>
+                    We've all been there...
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    FWNUA runs via windows login scripts or GPO.  When a user logs on or off a system it records details of the session and sends it to Splunk, via syslog.
+                </p>
+                <p>
+                    FWNUA collects the currently logged on Username, Domain Name, Computer/Host Name, Current IP address, and if the event is a logon, or logoff.
+                </p>
+                <p>
+                    FWNUA tells you who is behind the keyboard and what IP was attached to it at a given point in time, all from a single logging source.  (A feat that is nye impossible to accomplish with any single windows event log source)
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The biggest problem I ran into while trying to make FWNUA shareable and easy to use, was just that.  Most open source projects have an extremely steep learning curve to implement.  Most Windows admins don't know linux and this made developing and implementing things commonly done on LAMP difficult for most.
+                </p>
+                <p>
+                    Our project started off life as a Visual Basic executable with a Perl cgi web interface.  We quickly changed the project to a ANSI C executable with a more robust PHP interface, but it was slow and clunky.  (It was also an isolated data store.)  At this time we did everything flat file and there were writing operations happening over the network to network shares.  (horrible programming practices on our part)
+                </p>
+                <p>
+                    Several years later I got fed up and transitioned the project to what it should have been all along...  A simple exe component with direct syslog notification capabilities.  The only question now, was where to send the data?
+                </p>
+                <p>
+                    A friend of mine turned me onto Splunk and the project has never looked back.  It was a match made in heaven.   When I found Splunk, it made my project so much more easy for people to use effectively.  I no longer needed to focus my coding efforts on web interfaces or ways to parse data.  I could focus on the collection of the data and the type of data I wanted to collect.  Splunk allows my project to shine and allows our users to make FWNUA data even more useful by indexing with other data that can make it even more useful.
+                </p>
+                <p>
+                    People who find my project for the first time are now being turned onto Splunk at the same time.  I think it's good for both of us.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    FWNUA has been downloaded over 6,000 times and is in use at schools and companies all over the world.  I've even received reports from small companies who use it for time tracking their employees.  It's been useful every place I've ever worked and I use it daily.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Having clear and concise log data makes all the difference in the world.  Splunk just makes it infinitely more useful.
+                </p>
+                <h2>
+                    What's next for FWNUA - Free Windows User Accounting
+                </h2>
+                <p>
+                    I plan to re-code our collection tool to gather even more snippets of information in the future.
+                </p>
+                <p>
+                    Splunk is my answer machine.  FWNUA is just metadata for the answers.  The more you feed the Splunk beast, the more problems you can solve with it.  FWNUA is a critical part of our security and IT business operations and I don't see that changing any time soon.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            autoit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/splunk">
+                                splunk
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://sourceforge.net/projects/fwnua/" rel="nofollow" target="_blank" title="http://sourceforge.net/projects/fwnua/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                sourceforge.net
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://splunkbase.splunk.com/app/2773/" rel="nofollow" target="_blank" title="https://splunkbase.splunk.com/app/2773/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                splunkbase.splunk.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

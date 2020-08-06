@@ -1,0 +1,285 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <script>
+                            window.fbAsyncInit = function() {
+                                FB.init({
+                                    appId: 115745995110194,
+                                    xfbml: true,
+                                    version: 'v3.3'
+                                });
+                                FB.Event.subscribe('xfbml.ready', function(msg) {
+                                    if (msg.type === 'video') {
+                                        setTimeout(function() {
+                                            $(document).trigger("resize");
+                                        }, 1000);
+                                    }
+                                });
+                            };
+                        </script>
+                        <script type="text/javascript">
+                            (function(d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) return;
+                                js = d.createElement(s);
+                                js.id = id;
+                                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));
+                        </script>
+                        <div class="fb-video" data-href="https://www.facebook.com/alex.luo.142/videos/10162638895230048" data-show-text="false" data-width="660">
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="884641" data-title="Showing current and historical reading data" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/884/641/datas/original.png">
+                            <img alt="ETHWaterDam &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/884/641/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Showing current and historical reading data
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="884643" data-title="Showing alert when reading data is abnormal" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/884/643/datas/original.png">
+                            <img alt="ETHWaterDam &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/884/643/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Showing alert when reading data is abnormal
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I am always thinking how to marry blockchain with IOT.  Ethereum blockchain is a decentralized network, and IOT is also dealing with disparate devices interconnecting with each other. I can find something they both in common. From Smart Home automation to Smart City solutions, blockchain technologies can play a very important role.
+                </p>
+                <p>
+                    There are three benefits Ethereum gives to us: security, autonomy and resilience.  This is exactly the challenges people are facing when working in IOT. Out of a few Ethereum + IOT use cases, I need to select the one which is representative and can be accomplished within this weekend in Hackathan.
+                </p>
+                <p>
+                    I chose water level alarm system because, this system is considered as a mission critical system. It is a safety system, and it's operation impact the citizens' livings. This is good candidate to apply Ethereum. With the water level min/max rules built-in to smart contract, and scheduling method constructed right within smart contract. This makes the system extremely hard to be compromised. So I decided to build this solution in Hackathon.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            Once deployed and activated (by calling "startReading()" method from DApp), the smart contract in Ethereum is periodically collecting the data from water level sensor deployed to various locations in the water dam infrastructure.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            In this prototype, Smart contract leverages Provoable API to invoke Amazon-lamda function to collect the sensor data. The Lamda function will return random integers between 0 to 100, which represents the water level readings.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The water level min/max rule are built-in to smart contract. Once the contract is deployed the water max level and min level are defined in the contract's constructor. This rule can not be altered unless the smart contract is redeployed, which makes the whole system be trusted.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            After water level reading data is collected, smart contract will compare this data against the min/max rule. If the data is out of range, the data is flagged as "Abnormal", and "LogAbnormalReading" event is fired.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            ETHWaterDam DApp subscribes to "LogAbnormalReading" event. Once it received "LogAbnormalReading" event, an alert is display in the home page.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            ETHWaterDam DApp also subscribes to "LogReading" event, so that the current and historical reading data can be display in the home page.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    There are three parts of this ETHWaterDam system: Sensor, Smart Contract and DApp.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Sensor. I built Amazon Lamda function to represent the water level readings. This function will generate a random integer ranging from 0 to 100. This function can be invoked through URL (HTTP GET API).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            I used Remix as IDE to built smart contract. Smart contract stores the water level min/max rule and the water level readings. I studies ProvableAPI documentation and use "provable_query" to invoke Amazon Lamda function to collect the water level readings. ProvableAPI provide recursive invocation feature, so I can schedule the smart contract to periodically collect the reading data.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            For DApp, I use Visual Studio Code as the IDE and use Truffle as the DApp framework. To improve the UX of the app, I use React-bootstrap library. This is to make the DApp responsive and appealing.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I am fairly new to Ethereum technologies, and I learned a few development tools which help me getting up to speed. The mentors and sponsors gave me a great help when I got stuck. Online resources are also very helpful as well.
+                </p>
+                <p>
+                    One of the challenges is to come up with a sound Ethereum use case. Although there are quite a few Blockchain use case in IOT domain, it is not easy to drill down to one use case which is fun to work on and can be accomplished with a short period of time (36 hours hackathon). And more importantly, Ethereum should play a very critical role in this use case. I believe Water Dam infrastructure requires a security, reliable and trusted system, citizen's safety is the top 1 priority for the government. So I believe Ethereum blockchain for Water Dam water level alarm system is a good solution.
+                </p>
+                <p>
+                    Another challenge is to deploy the smart contract to TestNet. I only tried to deploy contracts to local network (Ganache) and haven't tried with TestNet before. I found this site very helpful (
+                    <a href="https://kauri.io/collection/5b8e401ee727370001c942e3" rel="nofollow">
+                        https://kauri.io/collection/5b8e401ee727370001c942e3
+                    </a>
+                    ). After following the tutorials I finally deployed the smart contract to Ropsten TestNet.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    ETHWaterDam project is the starting point of my journey for building Blockchain / IOT solutions. It is also the pathway to building a larger Smart City solutions. With few hours of sleep, I am glad that I can build this prototype within such a short time!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learn how to connect Ethereum blockchain with the physical world via Provable API (Oracles). This open up a new opportunities to use Ethereum in many other use case, such as IOT (Smart City, and Smart home automation).
+                </p>
+                <p>
+                    Physical world is able to communicate the Ethereum blockchain and vice versa.
+                </p>
+                <h2>
+                    What's next for ETHWaterDam
+                </h2>
+                <ol>
+                    <li>
+                        Store Reading data to IPFS. Store the reading data off chain can improve the performance.
+                    </li>
+                    <li>
+                        Have another agent to trigger Meter reading automatically, so that the water level data can continuously flow to the Ethereum blockchain.
+                    </li>
+                    <li>
+                        Support multiple water level sensors, and provide an aggregated view of the water level of the water dam.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lamda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ganache
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            macos
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            metamask
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            provableapi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            remix
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            troffu
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            visual-studio-code
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jinrongluo/ETHWaterDam" rel="nofollow" target="_blank" title="https://github.com/jinrongluo/ETHWaterDam">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,211 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="729773" data-title="List of snippets going through the filter process" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/729/773/datas/original.png">
+                            <img alt="Compassionate Elliot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/729/773/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                List of snippets going through the filter process
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="729771" data-title="A snippet that has resulted in a block" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/729/771/datas/original.png">
+                            <img alt="Compassionate Elliot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/729/771/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A snippet that has resulted in a block
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="729772" data-title="A snippet that has fully passed all the filters" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/729/772/datas/original.png">
+                            <img alt="Compassionate Elliot &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/729/772/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A snippet that has fully passed all the filters
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We really connected with the mission of the charity and liked the challenge of building a solution that delivered a personal experience but was quintessentially scalable from the outset.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Chat sessions are created between sponsor and child, whereupon the conversation is transcribed, and then analysed for potentially harmful words or phrases. The framework has been created to use a variety of filtering methods so as to provide the best result - keyword searching, sentiment analysis and manual intervention.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The majority of the application uses S3 at the core, due to the large amounts of file processing needed. Audio files are recorded and saved to S3, transcriptions are saved to S3, at which point the Amazon Step Functions kicks off the lambdas running the various filtering options. Should a particular snippet in a given session pass the filtering, the text is translated and saved to S3, where it is picked up and converted back to audio.
+                </p>
+                <p>
+                    S3 hosts both the recording application and the playback application.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Amazon Lex was unable to parse paragraphs (free text) speeches. We also ran into issues with the code commit and code build (it was running into permissions issues). We attempted to reuse the Lex voice recorder javascript recorder to upload to s3 and then use AWS transcribe to extract text, however, the Lex voice recorder was storing the files in a weird format. We ended up ripping that out.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Implementing an application using at least five Amazon products we had previously never used before.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Step Functions looks like an amazing way of pulling together multiple serverless microservices. In our workplace we've found that isolated serverless microservices are hard to keep track of, so we've tended to stay away. However, we might look at them again.
+                </p>
+                <h2>
+                    What's next for Elliot
+                </h2>
+                <ul>
+                    <li>
+                        Implement machine learning on the second filter, and find a way to train the models based firstly on feedback from the child during and after chat sessions.
+                    </li>
+                    <li>
+                        Implement Mechanical Turk, possibly once a conversation hits one or two strikes in order to additionally generate data to train the models.
+                    </li>
+                    <li>
+                        Build out the UI for both sponsor and child.
+                    </li>
+                    <li>
+                        Metrics, dashboards, reports.
+                    </li>
+                    <li>
+                        Implement an escalation framework for chat sessions that are blocked.
+                    </li>
+                    <li>
+                        Better feedback for the sponsor to indicate when strikes occur in a session, in order to steer them away from potentially harmful conversations.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-cloudwatch">
+                                amazon-cloudwatch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-mechanical-turk">
+                                amazon-mechanical-turk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-sns">
+                                amazon-sns
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sqs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            step-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            transcribe
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            translate
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://d28zchswagr1mg.cloudfront.net/" rel="nofollow" target="_blank" title="https://d28zchswagr1mg.cloudfront.net/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                d28zchswagr1mg.cloudfront.net
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

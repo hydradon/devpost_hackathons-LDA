@@ -1,0 +1,138 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="536360" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/536/360/datas/original.jpg">
+                            <img alt="Loc8r &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/536/360/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Biking is an incredibly underutilized form of transportation across Canadian universities and colleges. University students need to regularly travel short distances across campus quickly which suits the ideal use case for a bike. However, rampant bike theft across university campuses hinder the adoption of bicycles as a more frequent mode of transportation. Bike locks are very susceptible to lock pickers as manufacturers must balance the cost and inconvenience of higher security with the effectiveness of the product. Also, bike sharing programs revolve around a hub to always return the bike and is accessible to the entire public which reduces individual incentive to maintain its condition. The solution is loc8r, a decentralized bike sharing and tracking Android Application.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This project is broken into five distinct parts; the charging circuit, the Arduino-based module, the server side application, a Firebase project, and a client side application.
+                </p>
+                <p>
+                    Our project relies on an Arduino with a GPS module and a SIM module. The 66-channel GPS module can track the bike to within less than 3 metres. The module then communicates the exact coordinates to the Arduino, which uses the SIM module to SMS the coordinates to our server. The server is an Android phone running an app we developed which could be scaled. The unique identifier is a phone number associated with the SIM card in the bike.
+                </p>
+                <p>
+                    The server side application receives the GPS data in the form of at latitude and longitude pair. The phone number is a unique identifier which is contained as the sender of the SMS message. The server parses the latitude and longitude into a double data type and sends them to Firebase with the phone number and a timestamp of when it was sent.
+                </p>
+                <p>
+                    The Firebase project stores a list of users with the unique phone number acting as the key for each individual user object. The user object itself has a list of timestamps and the latitude and longitude doubles as children.
+                </p>
+                <p>
+                    The client side is an android application that presents a view for the user. The user is allowed to log into the application with their google account. This google account can be used for future improvements to sharing the bike identifier with select people and enable bike sharing. After logging in, if the user has no bike ID linked to their phone, the application will prompt them to link the bike to the phone by typing in the phone number associated to the arduino component of the bike. Once linked, the client saves the phone number in Firebase and links it to the google account. The client then pulls the latitude and longitude values from the Firebase database and sends it to a Google Maps Activity. This activity displays a red point which shows the location of the bike within the last 5 minutes, the intervals between pings from the arduino.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Our final design uses a stepper motor-based charging circuit. A stepper motor attaches to the bicycle chain using a sprocket, and hence rotates while the bike is moving. The 5 wires of the motor are then run through a diode rectification circuit to convert the current produced to DC. The current is then passed through an overvoltage protection circuit, which contains a resistor and a zener diode. The current is then passed through a voltage regulator which fixes the output voltage to a set value. These safeguards ensure that the remaining components aren&rsquo;t damaged in any event. The resultant current then charges the battery while it is still plugged into the Arduino.
+                </p>
+                <p>
+                    The battery chosen consists of two 3.7V 350mAh wired in series, for a combined 7.4V 350mAh battery. The voltage was chosen to exceed the minimum suggested voltage for the inbuilt Arduino voltage regulator (i.e. 7V).
+                </p>
+                <p>
+                    We used Adafruit&rsquo;s Ultimate GPS System based on the MTK3339 GPS module to provide accurate location data. SIMCOM&rsquo;s SIM900 quad band module provided the cellular access, and an Arduino Uno put these modules together, and contained all the low level programming. We used the Arduino IDE to write our code, compile it, and upload it to the Arduino. The charging circuit is composed of a 5-wire unipolar stepper motor, 10 IN4004 diodes, a 10K Ohm resistor, an IN5233B zener diode, and an LED. This connects to the battery, thereby charging it.
+                </p>
+                <p>
+                    The server and the client were both written in Java as Android Applications and implemented the Google Firebase API for authentication, and reading and writing to the database in real time.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    A major hurdle we wanted our project to overcome was battery life. Any GPS based system requires copious amounts of power - as you may have experienced when using Google Maps to route you to your destination. To overcome this, we considered multiple solutions like using a large battery, or attaching a solar panel. These were rejected to ensure that the product remains concealed (and hence less likely to be disabled), inexpensive, and effective. We also determined that sending information by SMS is the most cost and energy efficient way to send information.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    1) Implemented Firebase Authentication and Real Time Database as a bridge between server and client side to handle syncing information across all devices.
+2) Used low cost and low power solution to sending GPS information to a server in a small volume. This is very viable proof of concept that we can integrate into the frame of a bike for form and security improvements.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Our programmers had never worked with Firebase before which presented numerous problems during the implementation on both the server and client side. Thankfully, the Google Firebase representatives were incredibly helpful in helping our programmers understand how to implement Firebase to achieve our goals and present a very valuable learning experience in real time database management and user authentication.
+                </p>
+                <p>
+                    On the hardware side, we had to deal with the massive challenge of running two modules that both rely on the serial port for communication. Arduinos possess only 1 hardware serial port, and since both modules prefer communication over that, it required some clever programming and streamlining to make the GPS functional over software serial without massive lag. It was our first time working with these modules, and we spent a lot of time poring over the datasheets to discern the quirks of each. Another challenge was designing the charging circuit. We had to take into account that LiPo batteries tend to be unstable, and since the GPS module requires a very "clean" source of power, we had to work hard to smoothen the current obtained from the charging circuit.
+                </p>
+                <h2>
+                    What's next for Loc8r
+                </h2>
+                <p>
+                    For the future, we aim to expand the bike sharing aspect of the application and scale through Firebase. We aim to allow users to form groups with their friends by sharing the bike unique ID. This would allow bike sharing as everyone can see the location of the bike and request to use it up to a maximum period time. This would complete and automate the process of sharing a person&rsquo;s bike to their friend group.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Loc8r" rel="nofollow" target="_blank" title="https://github.com/Loc8r">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,139 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Object tracking is a typical Computer Vision problem where we keep track of an object as it moves. Finding corresponding points before and after is a challenge and its even more difficult when the camera focal length changes.
+For example, for census on number of Tigers in the jungle, we take a picture of multiples tigers in an image and them try to zoom in and find each in particular for more clarity. Later when we try to match which of the tiger in the bigger image is the one in the zoomed in image, it pretty daunting task to answer.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    OpenCV provides algorithm which scans through the given image in many different scales and finds out the keypoints to describe an object invariant to scale. My project demonstrates this task.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I have built it using the OpenCV library
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Understanding the algorithms in detail and finding suitable parameters for my task was challenging.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was able to read and understand of the best research papers in Computer Vision by David G. Lowe titled "Distinctive Image Features from Scale- Invariant Key-points"
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Scale Invariant Feature Transform (SIFT Algorithm)
+OpenCV library
+                </p>
+                <h2>
+                    What's next for Finding and Matching corresponding points in Images
+                </h2>
+                <p>
+                    I am working on testing it on a real time data sets.
+                </p>
+                <p>
+                    Code:
+                </p>
+                <p>
+                    import cv2
+import sys
+from matplotlib import pyplot as plt
+if
+                    <strong>
+                        name
+                    </strong>
+                    == "
+                    <strong>
+                        main
+                    </strong>
+                    ":
+    image1_name = ""
+    image2_name = ""
+    if len(sys.argv) &lt; 3:
+    cap = cv2.VideoCapture(0)
+    if cap.isOpened() != True:
+    cap.open()
+    ret_val, image = cap.read()
+    cv2.imwrite('Taken.jpg', image)
+    image1_name = "Taken.jpg"
+    img_d = cv2.resize(image, None, fx=2, fy=2, interpolation=cv2.INTER_LINEAR)
+    cv2.imwrite('Taken_doubled.jpg', image)
+    image2_name = "Taken_doubled.jpg"
+    else:
+    image1_name = str(sys.argv[1])
+    image2_name = str(sys.argv[2])
+                </p>
+                <pre class="language-nolang"><code>image1 = cv2.imread(image1_name, cv2.IMREAD_GRAYSCALE)
+image2 = cv2.imread(image2_name, cv2.IMREAD_GRAYSCALE)
+
+orb = cv2.ORB_create()
+
+kp1 = orb.detect(image1, None)
+kp2 = orb.detect(image2, None)
+
+kp1, des1 = orb.compute(image1, kp1)
+kp2, des2 = orb.compute(image2, kp2)
+
+"""
+cv2.drawKeypoints(image1, kp1, img1, color=(0, 255, 0), flags=0)
+plt.imshow(img1), plt.show()
+
+cv2.drawKeypoints(image2, kp2, img2,color=(0, 255, 0), flags=0)
+plt.imshow(img2), plt.show()
+"""
+
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+
+# Match descriptors.
+matches = bf.match(des1, des2)
+
+# Sort them in the order of their distance.
+matches = sorted(matches, key=lambda x: x.distance)
+
+# Draw first 10 matches.
+cv2.drawMatches(image1, kp1, image2, kp2, matches[:30], img3, flags=2)
+
+plt.imshow(img3), plt.show()
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

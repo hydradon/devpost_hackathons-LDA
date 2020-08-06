@@ -1,0 +1,173 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="585272" data-title="Math Adventurer" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/585/272/datas/original.png">
+                            <img alt="Math Adventurer &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/585/272/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Math Adventurer
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="585494" data-title="Parents can get insights into what math problems their kids are having a hard time with in order to help them master tricky problems!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/585/494/datas/original.PNG">
+                            <img alt="Math Adventurer &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/585/494/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Parents can get insights into what math problems their kids are having a hard time with in order to help them master tricky problems!
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Math Adventurer is a game I built partially to help my kids become more confident with their math skills. The other inspiration was the Amazon Alexa Skills Challenge: Kids competition. I've wanted to create a game for so long, and I've wanted to make something to help my kids learn. This contest gave me the motivation to pull the trigger and do it!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Math Adventurer helps kids gain confidence with their basic math skills (addition as of submission). Players go on a journey to retrieve their villages stolen treasure from a math dragon. In order to do so, the player must enter the dragon's lair and make their way to the dragon's keep. There are 10 rooms in the lair, and each room has 3 treasure chests and a locked door. To open the door, players must get a key from the chest. To get a key from the chest, they must open a chest by correctly solving a math problem.
+                </p>
+                <p>
+                    In addition to making math fun, the game also allows parents to help their kids overcome the math problems that are challenging to them. At the end of the game, the app will output a card to the parent's Alexa app displaying any math problems that the player got wrong, or skipped, because they didn't know the answer. The idea here is to get parents involved a bit more in the fun game that their kids are playing and help them when they face challenges.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I built this Alexa skill using the Alexa Skills SDK for node.js. My code is stored in a bitbucket repo which deploys the skill code to a Lambda function as the skill endpoint. I also implemented a save game feature using DynamoDB so that players can pick back up where they left off if they need a break or if the skill times out.
+                </p>
+                <p>
+                    Also, lots and lots of caffeine and sleepless nights.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Oh man, where do I start. Every day that I worked on this project was a huge challenge.
+                </p>
+                <p>
+                    <strong>
+                        Saving State
+                    </strong>
+                    I had to figure out how to handle state between Skill invocations because I found out that Alexa skills are stateless (I also had to learn about state).
+                </p>
+                <p>
+                    ** Intent Handlers** I discovered that unlike what I'm used to in web development, I couldn't just jump from function to function to function. Each handler has an event loop that persists until the user initiates a new intent to handle.
+                </p>
+                <p>
+                    <strong>
+                        Keep the session alive
+                    </strong>
+                    Figuring out the voice design was tricky too. I wanted the experience to be a rails experience for kids, not giving them too many choices to overwhelm them, but still make it fun. To do that I had to figure out how to make the skill in such a way that kids could play the game all the way through without the session ending, and if it did end allow the kids to start back where they left off. This is particularly tricky when you can't redirect to new handlers and update event information...and when timing out of a session breaks the experience for kids.
+                </p>
+                <p>
+                    <strong>
+                        Complete Content Rewrite
+                    </strong>
+                    I submitted my skill 3 times for certification. The second time, it was rejected because the content in the app was deemed as "mature content" for kids. In the original version, players would attack and defeat the dragon...I play tested with my 6 year old twins, and they loved the concept, but I can see how Amazon might not want to publish a skill that has any violence in it. In order to pass certification, I had to completely rewrite the game dialog, removing any references to "attack", "fight", or "defeat". If the players could no longer fight the dragon, or give and take damage, then that also meant that I had to change three of the items player would acquire in the game (sword, shield, potion). Fortunately, I was able to get things changed enough to meet certification!
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Sooo stinking much. I wasn't sure that I could build a skill. And when I first started this project 2 weeks ago, I was so overwhelmed I almost didn't know where to start. But the late nights, and challenges I've overcome have all been worth it when I get to see my kids play the game that I made for them!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Oh man, again, not sure where to start.
+                </p>
+                <p>
+                    I learned how to manage state between sessions with dynamodb.
+I learned that lambda functions can store global variables for around 15 minutes...which can really mess you up when testing.
+I learned about event loops.
+I learned some node
+                </p>
+                <h2>
+                    What's next for Math Adventurer
+                </h2>
+                <p>
+                    After the Amazon Alexa Skills Challenge: Kids is over, I'm hoping to add more material and adventures. Right now, the game only handles addition math problems. I'd love to add subtraction, multiplication, and division. Each with their own unique adventures to take kids on.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/gp/product/B0791M22WD?ie=UTF8&amp;ref-suffix=ss_rw" rel="nofollow" target="_blank" title="https://www.amazon.com/gp/product/B0791M22WD?ie=UTF8&amp;ref-suffix=ss_rw">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

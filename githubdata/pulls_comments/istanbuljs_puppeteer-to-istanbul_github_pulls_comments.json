@@ -1,0 +1,742 @@
+[
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170436058",
+        "pull_request_review_id": 99126908,
+        "id": 170436058,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3MDQzNjA1OA==",
+        "diff_hunk": "@@ -1,7 +1,24 @@\n class PuppeteerToV8 {\n-  // constructor () {}\n-}\n+  constructor (coverageInfo) {\n+    this.coverageInfo = coverageInfo\n+  }\n+\n+  setCoverageInfo (coverageInfo) {\n+    this.coverageInfo = coverageInfo\n+  }\n \n-module.exports = () => {\n-  return new PuppeteerToV8()\n+  convertCoverage () {\n+    // Iterate through coverage info and create IDs\n+    let id = 0\n+\n+    return this.coverageInfo.map(coverageItem => {\n+      return {\n+        scriptId: id++,\n+        url: coverageItem.url,",
+        "path": "lib/puppeteer-to-v8.js",
+        "position": 21,
+        "original_position": 21,
+        "commit_id": "6e3ebd28635ab26d64ac0b836b28df47099e45fb",
+        "original_commit_id": "6e3ebd28635ab26d64ac0b836b28df47099e45fb",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "once Robert finishes his work,  we'll want to store the final path that will be saved to disk rather than the original URL.\r\n\r\nI'm fine with landing it without this at the outset, just noting here that we need to update.\r\n",
+        "created_at": "2018-02-24T23:27:00Z",
+        "updated_at": "2018-02-24T23:28:31Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/4#discussion_r170436058",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/4",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170436058"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/4#discussion_r170436058"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/4"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170441218",
+        "pull_request_review_id": 99131593,
+        "id": 170441218,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3MDQ0MTIxOA==",
+        "diff_hunk": "@@ -1,19 +1,60 @@\n // output JavaScript bundled in puppeteer output to format\n // that can be eaten by Istanbul.\n+\n+// TODO: Put function interfaces on this file\n+\n+const fs = require('fs')\n+const mkdirp = require('mkdirp')\n+const clone = require('clone')\n+\n class OutputFiles {\n   constructor (coverageInfo) {\n-    this.coverageInfo = coverageInfo\n+    // Clone coverageInfo to prevent mutating the passed in data\n+    this.coverageInfo = clone(coverageInfo)\n+    this.iterator = 0\n+    this.parseAndIsolate()\n   }\n+\n   rewritePath (path) {\n     // generate a new path relative to ./coverage/js.\n     // this would be around where you'd use mkdirp.\n-    return `${path}-hey!`\n+\n+    var str = ``\n+\n+    // Get the last element in the path name\n+    var truncatedPath = path.split('/')[path.split('/').length - 1]",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 27,
+        "commit_id": "0e9662064de8ddbaed810b019822d7842dc5caef",
+        "original_commit_id": "9bcc664be3759fc783eecc8af97446a4086de4fe",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "you should be able to use [path.basename()](https://nodejs.org/api/path.html#path_path_basename_path_ext) for this logic -- it does pretty much the same thing I believe.",
+        "created_at": "2018-02-25T04:33:49Z",
+        "updated_at": "2018-02-25T04:50:16Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/6#discussion_r170441218",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/6",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170441218"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/6#discussion_r170441218"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/6"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170441324",
+        "pull_request_review_id": 99131706,
+        "id": 170441324,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3MDQ0MTMyNA==",
+        "diff_hunk": "@@ -1,19 +1,60 @@\n // output JavaScript bundled in puppeteer output to format\n // that can be eaten by Istanbul.\n+\n+// TODO: Put function interfaces on this file\n+\n+const fs = require('fs')\n+const mkdirp = require('mkdirp')\n+const clone = require('clone')\n+\n class OutputFiles {\n   constructor (coverageInfo) {\n-    this.coverageInfo = coverageInfo\n+    // Clone coverageInfo to prevent mutating the passed in data\n+    this.coverageInfo = clone(coverageInfo)\n+    this.iterator = 0\n+    this.parseAndIsolate()\n   }\n+\n   rewritePath (path) {\n     // generate a new path relative to ./coverage/js.\n     // this would be around where you'd use mkdirp.\n-    return `${path}-hey!`\n+\n+    var str = ``\n+\n+    // Get the last element in the path name\n+    var truncatedPath = path.split('/')[path.split('/').length - 1]\n+\n+    // Special case: when html present, strip and return specialized string\n+    if (truncatedPath.includes('.html')) {\n+      truncatedPath = './coverage/js/puppeteerTemp-inline'\n+    } else {\n+      truncatedPath = truncatedPath.split('.js')[0]\n+      truncatedPath = './coverage/js/' + truncatedPath\n+    }\n+    mkdirp.sync('./coverage/js')\n+    if (fs.existsSync(truncatedPath + '.js')) {\n+      this.iterator++\n+      str = `${truncatedPath}-${this.iterator}.js`\n+      return str\n+    } else {\n+      str = `${truncatedPath}.js`\n+      return str\n+    }\n   }\n-  output () {\n \n+  parseAndIsolate () {",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 48,
+        "commit_id": "0e9662064de8ddbaed810b019822d7842dc5caef",
+        "original_commit_id": "d1e2f9be0499dde179510cffe10b73fa0ec60296",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "my convention is to usually add a `_` to the front of private methods.",
+        "created_at": "2018-02-25T04:43:05Z",
+        "updated_at": "2018-02-25T04:50:16Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/6#discussion_r170441324",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/6",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170441324"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/6#discussion_r170441324"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/6"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170441330",
+        "pull_request_review_id": 99131713,
+        "id": 170441330,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3MDQ0MTMzMA==",
+        "diff_hunk": "@@ -1,19 +1,60 @@\n // output JavaScript bundled in puppeteer output to format\n // that can be eaten by Istanbul.\n+\n+// TODO: Put function interfaces on this file\n+\n+const fs = require('fs')\n+const mkdirp = require('mkdirp')\n+const clone = require('clone')\n+\n class OutputFiles {\n   constructor (coverageInfo) {\n-    this.coverageInfo = coverageInfo\n+    // Clone coverageInfo to prevent mutating the passed in data\n+    this.coverageInfo = clone(coverageInfo)\n+    this.iterator = 0\n+    this.parseAndIsolate()\n   }\n+\n   rewritePath (path) {\n     // generate a new path relative to ./coverage/js.\n     // this would be around where you'd use mkdirp.\n-    return `${path}-hey!`\n+\n+    var str = ``\n+\n+    // Get the last element in the path name\n+    var truncatedPath = path.split('/')[path.split('/').length - 1]\n+\n+    // Special case: when html present, strip and return specialized string\n+    if (truncatedPath.includes('.html')) {\n+      truncatedPath = './coverage/js/puppeteerTemp-inline'\n+    } else {\n+      truncatedPath = truncatedPath.split('.js')[0]\n+      truncatedPath = './coverage/js/' + truncatedPath\n+    }\n+    mkdirp.sync('./coverage/js')\n+    if (fs.existsSync(truncatedPath + '.js')) {\n+      this.iterator++\n+      str = `${truncatedPath}-${this.iterator}.js`\n+      return str\n+    } else {\n+      str = `${truncatedPath}.js`\n+      return str\n+    }\n   }\n-  output () {\n \n+  parseAndIsolate () {\n+    for (var i = 0; i < this.coverageInfo.length; i++) {\n+      var path = this.rewritePath(this.coverageInfo[i].url)\n+      this.coverageInfo[i].url = path\n+      fs.writeFileSync(path, this.coverageInfo[i].text)\n+    }\n+  }\n+\n+  output () {",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 56,
+        "commit_id": "0e9662064de8ddbaed810b019822d7842dc5caef",
+        "original_commit_id": "d1e2f9be0499dde179510cffe10b73fa0ec60296",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`getTransformedCoverage`.",
+        "created_at": "2018-02-25T04:43:43Z",
+        "updated_at": "2018-02-25T04:50:16Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/6#discussion_r170441330",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/6",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/170441330"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/6#discussion_r170441330"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/6"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200819981",
+        "pull_request_review_id": 135212364,
+        "id": 200819981,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMDgxOTk4MQ==",
+        "diff_hunk": "@@ -24,8 +25,19 @@ class OutputFiles {\n \n     var str = ``\n \n-    // Get the last element in the path name\n-    var truncatedPath = pathLib.basename(path)\n+    var urlPath = new url.URL(path)\n+    var postProtocolPath = urlPath.pathname.substring(1)\n+\n+    if (urlPath.hostname) {",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 17,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I like this approach for detecting whether not the path is URL; hooray for the new `URL` class.\r\n\r\nI think we should pull this logic into a helper method, perhaps something along the lines of `handleURLPath`.",
+        "created_at": "2018-07-07T19:14:49Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200819981",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200819981"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200819981"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200819986",
+        "pull_request_review_id": 135212364,
+        "id": 200819986,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMDgxOTk4Ng==",
+        "diff_hunk": "@@ -24,8 +25,19 @@ class OutputFiles {\n \n     var str = ``\n \n-    // Get the last element in the path name\n-    var truncatedPath = pathLib.basename(path)",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 13,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "use `let` instead of `var`, if you don't mind \ud83d\udc4d`const` and `let` are scoped to the block they're declared in, making it harder to leak information.",
+        "created_at": "2018-07-07T19:14:53Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200819986",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200819986"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200819986"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200820029",
+        "pull_request_review_id": 135212364,
+        "id": 200820029,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMDgyMDAyOQ==",
+        "diff_hunk": "@@ -49,6 +61,12 @@ class OutputFiles {\n     for (var i = 0; i < this.coverageInfo.length; i++) {\n       var path = this.rewritePath(this.coverageInfo[i].url)\n       this.coverageInfo[i].url = path\n+\n+      // create new dir structure for modules\n+      if (!fs.existsSync(pathLib.parse(path).dir)) {",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 36,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "what's our reasoning for requiring the full path for a URL but not for a `file:///`? seems like we should potentially have this logic in both cases?",
+        "created_at": "2018-07-07T19:16:00Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200820029",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200820029"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200820029"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200820082",
+        "pull_request_review_id": 135212364,
+        "id": 200820082,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMDgyMDA4Mg==",
+        "diff_hunk": "@@ -18,8 +19,8 @@ describe('output-files', () => {\n \n     // Since block-else-not-covered was generated by the above line, this\n     // should make a new file with -1 appended to the name\n-    var newPath = outputFiles.rewritePath('./sample_js/block-else-not-covered-1.js')\n-    newPath.should.include(storagePath + '/block-else-not-covered-1.js')\n+    var newPath = outputFiles.rewritePath('file:////./sample_js/block-else-not-covered-1.js')",
+        "path": "test/output-files.js",
+        "position": null,
+        "original_position": 14,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I think we should probably split this into two tests:\r\n\r\n1. assumes file type specifier when no prefix is provided.\r\n2. handles `file:///` specifier.",
+        "created_at": "2018-07-07T19:18:07Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200820082",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200820082"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200820082"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200820125",
+        "pull_request_review_id": 135212364,
+        "id": 200820125,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMDgyMDEyNQ==",
+        "diff_hunk": "@@ -59,15 +60,24 @@ describe('output-files', () => {\n     coverageInfo[1].url.should.include('puppeteerTemp-inline-1.js')\n   })\n \n+  it('appropriately handles es6 modules', () => {",
+        "path": "test/output-files.js",
+        "position": null,
+        "original_position": 23,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "bcoe",
+            "id": 194609,
+            "node_id": "MDQ6VXNlcjE5NDYwOQ==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/194609?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/bcoe",
+            "html_url": "https://github.com/bcoe",
+            "followers_url": "https://api.github.com/users/bcoe/followers",
+            "following_url": "https://api.github.com/users/bcoe/following{/other_user}",
+            "gists_url": "https://api.github.com/users/bcoe/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/bcoe/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/bcoe/subscriptions",
+            "organizations_url": "https://api.github.com/users/bcoe/orgs",
+            "repos_url": "https://api.github.com/users/bcoe/repos",
+            "events_url": "https://api.github.com/users/bcoe/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/bcoe/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "perhaps rather than, `appropriately handles es6` modules, we could call this:\r\n\r\n`appropriately handles modules required via http/https`?\r\n\r\nlikewise, let's call the fixture, `http-es6-modules.json`.",
+        "created_at": "2018-07-07T19:19:40Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200820125",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/200820125"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r200820125"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706483",
+        "pull_request_review_id": 143380348,
+        "id": 207706483,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwNzcwNjQ4Mw==",
+        "diff_hunk": "@@ -24,8 +25,19 @@ class OutputFiles {\n \n     var str = ``\n \n-    // Get the last element in the path name\n-    var truncatedPath = pathLib.basename(path)\n+    var urlPath = new url.URL(path)\n+    var postProtocolPath = urlPath.pathname.substring(1)\n+\n+    if (urlPath.hostname) {",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 17,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "hfcg-hcf",
+            "id": 22322441,
+            "node_id": "MDQ6VXNlcjIyMzIyNDQx",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/22322441?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hfcg-hcf",
+            "html_url": "https://github.com/hfcg-hcf",
+            "followers_url": "https://api.github.com/users/hfcg-hcf/followers",
+            "following_url": "https://api.github.com/users/hfcg-hcf/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hfcg-hcf/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hfcg-hcf/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hfcg-hcf/subscriptions",
+            "organizations_url": "https://api.github.com/users/hfcg-hcf/orgs",
+            "repos_url": "https://api.github.com/users/hfcg-hcf/repos",
+            "events_url": "https://api.github.com/users/hfcg-hcf/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hfcg-hcf/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Done with a tweak: extracted this into a new helper method that parses all paths using the URL class, even for paths missing the protocol.",
+        "created_at": "2018-08-04T11:24:58Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706483",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706483"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706483"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        },
+        "in_reply_to_id": 200819981
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706515",
+        "pull_request_review_id": 143380383,
+        "id": 207706515,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwNzcwNjUxNQ==",
+        "diff_hunk": "@@ -24,8 +25,19 @@ class OutputFiles {\n \n     var str = ``\n \n-    // Get the last element in the path name\n-    var truncatedPath = pathLib.basename(path)",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 13,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "hfcg-hcf",
+            "id": 22322441,
+            "node_id": "MDQ6VXNlcjIyMzIyNDQx",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/22322441?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hfcg-hcf",
+            "html_url": "https://github.com/hfcg-hcf",
+            "followers_url": "https://api.github.com/users/hfcg-hcf/followers",
+            "following_url": "https://api.github.com/users/hfcg-hcf/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hfcg-hcf/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hfcg-hcf/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hfcg-hcf/subscriptions",
+            "organizations_url": "https://api.github.com/users/hfcg-hcf/orgs",
+            "repos_url": "https://api.github.com/users/hfcg-hcf/repos",
+            "events_url": "https://api.github.com/users/hfcg-hcf/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hfcg-hcf/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Fixed!",
+        "created_at": "2018-08-04T11:26:33Z",
+        "updated_at": "2018-08-04T11:38:34Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706515",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706515"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706515"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        },
+        "in_reply_to_id": 200819986
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706785",
+        "pull_request_review_id": 143380693,
+        "id": 207706785,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwNzcwNjc4NQ==",
+        "diff_hunk": "@@ -49,6 +61,12 @@ class OutputFiles {\n     for (var i = 0; i < this.coverageInfo.length; i++) {\n       var path = this.rewritePath(this.coverageInfo[i].url)\n       this.coverageInfo[i].url = path\n+\n+      // create new dir structure for modules\n+      if (!fs.existsSync(pathLib.parse(path).dir)) {",
+        "path": "lib/output-files.js",
+        "position": null,
+        "original_position": 36,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "hfcg-hcf",
+            "id": 22322441,
+            "node_id": "MDQ6VXNlcjIyMzIyNDQx",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/22322441?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hfcg-hcf",
+            "html_url": "https://github.com/hfcg-hcf",
+            "followers_url": "https://api.github.com/users/hfcg-hcf/followers",
+            "following_url": "https://api.github.com/users/hfcg-hcf/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hfcg-hcf/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hfcg-hcf/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hfcg-hcf/subscriptions",
+            "organizations_url": "https://api.github.com/users/hfcg-hcf/orgs",
+            "repos_url": "https://api.github.com/users/hfcg-hcf/repos",
+            "events_url": "https://api.github.com/users/hfcg-hcf/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hfcg-hcf/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Reasoning? Trying to change as little as possible in one go :) Fixed.",
+        "created_at": "2018-08-04T11:43:29Z",
+        "updated_at": "2018-08-04T11:43:29Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706785",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706785"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706785"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        },
+        "in_reply_to_id": 200820029
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706806",
+        "pull_request_review_id": 143380719,
+        "id": 207706806,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwNzcwNjgwNg==",
+        "diff_hunk": "@@ -59,15 +60,24 @@ describe('output-files', () => {\n     coverageInfo[1].url.should.include('puppeteerTemp-inline-1.js')\n   })\n \n+  it('appropriately handles es6 modules', () => {",
+        "path": "test/output-files.js",
+        "position": null,
+        "original_position": 23,
+        "commit_id": "c1cfed16a4d4859744acae6e5d2698a5ed974ce1",
+        "original_commit_id": "032c367981ef1437a1399162a63222a33733efd1",
+        "user": {
+            "login": "hfcg-hcf",
+            "id": 22322441,
+            "node_id": "MDQ6VXNlcjIyMzIyNDQx",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/22322441?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/hfcg-hcf",
+            "html_url": "https://github.com/hfcg-hcf",
+            "followers_url": "https://api.github.com/users/hfcg-hcf/followers",
+            "following_url": "https://api.github.com/users/hfcg-hcf/following{/other_user}",
+            "gists_url": "https://api.github.com/users/hfcg-hcf/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/hfcg-hcf/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/hfcg-hcf/subscriptions",
+            "organizations_url": "https://api.github.com/users/hfcg-hcf/orgs",
+            "repos_url": "https://api.github.com/users/hfcg-hcf/repos",
+            "events_url": "https://api.github.com/users/hfcg-hcf/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/hfcg-hcf/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Done",
+        "created_at": "2018-08-04T11:44:50Z",
+        "updated_at": "2018-08-04T11:44:50Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706806",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/207706806"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/17#discussion_r207706806"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/17"
+            }
+        },
+        "in_reply_to_id": 200820125
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/343367151",
+        "pull_request_review_id": 312794630,
+        "id": 343367151,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0MzM2NzE1MQ==",
+        "diff_hunk": "@@ -32,8 +34,12 @@ class PuppeteerToIstanbul {\n       let istanbulCoverage = script.toIstanbul()\n       let keys = Object.keys(istanbulCoverage)\n \n-      let jsonPart = {}\n-      jsonPart[keys[0]] = istanbulCoverage[keys[0]]\n+      if (jsonPart[keys[0]]) {\n+        // Merge coverage records\n+        mergeCoverageData(jsonPart[keys[0]].s, istanbulCoverage[keys[0]].s)",
+        "path": "lib/puppeteer-to-istanbul.js",
+        "position": 25,
+        "original_position": 17,
+        "commit_id": "0356cbdf7a103eeca60408685d4a6ab023a58baa",
+        "original_commit_id": "cfc8283da488cc3fe4f6c2b20be706d58b32db2c",
+        "user": {
+            "login": "SanterreJo",
+            "id": 6465769,
+            "node_id": "MDQ6VXNlcjY0NjU3Njk=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/6465769?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SanterreJo",
+            "html_url": "https://github.com/SanterreJo",
+            "followers_url": "https://api.github.com/users/SanterreJo/followers",
+            "following_url": "https://api.github.com/users/SanterreJo/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SanterreJo/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SanterreJo/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SanterreJo/subscriptions",
+            "organizations_url": "https://api.github.com/users/SanterreJo/orgs",
+            "repos_url": "https://api.github.com/users/SanterreJo/repos",
+            "events_url": "https://api.github.com/users/SanterreJo/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SanterreJo/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@joe223\r\n\r\nIf `mergeCoverageData` is called here, the change will not be reflected in the `out.json` file, since the `jsonPart` has already been written to disk in a previous iteration of the loop.\r\n\r\nI suggest a second loop, before this one, that will merge all data as necessary and will build a complete JSON. Then the current loop will go through all the keys to write them to disk.",
+        "created_at": "2019-11-06T22:42:08Z",
+        "updated_at": "2019-11-07T11:04:30Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/42#discussion_r343367151",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/42",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/343367151"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/42#discussion_r343367151"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/42"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/343595531",
+        "pull_request_review_id": 313265744,
+        "id": 343595531,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0MzU5NTUzMQ==",
+        "diff_hunk": "@@ -32,8 +34,12 @@ class PuppeteerToIstanbul {\n       let istanbulCoverage = script.toIstanbul()\n       let keys = Object.keys(istanbulCoverage)\n \n-      let jsonPart = {}\n-      jsonPart[keys[0]] = istanbulCoverage[keys[0]]\n+      if (jsonPart[keys[0]]) {\n+        // Merge coverage records\n+        mergeCoverageData(jsonPart[keys[0]].s, istanbulCoverage[keys[0]].s)",
+        "path": "lib/puppeteer-to-istanbul.js",
+        "position": 25,
+        "original_position": 17,
+        "commit_id": "0356cbdf7a103eeca60408685d4a6ab023a58baa",
+        "original_commit_id": "cfc8283da488cc3fe4f6c2b20be706d58b32db2c",
+        "user": {
+            "login": "joe223",
+            "id": 10026019,
+            "node_id": "MDQ6VXNlcjEwMDI2MDE5",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/10026019?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/joe223",
+            "html_url": "https://github.com/joe223",
+            "followers_url": "https://api.github.com/users/joe223/followers",
+            "following_url": "https://api.github.com/users/joe223/following{/other_user}",
+            "gists_url": "https://api.github.com/users/joe223/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/joe223/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/joe223/subscriptions",
+            "organizations_url": "https://api.github.com/users/joe223/orgs",
+            "repos_url": "https://api.github.com/users/joe223/repos",
+            "events_url": "https://api.github.com/users/joe223/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/joe223/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@SanterreJo \r\n\r\nChange will be reflected in the `out.json` because `jsonPart` is closure variable in top scope. But the coverage records will be repeated writes over and over again (just as `puppeteerToV8Info.length` times).\r\n\r\nI have fixed this problem with latest commit and added test case to keep its robustness. \r\n\r\nThanks for reminder.\r\n",
+        "created_at": "2019-11-07T11:11:28Z",
+        "updated_at": "2019-11-07T11:15:20Z",
+        "html_url": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/42#discussion_r343595531",
+        "pull_request_url": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/42",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/comments/343595531"
+            },
+            "html": {
+                "href": "https://github.com/istanbuljs/puppeteer-to-istanbul/pull/42#discussion_r343595531"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/istanbuljs/puppeteer-to-istanbul/pulls/42"
+            }
+        },
+        "in_reply_to_id": 343367151
+    }
+]

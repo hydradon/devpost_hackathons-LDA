@@ -1,0 +1,103 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    CANSOFCOM's challenge caught our attention from the beginning. The challenge was to use computer vision for object detection and pattern repetition in order to analyze a hostage situation for potential threats. We thought this would be a great challenge to tackle since it is a solution for a possible real life situation, and can actually be used to save lives.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    As a first step, objects are detected and classified using YOLO, a real-time object detection system. The detected objects could be anything, but the focus is on people and vehicles. The paths of the detected objects are stitched together over many frames as the objects move, which are then used to analyze patterns. For now, the kinds of patterns we look for are repetition of movement of a single object in the scene. The principle underlying the repetition analysis is estimating the movement with waves through Fourier Series. Ultimately, graphs are made to model and predict the seemingly recurring movements.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The input video was parsed frame by frame, using YOLO's neural network for object detection, which is trained on tens of thousands of labelled images. The bounding boxes detected on each frame are compared to previously-detected boxes to group them as a common object. A summary of the detection and comparison is outputted to the prediction module.
+The interface with YOLO is written in C with OpenCV. The output from Yolo is placed in a Pandas dataframe (in Python), from where the data is graphed and through Fourier Series function estimation, we search for recurring patterns. The estimation models the movement as a wave in attempt to find repetition, where covariance can be used to determine how accurately the wave model represents the movement.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Resources: None of our laptops had a dedicated graphics card, so object detection with YOLO ran reeeally slow, about 12 seconds per frame. Instead, we had to compromise by using Tiny Yolo, which ran at roughly 2 seconds per frame, but was noticeably less accurate.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're proud to be a part of a project with implications much larger than ourselves. It was an honour to participate in CANSOFCOM's challenge and work toward their goals of . In addition, we learnt a lot (such as Computer Vision and some new mathematical concepts) and implemented some cool software.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    This is the first time we have worked with Computer Vision. We have gained useful experience in this field and see greater potential for computer vision in future projects. We also learned some new mathematical concepts as we worked towards analyzing and improving performance of our program.
+                </p>
+                <h2>
+                    What's next for Track The North
+                </h2>
+                <ul>
+                    <li>
+                        Optimizing object tracking by predicting the location of the object in the next frame by its previous positions and velocity; the patterns and function estimations will also be used to predict
+                    </li>
+                    <li>
+                        train with custom images datasets omitting unnecessary objects, and including others like weapons, special vehicles like drones and rovers, children vs. adult classification, etc.
+                    </li>
+                    <li>
+                        extend pattern recognition to match similar paths taken by multiple different objects
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            yolo
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/t-mondal/Track-the-North" rel="nofollow" target="_blank" title="https://github.com/t-mondal/Track-the-North">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

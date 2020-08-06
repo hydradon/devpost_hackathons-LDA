@@ -1,0 +1,156 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We took on
+                    <a href="https://github.com/stemtreehacks/stem_treehacks_2018" rel="nofollow">
+                        this challenge
+                    </a>
+                    posted by Stem. We then visualized our results and displayed it on a web page to explain our analysis and to highlight features of the data set.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Stem provided us with a csv file of the energy usage of a single company in 2017, in the form of timestamps for every 15 minutes of the year and corresponding energy usage in kW. We were told that in addition to a regular utility charge based upon the amount of energy used, the utility company also charges a demand fee, in which the maximum peak or instance of energy usage within each month, is taken and charged for an additional $35/kW. Thus, to minimize such an additional fee, it is strategic to store up energy beforehand as much as possible, so that the maximum peak of the month can be shaved down. We designed an algorithm that accomplishes this task of minimizing demand charge for a given month. We also took into consideration the idea that perhaps energy cannot be stored for an arbitrarily long amount of time before it is used. We thus also adapted our algorithm to only allow for storage of energy no more than 24 hours before it is used. We made this value a parameter that can be adjusted if this does not accurately reflect real-world constraints.
+                </p>
+                <p>
+                    Further, we estimated the energy usage of the company for the month after the data that was provided, January 2018.
+                </p>
+                <p>
+                    Finally, we created a webpage to illustrate our exploration of the data, our peak shaving results, and our extrapolation results.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used iPython Notebook to house our data exploration and we additionally used numpy, scikit learn, pandas, keras, and
+                    <a href="http://arrow.readthedocs.io/en/latest/" rel="nofollow">
+                        Arrow
+                    </a>
+                    (python time library) to perform our data manipulation and machine learning. To create our webpage, we used jquery, bootstrap, and d3.js (web plotting library).
+                </p>
+                <p>
+                    We design the peak shaving algorithm ourselves. Here is how it works: Iterate through each data point in a given month. Leave the first energy level where it is for now. Set the current max to be this first energy level. If the second energy level is equal to or less than the current max, then leave it alone and continue. If it is greater than the current max, then start from the beginning and redistribute the amount of energy greater than the current max to the preceding timepoints, while keeping each under the current max. Once done, if there still remains energy to be distributed, distribute among all preceding timepoints evenly and increase the current max accordingly. Repeat until the entire month has been smoothed. We can also enforce a constraint that energy cannot be dissipated in advance more than 24 hours. This means that when we redistribute energy, we do not go to the beginning, we go only 24 hours back. This also means that the current max will need to be updated as we scroll our 24 hour window. According to our approach, it must be true that the current max is the first bar in the window.
+                </p>
+                <p>
+                    For the extrapolation, we referenced
+                    <a href="https://machinelearningmastery.com/time-series-forecasting-long-short-term-memory-network-python/" rel="nofollow">
+                        this tutorial
+                    </a>
+                    on modeling time series data using a Long-Short Term Memory Network. This involved pre-processing our data by scaling and de-meaning, by removing trends by converting the energy usages to a difference array, and by copying and rotating our energy usage differences so that we can train our model to predict next week's usage from this week's data.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    This was the first time we used pandas for our data manipulation, and so that took a little bit of getting used to. We also had to think about our interpretation of the prompt carefully, and to use our thoughts to guide our project design decisions. Finally, we had to choose an appropriate model for our extrapolation; initially we tried using a Neural Network, but early experiments with it yielded high loss values and so we sought for a better model. When we finally settled on model, we could only run it for a fraction of the iterations we hoped for due to time constraints. Our accuracy in extrapolation would likely be improved if we trained more thoroughly.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Working with a real-world data set for the first time and having to make our own decisions without guidance regarding how to tackle issues that arise.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that if your laptop decides to go to sleep while you were trying to sleep, then iPython will pause on training your machine learning model until both you and your computer decide to wake up.
+                </p>
+                <h2>
+                    What's next for EBs
+                </h2>
+                <p>
+                    Re-train our model using more iterations. Perform hyperparameter tuning on the model we chose.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arrow">
+                                arrow
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/d3-js">
+                                d3.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ipython-notebook
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sklearn
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mattsit/stem_treehacks_2018" rel="nofollow" target="_blank" title="https://github.com/mattsit/stem_treehacks_2018">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

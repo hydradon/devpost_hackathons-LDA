@@ -1,0 +1,240 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="389016" data-title="github source page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/016/datas/original.png">
+                            <img alt="AxiomZen Mastermind Api &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/016/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                github source page
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Mastermind API
+                </h1>
+                <p>
+                    Let's play Mastermind! If you've never played Mastermind, take a few minutes to check out the rules here:
+                    <a href="https://en.wikipedia.org/wiki/Mastermind_(board_game)#Gameplay_and_rules" rel="nofollow">
+                        Mastermind
+                    </a>
+                    .
+                </p>
+                <p>
+                    The typical Mastermind game is played with 4 colors and 4 positions; however, for this project we will be using 8 colors and 8 positions.
+                </p>
+                <h2>
+                    Dependencies
+                </h2>
+                <ul>
+                    <li>
+                        Java JDK8
+                    </li>
+                    <li>
+                        Maven 3+
+                    </li>
+                    <li>
+                        MongoDB
+                    </li>
+                </ul>
+                <h2>
+                    How to build and run
+                </h2>
+                <p>
+                    To build the sources you need to you maven.
+                </p>
+                <pre class="language-nolang"><code>mvn clean install
+</code></pre>
+                <p>
+                    If you like to use docker, you can build a Docker image as well
+                </p>
+                <pre class="language-nolang"><code>docker build -t marceldiass/mastermind .
+</code></pre>
+                <p>
+                    Before run the container you need to setup a MongoDB server. To use Docker for that just run:
+                </p>
+                <pre class="language-nolang"><code>docker run -d --name mastermind-mongo mongo
+</code></pre>
+                <p>
+                    And finally run it
+                </p>
+                <pre class="language-nolang"><code>docker run -d --name mastermind --link mastermind-mongo -p 8080:8080 -e MONGODB_URI="mongodb://mastermind-mongo:27017/mastermind" marceldiass/mastermind
+</code></pre>
+                <h2>
+                    How to consume
+                </h2>
+                <p>
+                    As it is just an API you can you curl or any other HTTP client to reach the endpoints.
+                    <br>
+                    Below we have request examples:
+                </p>
+                <ul>
+                    <li>
+                        Create a new game
+                        <br>
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>curl -i -X POST -H "Content-Type: application/json" -d '{"name":"Marcel Dias"}' "http://localhost:8080/new-game"
+</code></pre>
+                <p>
+                    New Game response body
+                </p>
+                <pre class="language-nolang"><code>{
+    "key":"57421c60bee8d9ae4e7fcca6",
+ "colors":["R","B","G","Y","O","P","C","M"],
+ "codeLength":8,
+ "user":{"name":"Marcel Dias"},
+ "solved":false,
+ "guesses":[],
+ "result":null,
+ "expired":false,
+ "guesesCount":0
+}
+</code></pre>
+                <ul>
+                    <li>
+                        Try a guess
+                        <br>
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>curl -i -X POST -H "Content-Type: application/json" -d '{ "gameKey":"5741c740e4b00960f2e616bd", "code": ["Y","R","G","R","Y","B","C","Y"] }' "http://localhost:8080/guess"
+</code></pre>
+                <p>
+                    Guess response body
+                </p>
+                <pre class="language-nolang"><code>{
+    "key":"57421c60bee8d9ae4e7fcca6",
+ "colors":["R","B","G","Y","O","P","C","M"],
+ "codeLength":8,
+ "user":{"name":"Marcel Dias"},
+ "solved":false,
+ "guesses":[{"guess":["Y","R","G","R","Y","B","C","Y"],"exact":0,"near":2}],
+ "result":{"guess":["Y","R","G","R","Y","B","C","Y"],"exact":0,"near":2},
+ "expired":false,
+ "guessesCount":1
+}
+</code></pre>
+                <h2>
+                    Tech stack
+                </h2>
+                <h3>
+                    Spring Boot with jersey
+                </h3>
+                <p>
+                    <a href="http://projects.spring.io/spring-boot/" rel="nofollow">
+                        Spring Boot
+                    </a>
+                    is an awesome framework to quickly build an Rest based Application. It have dozen of prebuilt integrations.
+                    <br>
+                    Jersey because it is a Java standard and I think it is easier to understand the endpoints code.
+                </p>
+                <h3>
+                    MongoDB as data store
+                </h3>
+                <p>
+                    I've chosen MongoDB because:
+                </p>
+                <ul>
+                    <li>
+                        I don't store relational data
+                    </li>
+                    <li>
+                        I can easy get all the game data
+                    </li>
+                    <li>
+                        it is really easy to use with spring
+                    </li>
+                    <li>
+                        it has an active community
+                    </li>
+                    <li>
+                        it has prebuilt integration with Spring-boot
+                    </li>
+                </ul>
+                <h2>
+                    Questions
+                </h2>
+                <ol>
+                    <li>
+                        What was the hardest part?
+                        <br>
+                        I was not familiarized with Mastermind game, so I took some time to understand it.
+                    </li>
+                    <li>
+                        If you could go back and give yourself advice at the beginning of the project, what would it be?
+                        <br>
+                        I would start developing the Rest endpoints first instead of the models.
+                    </li>
+                    <li>
+                        If you could change something about this challenge, what would it be?
+                        <br>
+                        I think it's a pretty nice challenge, well described and fit well in the 48 hours.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/marceldiass/mastermind" rel="nofollow" target="_blank" title="https://github.com/marceldiass/mastermind">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

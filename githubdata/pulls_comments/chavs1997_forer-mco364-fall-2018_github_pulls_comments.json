@@ -1,0 +1,248 @@
+[
+    {
+        "url": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654039",
+        "pull_request_review_id": 164077145,
+        "id": 224654039,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNDY1NDAzOQ==",
+        "diff_hunk": "@@ -0,0 +1,71 @@\n+package forer.ApprovedDrugs;\n+\n+import javax.imageio.ImageIO;\n+import javax.swing.*;\n+import java.awt.image.BufferedImage;\n+import java.io.IOException;\n+import java.net.URL;\n+import javax.swing.JLabel;\n+import com.google.inject.Inject;\n+import io.reactivex.Observable;\n+import io.reactivex.disposables.Disposable;\n+import io.reactivex.schedulers.Schedulers;\n+import java.util.*;\n+import java.util.concurrent.TimeUnit;\n+\n+public class DrugController {\n+\n+    private DrugView view;\n+    private DrugService service;\n+    DrugFeed feed;\n+    private Disposable disposable;\n+\n+    @Inject\n+    public DrugController(DrugService service, DrugView view) {\n+        this.view = view;\n+        this.service = service;\n+    }\n+\n+    public void requestDrugFeed() {\n+            disposable = Observable.interval(0,10000, TimeUnit.SECONDS)",
+        "path": "src/main/java/forer/ApprovedDrugs/DrugController.java",
+        "position": null,
+        "original_position": 30,
+        "commit_id": "f8a78bef8187d8a900a5bf1138f73e3b6cc08b67",
+        "original_commit_id": "18098cb2c4eb76f2f25bd488657fe380535382ed",
+        "user": {
+            "login": "andrewoid",
+            "id": 121566,
+            "node_id": "MDQ6VXNlcjEyMTU2Ng==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/121566?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/andrewoid",
+            "html_url": "https://github.com/andrewoid",
+            "followers_url": "https://api.github.com/users/andrewoid/followers",
+            "following_url": "https://api.github.com/users/andrewoid/following{/other_user}",
+            "gists_url": "https://api.github.com/users/andrewoid/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/andrewoid/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/andrewoid/subscriptions",
+            "organizations_url": "https://api.github.com/users/andrewoid/orgs",
+            "repos_url": "https://api.github.com/users/andrewoid/repos",
+            "events_url": "https://api.github.com/users/andrewoid/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/andrewoid/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Observable.interval() is unnecessary, you don't want this on a timer",
+        "created_at": "2018-10-12T02:12:53Z",
+        "updated_at": "2018-10-18T21:19:13Z",
+        "html_url": "https://github.com/chavs1997/API-projects/pull/7#discussion_r224654039",
+        "pull_request_url": "https://api.github.com/repos/chavs1997/API-projects/pulls/7",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654039"
+            },
+            "html": {
+                "href": "https://github.com/chavs1997/API-projects/pull/7#discussion_r224654039"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654403",
+        "pull_request_review_id": 164077570,
+        "id": 224654403,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNDY1NDQwMw==",
+        "diff_hunk": "@@ -0,0 +1,71 @@\n+package forer.ApprovedDrugs;\n+\n+import javax.imageio.ImageIO;\n+import javax.swing.*;\n+import java.awt.image.BufferedImage;\n+import java.io.IOException;\n+import java.net.URL;\n+import javax.swing.JLabel;\n+import com.google.inject.Inject;\n+import io.reactivex.Observable;\n+import io.reactivex.disposables.Disposable;\n+import io.reactivex.schedulers.Schedulers;\n+import java.util.*;\n+import java.util.concurrent.TimeUnit;\n+\n+public class DrugController {\n+\n+    private DrugView view;\n+    private DrugService service;\n+    DrugFeed feed;\n+    private Disposable disposable;\n+\n+    @Inject\n+    public DrugController(DrugService service, DrugView view) {\n+        this.view = view;\n+        this.service = service;\n+    }\n+\n+    public void requestDrugFeed() {\n+            disposable = Observable.interval(0,10000, TimeUnit.SECONDS)\n+                    .flatMap(aLong -> service.getApprovedDrugs())\n+                    .map(DrugFeed::getMolecules)\n+                    .subscribeOn(Schedulers.io())\n+                    .observeOn(Schedulers.single())\n+                    .subscribe(this :: setMolecules,\n+                               throwable -> System.out.println(\"Error getting data\"));",
+        "path": "src/main/java/forer/ApprovedDrugs/DrugController.java",
+        "position": null,
+        "original_position": 36,
+        "commit_id": "f8a78bef8187d8a900a5bf1138f73e3b6cc08b67",
+        "original_commit_id": "18098cb2c4eb76f2f25bd488657fe380535382ed",
+        "user": {
+            "login": "andrewoid",
+            "id": 121566,
+            "node_id": "MDQ6VXNlcjEyMTU2Ng==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/121566?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/andrewoid",
+            "html_url": "https://github.com/andrewoid",
+            "followers_url": "https://api.github.com/users/andrewoid/followers",
+            "following_url": "https://api.github.com/users/andrewoid/following{/other_user}",
+            "gists_url": "https://api.github.com/users/andrewoid/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/andrewoid/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/andrewoid/subscriptions",
+            "organizations_url": "https://api.github.com/users/andrewoid/orgs",
+            "repos_url": "https://api.github.com/users/andrewoid/repos",
+            "events_url": "https://api.github.com/users/andrewoid/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/andrewoid/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Always,\r\nALWAYS.\r\nPrint the *exact* error you're getting.\r\nIn this case, instead of \r\n`throwable -> System.out.println(\"Error getting data\")`\r\ndo\r\n`throwable -> throwable.printStackTrace()`",
+        "created_at": "2018-10-12T02:15:35Z",
+        "updated_at": "2018-10-18T21:19:13Z",
+        "html_url": "https://github.com/chavs1997/API-projects/pull/7#discussion_r224654403",
+        "pull_request_url": "https://api.github.com/repos/chavs1997/API-projects/pulls/7",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654403"
+            },
+            "html": {
+                "href": "https://github.com/chavs1997/API-projects/pull/7#discussion_r224654403"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654478",
+        "pull_request_review_id": 164077659,
+        "id": 224654478,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNDY1NDQ3OA==",
+        "diff_hunk": "@@ -0,0 +1,71 @@\n+package forer.ApprovedDrugs;\n+\n+import javax.imageio.ImageIO;\n+import javax.swing.*;\n+import java.awt.image.BufferedImage;\n+import java.io.IOException;\n+import java.net.URL;\n+import javax.swing.JLabel;\n+import com.google.inject.Inject;\n+import io.reactivex.Observable;\n+import io.reactivex.disposables.Disposable;\n+import io.reactivex.schedulers.Schedulers;\n+import java.util.*;\n+import java.util.concurrent.TimeUnit;\n+\n+public class DrugController {\n+\n+    private DrugView view;\n+    private DrugService service;\n+    DrugFeed feed;\n+    private Disposable disposable;\n+\n+    @Inject\n+    public DrugController(DrugService service, DrugView view) {\n+        this.view = view;\n+        this.service = service;\n+    }\n+\n+    public void requestDrugFeed() {\n+            disposable = Observable.interval(0,10000, TimeUnit.SECONDS)\n+                    .flatMap(aLong -> service.getApprovedDrugs())\n+                    .map(DrugFeed::getMolecules)\n+                    .subscribeOn(Schedulers.io())\n+                    .observeOn(Schedulers.single())\n+                    .subscribe(this :: setMolecules,\n+                               throwable -> System.out.println(\"Error getting data\"));",
+        "path": "src/main/java/forer/ApprovedDrugs/DrugController.java",
+        "position": null,
+        "original_position": 36,
+        "commit_id": "f8a78bef8187d8a900a5bf1138f73e3b6cc08b67",
+        "original_commit_id": "18098cb2c4eb76f2f25bd488657fe380535382ed",
+        "user": {
+            "login": "andrewoid",
+            "id": 121566,
+            "node_id": "MDQ6VXNlcjEyMTU2Ng==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/121566?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/andrewoid",
+            "html_url": "https://github.com/andrewoid",
+            "followers_url": "https://api.github.com/users/andrewoid/followers",
+            "following_url": "https://api.github.com/users/andrewoid/following{/other_user}",
+            "gists_url": "https://api.github.com/users/andrewoid/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/andrewoid/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/andrewoid/subscriptions",
+            "organizations_url": "https://api.github.com/users/andrewoid/orgs",
+            "repos_url": "https://api.github.com/users/andrewoid/repos",
+            "events_url": "https://api.github.com/users/andrewoid/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/andrewoid/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Then tell me what your Exception is.",
+        "created_at": "2018-10-12T02:16:11Z",
+        "updated_at": "2018-10-18T21:19:13Z",
+        "html_url": "https://github.com/chavs1997/API-projects/pull/7#discussion_r224654478",
+        "pull_request_url": "https://api.github.com/repos/chavs1997/API-projects/pulls/7",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654478"
+            },
+            "html": {
+                "href": "https://github.com/chavs1997/API-projects/pull/7#discussion_r224654478"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/7"
+            }
+        },
+        "in_reply_to_id": 224654403
+    },
+    {
+        "url": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654605",
+        "pull_request_review_id": 164077808,
+        "id": 224654605,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNDY1NDYwNQ==",
+        "diff_hunk": "@@ -1,88 +1,216 @@\n package forer.maze;\n \n import java.util.Random;\n+import java.util.Stack;\n \n public class Maze {\n \n-    private int[][] start;\n-    private int[][] end;\n-    private boolean[][] grid;\n-    private int length;\n-    Random rand;\n-    private boolean current;\n-    private boolean neighbor;\n-    private int[] neighborLoc = new int[2];\n-    private int startCount = 0;\n-    private int endCount = 0;\n-\n-    public Maze(int length) {\n-        this.length = length;\n-        grid = new boolean[length][length];\n-        start = new int[length * length][2];\n-        end = new int[length * length][2];\n-        end[length * length - 1][0] = -99;\n-        rand = new Random();\n-        int x = rand.nextInt(length);\n-        int y = rand.nextInt(length);\n-\n-        solve(x, y);\n+    public Cell[][] mazeGrid;\n+    public Stack<Cell> visitedCells = new Stack();\n+    Random rand = new Random();\n+    int size;\n \n-    }\n-\n-\n-    public int getEnd(int x, int y) {\n-        return end[x][y];\n-    }\n \n-    public int getStart(int x, int y) {\n-        return start[x][y];\n+    public Maze(int size) {\n+        this.size = size;\n+        mazeGrid = new Cell[size][size];\n+        for (int i = 0; i < size; i++) {\n+            for (int j = 0; j < size; j++) {\n+                mazeGrid[i][j] = new Cell(i, j);\n+                mazeGrid[i][j].setEWall(true);",
+        "path": "src/main/java/forer/maze/Maze.java",
+        "position": null,
+        "original_position": 50,
+        "commit_id": "231d7c6d4d8426091c3c16ef83202b63f3434f57",
+        "original_commit_id": "a8593c9975409b57a7caaf5d9d1bfdf285e0a58e",
+        "user": {
+            "login": "andrewoid",
+            "id": 121566,
+            "node_id": "MDQ6VXNlcjEyMTU2Ng==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/121566?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/andrewoid",
+            "html_url": "https://github.com/andrewoid",
+            "followers_url": "https://api.github.com/users/andrewoid/followers",
+            "following_url": "https://api.github.com/users/andrewoid/following{/other_user}",
+            "gists_url": "https://api.github.com/users/andrewoid/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/andrewoid/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/andrewoid/subscriptions",
+            "organizations_url": "https://api.github.com/users/andrewoid/orgs",
+            "repos_url": "https://api.github.com/users/andrewoid/repos",
+            "events_url": "https://api.github.com/users/andrewoid/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/andrewoid/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "set these to true in Cell's constructor",
+        "created_at": "2018-10-12T02:17:23Z",
+        "updated_at": "2018-10-18T22:47:45Z",
+        "html_url": "https://github.com/chavs1997/API-projects/pull/8#discussion_r224654605",
+        "pull_request_url": "https://api.github.com/repos/chavs1997/API-projects/pulls/8",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224654605"
+            },
+            "html": {
+                "href": "https://github.com/chavs1997/API-projects/pull/8#discussion_r224654605"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/8"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224655081",
+        "pull_request_review_id": 164078347,
+        "id": 224655081,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyNDY1NTA4MQ==",
+        "diff_hunk": "@@ -1,88 +1,216 @@\n package forer.maze;\n \n import java.util.Random;\n+import java.util.Stack;\n \n public class Maze {\n \n-    private int[][] start;\n-    private int[][] end;\n-    private boolean[][] grid;\n-    private int length;\n-    Random rand;\n-    private boolean current;\n-    private boolean neighbor;\n-    private int[] neighborLoc = new int[2];\n-    private int startCount = 0;\n-    private int endCount = 0;\n-\n-    public Maze(int length) {\n-        this.length = length;\n-        grid = new boolean[length][length];\n-        start = new int[length * length][2];\n-        end = new int[length * length][2];\n-        end[length * length - 1][0] = -99;\n-        rand = new Random();\n-        int x = rand.nextInt(length);\n-        int y = rand.nextInt(length);\n-\n-        solve(x, y);\n+    public Cell[][] mazeGrid;\n+    public Stack<Cell> visitedCells = new Stack();\n+    Random rand = new Random();\n+    int size;\n \n-    }\n-\n-\n-    public int getEnd(int x, int y) {\n-        return end[x][y];\n-    }\n \n-    public int getStart(int x, int y) {\n-        return start[x][y];\n+    public Maze(int size) {\n+        this.size = size;\n+        mazeGrid = new Cell[size][size];\n+        for (int i = 0; i < size; i++) {\n+            for (int j = 0; j < size; j++) {\n+                mazeGrid[i][j] = new Cell(i, j);\n+                mazeGrid[i][j].setEWall(true);\n+                mazeGrid[i][j].setNWall(true);\n+                mazeGrid[i][j].setSWall(true);\n+                mazeGrid[i][j].setWWall(true);\n+            }\n+        }\n+        generateMaze();\n     }\n \n+    private void generateMaze() {\n+        int row = rand.nextInt(size);\n+        int col = rand.nextInt(size);\n+        Cell current = mazeGrid[row][col];\n+        current.setVisited(true);\n+        do {\n+            current = removeWalls(current);\n+        } while (!visitedCells.isEmpty());\n \n-    private void solve(int x, int y) {\n-        current = grid[x][y];\n-        current = true;\n+    }\n \n-        neighborLoc = chooseNeighbor(x, y);\n-        neighbor = grid[neighborLoc[0]][neighborLoc[1]];\n-        if (!neighbor) {\n-            start[startCount][0] = x;\n-            start[startCount][1] = y;\n-            end[endCount][0] = neighborLoc[0];\n-            end[endCount][1] = neighborLoc[1];\n-            startCount++;\n-            endCount++;\n-        }\n-        if (end[(length * length) - 1][0] == -99) {\n-            solve(neighborLoc[0], neighborLoc[1]);\n+    private Cell removeWalls(Cell current) {\n+        Cell neighbor = chooseNeighbor(current.getRow(), current.getCol());\n+        if (neighbor != null) {\n+            visitedCells.push(current);\n+            if (current.getRow() > neighbor.getRow()) {\n+                neighbor.setSWall(false);\n+                current.setNWall(false);\n+                current = neighbor;\n+                current.setVisited(true);\n+            } else if (current.getCol() < neighbor.getCol()) {\n+                current.setEWall(false);\n+                neighbor.setWWall(false);\n+                current = neighbor;\n+                current.setVisited(true);\n+            } else if (current.getRow() < neighbor.getRow()) {\n+                neighbor.setNWall(false);\n+                current.setSWall(false);\n+                current = neighbor;\n+                current.setVisited(true);\n+            } else {\n+                neighbor.setEWall(false);\n+                current.setWWall(false);\n+                current = neighbor;\n+                current.setVisited(true);\n+            }\n+        } else {\n+            current = visitedCells.pop();\n         }\n+        return current;\n     }\n \n-    private int[] chooseNeighbor(int x, int y) {\n-        int[] chosenNeighbor = new int[2];\n-        char[] directions = {'N', 'S', 'E', 'W'};\n-        do {\n-            char dir = directions[rand.nextInt(4)];\n-            switch (dir) {\n+    private Cell chooseNeighbor(int row, int col) {",
+        "path": "src/main/java/forer/maze/Maze.java",
+        "position": 118,
+        "original_position": 122,
+        "commit_id": "231d7c6d4d8426091c3c16ef83202b63f3434f57",
+        "original_commit_id": "a8593c9975409b57a7caaf5d9d1bfdf285e0a58e",
+        "user": {
+            "login": "andrewoid",
+            "id": 121566,
+            "node_id": "MDQ6VXNlcjEyMTU2Ng==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/121566?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/andrewoid",
+            "html_url": "https://github.com/andrewoid",
+            "followers_url": "https://api.github.com/users/andrewoid/followers",
+            "following_url": "https://api.github.com/users/andrewoid/following{/other_user}",
+            "gists_url": "https://api.github.com/users/andrewoid/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/andrewoid/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/andrewoid/subscriptions",
+            "organizations_url": "https://api.github.com/users/andrewoid/orgs",
+            "repos_url": "https://api.github.com/users/andrewoid/repos",
+            "events_url": "https://api.github.com/users/andrewoid/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/andrewoid/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "You're making this a lot more complicated than it needs to be.\r\nThere are 4 potential neighbors.\r\nYou want one of those neighbors that hasn't been visited yet. \r\nDon't use a while loop and don't use a switch. Try using a `List` and `Collections.shuffle`",
+        "created_at": "2018-10-12T02:22:06Z",
+        "updated_at": "2018-10-18T22:47:45Z",
+        "html_url": "https://github.com/chavs1997/API-projects/pull/8#discussion_r224655081",
+        "pull_request_url": "https://api.github.com/repos/chavs1997/API-projects/pulls/8",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/comments/224655081"
+            },
+            "html": {
+                "href": "https://github.com/chavs1997/API-projects/pull/8#discussion_r224655081"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/chavs1997/API-projects/pulls/8"
+            }
+        }
+    }
+]

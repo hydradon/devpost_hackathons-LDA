@@ -1,0 +1,599 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/N-iip1dsa1o?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Motorized Shade Overview
+                </h1>
+                <p>
+                    The overarching goal of this project is to save energy by using automated/motorized honeycomb shades:
+                </p>
+                <ul>
+                    <li>
+                        Honeycomb shades have air pockets built into their fabric that provide insulation. These air pockets help keep your house cooler in the summer and warmer in the winter.
+                    </li>
+                    <li>
+                        Lowering shades in the summer prevents the sun&rsquo;s harsh rays from heating up a room (and causing an air conditioner to work overtime), while raising them in the winter captures heat from those rays.
+                    </li>
+                    <li>
+                        Motorization allows automation:  all the shades in a building can be open/closed based on policies:
+                        <ul>
+                            <li>
+                                time: sunrise/sunset
+                            </li>
+                            <li>
+                                weather: temperature and sunlight
+                            </li>
+                            <li>
+                                occupancy and personal preference
+                                <br>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    Motorized shades are available from major window treatment vendors.  The disadvantages of these offerings are:
+                </p>
+                <ul>
+                    <li>
+                        Expensive - adding $200 or more per shade - which makes the ROI based on energy savings impractical
+                    </li>
+                    <li>
+                        Most offerings require a bridge, which means managing another network in addition to the WiFi network
+                    </li>
+                    <li>
+                        One-way communication: the shade cannot report status or operating conditions.
+                        <ul>
+                            <li>
+                                Reporting temperature on the inside of the window provides the ability to detect open windows, break-ins and other anomolies.
+                            </li>
+                            <li>
+                                solar charging can be monitored.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Feature enhancements are not possible due to the lack of over-the-air software updates.
+                        <br>
+                    </li>
+                </ul>
+                <p>
+                    The objective of this project is to lower the cost of automation by offering open-source hardware &amp; software.
+                </p>
+                <p>
+                    The scope of the project includes:
+                </p>
+                <ul>
+                    <li>
+                        hardware: a circuit board that supports ubiquitous radios (WiFi &amp; Bluetooth), drives motors and has sensors to gather operating conditions.  Support for solar cell operation allows operating without wiring or replacing batteries.
+                    </li>
+                    <li>
+                        device firmware: control the shade positioning, authenticate, get configuration data (desired state), report operational state and allow for non-networked control (bluetooth or buttons).
+                    </li>
+                    <li>
+                        use of cloud services:
+                        <ul>
+                            <li>
+                                database of devices and their state
+                            </li>
+                            <li>
+                                authentication, authorization, notification, databases, analytics, etc.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    Out of scope, since the desire is to use a pre-existing service:
+                </p>
+                <ul>
+                    <li>
+                        user interface: present and control devices and policies.  Equivalent to HomeKit.  Even though I have a prototype using Cognito, I was hoping that this service would be available, since there should not be App per device type/manufacturer.
+                    </li>
+                    <li>
+                        policy server: a user configurable engine that controls when to operate the shade.  Similar to IFFFT but allowing logical operations on the conditions.
+                    </li>
+                </ul>
+                <h2>
+                    Circuit Board Overview
+                </h2>
+                <p>
+                    The circuit board is dimensioned to fit inside the shade housing.  It has connectors for the following:
+                </p>
+                <ul>
+                    <li>
+                        LiON battery
+                    </li>
+                    <li>
+                        input from a solar cell or permanent power source
+                    </li>
+                    <li>
+                        driving a DC motor that connects to the shade's shaft.  As the shaft rotates, cords raise or lower the shade
+                    </li>
+                    <li>
+                        A second DC motor, so that top-down, bottom-up shades can be motorized.
+                    </li>
+                    <li>
+                        Debug connector for resetting, flashing and debugging.
+                    </li>
+                    <li>
+                        Touch sensors for manual open/close control (not implemented yet)
+                    </li>
+                </ul>
+                <p>
+                    The circuit board has the following components:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.esp32.com" rel="nofollow">
+                            ESP32
+                        </a>
+                        microprocessor module with integrated WiFi and BLE and memory
+                    </li>
+                    <li>
+                        <a href="http://www.microchip.com/wwwproducts/en/en536670" rel="nofollow">
+                            MCP73871
+                        </a>
+                        solar powered Lion battery charger
+                    </li>
+                    <li>
+                        <a href="http://www.ti.com/product/INA219" rel="nofollow">
+                            INA219
+                        </a>
+                        current sensor that is used to monitor battery state and motor currents
+                    </li>
+                    <li>
+                        <a href="http://www.ti.com/product/drv8871" rel="nofollow">
+                            DRV8871
+                        </a>
+                        motor driver with Internal Current Sense
+                    </li>
+                    <li>
+                        3.3V regulator and 12V booster; 12V is used to drive the motor
+                    </li>
+                    <li>
+                        <a href="http://www.microchip.com/wwwproducts/en/ATECC508A" rel="nofollow">
+                            ATECC508
+                        </a>
+                        for secure key and/or certificate storage.  This device requires an NDA, so the software for credential retrieval cannot be disclosed.
+                    </li>
+                    <li>
+                        a temperature sensor to report the ambient temperature at the actual window location.
+                    </li>
+                </ul>
+                <p>
+                    The circuit board schematic and layout is at:
+                    <a href="https://upverter.com/MyOrg/a7f8b2001762c006/motor_driver_with_sensors-v3/#/" rel="nofollow">
+                        <img alt="motor_driver_with_sensors-v3 by MyOrg a7f8b2001762c006 - Upverter" data-canonical-url="https://upverter.com/MyOrg/a7f8b2001762c006/motor_driver_with_sensors-v3/embed_img/15049524790000/" src="https://res.cloudinary.com/devpost/image/fetch/s--3iepRMzp--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://upverter.com/MyOrg/a7f8b2001762c006/motor_driver_with_sensors-v3/embed_img/15049524790000/">
+                    </a>
+                    <br>
+                    <em>
+                        Note
+                    </em>
+                    : There are 2 issues with the current design that will be fixed in an upcoming PCB revision.  This revision will also provide capacitive touch button inputs for manual control.
+                    <br>
+                    The current PCB is shown here:
+                    <a href="https://oshpark.com/shared_projects/A6QuHnHe" rel="nofollow">
+                        oshpark
+                    </a>
+                </p>
+                <h2>
+                    The device software infrastructure: Micropython code which uses the AWS-IOT REST API to GET/POST device state info.
+                </h2>
+                <p>
+                    The use case is an IoT application where the device sleeps most of the time (to conserve battery) and retrieves commands (desired state) from the cloud when the device wakes up. In this case, the motorized window treatment wakes up and retrieves the desired position every few minutes. If the desired position is different than the current position, the device controls the motor to change the position to the desired position.  After changing the position, the device reports the current state to the cloud.
+                </p>
+                <p>
+                    The following description refers to
+                    <a href="https://github.com/manningt/aws-iot-GET-POST-loop" rel="nofollow">
+                        this python code
+                    </a>
+                </p>
+                <p>
+                    There are 2 primary modules that are independent of the device's hardware capabilities:
+                </p>
+                <ul>
+                    <li>
+                        base_thing: provides the functions every thing should have: set the shadow_state, get the reported state, supply the device ID &amp; AWS credential info and get the current time.
+                        <ul>
+                            <li>
+                                By using a dictionary of functions, devices using this class just add functions required to process the desired state particular to their device's capabilities.
+                            </li>
+                            <li>
+                                Similarly, the devices add functions to monitor conditions to be reported.
+                            </li>
+                            <li>
+                                Devices can also supplement the base_thing's functions to add more capabilities as needed.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        aws_thing_loop: instances a thing, GETs the thing's shadow state, and POSTs the reported state to AWS-IOT.
+                    </li>
+                </ul>
+                <p>
+                    <em>
+                        base_thing
+                    </em>
+                    and
+                    <em>
+                        aws_thing_loop
+                    </em>
+                    can run on any platform that micropython runs on.  This means the code can be debugged on a PC instead of an embedded device.  This is a large improvement over the normal embedded development cycle, of compiling, flashing the code and reviewing printf's over a serial port to the device.
+                </p>
+                <p>
+                    The repository has examples of 'thing' children:
+                </p>
+                <ul>
+                    <li>
+                        signal_thing_unix: when the integer value of the 'signal' variable in desired state is changed, the terminal where the script is running will beep a number of times specified by the 'signal' variable..  Free memory is reported to AWS-IOT as an example of using condition monitoring.
+                    </li>
+                    <li>
+                        signal_thing_esp: similar to signal_thing_unix, an ESP8266 will flash its LED instead of beep 'signal' times.  The ESP8266 requires pin 16 to be connected to the reset pin for deep sleep to work
+                    </li>
+                    <li>
+                        shade_controller: runs on an ESP; controls a motor to position a shade.  It includes the following modules:
+                        <ul>
+                            <li>
+                                motor.py: controls a DC motor using PWM pins
+                            </li>
+                            <li>
+                                ina219.py: supports the current sensor. Supports sleep mode and does not use floating point operations.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <p>
+                    When a device running micropython boots, it runs main.py.  An example main.py is included in the repository; it simply calls aws_thing_loop.main()
+                </p>
+                <p>
+                    A more detailed description of how to setup and run the software is at:
+                    <a href="https://www.hackster.io/user3282664/micropython-to-aws-iot-cc1c20" rel="nofollow">
+                        hackster.io
+                    </a>
+                </p>
+                <p>
+                    aws_thing_loop requires:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://github.com/manningt/aws-signature-iot-python" rel="nofollow">
+                            aws-signature-iot-python
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/manningt/micropython-lib/tree/urequest-with-content-length/urequests" rel="nofollow">
+                            urequests
+                        </a>
+                        (modified): reads the content-length from the header and uses the length when issuing the read for the body.  The modification handles the situation where AWS does not close the socket after the GET (not compliant with HTTP1.0)
+                    </li>
+                    <li>
+                        <a href="https://github.com/manningt/aws-signature-iot-python/hmac_ltd.py" rel="nofollow">
+                            hmac_ltd
+                        </a>
+                        : a modified version of hmac which allows binary keys
+                        <br>
+                    </li>
+                </ul>
+                <h3>
+                    Shade Controller Shadow Description
+                </h3>
+                <p>
+                    <code>
+                        {
+   "desired": {
+                        <br>
+                        "duration": 28,
+                        <br>
+                        "reverse": 0,
+                        <br>
+                        "threshold": 900,
+                        <br>
+                        "sleep": 180,
+                        <br>
+                        "test": "temperature",
+                        <br>
+                        "test_param": 1100,
+                        <br>
+                        "position": "open"
+  },  "reported": {
+                        <br>
+                        "duration": 28, "reverse": 0, "threshold": 900,  "sleep": 180,  "test": "temperature", "test_param": 1100,
+                        <br>
+                        "status": "Pass: Temperature: 19C",
+                        <br>
+                        "position": "unknown",
+                        <br>
+                        "batteryVoltage": 3924,
+                        <br>
+                        "starting_currents": "281 502 496 334 369 497 576 445 384 511 551 505 436 496 581 586",
+                        <br>
+                        "stopping_currents": "809 853 807 856 858 847 849 813 838 874 862 885 879 890 909 950",
+                        <br>
+                        "temperature": 17
+                        <br>
+                        }
+}
+                        <br>
+                    </code>
+                    The desired parameters are as follows:
+                </p>
+                <ul>
+                    <li>
+                        position: specifies the desired shade position: open, closed, half
+                    </li>
+                    <li>
+                        duration: number of seconds to go from the open to closed position
+                    </li>
+                    <li>
+                        reverse: control the motor direction (forward/reverse) to correspond to moving the shade up or down.  The motor wiring is arbitrary and hence may need to be inverted.
+                    </li>
+                    <li>
+                        threshold: if the motor current is higher than this for 3 consecutive measurements, the motor is stopped.  Described more fully in Positioning section
+                    </li>
+                    <li>
+                        sleep: the amount of time to sleep before waking and Getting the desired state.
+                    </li>
+                    <li>
+                        test &amp; test_param: this thing (the shade) has tests for the motor, current sensor and temperature sensor.  The test_param is used as an argument for select tests.  For example, it specifies the duration to activate the motor for the motor test.  The specified test is run once after either the desired test or test_param changes.
+                    </li>
+                </ul>
+                <p>
+                    The reported parameters are as follows:
+                </p>
+                <ul>
+                    <li>
+                        duration, threshold, ..., test, test_param: these are echoed back by the thing
+                    </li>
+                    <li>
+                        position: the actual position.  When the shade controller is installed, the position is unknown.  Once the position is set, the shade controller persists the position in NV memory.
+                    </li>
+                    <li>
+                        status: text describing the result of the last positioning operation or test
+                    </li>
+                    <li>
+                        batteryVoltage: in millivolts.  Fully charged is around 4200. Low battery is around 3700.
+                    </li>
+                    <li>
+                        temperature: the temperature where the shade controller PCB is mounting, e.g. inside the shade's housing.
+                    </li>
+                    <li>
+                        starting/stopping currents: used for learning the power required to raise/lower the shade.
+                    </li>
+                </ul>
+                <p>
+                    Additional reported parameters would be the SSID and signal strength of 2 of the WiFi networks the shade controller can sense.  This would be used to get the shade's weather  (via a geo-location API); the weather condition would be used by the policy server and analytics.
+                </p>
+                <p>
+                    The normal UI would not present all these parameters - just the position and temperature.
+                </p>
+                <p>
+                    An installation/troubleshooting UI would allow shade to be positioned using the motor test and provide a history of the status, batteryVoltage, temperature and currents.
+                </p>
+                <h3>
+                    Using AWS-IOT Rules for testing
+                </h3>
+                <p>
+                    The advantage of using AWS-IOT over other service provides is the extensive set of services AWS provides.  The following example shows how Rules &amp; Actions can be used to continuously operate a shade to exercise the components.  When the shade reports its current position (open/half/closed), the Action is to send an update with the previous position.
+                </p>
+                <p>
+                    Rule:
+                    <code>
+                        SELECT previous.state.reported.position as state.desired.position FROM '$aws/things/+/shadow/update/documents' WHERE current.state.reported.position &lt;&gt; previous.state.reported.position AND current.state.reported.position &lt;&gt; "unknown"
+                    </code>
+                </p>
+                <p>
+                    Action:
+                    <code>
+                        Republish messages to an AWS IoT topic:  $$aws/things/${topic(3)}/shadow/update
+                    </code>
+                </p>
+                <h3>
+                    Thing type
+                </h3>
+                <p>
+                    The shade controller thing type has the following searchable attributes:
+                </p>
+                <ul>
+                    <li>
+                        owner: currently filled in with cognitoId during thing creation (shade installation).  It is used by user app as a filter in the listThingsRequest.
+                    </li>
+                    <li>
+                        site: a string identifying the building/residence.  Used to organize the display of things.  Analytics would use both the owner and site to associate the shade controllers.
+                    </li>
+                </ul>
+                <p>
+                    There are 3 non-searchable attributes:
+                </p>
+                <ul>
+                    <li>
+                        zone - e.g. upstairs/downstairs
+                    </li>
+                    <li>
+                        primary - intended to be used for the name of the room
+                    </li>
+                    <li>
+                        secondary - intended to be used for the position in the room (north/south/center) or the name of the window (picture, bay)
+                    </li>
+                </ul>
+                <h3>
+                    Fault Detection using functions and/or analytics
+                </h3>
+                <p>
+                    The following are notification features for the shade controllers:
+                </p>
+                <ul>
+                    <li>
+                        non-responsive units: Since the reported shadow state is updated at regular intervals, the analytics can detect a failure if updates are being received by one or more units, but not being received from other units at a site.
+                    </li>
+                    <li>
+                        failed units: indicated by error strings in the reported status
+                    </li>
+                    <li>
+                        degraded charging: an analysis of the historic charging pattern as correlated with the solar radiation at the site's location.
+                    </li>
+                    <li>
+                        open window: an analysis of the difference between the outside temperature and the shade controller's temperature (the inside of the window).  For example, an notification can be triggered if the shade controller's temperature is tracking, within a few degrees, the outside temperature and historically there is a larger delta between the controller and outside temperature at this outside temperature, e.g. when the outside temperature is 90, historically the controller's temperature is 75, but it is currently 85.
+                    </li>
+                </ul>
+                <h3>
+                    Motorized shade hardware details
+                </h3>
+                <p>
+                    To reduce costs and allow flexibility, the intent was to allow purchasing the components from ebay, alibaba, amazon, etc.  The following components necessary for the solution.  The links are provided to show an example component.
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.overstock.com/Home-Garden/Arlo-Blinds-Honeycomb-Cell-Light-filtering-Pure-White-Cellular-Shades/5903337/product.html" rel="nofollow">
+                            shade
+                        </a>
+                        : pick the shade the fits your window and color preferences.  Most shades have a shaft with 2 spring-loaded pulleys.  A shade with a shaft is required to attach the motor.
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.com/gp/product/B0080DLQCU" rel="nofollow">
+                            12V 30RPM motor
+                        </a>
+                        30RPM moves the shade about an inch a second.
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.com/uxcell-Copper-Coupling-Connector-Electric/dp/B01B26WT2C" rel="nofollow">
+                            shaft coupler
+                        </a>
+                        The specific coupler required is a function of the shaft sizes.  The shade linked to above had a 4mm shaft and the motor linked to above had a 3mm shaft.
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.com/Battery-Packs-Lithium-3-7v-2000mAh/dp/B0137ITW46" rel="nofollow">
+                            battery
+                        </a>
+                        : The capacity of the battery depends on the longest interval between solar charges at the window location.
+                    </li>
+                    <li>
+                        <a href="https://www.ebay.com/itm/6V-1W-Solar-Panel-Module-DIY-For-Light-Cell-Phone-Toys-Chargers-Portable-Hot/182425820714" rel="nofollow">
+                            solar cell
+                        </a>
+                        : The solar cell needs have a 6V output.  The required wattage of the solar cell depends on the solar radiation at the window location.
+                    </li>
+                </ul>
+                <p>
+                    The solar cell and battery can be right-sized for the window application, thereby minimizing cost.  Generating the sizing recommendations based on location and solar cell mounting (direction) has not been completed.
+                    <br>
+                    Collecting and analyzing the data for many sites and configurations would help refine the sizing recommendations.  This is another advantage WiFi operation has over the one-way radio controls typically employed by retail motorized shades.  The installation's latitude and timezone can be derived from the WiFi SSID.  The daylight exposure can be determined from the solar cell's output.
+                </p>
+                <p>
+                    For flexibility, the shade controller can also be hardwired using a USB charger.  In the future, operating with Bluetooth instead of Wifi may lower power consumption enough to be powered by batteries.
+                </p>
+                <h4>
+                    Positioning
+                </h4>
+                <p>
+                    The problem to solve is determining when the shade has reached the desired position.  Some systems use rotary encoders to measure the distance the shade has travelled while the motor is on.  Motors with built-in encoders cost significantly more.  Adding an optical sensor to determine revolutions creates mechanical mounting difficulty.
+                    <br>
+                    To solve the problem, this design measures motor current to detect when the shade has reached a stop position; the motor current increases as shade cords are drawn into the top.  The other benefit of measuring the current draw is that abnormalities can be detected - if something is stuck or something is pulling the shade.
+                </p>
+                <p>
+                    There are 3 configuration parameters in the shadow state used with this method of position detection:
+                </p>
+                <ul>
+                    <li>
+                        threshold: when the motor exceeds this current draw, the motor stops.
+                    </li>
+                    <li>
+                        duration: the time the motor is activated to go from the open to closed (top-down operation) or from closed to open (bottom-up operation)
+                    </li>
+                    <li>
+                        reverse: inverts the motor direction for opening the shade.  This is because the motor leads can be hooked up in either direction.
+                        <br>
+                    </li>
+                </ul>
+                <p>
+                    Ideally the configuration parameters would be learned.  This can be accomplished by:
+                </p>
+                <ul>
+                    <li>
+                        the installer positioning the shade to the half open position using the test and test_param desired state variables
+                    </li>
+                    <li>
+                        the code operates the motor in forward and reverse for a few short intervals.  Since it takes less current to lower the shade, the motor direction to shade movement can be established.
+                    </li>
+                    <li>
+                        the code then operates the motor to move the shade to the top.  It accumulates current measurements and can establish a threshold.  It uses that threshold to detect the shade is at the top.
+                    </li>
+                    <li>
+                        the duration for going from top to bottom is twice the time it took to for previous step.
+                        <br>
+                    </li>
+                </ul>
+                <p>
+                    Code for the learning-based installation process has not been developed.  Analyzing the data gathered during installation for hundreds of sites would allow the learning to deal with varying shade sizes/weights, motor capabilities and battery sizes.
+                </p>
+                <h4>
+                    Future software development:
+                </h4>
+                <ul>
+                    <li>
+                        Enable the ESP32's touchpad capability to add physical open/close buttons.  These buttons could also be used during installation for shade position.
+                    </li>
+                    <li>
+                        Enable the shade controller to update the desired position - this will be required after enabling the touch buttons.
+                    </li>
+                    <li>
+                        Write an installation app that sets up the controller's wifi, creates the thing shadow and fills in the thing's attributes.
+                    </li>
+                    <li>
+                        Enable using X.509 certificates for the REST API.  SigV4 was used initially due to limitations of the ESP8266.  But with the ESP32 and the ECC508, certificates may be a better option due to the zero-touch provisioning.
+                    </li>
+                    <li>
+                        Provide an Over-the-Air update capability by downloading software updates from S3
+                    </li>
+                    <li>
+                        Integration with home automation software (Homekit equivalent).
+                    </li>
+                    <li>
+                        Enable BLE (Bluetooth) operation.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/manningt/aws-iot-GET-POST-loop" rel="nofollow" target="_blank" title="https://github.com/manningt/aws-iot-GET-POST-loop">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

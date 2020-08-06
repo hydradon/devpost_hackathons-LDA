@@ -1,0 +1,642 @@
+[
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317364872",
+        "pull_request_review_id": 279300326,
+        "id": 317364872,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM2NDg3Mg==",
+        "diff_hunk": "@@ -44,25 +44,24 @@ contract doorManager is Ownable {\n     }\n }\n \n-//pragma solidity >=0.4.22 <0.6.0;\n-\n contract Door is Ownable, Initializable {\n \n     bool started;\n     bool ended;\n \n-    enum TicketValues { None, RSVPD, Attended }\n+    enum AttendanceTypes { NONE, REGISTERED, ATTENDED }\n     uint ticketPrice;\n-    mapping(address => TicketValues) public ticketHolders;\n+    mapping(address => AttendanceTypes) public tickets;\n+    address[] public registerees;\n+    address payable[] public attendees;\n \n \n     modifier hasNoTicket() {\n-        require(ticketHolders[msg.sender] == TicketValues.None, 'you have no ticket');\n+        require(tickets[msg.sender] == AttendanceTypes.NONE, 'you have no ticket');\n         _;\n     }\n \n     function initialize(uint256 _price) public initializer payable  {\n-        //owner = msg.sender;\n          ticketPrice = _price;\n     }\n ",
+        "path": "backend/contracts/door.sol",
+        "position": null,
+        "original_position": 39,
+        "commit_id": "54841ae7019150b9419284ec85aefae3020e856a",
+        "original_commit_id": "8dbf54b7bdb91db40bae6705c6bfffd04b8931b5",
+        "user": {
+            "login": "Dakavon",
+            "id": 3898916,
+            "node_id": "MDQ6VXNlcjM4OTg5MTY=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/3898916?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Dakavon",
+            "html_url": "https://github.com/Dakavon",
+            "followers_url": "https://api.github.com/users/Dakavon/followers",
+            "following_url": "https://api.github.com/users/Dakavon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Dakavon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Dakavon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Dakavon/subscriptions",
+            "organizations_url": "https://api.github.com/users/Dakavon/orgs",
+            "repos_url": "https://api.github.com/users/Dakavon/repos",
+            "events_url": "https://api.github.com/users/Dakavon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Dakavon/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "normally use require()\r\ndocumentation: \"The assert function should only be used to test for internal errors, and to check invariants. \"",
+        "created_at": "2019-08-24T15:18:55Z",
+        "updated_at": "2019-08-24T16:54:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/10#discussion_r317364872",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/10",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317364872"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/10#discussion_r317364872"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375319",
+        "pull_request_review_id": 279311942,
+        "id": 317375319,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTMxOQ==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {",
+        "path": "backend/contracts/Door.sol",
+        "position": 83,
+        "original_position": 83,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "remove price, leave uint",
+        "created_at": "2019-08-24T21:49:07Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375319",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375319"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375319"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375371",
+        "pull_request_review_id": 279311942,
+        "id": 317375371,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTM3MQ==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {\n         return ticketPrice;\n     }\n \n-    function buyEventTicket() public payable hasNoTicket {\n+    function buyEventTicket() public payable {\n+        require(users[msg.sender].ticketStatus == AttendanceTypes.NONE, 'User has already a ticket');\n         require(\n             msg.value == ticketPrice,\n-            \"Ticket price is too low\"\n+            \"msg.value does not meet the ticket price.\"\n         );\n \n-        tickets[msg.sender] = AttendanceTypes.REGISTERED;\n-        registerees.push(msg.sender);\n+        users[msg.sender].ticketStatus = AttendanceTypes.REGISTERED;\n     }\n \n-    function hasEventTicket() public view returns (bool) {\n-        return tickets[msg.sender] == AttendanceTypes.REGISTERED;\n+    function userHasEventTicket() public view returns (bool indeed) {\n+        return user[msg.sender].ticketStatus == AttendanceTypes.REGISTERED;\n     }\n \n-    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner hasStarted {\n+    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner{\n         // assuming that the event creator is honest and will verify correctly\n-        tickets[userAddress] = AttendanceTypes.ATTENDED;\n-        attendees.push(userAddress);\n+        require(eventHasStarted, 'The event has not been started yet.');\n+        users[userAddress].ticketStatus = AttendanceTypes.ATTENDED;\n+        attendeesCount++;\n     }\n \n-    function getBalance() public view returns (uint256){\n+    function getEventBalance() public view returns (uint256 balance){",
+        "path": "backend/contracts/Door.sol",
+        "position": null,
+        "original_position": 118,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I think leaving it as it is is enough.",
+        "created_at": "2019-08-24T21:51:27Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375371",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375371"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375371"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375433",
+        "pull_request_review_id": 279311942,
+        "id": 317375433,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTQzMw==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {\n         return ticketPrice;\n     }\n \n-    function buyEventTicket() public payable hasNoTicket {\n+    function buyEventTicket() public payable {\n+        require(users[msg.sender].ticketStatus == AttendanceTypes.NONE, 'User has already a ticket');\n         require(\n             msg.value == ticketPrice,\n-            \"Ticket price is too low\"\n+            \"msg.value does not meet the ticket price.\"\n         );\n \n-        tickets[msg.sender] = AttendanceTypes.REGISTERED;\n-        registerees.push(msg.sender);\n+        users[msg.sender].ticketStatus = AttendanceTypes.REGISTERED;\n     }\n \n-    function hasEventTicket() public view returns (bool) {\n-        return tickets[msg.sender] == AttendanceTypes.REGISTERED;\n+    function userHasEventTicket() public view returns (bool indeed) {\n+        return user[msg.sender].ticketStatus == AttendanceTypes.REGISTERED;\n     }\n \n-    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner hasStarted {\n+    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner{\n         // assuming that the event creator is honest and will verify correctly\n-        tickets[userAddress] = AttendanceTypes.ATTENDED;\n-        attendees.push(userAddress);\n+        require(eventHasStarted, 'The event has not been started yet.');",
+        "path": "backend/contracts/Door.sol",
+        "position": 112,
+        "original_position": 112,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "add \r\n\r\n`require(users[userAddress].ticketStatus!==AttendanceTypes.ATTENDED, 'user has already attended')`",
+        "created_at": "2019-08-24T21:54:34Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375433",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375433"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375433"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375441",
+        "pull_request_review_id": 279311942,
+        "id": 317375441,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTQ0MQ==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {\n         return ticketPrice;\n     }\n \n-    function buyEventTicket() public payable hasNoTicket {\n+    function buyEventTicket() public payable {\n+        require(users[msg.sender].ticketStatus == AttendanceTypes.NONE, 'User has already a ticket');\n         require(\n             msg.value == ticketPrice,\n-            \"Ticket price is too low\"\n+            \"msg.value does not meet the ticket price.\"\n         );\n \n-        tickets[msg.sender] = AttendanceTypes.REGISTERED;\n-        registerees.push(msg.sender);\n+        users[msg.sender].ticketStatus = AttendanceTypes.REGISTERED;\n     }\n \n-    function hasEventTicket() public view returns (bool) {\n-        return tickets[msg.sender] == AttendanceTypes.REGISTERED;\n+    function userHasEventTicket() public view returns (bool indeed) {",
+        "path": "backend/contracts/Door.sol",
+        "position": null,
+        "original_position": 103,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "remove indeed keyword -> not needed.",
+        "created_at": "2019-08-24T21:54:53Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375441",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375441"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375441"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375445",
+        "pull_request_review_id": 279311942,
+        "id": 317375445,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTQ0NQ==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {\n         return ticketPrice;\n     }\n \n-    function buyEventTicket() public payable hasNoTicket {\n+    function buyEventTicket() public payable {\n+        require(users[msg.sender].ticketStatus == AttendanceTypes.NONE, 'User has already a ticket');\n         require(\n             msg.value == ticketPrice,\n-            \"Ticket price is too low\"\n+            \"msg.value does not meet the ticket price.\"\n         );\n \n-        tickets[msg.sender] = AttendanceTypes.REGISTERED;\n-        registerees.push(msg.sender);\n+        users[msg.sender].ticketStatus = AttendanceTypes.REGISTERED;\n     }\n \n-    function hasEventTicket() public view returns (bool) {\n-        return tickets[msg.sender] == AttendanceTypes.REGISTERED;\n+    function userHasEventTicket() public view returns (bool indeed) {\n+        return user[msg.sender].ticketStatus == AttendanceTypes.REGISTERED;",
+        "path": "backend/contracts/Door.sol",
+        "position": null,
+        "original_position": 104,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "isn't it `users`? like in most places?",
+        "created_at": "2019-08-24T21:55:19Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375445",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375445"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375445"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375452",
+        "pull_request_review_id": 279311942,
+        "id": 317375452,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTQ1Mg==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {\n         return ticketPrice;\n     }\n \n-    function buyEventTicket() public payable hasNoTicket {\n+    function buyEventTicket() public payable {\n+        require(users[msg.sender].ticketStatus == AttendanceTypes.NONE, 'User has already a ticket');\n         require(\n             msg.value == ticketPrice,\n-            \"Ticket price is too low\"\n+            \"msg.value does not meet the ticket price.\"\n         );\n \n-        tickets[msg.sender] = AttendanceTypes.REGISTERED;\n-        registerees.push(msg.sender);\n+        users[msg.sender].ticketStatus = AttendanceTypes.REGISTERED;\n     }\n \n-    function hasEventTicket() public view returns (bool) {\n-        return tickets[msg.sender] == AttendanceTypes.REGISTERED;\n+    function userHasEventTicket() public view returns (bool indeed) {\n+        return user[msg.sender].ticketStatus == AttendanceTypes.REGISTERED;\n     }\n \n-    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner hasStarted {\n+    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner{\n         // assuming that the event creator is honest and will verify correctly\n-        tickets[userAddress] = AttendanceTypes.ATTENDED;\n-        attendees.push(userAddress);\n+        require(eventHasStarted, 'The event has not been started yet.');",
+        "path": "backend/contracts/Door.sol",
+        "position": 112,
+        "original_position": 112,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I mean `users[userAddress].ticketStatus==AttendanceTypes.ATTENDED`",
+        "created_at": "2019-08-24T21:55:51Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375452",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375452"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375452"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        },
+        "in_reply_to_id": 317375433
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375468",
+        "pull_request_review_id": 279311942,
+        "id": 317375468,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNzM3NTQ2OA==",
+        "diff_hunk": "@@ -63,53 +51,54 @@ contract Door is Ownable, Initializable {\n     }\n \n     function startEvent() public onlyOwner {\n-        require(!started, 'the event has already started');\n-        started = true;\n+        require(!eventHasStarted, 'The event has already been started.');\n+        eventHasStarted = true;\n     }\n \n-    function endEvent() public onlyOwner hasNotEnded {\n-        ended = true;\n+    function endEvent() public onlyOwner {\n+        require(!eventHasEnded && eventHasStarted, 'The event has already ended or hasnt started yet.');\n+        eventHasEnded = true;\n+\n+        shares = address(this).balance / attendeesCount;\n     }\n \n-    function getEventPrice() public view returns (uint) {\n+    function getEventPrice() public view returns (uint price) {\n         return ticketPrice;\n     }\n \n-    function buyEventTicket() public payable hasNoTicket {\n+    function buyEventTicket() public payable {\n+        require(users[msg.sender].ticketStatus == AttendanceTypes.NONE, 'User has already a ticket');\n         require(\n             msg.value == ticketPrice,\n-            \"Ticket price is too low\"\n+            \"msg.value does not meet the ticket price.\"\n         );\n \n-        tickets[msg.sender] = AttendanceTypes.REGISTERED;\n-        registerees.push(msg.sender);\n+        users[msg.sender].ticketStatus = AttendanceTypes.REGISTERED;\n     }\n \n-    function hasEventTicket() public view returns (bool) {\n-        return tickets[msg.sender] == AttendanceTypes.REGISTERED;\n+    function userHasEventTicket() public view returns (bool indeed) {\n+        return user[msg.sender].ticketStatus == AttendanceTypes.REGISTERED;\n     }\n \n-    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner hasStarted {\n+    function setUserHasAttendedByOwner(address payable userAddress) public onlyOwner{\n         // assuming that the event creator is honest and will verify correctly\n-        tickets[userAddress] = AttendanceTypes.ATTENDED;\n-        attendees.push(userAddress);\n+        require(eventHasStarted, 'The event has not been started yet.');\n+        users[userAddress].ticketStatus = AttendanceTypes.ATTENDED;\n+        attendeesCount++;\n     }\n \n-    function getBalance() public view returns (uint256){\n+    function getEventBalance() public view returns (uint256 balance){\n         return address(this).balance;\n     }\n \n-    function withdraw() public hasAttendedTheEvent {\n-        require(canWithdrawFunds, 'cannot withdraw funds');\n-        require(!withdrawals[msg.sender], 'funds already withrdrawn');\n-        require(ended == true, 'Event has not ended');\n+    function withdraw() public {\n+        require(eventHasEnded == true, 'Event has not ended yet.');",
+        "path": "backend/contracts/Door.sol",
+        "position": 128,
+        "original_position": 127,
+        "commit_id": "60f58986d4715dcd5d4c1cc55129bf97f3f4f964",
+        "original_commit_id": "b9417d4d952f6f840f8974d4654adb847c64c350",
+        "user": {
+            "login": "benaitis",
+            "id": 29859835,
+            "node_id": "MDQ6VXNlcjI5ODU5ODM1",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/29859835?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/benaitis",
+            "html_url": "https://github.com/benaitis",
+            "followers_url": "https://api.github.com/users/benaitis/followers",
+            "following_url": "https://api.github.com/users/benaitis/following{/other_user}",
+            "gists_url": "https://api.github.com/users/benaitis/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/benaitis/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/benaitis/subscriptions",
+            "organizations_url": "https://api.github.com/users/benaitis/orgs",
+            "repos_url": "https://api.github.com/users/benaitis/repos",
+            "events_url": "https://api.github.com/users/benaitis/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/benaitis/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "add checking for flag `canWithdrawFunds` in this function also",
+        "created_at": "2019-08-24T21:56:50Z",
+        "updated_at": "2019-08-24T22:12:09Z",
+        "html_url": "https://github.com/d0or/dOor/pull/14#discussion_r317375468",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/14",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/317375468"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/14#discussion_r317375468"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/14"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/345489867",
+        "pull_request_review_id": 315901111,
+        "id": 345489867,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0NTQ4OTg2Nw==",
+        "diff_hunk": "@@ -1,103 +1,58 @@\n-//Meet.inc >>> \u0110Oor-Event <<<\n-//\u0110oor-Event - Everything's decentralized but not your \u0110oor\n-//\u0110Oor opens doors at events that are anchored on the Ethereum blockchain.\n-//\n-//Last update: 11.11.2019\n-\n pragma solidity ^0.5.0;\n \n import \"@openzeppelin/contracts/ownership/Ownable.sol\";\n import \"@openzeppelin/contracts/lifecycle/Pausable.sol\";\n import \"@openzeppelin/contracts/math/SafeMath.sol\";\n \n-\n-    //TODO\n-    //1. Review (old) hackathon code created in sleepytime limbo  [work in progress..]\n-    //2. Get GSN working\n-    //3. Upgradable contracts which includes created user data\n-    //4. Create event \u201ctickets\u201d that are transferable (can lead to a market)\n-\n-\n-contract DoorEvent is Ownable, Pausable {\n-    //SafeMath library for calculations\n+contract Door is Ownable, Pausable {\n     using SafeMath for uint;\n-\n-\n-    /**\n-     * Variables\n-     */\n-\n-    //Contract essential data\n-    string private eventName;\n-    uint private ticketPrice;\n-    bool private rsvpCanWithdrawFunds;\n-\n-    //Attendees (\"RSVPs\") can either be\n-    enum rsvpStatus {\n-        NONE,       //0: unregistered,\n-        REGISTERED, //1: registered (ticket owner) or\n-        ATTENDED    //2: can have attended.\n+    \n+    string public eventName;\n+    uint public ticketPrice;\n+    bool public allowsWithdraws;\n+\n+    enum TicketStatus {\n+        NONE,       \n+        REGISTERED,\n+        ATTENDED\n     }\n-    //Create attendee (\"RSVP\") struct\n-    struct rsvpStruct{\n-        rsvpStatus ticketStatus;\n+    \n+    struct attendeeStruct{\n+        TicketStatus ticketStatus;",
+        "path": "backend-truffle/contracts/DoorEvent.sol",
+        "position": 56,
+        "original_position": 56,
+        "commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "original_commit_id": "2d067be6f872a32c16727bcfa69bca2d59d87fc3",
+        "user": {
+            "login": "elmariachi111",
+            "id": 1344649,
+            "node_id": "MDQ6VXNlcjEzNDQ2NDk=",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/1344649?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/elmariachi111",
+            "html_url": "https://github.com/elmariachi111",
+            "followers_url": "https://api.github.com/users/elmariachi111/followers",
+            "following_url": "https://api.github.com/users/elmariachi111/following{/other_user}",
+            "gists_url": "https://api.github.com/users/elmariachi111/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/elmariachi111/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/elmariachi111/subscriptions",
+            "organizations_url": "https://api.github.com/users/elmariachi111/orgs",
+            "repos_url": "https://api.github.com/users/elmariachi111/repos",
+            "events_url": "https://api.github.com/users/elmariachi111/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/elmariachi111/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "since we're talking about \"prices\" here, I think it's a good thing consistently refer to everyhing as a \"ticket\". ",
+        "created_at": "2019-11-12T22:55:06Z",
+        "updated_at": "2019-11-12T23:14:08Z",
+        "html_url": "https://github.com/d0or/dOor/pull/22#discussion_r345489867",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/22",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/345489867"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/22#discussion_r345489867"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/22"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/345497072",
+        "pull_request_review_id": 315909966,
+        "id": 345497072,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0NTQ5NzA3Mg==",
+        "diff_hunk": "@@ -1,77 +1,61 @@\n-//Meet.inc >>> \u0110Oor-Manager <<<\n-//The \u0110Oor-Manager is a factory that allows event managers to deploy their own Door Event.\n-//\u0110Oor opens doors at events that are anchored on the Ethereum blockchain.\n-//\n-//Last update: 10.11.2019\n-\n pragma solidity ^0.5.0;\n \n import \"@openzeppelin/contracts/ownership/Ownable.sol\";\n import \"@openzeppelin/contracts/lifecycle/Pausable.sol\";\n-import \"./DoorEvent.sol\";\n+import \"./Door.sol\";\n \n+contract DoorFactory is Ownable, Pausable {\n \n-contract DoorManager is Ownable, Pausable{\n-    //Variables\n-    address[] private doorEventAddresses;\n-    mapping (address => bool) private doorEventCreated;\n+    address[] private doors;\n+    mapping (address => bool) private createdConfirmations;\n \n-    //Events\n-    event NewDoorCreated(\n-        address indexed doorOwner,\n+    event Created(",
+        "path": "backend-truffle/contracts/DoorManager.sol",
+        "position": 26,
+        "original_position": 26,
+        "commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "original_commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "user": {
+            "login": "elmariachi111",
+            "id": 1344649,
+            "node_id": "MDQ6VXNlcjEzNDQ2NDk=",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/1344649?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/elmariachi111",
+            "html_url": "https://github.com/elmariachi111",
+            "followers_url": "https://api.github.com/users/elmariachi111/followers",
+            "following_url": "https://api.github.com/users/elmariachi111/following{/other_user}",
+            "gists_url": "https://api.github.com/users/elmariachi111/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/elmariachi111/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/elmariachi111/subscriptions",
+            "organizations_url": "https://api.github.com/users/elmariachi111/orgs",
+            "repos_url": "https://api.github.com/users/elmariachi111/repos",
+            "events_url": "https://api.github.com/users/elmariachi111/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/elmariachi111/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "question is -> if the factory already emits these events... why should the door contract be able to do so? because it should be possible that someone spawns a door without using the factory? then you don't need to emit these events from the factory but solely can trust the spawned door contracts to emit them...",
+        "created_at": "2019-11-12T23:17:02Z",
+        "updated_at": "2019-11-12T23:17:03Z",
+        "html_url": "https://github.com/d0or/dOor/pull/22#discussion_r345497072",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/22",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/345497072"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/22#discussion_r345497072"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/22"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/346018276",
+        "pull_request_review_id": 316577782,
+        "id": 346018276,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0NjAxODI3Ng==",
+        "diff_hunk": "@@ -1,103 +1,58 @@\n-//Meet.inc >>> \u0110Oor-Event <<<\n-//\u0110oor-Event - Everything's decentralized but not your \u0110oor\n-//\u0110Oor opens doors at events that are anchored on the Ethereum blockchain.\n-//\n-//Last update: 11.11.2019\n-\n pragma solidity ^0.5.0;\n \n import \"@openzeppelin/contracts/ownership/Ownable.sol\";\n import \"@openzeppelin/contracts/lifecycle/Pausable.sol\";\n import \"@openzeppelin/contracts/math/SafeMath.sol\";\n \n-\n-    //TODO\n-    //1. Review (old) hackathon code created in sleepytime limbo  [work in progress..]\n-    //2. Get GSN working\n-    //3. Upgradable contracts which includes created user data\n-    //4. Create event \u201ctickets\u201d that are transferable (can lead to a market)\n-\n-\n-contract DoorEvent is Ownable, Pausable {\n-    //SafeMath library for calculations\n+contract Door is Ownable, Pausable {\n     using SafeMath for uint;\n-\n-\n-    /**\n-     * Variables\n-     */\n-\n-    //Contract essential data\n-    string private eventName;\n-    uint private ticketPrice;\n-    bool private rsvpCanWithdrawFunds;\n-\n-    //Attendees (\"RSVPs\") can either be\n-    enum rsvpStatus {\n-        NONE,       //0: unregistered,\n-        REGISTERED, //1: registered (ticket owner) or\n-        ATTENDED    //2: can have attended.\n+    \n+    string public eventName;\n+    uint public ticketPrice;\n+    bool public allowsWithdraws;\n+\n+    enum TicketStatus {\n+        NONE,       \n+        REGISTERED,\n+        ATTENDED\n     }\n-    //Create attendee (\"RSVP\") struct\n-    struct rsvpStruct{\n-        rsvpStatus ticketStatus;\n+    \n+    struct attendeeStruct{\n+        TicketStatus ticketStatus;",
+        "path": "backend-truffle/contracts/DoorEvent.sol",
+        "position": 56,
+        "original_position": 56,
+        "commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "original_commit_id": "2d067be6f872a32c16727bcfa69bca2d59d87fc3",
+        "user": {
+            "login": "Dakavon",
+            "id": 3898916,
+            "node_id": "MDQ6VXNlcjM4OTg5MTY=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/3898916?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Dakavon",
+            "html_url": "https://github.com/Dakavon",
+            "followers_url": "https://api.github.com/users/Dakavon/followers",
+            "following_url": "https://api.github.com/users/Dakavon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Dakavon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Dakavon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Dakavon/subscriptions",
+            "organizations_url": "https://api.github.com/users/Dakavon/orgs",
+            "repos_url": "https://api.github.com/users/Dakavon/repos",
+            "events_url": "https://api.github.com/users/Dakavon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Dakavon/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "good point, thanks for checking",
+        "created_at": "2019-11-13T21:44:24Z",
+        "updated_at": "2019-11-13T21:44:24Z",
+        "html_url": "https://github.com/d0or/dOor/pull/22#discussion_r346018276",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/22",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/346018276"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/22#discussion_r346018276"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/22"
+            }
+        },
+        "in_reply_to_id": 345489867
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/346020003",
+        "pull_request_review_id": 316579965,
+        "id": 346020003,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0NjAyMDAwMw==",
+        "diff_hunk": "@@ -1,77 +1,61 @@\n-//Meet.inc >>> \u0110Oor-Manager <<<\n-//The \u0110Oor-Manager is a factory that allows event managers to deploy their own Door Event.\n-//\u0110Oor opens doors at events that are anchored on the Ethereum blockchain.\n-//\n-//Last update: 10.11.2019\n-\n pragma solidity ^0.5.0;\n \n import \"@openzeppelin/contracts/ownership/Ownable.sol\";\n import \"@openzeppelin/contracts/lifecycle/Pausable.sol\";\n-import \"./DoorEvent.sol\";\n+import \"./Door.sol\";",
+        "path": "backend-truffle/contracts/DoorManager.sol",
+        "position": 12,
+        "original_position": 12,
+        "commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "original_commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "user": {
+            "login": "Dakavon",
+            "id": 3898916,
+            "node_id": "MDQ6VXNlcjM4OTg5MTY=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/3898916?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Dakavon",
+            "html_url": "https://github.com/Dakavon",
+            "followers_url": "https://api.github.com/users/Dakavon/followers",
+            "following_url": "https://api.github.com/users/Dakavon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Dakavon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Dakavon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Dakavon/subscriptions",
+            "organizations_url": "https://api.github.com/users/Dakavon/orgs",
+            "repos_url": "https://api.github.com/users/Dakavon/repos",
+            "events_url": "https://api.github.com/users/Dakavon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Dakavon/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I want to distinguish between \r\n- Door Event\r\n- Door Meetup\r\n- Door Dinner\r\n....etc",
+        "created_at": "2019-11-13T21:48:22Z",
+        "updated_at": "2019-11-13T21:48:23Z",
+        "html_url": "https://github.com/d0or/dOor/pull/22#discussion_r346020003",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/22",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/346020003"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/22#discussion_r346020003"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/22"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/d0or/dOor/pulls/comments/346021328",
+        "pull_request_review_id": 316581761,
+        "id": 346021328,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM0NjAyMTMyOA==",
+        "diff_hunk": "@@ -1,77 +1,61 @@\n-//Meet.inc >>> \u0110Oor-Manager <<<\n-//The \u0110Oor-Manager is a factory that allows event managers to deploy their own Door Event.\n-//\u0110Oor opens doors at events that are anchored on the Ethereum blockchain.\n-//\n-//Last update: 10.11.2019\n-\n pragma solidity ^0.5.0;\n \n import \"@openzeppelin/contracts/ownership/Ownable.sol\";\n import \"@openzeppelin/contracts/lifecycle/Pausable.sol\";\n-import \"./DoorEvent.sol\";\n+import \"./Door.sol\";\n \n+contract DoorFactory is Ownable, Pausable {\n \n-contract DoorManager is Ownable, Pausable{\n-    //Variables\n-    address[] private doorEventAddresses;\n-    mapping (address => bool) private doorEventCreated;\n+    address[] private doors;\n+    mapping (address => bool) private createdConfirmations;\n \n-    //Events\n-    event NewDoorCreated(\n-        address indexed doorOwner,\n+    event Created(",
+        "path": "backend-truffle/contracts/DoorManager.sol",
+        "position": 26,
+        "original_position": 26,
+        "commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "original_commit_id": "8f55c7b18ea582b9171a413f8356a4677cf57502",
+        "user": {
+            "login": "Dakavon",
+            "id": 3898916,
+            "node_id": "MDQ6VXNlcjM4OTg5MTY=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/3898916?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Dakavon",
+            "html_url": "https://github.com/Dakavon",
+            "followers_url": "https://api.github.com/users/Dakavon/followers",
+            "following_url": "https://api.github.com/users/Dakavon/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Dakavon/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Dakavon/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Dakavon/subscriptions",
+            "organizations_url": "https://api.github.com/users/Dakavon/orgs",
+            "repos_url": "https://api.github.com/users/Dakavon/repos",
+            "events_url": "https://api.github.com/users/Dakavon/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Dakavon/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "at the moment the DoorEvent.sol is not emitting a \"door creation\" event. You think we do not need that?\r\nDoorEvent.sol is just emitting an event called \"LogDoorEventTicketSold(msg.sender)\" where we can listen on (\"ticket counter\" or \"X tickets sold - hurry up\")",
+        "created_at": "2019-11-13T21:51:35Z",
+        "updated_at": "2019-11-13T21:51:36Z",
+        "html_url": "https://github.com/d0or/dOor/pull/22#discussion_r346021328",
+        "pull_request_url": "https://api.github.com/repos/d0or/dOor/pulls/22",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/comments/346021328"
+            },
+            "html": {
+                "href": "https://github.com/d0or/dOor/pull/22#discussion_r346021328"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/d0or/dOor/pulls/22"
+            }
+        },
+        "in_reply_to_id": 345497072
+    }
+]

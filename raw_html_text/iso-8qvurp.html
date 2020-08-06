@@ -1,0 +1,91 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    iso - an isomorphic programming language
+                </h1>
+                <p>
+                    iso is an interpreted programming language that explores the computational power of pattern matching.
+In this language we don't define functions, we define isomorphisms. They can execute in either direction.
+                </p>
+                <p>
+                    This has some interesting consequences. Imagine you are writing Python like this:
+                </p>
+                <pre class="language-python"><code>[a, b] = [1, 2]
+</code></pre>
+                <p>
+                    This assigns 1 to a and 2 to b. Nothing that special, many languages have this feature.
+                </p>
+                <p>
+                    Now imagine you could write this in Python:
+                </p>
+                <pre class="language-python"><code>def fn(x):
+                return x+1
+
+[fn(a), fn(b)] = [1, 2]
+</code></pre>
+                <p>
+                    If this did work, it would have to answer the question: what value of a gives 1 when passed to fn()?
+                </p>
+                <p>
+                    Now try this in iso, which does work.
+                </p>
+                <p>
+                    You can define fn with a bit of boilerplate as we haven't added integer math as a builtin yet:
+                </p>
+                <pre class="language-nolang"><code>type Int4 = Bool * Bool * Bool * Bool
+
+iso fn :: Int4 &lt;-&gt; Int4
+| a,b,c,0 &lt;-&gt; a,b,c,1
+| a,b,0,1 &lt;-&gt; a,b,1,0
+| a,0,1,1 &lt;-&gt; a,1,0,0
+| 0,1,1,1 &lt;-&gt; 1,0,0,0
+| 1,1,1,1 &lt;-&gt; 0,0,0,0
+</code></pre>
+                <p>
+                    Then you can run it forwards:
+                </p>
+                <pre class="language-nolang"><code>&gt; :evall fn (0,0,0,1)
+(0,0,1,0)
+</code></pre>
+                <p>
+                    And backwards:
+                </p>
+                <pre class="language-nolang"><code>&gt; :evalr fn (0,0,1,0)
+(0,0,0,1)
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            haskell
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/TOTBWF/iso" rel="nofollow" target="_blank" title="https://github.com/TOTBWF/iso">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

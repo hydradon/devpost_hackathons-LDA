@@ -1,2 +1,2 @@
 @ECHO OFF
-ssh -i .ssh\id_rsa vungocquang92@34.69.17.186
+ssh -i .ssh\id_rsa vungocquang92@35.232.235.169

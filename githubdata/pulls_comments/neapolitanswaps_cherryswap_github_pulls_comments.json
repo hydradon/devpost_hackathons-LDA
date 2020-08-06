@@ -1,0 +1,249 @@
+[
+    {
+        "url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/350091156",
+        "pull_request_review_id": 322165067,
+        "id": 350091156,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1MDA5MTE1Ng==",
+        "diff_hunk": "@@ -1,249 +1,246 @@\n-pragma solidity ^0.5.0;\n+pragma solidity ^0.5.12;\n \n-import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n-import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol\";\n+// Library & interfaces\n import \"./interface/ICERC20.sol\";\n import \"./interface/ISwapMath.sol\";\n+// Contracts\n+import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n+import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol\";\n+import \"./Cherrypool.sol\";\n+import \"./CherryMath.sol\";\n+\n+/**\n+ * @title Cherryswap Contract\n+ * @dev This contract handle all swaping operations\n+ */\n+contract Cherryswap is Initializable, Cherrypool {\n+    enum Bet {Short, Long}\n+\n+    uint256 oneMonthDuration = 60 * 60 * 24 * 30;\n+    uint256 maxInterestRatePaidPerBlock = uint256((25 * 1e16) / (4 * 60 * 24 * 365)); //25% APR is the max the pool will pay\n+\n+    uint256 ALPHA = 150; //scaled by 100 so 150 = 1.5\n+    uint256 BETA = 0;\n+\n+    uint256 RAGE_QUITE_PENALTY = 20; //scaled by 100 so 20 = 0.2\n+\n+    struct Swap {\n+        address owner;\n+        uint256 swapId;\n+        uint256 startingTime;\n+        uint256 endingTime;\n+        uint256 fixedRateOffer;\n+        uint256 depositedValue;\n+        uint256 startingcTokenExchangeRate;\n+        Bet bet;\n+    }\n+\n+    Swap[] public swaps;\n+\n+    Cherrymath cherryMath;\n+\n+    ERC20 token;\n+    ICERC20 cToken;\n+",
+        "path": "packages/smart-contracts/contracts/Cherryswap.sol",
+        "position": null,
+        "original_position": 47,
+        "commit_id": "a958e8480bb7ff4851ca815567c8d73fb9b8fd4c",
+        "original_commit_id": "6d34275928397266fdfaff4d073792ebc0d2d8e2",
+        "user": {
+            "login": "haythem96",
+            "id": 17862704,
+            "node_id": "MDQ6VXNlcjE3ODYyNzA0",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/17862704?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/haythem96",
+            "html_url": "https://github.com/haythem96",
+            "followers_url": "https://api.github.com/users/haythem96/followers",
+            "following_url": "https://api.github.com/users/haythem96/following{/other_user}",
+            "gists_url": "https://api.github.com/users/haythem96/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/haythem96/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/haythem96/subscriptions",
+            "organizations_url": "https://api.github.com/users/haythem96/orgs",
+            "repos_url": "https://api.github.com/users/haythem96/repos",
+            "events_url": "https://api.github.com/users/haythem96/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/haythem96/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I really think we don't need `ERC20 token` and `ICERC20 cToken` in `Cherryswap.sol` as they exist in the `Cherrypool.sol` and it inherit it.",
+        "created_at": "2019-11-25T10:12:35Z",
+        "updated_at": "2019-12-22T21:02:40Z",
+        "html_url": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r350091156",
+        "pull_request_url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/350091156"
+            },
+            "html": {
+                "href": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r350091156"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/350420540",
+        "pull_request_review_id": 322575268,
+        "id": 350420540,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1MDQyMDU0MA==",
+        "diff_hunk": "@@ -1,249 +1,246 @@\n-pragma solidity ^0.5.0;\n+pragma solidity ^0.5.12;\n \n-import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n-import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol\";\n+// Library & interfaces\n import \"./interface/ICERC20.sol\";\n import \"./interface/ISwapMath.sol\";\n+// Contracts\n+import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n+import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol\";\n+import \"./Cherrypool.sol\";\n+import \"./CherryMath.sol\";\n+\n+/**\n+ * @title Cherryswap Contract\n+ * @dev This contract handle all swaping operations\n+ */\n+contract Cherryswap is Initializable, Cherrypool {\n+    enum Bet {Short, Long}\n+\n+    uint256 oneMonthDuration = 60 * 60 * 24 * 30;\n+    uint256 maxInterestRatePaidPerBlock = uint256((25 * 1e16) / (4 * 60 * 24 * 365)); //25% APR is the max the pool will pay\n+\n+    uint256 ALPHA = 150; //scaled by 100 so 150 = 1.5\n+    uint256 BETA = 0;\n+\n+    uint256 RAGE_QUITE_PENALTY = 20; //scaled by 100 so 20 = 0.2\n+\n+    struct Swap {\n+        address owner;\n+        uint256 swapId;\n+        uint256 startingTime;\n+        uint256 endingTime;\n+        uint256 fixedRateOffer;\n+        uint256 depositedValue;\n+        uint256 startingcTokenExchangeRate;\n+        Bet bet;\n+    }\n+\n+    Swap[] public swaps;\n+\n+    Cherrymath cherryMath;\n+\n+    ERC20 token;\n+    ICERC20 cToken;\n+",
+        "path": "packages/smart-contracts/contracts/Cherryswap.sol",
+        "position": null,
+        "original_position": 47,
+        "commit_id": "a958e8480bb7ff4851ca815567c8d73fb9b8fd4c",
+        "original_commit_id": "6d34275928397266fdfaff4d073792ebc0d2d8e2",
+        "user": {
+            "login": "haythem96",
+            "id": 17862704,
+            "node_id": "MDQ6VXNlcjE3ODYyNzA0",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/17862704?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/haythem96",
+            "html_url": "https://github.com/haythem96",
+            "followers_url": "https://api.github.com/users/haythem96/followers",
+            "following_url": "https://api.github.com/users/haythem96/following{/other_user}",
+            "gists_url": "https://api.github.com/users/haythem96/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/haythem96/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/haythem96/subscriptions",
+            "organizations_url": "https://api.github.com/users/haythem96/orgs",
+            "repos_url": "https://api.github.com/users/haythem96/repos",
+            "events_url": "https://api.github.com/users/haythem96/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/haythem96/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@chrismaree I removed those as we inherit `Cherrypool.sol`",
+        "created_at": "2019-11-25T21:02:30Z",
+        "updated_at": "2019-12-22T21:02:40Z",
+        "html_url": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r350420540",
+        "pull_request_url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/350420540"
+            },
+            "html": {
+                "href": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r350420540"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30"
+            }
+        },
+        "in_reply_to_id": 350091156
+    },
+    {
+        "url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/355148077",
+        "pull_request_review_id": 328578704,
+        "id": 355148077,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1NTE0ODA3Nw==",
+        "diff_hunk": "@@ -0,0 +1,304 @@\n+pragma solidity ^0.5.12;\n+\n+// Library & interfaces\n+import \"@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol\";\n+import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol\";\n+import \"./interface/ICERC20.sol\";\n+// Contracts\n+import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n+import \"./token/CherryDai.sol\";\n+import \"./CherryMath.sol\";\n+import \"./ErrorReporter.sol\";\n+\n+/**\n+ * @title CherryPool Contract\n+ * @dev This contract handle Cherry Pool functionalities\n+ */\n+contract CherryPool is Initializable, TokenErrorReporter {\n+    using SafeMath for uint256;\n+\n+    uint256 public poolBalance; // total pool balance in DAI\n+    uint256 public longPoolBalance; // long pool balance in DAI\n+    uint256 public shortPoolBalance; // short pool balance in DAI\n+    uint256 public longPoolReserved; // amount of DAI reserved in the long pool\n+    uint256 public shortPoolReserved; // amount of DAI reserved in the short pool\n+    int256 public poolcTokenProfit; //the total net profit the pool has made (or lost) during it life\n+\n+    IERC20 public token; // collateral asset = DAI\n+    ICERC20 public cToken; // cDAI token\n+    CherryDai public cherryDai; // CherryDai token\n+\n+    CherryMath cherryMath;  // Math library\n+\n+    struct RedeemLocalVars {\n+        Error err;\n+        CherryMath.MathError mathErr;\n+        uint exchangeRateMantissa;\n+        uint redeemTokens;\n+        uint redeemAmount;\n+        uint totalSupplyNew;\n+        uint accountTokensNew;\n+    }\n+\n+    event DepositLiquidity(address indexed liquidityProvider, uint256 amount);\n+    event PoolShare(uint256 amount);\n+    event MintCherry(address indexed liquidityProvider, uint256 amount);\n+    event RedeemCherry(address indexed liquidityProvider, uint256 redeemAmount, uint256 redeemToken);\n+    event Transfer(address indexed to, uint256 value);\n+    event CurrentExchangeRate(uint256 rate);\n+\n+    /**\n+     * @dev Initialize contract states\n+     */\n+    function initialize(address _token, address _cToken, address _cherryMath) public initializer {\n+        token = IERC20(_token);\n+        cToken = ICERC20(_cToken);\n+\n+        cherryDai = new CherryDai();\n+        cherryDai.initialize();\n+\n+        cherryMath = CherryMath(_cherryMath);\n+\n+        poolBalance = 0;\n+        longPoolBalance = 0;\n+        shortPoolBalance = 0;\n+        longPoolReserved = 0;\n+        shortPoolReserved = 0;\n+    }\n+\n+    /**\n+     * @dev Modifier to check if long pool is not fully utilized\n+     */\n+    modifier isLongUtilized() {\n+        require(\n+            calcLongPoolUtil(longPoolReserved) < 1e18,\n+            \"Cherrypool::long pool if fully utilized\"\n+        );\n+        _;\n+    }\n+\n+    /**\n+     * @dev Modifier to check if short pool is not fully utilized\n+     */\n+    modifier isShortUtilized() {\n+        require(\n+            calcShortPoolUtil(shortPoolReserved) < 1e18,\n+            \"Cherrypool::short pool is fully utilized\"\n+        );\n+        _;\n+    }\n+\n+    modifier canReserveLong(uint256 _amount) {\n+        require(\n+            longPoolReserved.add(_amount) <= longPoolBalance,\n+            \"Cherrypool::long pool does not have liquidity\"\n+        );\n+        _;\n+    }\n+\n+    modifier canReserveShort(uint256 _amount) {\n+        require(\n+            shortPoolReserved.add(_amount) <= shortPoolBalance,\n+            \"Cherrypool::short pool does not have liquidity\"\n+        );\n+        _;\n+    }\n+\n+    /**\n+     * @dev at liquidity to the cherry pool to offer swaps against\n+     * @param _amount amount of deposited DAI\n+     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n+     */\n+    function mint(uint256 _amount) public returns (uint) {\n+        require(_amount > 0, \"Cherrypool::amount provided should be higher\");\n+\n+        // collect liquidity from provider\n+        require(\n+            token.transferFrom(msg.sender, address(this), _amount),\n+            \"Cherrypool::deposit liquidity failed\"\n+        );\n+\n+        // deposit liqudity into compound\n+        token.approve(address(cToken), _amount);\n+        assert(cToken.mint(_amount) == 0);\n+\n+        CherryMath.MathError _err;\n+        uint256 _rate;\n+        (_err, _rate) = exchangeRate();\n+        if (_err != CherryMath.MathError.NO_ERROR) {\n+            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_RATE_READ_FAILED, uint(_err));\n+        }\n+\n+        // mint CherryDai to liqudity provider\n+        cherryDai.mint(msg.sender, _amount.mul(_rate));\n+\n+        // internal accounting to store pool balances\n+        poolBalance = poolBalance.add(_amount);\n+        longPoolBalance = longPoolBalance.add(_amount.div(2));\n+        shortPoolBalance = shortPoolBalance.add(_amount.div(2));\n+\n+        emit DepositLiquidity(msg.sender, _amount);\n+        emit MintCherry(msg.sender, _amount);\n+    }\n+\n+    /**\n+     * @dev Get long pool utilization\n+     * @param _longPoolReserved amount of liquidity reserved in the long pool\n+     * @return current long pool utilization as a decimal scaled 10*18\n+     */\n+\n+    function calcLongPoolUtil(uint256 _longPoolReserved)\n+        public\n+        view\n+        returns (uint256)\n+    {\n+        return (_longPoolReserved * 1e18) / longPoolBalance;\n+    }\n+\n+    /**\n+     * @dev Get short pool utilization\n+     * @param _shortPoolReserved amount of liquidity reserved in the short pool\n+     * @return current short pool utilization as a decimal scaled 10*18\n+     */\n+    function calcShortPoolUtil(uint256 _shortPoolReserved)\n+        public\n+        view\n+        returns (uint256)\n+    {\n+        return (_shortPoolReserved * 1e18) / shortPoolBalance;\n+    }\n+\n+    /**\n+     * @dev Get Cherrydai balance for liquidity provider\n+     * @param _provider liquidity provider address\n+     * @return CherryDai balance\n+     */\n+    function cherryDaiBalanceOf(address _provider)\n+        public\n+        view\n+        returns (uint256)\n+    {\n+        return cherryDai.balanceOf(_provider);\n+    }\n+\n+    /**\n+     * @dev transfer underlying asset back to liquidity provider assuming liquidity is still sufficient.\n+     * @notice the amount returned is the number of cherrytokens multiplied by the current exchange rate\n+     * The sender should approve the _amount to this contract address\n+     * @param _amount amount of CherryDai to redeem\n+     * @return 0 if successful otherwise an error code\n+     */\n+    function redeem(uint256 _amount)\n+        public\n+        isLongUtilized()\n+        isShortUtilized()\n+        returns (uint)\n+    {\n+        require(\n+            _amount <= cherryDai.balanceOf(msg.sender),\n+            \"CherryPool::redeem request is more than current token balance\"\n+        );\n+\n+        RedeemLocalVars memory vars;\n+\n+        // get exchange rate from Cherrydai to Dai+fee\n+        (vars.mathErr, vars.exchangeRateMantissa) = exchangeRate();\n+\n+        if (vars.mathErr != CherryMath.MathError.NO_ERROR) {\n+            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_RATE_READ_FAILED, uint(vars.mathErr));\n+        }\n+\n+        vars.redeemTokens = _amount;\n+\n+        // Calculate the amount of Dai to get(redeemAmount) from redeeming CherryDai(redeemTokens)\n+        (vars.mathErr, vars.redeemAmount) = cherryMath.mulScalarTruncate(vars.exchangeRateMantissa, vars.redeemTokens);\n+        if (vars.mathErr != CherryMath.MathError.NO_ERROR) {\n+            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_TOKENS_CALCULATION_FAILED, uint(vars.mathErr));\n+        }\n+\n+        /* Fail gracefully if pool has insufficient cash */\n+        if (getCashPrior() < vars.redeemAmount) {\n+            return fail(Error.TOKEN_INSUFFICIENT_CASH, FailureInfo.REDEEM_TRANSFER_OUT_NOT_POSSIBLE);\n+        }\n+\n+        payout(msg.sender, vars.redeemAmount, vars.redeemTokens);\n+        //require(vars.err == Error.NO_ERROR, \"redeem transfer out failed\");\n+\n+        emit RedeemCherry(msg.sender, vars.redeemAmount, vars.redeemTokens);\n+\n+        return uint(Error.NO_ERROR);\n+\n+    }\n+\n+    /**\n+     * @dev Get available pool balance (total pool balance - total reserved balance)\n+     * @return available pool balance\n+     * @return 0 if successful otherwise an error code\n+     */\n+    function getCashPrior() internal returns (uint256) {\n+        return poolBalance - (shortPoolReserved + longPoolReserved);\n+    }\n+\n+    function payout(address _redeemer, uint256 _redeemAmount, uint256 _redeemTokens) internal returns (Error) {\n+        cherryDai.burnFrom(_redeemer, _redeemTokens);\n+        \n+        // redeem an amount of underlying\n+        require(\n+            cToken.redeemUnderlying(_redeemAmount) == 0,\n+            \"CherryPool::payout - something went wrong\"\n+        );\n+\n+        // transfer Dai to redeemer\n+        token.transfer(_redeemer, _redeemAmount);\n+    }\n+\n+    /**\n+     * @dev the rate of CherryDai redeemable for Dai.\n+     * @notice Each CherryDai is convertible into the underlying asset + the fees accrued through liquidity provision.\n+     * @return 0 if successful otherwise an error code\n+     */\n+    function exchangeRate() public returns (CherryMath.MathError, uint256) {\n+        int256 rate = int256(getcTokenExchangeRate() / 1e10); //+ (poolcTokenProfit * 1e18) / int256(cherryDai.totalSupply());\n+",
+        "path": "packages/smart-contracts/contracts/CherryPool.sol",
+        "position": 266,
+        "original_position": 262,
+        "commit_id": "a958e8480bb7ff4851ca815567c8d73fb9b8fd4c",
+        "original_commit_id": "d6fa9adaadd5170fa216d87ba4594b90c5dfaf11",
+        "user": {
+            "login": "haythem96",
+            "id": 17862704,
+            "node_id": "MDQ6VXNlcjE3ODYyNzA0",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/17862704?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/haythem96",
+            "html_url": "https://github.com/haythem96",
+            "followers_url": "https://api.github.com/users/haythem96/followers",
+            "following_url": "https://api.github.com/users/haythem96/following{/other_user}",
+            "gists_url": "https://api.github.com/users/haythem96/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/haythem96/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/haythem96/subscriptions",
+            "organizations_url": "https://api.github.com/users/haythem96/orgs",
+            "repos_url": "https://api.github.com/users/haythem96/repos",
+            "events_url": "https://api.github.com/users/haythem96/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/haythem96/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@chrismaree  I commented that line for now... it revert with invalid opcode",
+        "created_at": "2019-12-07T22:43:09Z",
+        "updated_at": "2019-12-22T21:02:40Z",
+        "html_url": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r355148077",
+        "pull_request_url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/355148077"
+            },
+            "html": {
+                "href": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r355148077"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/356208123",
+        "pull_request_review_id": 330055636,
+        "id": 356208123,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1NjIwODEyMw==",
+        "diff_hunk": "@@ -0,0 +1,304 @@\n+pragma solidity ^0.5.12;\n+\n+// Library & interfaces\n+import \"@openzeppelin/contracts-ethereum-package/contracts/math/SafeMath.sol\";\n+import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/IERC20.sol\";\n+import \"./interface/ICERC20.sol\";\n+// Contracts\n+import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n+import \"./token/CherryDai.sol\";\n+import \"./CherryMath.sol\";\n+import \"./ErrorReporter.sol\";\n+\n+/**\n+ * @title CherryPool Contract\n+ * @dev This contract handle Cherry Pool functionalities\n+ */\n+contract CherryPool is Initializable, TokenErrorReporter {\n+    using SafeMath for uint256;\n+\n+    uint256 public poolBalance; // total pool balance in DAI\n+    uint256 public longPoolBalance; // long pool balance in DAI\n+    uint256 public shortPoolBalance; // short pool balance in DAI\n+    uint256 public longPoolReserved; // amount of DAI reserved in the long pool\n+    uint256 public shortPoolReserved; // amount of DAI reserved in the short pool\n+    int256 public poolcTokenProfit; //the total net profit the pool has made (or lost) during it life\n+\n+    IERC20 public token; // collateral asset = DAI\n+    ICERC20 public cToken; // cDAI token\n+    CherryDai public cherryDai; // CherryDai token\n+\n+    CherryMath cherryMath;  // Math library\n+\n+    struct RedeemLocalVars {\n+        Error err;\n+        CherryMath.MathError mathErr;\n+        uint exchangeRateMantissa;\n+        uint redeemTokens;\n+        uint redeemAmount;\n+        uint totalSupplyNew;\n+        uint accountTokensNew;\n+    }\n+\n+    event DepositLiquidity(address indexed liquidityProvider, uint256 amount);\n+    event PoolShare(uint256 amount);\n+    event MintCherry(address indexed liquidityProvider, uint256 amount);\n+    event RedeemCherry(address indexed liquidityProvider, uint256 redeemAmount, uint256 redeemToken);\n+    event Transfer(address indexed to, uint256 value);\n+    event CurrentExchangeRate(uint256 rate);\n+\n+    /**\n+     * @dev Initialize contract states\n+     */\n+    function initialize(address _token, address _cToken, address _cherryMath) public initializer {\n+        token = IERC20(_token);\n+        cToken = ICERC20(_cToken);\n+\n+        cherryDai = new CherryDai();\n+        cherryDai.initialize();\n+\n+        cherryMath = CherryMath(_cherryMath);\n+\n+        poolBalance = 0;\n+        longPoolBalance = 0;\n+        shortPoolBalance = 0;\n+        longPoolReserved = 0;\n+        shortPoolReserved = 0;\n+    }\n+\n+    /**\n+     * @dev Modifier to check if long pool is not fully utilized\n+     */\n+    modifier isLongUtilized() {\n+        require(\n+            calcLongPoolUtil(longPoolReserved) < 1e18,\n+            \"Cherrypool::long pool if fully utilized\"\n+        );\n+        _;\n+    }\n+\n+    /**\n+     * @dev Modifier to check if short pool is not fully utilized\n+     */\n+    modifier isShortUtilized() {\n+        require(\n+            calcShortPoolUtil(shortPoolReserved) < 1e18,\n+            \"Cherrypool::short pool is fully utilized\"\n+        );\n+        _;\n+    }\n+\n+    modifier canReserveLong(uint256 _amount) {\n+        require(\n+            longPoolReserved.add(_amount) <= longPoolBalance,\n+            \"Cherrypool::long pool does not have liquidity\"\n+        );\n+        _;\n+    }\n+\n+    modifier canReserveShort(uint256 _amount) {\n+        require(\n+            shortPoolReserved.add(_amount) <= shortPoolBalance,\n+            \"Cherrypool::short pool does not have liquidity\"\n+        );\n+        _;\n+    }\n+\n+    /**\n+     * @dev at liquidity to the cherry pool to offer swaps against\n+     * @param _amount amount of deposited DAI\n+     * @return uint 0=success, otherwise a failure (see ErrorReporter.sol for details)\n+     */\n+    function mint(uint256 _amount) public returns (uint) {\n+        require(_amount > 0, \"Cherrypool::amount provided should be higher\");\n+\n+        // collect liquidity from provider\n+        require(\n+            token.transferFrom(msg.sender, address(this), _amount),\n+            \"Cherrypool::deposit liquidity failed\"\n+        );\n+\n+        // deposit liqudity into compound\n+        token.approve(address(cToken), _amount);\n+        assert(cToken.mint(_amount) == 0);\n+\n+        CherryMath.MathError _err;\n+        uint256 _rate;\n+        (_err, _rate) = exchangeRate();\n+        if (_err != CherryMath.MathError.NO_ERROR) {\n+            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_RATE_READ_FAILED, uint(_err));\n+        }\n+\n+        // mint CherryDai to liqudity provider\n+        cherryDai.mint(msg.sender, _amount.mul(_rate));\n+\n+        // internal accounting to store pool balances\n+        poolBalance = poolBalance.add(_amount);\n+        longPoolBalance = longPoolBalance.add(_amount.div(2));\n+        shortPoolBalance = shortPoolBalance.add(_amount.div(2));\n+\n+        emit DepositLiquidity(msg.sender, _amount);\n+        emit MintCherry(msg.sender, _amount);\n+    }\n+\n+    /**\n+     * @dev Get long pool utilization\n+     * @param _longPoolReserved amount of liquidity reserved in the long pool\n+     * @return current long pool utilization as a decimal scaled 10*18\n+     */\n+\n+    function calcLongPoolUtil(uint256 _longPoolReserved)\n+        public\n+        view\n+        returns (uint256)\n+    {\n+        return (_longPoolReserved * 1e18) / longPoolBalance;\n+    }\n+\n+    /**\n+     * @dev Get short pool utilization\n+     * @param _shortPoolReserved amount of liquidity reserved in the short pool\n+     * @return current short pool utilization as a decimal scaled 10*18\n+     */\n+    function calcShortPoolUtil(uint256 _shortPoolReserved)\n+        public\n+        view\n+        returns (uint256)\n+    {\n+        return (_shortPoolReserved * 1e18) / shortPoolBalance;\n+    }\n+\n+    /**\n+     * @dev Get Cherrydai balance for liquidity provider\n+     * @param _provider liquidity provider address\n+     * @return CherryDai balance\n+     */\n+    function cherryDaiBalanceOf(address _provider)\n+        public\n+        view\n+        returns (uint256)\n+    {\n+        return cherryDai.balanceOf(_provider);\n+    }\n+\n+    /**\n+     * @dev transfer underlying asset back to liquidity provider assuming liquidity is still sufficient.\n+     * @notice the amount returned is the number of cherrytokens multiplied by the current exchange rate\n+     * The sender should approve the _amount to this contract address\n+     * @param _amount amount of CherryDai to redeem\n+     * @return 0 if successful otherwise an error code\n+     */\n+    function redeem(uint256 _amount)\n+        public\n+        isLongUtilized()\n+        isShortUtilized()\n+        returns (uint)\n+    {\n+        require(\n+            _amount <= cherryDai.balanceOf(msg.sender),\n+            \"CherryPool::redeem request is more than current token balance\"\n+        );\n+\n+        RedeemLocalVars memory vars;\n+\n+        // get exchange rate from Cherrydai to Dai+fee\n+        (vars.mathErr, vars.exchangeRateMantissa) = exchangeRate();\n+\n+        if (vars.mathErr != CherryMath.MathError.NO_ERROR) {\n+            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_RATE_READ_FAILED, uint(vars.mathErr));\n+        }\n+\n+        vars.redeemTokens = _amount;\n+\n+        // Calculate the amount of Dai to get(redeemAmount) from redeeming CherryDai(redeemTokens)\n+        (vars.mathErr, vars.redeemAmount) = cherryMath.mulScalarTruncate(vars.exchangeRateMantissa, vars.redeemTokens);\n+        if (vars.mathErr != CherryMath.MathError.NO_ERROR) {\n+            return failOpaque(Error.MATH_ERROR, FailureInfo.REDEEM_EXCHANGE_TOKENS_CALCULATION_FAILED, uint(vars.mathErr));\n+        }\n+\n+        /* Fail gracefully if pool has insufficient cash */\n+        if (getCashPrior() < vars.redeemAmount) {\n+            return fail(Error.TOKEN_INSUFFICIENT_CASH, FailureInfo.REDEEM_TRANSFER_OUT_NOT_POSSIBLE);\n+        }\n+\n+        payout(msg.sender, vars.redeemAmount, vars.redeemTokens);\n+        //require(vars.err == Error.NO_ERROR, \"redeem transfer out failed\");\n+\n+        emit RedeemCherry(msg.sender, vars.redeemAmount, vars.redeemTokens);\n+\n+        return uint(Error.NO_ERROR);\n+\n+    }\n+\n+    /**\n+     * @dev Get available pool balance (total pool balance - total reserved balance)\n+     * @return available pool balance\n+     * @return 0 if successful otherwise an error code\n+     */\n+    function getCashPrior() internal returns (uint256) {\n+        return poolBalance - (shortPoolReserved + longPoolReserved);\n+    }\n+\n+    function payout(address _redeemer, uint256 _redeemAmount, uint256 _redeemTokens) internal returns (Error) {\n+        cherryDai.burnFrom(_redeemer, _redeemTokens);\n+        \n+        // redeem an amount of underlying\n+        require(\n+            cToken.redeemUnderlying(_redeemAmount) == 0,\n+            \"CherryPool::payout - something went wrong\"\n+        );\n+\n+        // transfer Dai to redeemer\n+        token.transfer(_redeemer, _redeemAmount);\n+    }\n+\n+    /**\n+     * @dev the rate of CherryDai redeemable for Dai.\n+     * @notice Each CherryDai is convertible into the underlying asset + the fees accrued through liquidity provision.\n+     * @return 0 if successful otherwise an error code\n+     */\n+    function exchangeRate() public returns (CherryMath.MathError, uint256) {\n+        int256 rate = int256(getcTokenExchangeRate() / 1e10); //+ (poolcTokenProfit * 1e18) / int256(cherryDai.totalSupply());\n+",
+        "path": "packages/smart-contracts/contracts/CherryPool.sol",
+        "position": 266,
+        "original_position": 262,
+        "commit_id": "a958e8480bb7ff4851ca815567c8d73fb9b8fd4c",
+        "original_commit_id": "d6fa9adaadd5170fa216d87ba4594b90c5dfaf11",
+        "user": {
+            "login": "haythem96",
+            "id": 17862704,
+            "node_id": "MDQ6VXNlcjE3ODYyNzA0",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/17862704?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/haythem96",
+            "html_url": "https://github.com/haythem96",
+            "followers_url": "https://api.github.com/users/haythem96/followers",
+            "following_url": "https://api.github.com/users/haythem96/following{/other_user}",
+            "gists_url": "https://api.github.com/users/haythem96/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/haythem96/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/haythem96/subscriptions",
+            "organizations_url": "https://api.github.com/users/haythem96/orgs",
+            "repos_url": "https://api.github.com/users/haythem96/repos",
+            "events_url": "https://api.github.com/users/haythem96/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/haythem96/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@chrismaree it revert because `int256(cherryDai.totalSupply()` equal to zero in the case of the first mint() ",
+        "created_at": "2019-12-10T18:36:32Z",
+        "updated_at": "2019-12-22T21:02:40Z",
+        "html_url": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r356208123",
+        "pull_request_url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/356208123"
+            },
+            "html": {
+                "href": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r356208123"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30"
+            }
+        },
+        "in_reply_to_id": 355148077
+    },
+    {
+        "url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/356329047",
+        "pull_request_review_id": 330209297,
+        "id": 356329047,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1NjMyOTA0Nw==",
+        "diff_hunk": "@@ -0,0 +1,273 @@\n+pragma solidity ^0.5.12;\n+\n+// Contracts\n+import \"@openzeppelin/upgrades/contracts/Initializable.sol\";\n+import \"@openzeppelin/contracts-ethereum-package/contracts/token/ERC20/ERC20.sol\";\n+import \"./CherryPool.sol\";\n+\n+/**\n+ * @title CherrySwap Contract\n+ * @dev This contract handle all swaping operations\n+ */\n+contract CherrySwap is Initializable, CherryPool {\n+    enum Bet {Short, Long}\n+\n+    uint256 constant oneMonthDuration = 60 * 60 * 24 * 30;\n+    //25% APR is the max the pool will pay. This is 25%, compounding per block,\n+    // scaled by 10^18. calculate by: (0.25 * 1e18) / (4 * 60 * 24 * 365)\n+    uint256 constant maxInterestRatePaidPerBlock = 118911719939;\n+\n+    uint256 constant ALPHA = 150; //scaled by 100 so 150 = 1.5\n+    uint256 constant BETA = 0;\n+\n+    uint256 constant RAGE_QUITE_PENALTY = 20; //scaled by 100 so 20 = 0.2\n+\n+    struct Swap {\n+        address owner;\n+        uint256 swapId;\n+        uint256 startingTime;\n+        uint256 endingTime;\n+        uint256 fixedRateOffer;\n+        uint256 amount;\n+        uint256 cTokenAmount;\n+        uint256 reserveAmount;\n+        uint256 startingcTokenExchangeRate;\n+        Bet bet;\n+    }\n+\n+    Swap[] public swaps;\n+\n+    /**\n+     * @dev Initialize contract states\n+     */\n+    function initialize(address _token, address _cToken, address _cherryMath)\n+        public\n+        initializer\n+    {\n+        require(\n+            (_token != address(0)) && (_cToken != address(0) && (_cherryMath != address(0))),\n+            \"CherrySwap::invalid tokens addresses\"\n+        );\n+\n+        CherryPool.initialize(_token, _cToken, _cherryMath);\n+\n+        cToken.approve(_token, 100000000000e18);\n+    }\n+\n+    /**\n+     * @dev function called by trader to enter into long swap position.\n+     * @notice requires long pool utlization < 100% and enough liquidity in the long pool to cover trader\n+     */\n+    function createLongPosition(uint256 _amount) public isLongUtilized {\n+        uint256 futureValue = cherryMath.futureValue(\n+            _amount,\n+            maxInterestRatePaidPerBlock,\n+            0,\n+            oneMonthDuration\n+        );\n+\n+        uint256 reserveAmount = (futureValue - _amount) * 1e3;\n+",
+        "path": "packages/smart-contracts/contracts/CherrySwap.sol",
+        "position": 69,
+        "original_position": 70,
+        "commit_id": "a958e8480bb7ff4851ca815567c8d73fb9b8fd4c",
+        "original_commit_id": "45b54bb03d9b2ab5839614e3f394a92cdcfd0ac4",
+        "user": {
+            "login": "haythem96",
+            "id": 17862704,
+            "node_id": "MDQ6VXNlcjE3ODYyNzA0",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/17862704?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/haythem96",
+            "html_url": "https://github.com/haythem96",
+            "followers_url": "https://api.github.com/users/haythem96/followers",
+            "following_url": "https://api.github.com/users/haythem96/following{/other_user}",
+            "gists_url": "https://api.github.com/users/haythem96/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/haythem96/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/haythem96/subscriptions",
+            "organizations_url": "https://api.github.com/users/haythem96/orgs",
+            "repos_url": "https://api.github.com/users/haythem96/repos",
+            "events_url": "https://api.github.com/users/haythem96/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/haythem96/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@chrismaree  this one is not 18 decimal",
+        "created_at": "2019-12-10T23:13:27Z",
+        "updated_at": "2019-12-22T21:02:40Z",
+        "html_url": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r356329047",
+        "pull_request_url": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/comments/356329047"
+            },
+            "html": {
+                "href": "https://github.com/NeapolitanSwaps/CherrySwap/pull/30#discussion_r356329047"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/NeapolitanSwaps/CherrySwap/pulls/30"
+            }
+        }
+    }
+]

@@ -1,0 +1,250 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/80w-lWcPGXM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In India, a person goes missing every eight minutes, according to data from the National Crime Records Bureau. The statistics revealed that 2,667 people went missing (till March this year) in Mumbai alone, of which 1,675 have been found.
+                </p>
+                <p>
+                    The police in India, barring a few states, do not register first information reports &ndash; the first step to an investigation &mdash; for missing people. So no formal case is even filed. They only make an entry into the list of missing persons at the police station so in-depth investigations are rare. There is no investigation of a crime unless the person who reports someone missing asks the police to file a case of kidnapping.
+                </p>
+                <p>
+                    Also if a person is reported lost in one state but has been trafficked to another state, there is no mechanism to ensure that the person will be searched for countrywide. Clearly, there is a &ldquo;lack of inter-state cooperation&rdquo; and a need for an &ldquo;integrated country-wide database&rdquo; for missing people.
+                </p>
+                <p>
+                    Amber Alert Mumbai equips its users to take first-hand action by sending an alert for the person missing via Facebook messenger, providing a greater exposure and thereby increasing the chances of locating their dear ones.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    People who have subscribed to the Amber Alert Page on Facebook can easily report missing or found people using the page&rsquo;s messenger bot. The bot offers every user two options of either report a missing person or report that they may have found one.
+                </p>
+                <p>
+                    After a missing person is reported, every subscriber receives a broadcast about the person's details and the emergency contact numbers of the Police Helpline.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <h3>
+                    Chatbot
+                </h3>
+                <p>
+                    We built the chatbot in Flask and used the Facebook Messenger API to send and receive messages. The chatbot uses common Messenger Send APIs like:
+                </p>
+                <ol>
+                    <li>
+                        URL Button for linking to an FB Post or Missing Person Detail.
+                    </li>
+                    <li>
+                        Call Button for calling the Police Helpline in case a missing person is found.
+                    </li>
+                    <li>
+                        Get Started Button for onboarding users and subscribing them to Missing Person Alerts.
+                    </li>
+                    <li>
+                        Quick Replies for continuously providing the user a clear direction/flow while interacting with the bot.
+                    </li>
+                    <li>
+                        Webview: The webview is primarily used for filling a form to register a missing person. It's also used for previewing FB Posts and details of the missing person. The webview also auto-closes after filling the form using Messenger Extensions.
+                    </li>
+                </ol>
+                <h3>
+                    Web App
+                </h3>
+                <p>
+                    The backbone of the whole system is the web app built in Ruby on Rails deployed on Heroku. The app stores Missing person information and uses Messenger Extensions to decide between closing a webview (in case of Messenger views) or showing "I found this person" buttons. The Messenger Extensions are also used to capture the user IDs which are later used to send replies back to the chatbot user through the Rails app directly.
+                </p>
+                <p>
+                    The Rails app also asynchronously publishes an FB Post about the missing person, broadcasts this information as an alert to all subscribers and links to the post in that broadcast, all using the Graph API. The asynchronous processing is executed using Sidekiq workers. The subscriber list itself is stored in a Redis Datastore. A user is subscribed to alerts when the click the "Get Started" button.
+                </p>
+                <p>
+                    The Rails app frontend uses Bootstrap to adjust between varying screen sizes. It was especially important to make the UI readable and clear since a majority of the views would occur through the Messenger Webview.
+                </p>
+                <p>
+                    We whitelisted the image CDN domain, the chatbot domain, and the web app domain to use Messenger Extensions and send images to Messenger.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    What made making this project fun was overcoming these challenges and learning tons through them. :smile:
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            The most challenging part was deciding how to send the missing person alerts as a broadcast. We initially thought of somehow finding some way to retrieve all the users who 'liked' or 'followed' the page. Unfortunately, we didn't find any endpoint that did so. We even thought about scraping the Facebook Search results! (Simple thing like scraping the results of facebook.com/page_id/likers)
+We finally used Redis to store the FB IDs of the users who clicked the "Get Started" button. The idea came after reading ways that businesses could use chatbots to market their products.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The permission of the Access Tokens had us confused initially. We allotted the Page post permission through the Graph API explorer. Suffice to say, the API explorer was constantly being used to find out what we could do with the Graph API.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            User Interface: Providing a clean, minimal interface that was optimized for the Webview was extremely important and a large part of our time went in testing the UI on different screen sizes. Chrome Developer Tools helped
+                            <em>
+                                immensely
+                            </em>
+                            here.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Facebook Messenger Extensions: The Javascript SDK was amazingly useful, but we had to first verify that legitimacy of the user ID. We settled on querying the Graph API to see if the ID was not spoofed.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We solved a major issue that has not been looked into yet! The opportunity to use our skills as software engineers to do some social good is immensely satisfying.
+                </p>
+                <p>
+                    On the technical side, we are particularly proud of building a whole Service Oriented Architecture that worked seamlessly together.
+                </p>
+                <p>
+                    We are also proud of the Hack we used to send broadcasts to users by storing their IDs. :wink:
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Facebook Messenger APIs, Graph APIs, SOA and how Python and Ruby can indeed work together! :wink: :tada:
+                </p>
+                <h2>
+                    What's next for Mumbai-Amber-Alert
+                </h2>
+                <p>
+                    The app right now is hosted on Heroku, we may think of switching to AWS because Lambda functions would scale well.
+                </p>
+                <p>
+                    Moreover, currently the app is susceptible to spam, so there's a need for content moderation. We aim to use SMS verifications, Captchas time limited missing alerts.
+Currently, the FIR details are optional, but to make it safer and legitimate, we aim to put a time limit of 24 hrs on reports that do not have FIR details submitted.
+                </p>
+                <p>
+                    In the future, we will be looking at Image Recognition using Machine Learning for mapping images in the database with camera photos taken by observers who think they may have found a missing person.
+The camera photo can be analyzed to give a certain level of confidence that the chatbot user has found a missing person.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/cloudinary">
+                                cloudinary
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/facebook-messenger">
+                                facebook-messenger
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            graph-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby-on-rails">
+                                ruby-on-rails
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sidekiq">
+                                sidekiq
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/OrthoDex/Mumbai-Amber-Alert" rel="nofollow" target="_blank" title="https://github.com/OrthoDex/Mumbai-Amber-Alert">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.facebook.com/Amber-Alert-Mumbai-776919939153733" rel="nofollow" target="_blank" title="https://www.facebook.com/Amber-Alert-Mumbai-776919939153733">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.facebook.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

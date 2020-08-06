@@ -1,0 +1,118 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Wouldn't it be fascinating to to create digital paintings by waving one's hand in the air? We've all seen sci-fi movies where someone like Tony Stark flicks their hand and their images come to life. This weekend, I approached this problem, moving around a magic object in real-time in an attempt to create digital art.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    MagicPalette tracks the movement of your magic object to create a digital version of your art piece. As you move your object, you can see the resulting painting on a white canvas. MagicPalette also allows the user to interact with the app for some useful functionality. The top left corner of your video stream serves as a color chooser - choose between colors by holding up 1, 2, 3, 4, or 5 fingers! If you're happy with your painting, you can just smile and the app saves your art work. If you're unhappy and make a sad face, then the canvas is erased and you can start afresh!
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    There were 3 major updates to the project.
+                </p>
+                <p>
+                    The first was to hook up the laptop webcam, get the real-time video stream, run object detection on a chosen object, and map out the movements on the canvas (a blank image). This section was extremely tricky for multiple reasons - state of the art object detectors do require some processing time. Running the whole project on the CPU means that I'd have to face some serious lag I were to process every frame of my &gt; 30fps camera. To avoid processing every single frame, I threaded the camera class so the buffer remains empty and I only process the latest available frame. For the object detection model, I first used YOLO pre-trained on the COCO dataset, which is supposed to give state of the art results for real-time video processing. This, while accurate, had a lag which made the entire process seem jittery. However, since it was trained on COCO, it did detect objects that could prove to be reasonable magic objects for drawing - such as a toothbrush. To obtain better real-time results, I then used a pre-trained SSD - Mobile Net, a lighter network that is designed to run with mobile devices. Thus, it provides better speed, but at the cost of accuracy. Another issue was that the only pre-trained MobileNet SSD I could find was only trained on ~20 classes, out of which only 2 items could be used to draw - a bottle or a potted plant.
+                </p>
+                <p>
+                    Second, I added some face detection followed by expression detection to make interaction more fun. Using OpenCV's HaarCascade frontal face detector, followed by a pre-trained expression detector, we get the probabilities of every expression on the detected face. I take the max from a rolling window to understand the current expression of the user. If the user smiles and it happy with the painting, the canvas is saved as a JPG file. If a sad or angry expression is detected, the canvas is reinitialized to a blank image.
+                </p>
+                <p>
+                    Finally, I wanted the user to be able to choose colors. I tweaked a gesture recognition module I found on the internet such that when the user holds up finger(s) in the top left region, the corresponding color is chosen. The hand image is thresholded, and a convex hull is obtained. The user can now hold up a finger to choose a color!
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Real-time processing too slow for YOLO, dearth of suitable classes in MobileNetSSD, Expression Detection is hard to improve, gestureRecognition is noisy, limit on speech processing because of real-time constraint
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Really happy with what the results were for a relatively short hacking period. Although I spent a lot of time trying to get the object detectors working for real time videos, it was really fun learning about new models and incorporating new features into the product. It's been a good weekend!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    GAH SO MUCH
+                </p>
+                <h2>
+                    What's next for MagicPalette
+                </h2>
+                <p>
+                    We could look into fine-tuning pre-existing object detection models for very specific objects such as a wand or a paintbrush. This would hopefully make the detections more accurate. Although this is just my first attempt at it, a refined product could have multiple useful applications in sculpting, design, CADding, film, and television. It would democratize art, and alter the way humans interact with the digital world.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            expression-detection
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            object-detection
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sklearn
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/raghavrajmittal/MagicPalette" rel="nofollow" target="_blank" title="https://github.com/raghavrajmittal/MagicPalette">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

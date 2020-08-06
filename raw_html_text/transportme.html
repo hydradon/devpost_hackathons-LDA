@@ -1,0 +1,180 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/r4C-ormfE5g?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As an university student, I often find myself oversleeping and rushing to get to class. As I prepare in the morning, I don't have time to look for the closest bike whether it be switching between rental bike apps or looking around physically! I needed a quick and easy way to locate nearby bikes/scooters without using my hands. Not only will this skill help university students alike, it can entice others to use bikes instead of cars which can mitigate air pollution and ultimately, global warming. It is estimated that a typical US car produces 300 gCO2/passenger-km whereas a bike only produces 65 gCO2/passenger-km[1]. That's about 78.3% less pollution for using bikes!
+                </p>
+                <p>
+                    This skill is meant to make finding bikes/scooters more convenient and hands-free so that customers are willing to choose environmentally friendly transportation. It's a win win!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    TransportMe tells you the closest bike or scooter within a 1.25 mile radius of a given location. It will ask for a location to search in which can be an address or a partial address. You can say
+                    <code>
+                        find bikes
+                    </code>
+                    ,
+                    <code>
+                        find scooters
+                    </code>
+                    ,
+                    <code>
+                        find stations
+                    </code>
+                    , or
+                    <code>
+                        find provider
+                    </code>
+                    . We currently support
+                    <strong>
+                        10
+                    </strong>
+                    providers:
+                </p>
+                <pre class="language-nolang"><code>Bike:    Jump, Lime, Ofo, Spin, Pony, Byke, Mobike
+Scooter: Bird, Spin
+Station: Donkey, Nextbike
+</code></pre>
+                <p>
+                    It can also use your device's location by adding
+                    <code>
+                        near me
+                    </code>
+                    at the end of the command. It will notify you how far the vehicle is and will send a link of the location to your phone. If a station is searched, it will say the number of available vehicles. Lastly, to make it more user friendly, you can say
+                    <code>
+                        repeat
+                    </code>
+                    to make Alexa repeat what she previously said.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Using third party APIs, I used Node.js to convert addresses to geolocations (latitude, longitude) that can then be used to make
+                    <code>
+                        POST
+                    </code>
+                    requests to find the location of the vehicle. Fortunately, the APIs of the providers are open to the public although it took some time to go through the documentation and understand how to use each one effectively. By utilizing parallel programming inherent in Node.js, I created an algorithm to find the desired vehicle/provider efficiently.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The main challenge I ran into was understanding how to use
+                    <code>
+                        ASK SDK v2
+                    </code>
+                    which has an incomplete documentation. It lacks examples on how to build responses with methods such as
+                    <code>
+                        addElicitSlotDirective
+                    </code>
+                    and
+                    <code>
+                        addDirective
+                    </code>
+                    . It doesn't even describe what those methods do. However, I was able to figure it out by looking at
+                    <code>
+                        ASK SDK v1
+                    </code>
+                    examples.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud of creating a tool that can potentially help others and the environment at the same time! This skill can easily become a skill that students and metropolitan cities can use daily, especially if rental bikes/scooters are easily accessible. (Also being able to get to class on time is a plus.)
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Since this was my first time using Node.js and building an Alexa skill, I definitely learned a lot. Some of the things I learned was how AWS Lambda is used, calling external APIs to create a product, and how to deal with the asynchronous behavior of Node.js.
+                </p>
+                <h2>
+                    What's next for Transportme
+                </h2>
+                <p>
+                    Due to a lack of time, I was unable to add support for other countries. The APIs I'm using can also be used in Europe and the Asia pacific. I will be adding support for UK, Germany and Singapore soon. I will also try to include more providers. For Alexa devices with screens, it would be cool to show a map with pins of current location and the vehicle's location. I would also like add an option to choose the closest x number of vehicles if the user wants to find multiple vehicles.
+                </p>
+                <h3>
+                    References
+                </h3>
+                <p>
+                    [1] Thorpe, Daniel. &ldquo;Climate Impacts of Biking vs. Driving.&rdquo; The Keith Group, Harvard University, 20 June 2016, keith.seas.harvard.edu/blog/climate-impacts-biking-vs-driving.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            multicycles
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nexmo">
+                                nexmo
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/gp/product/B07HH952RV" rel="nofollow" target="_blank" title="https://www.amazon.com/gp/product/B07HH952RV">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

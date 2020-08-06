@@ -1,0 +1,316 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="811688" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/811/688/datas/original.jpeg">
+                            <img alt="I vote you! &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/811/688/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration for Anonymous voting
+                </h2>
+                <p>
+                    <strong>
+                        Anonymous voting
+                    </strong>
+                    is Based on Vitalik's opening speech and proposal from ETHNewYork hackathon.
+                </p>
+                <p>
+                    Vitalik's opening speech touched on the fight against plutocracy, and how to eliminate bribes with the help of game theory and zkSnarks. So we decided to BUIDL it!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <strong>
+                        It is a voting constructor. The zkSnark based framework that will generate voting with the selected parameters.
+                    </strong>
+                </p>
+                <p>
+                    We implemented the "Best Gold Sponsor award" with Anonymous voting by all hackathon participants (according to kickback list of attendees:
+                    <a href="https://kickback.events/event/0x4905b4f22d8cdb0a035b17062e2d498b662991bc" rel="nofollow">
+                        https://kickback.events/event/0x4905b4f22d8cdb0a035b17062e2d498b662991bc
+                    </a>
+                    )
+                </p>
+                <hr>
+                <h3>
+                    Research objective
+                </h3>
+                <p>
+                    Plutocracy or pressure on voters is well-known issues. We to describe how to solve it via cryptography.
+                </p>
+                <p>
+                    In our model, there are 3 kinds of participants:
+                </p>
+                <ul>
+                    <li>
+                        voters
+                    </li>
+                    <li>
+                        counters
+                    </li>
+                    <li>
+                        stakeholders (candidates, etc)
+                    </li>
+                </ul>
+                <p>
+                    We need to guarantee the following properties of the protocol:
+                </p>
+                <ol>
+                    <li>
+                        Any voter can hide his personality from anybody (including without limitation if counters cooperate with stakeholders)
+                    </li>
+                    <li>
+                        Any voter cannot create proof that he has voted for any choice (during voting and after counting)
+                    </li>
+                    <li>
+                        Voters cannot transfer control for their votes to other persons exclusively.
+                    </li>
+                    <li>
+                        It is guaranteed for any voter that his last vote is counted.
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Circom based zkSnarks, with ideas from miximus. (Thank you Vitalik for your article about voting)
+                </p>
+                <hr>
+                <h3>
+                    Solution
+                </h3>
+                <ol>
+                    <li>
+                        Users get voting rights from the smart contract for their ethereum accounts
+                    </li>
+                    <li>
+                        Users create unique secret as
+                        <code>
+                            secret = hash(address,salt1)
+                        </code>
+                        and publish
+                        <code>
+                            account_hash = hash(secret, salt2)
+                        </code>
+                        at the smart contract. Also, users publish snark proof, that the computation is correct. This procedure can be executed only once for each account with voting rights.
+                    </li>
+                    <li>
+                        Users can anonymously not exclusively delegate their voting rights to another account, publishing a snark with multiple existed
+                        <code>
+                            account_hash
+                        </code>
+                        public input, new
+                        <code>
+                            account_hash
+                        </code>
+                        public output (corresponding to the same secret, but another salt) and private selector of one of the inputted accounts.
+                    </li>
+                    <li>
+                        Users publish encrypted via counters private key
+                        <code>
+                            message = {voting_vector, secret}
+                        </code>
+                        and snark proof that message is correct and encryption is correct.
+                    </li>
+                    <li>
+                        After the end of voting counters MapReduce all messages from last to first via snarks without publishing any subtotals. If the secret is new, we increment subtotal vector and add the secret to set of known secrets during the counting (how to do it is described
+                        <a href="https://ethresear.ch/t/shorter-merkle-proofs-for-snapps/4044" rel="nofollow">
+                            here
+                        </a>
+                        ). If the secret is not new, we pass the addition and just update the state's salt to hide from others that the secret is not new here.
+                    </li>
+                    <li>
+                        After the end of the counting, the resulting vector is published with proof.
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    And now on the blockchain it seems there are no normal votes, i.e. in classical implementations, it is done in such a way that the votes are visible before the voting is closed. That there is a serious violation of the privacy and the latter can greatly influence the outcome of the vote.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    In addition to anonymous voting this project will allow you to customize settings for voting:
+                </p>
+                <ul>
+                    <li>
+                        Developers without getting into cryptography will have all the advantages and safety of Snarks under the hood.
+                    </li>
+                    <li>
+                        Any EVM-compatible platform will have the opportunity
+                        <strong>
+                            to make voting really secure and safe
+                        </strong>
+                        !
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Sending all the private  information on-chain  is a quite challenging but very important part of completely decentralized voting
+                </p>
+                <h2>
+                    What's next for I vote you!
+                </h2>
+                <p>
+                    We want to improve the constructor and add some essential features like:
+                </p>
+                <h3>
+                    Vote zkSNARK params:
+                </h3>
+                <ul>
+                    <li>
+                        Connect to KYC provider/whitelist (choose who can participate)
+                    </li>
+                    <li>
+                        determine the number of people in the voting
+                    </li>
+                    <li>
+                        install Open &mdash; closed vote rules
+                    </li>
+                    <li>
+                        Ability to delegate their votes
+                    </li>
+                    <li>
+                        execution endpoint after voting (smart contract method call)
+                    </li>
+                    <li>
+                        Ability to re-vote
+                    </li>
+                    <li>
+                        Quorum: set the percentage of voters (by Fiat&ndash;Shamir algorithm )
+                    </li>
+                    <li>
+                        vote recall (looks like a vote)
+                    </li>
+                </ul>
+                <p>
+                    And voila - we have a voting element that is ready-to-use!
+                </p>
+                <p>
+                    We can also submit this feature to Aragon and other EVM-compatible blockchains and sidechains.
+So we want to put the ZKP technology forward in the world!
+                </p>
+                <hr>
+                <p>
+                    ## Sponsor  nominations:
+                </p>
+                <h3>
+                    ENS
+                </h3>
+                <p>
+                    We will use
+                    <code>
+                        vote.skywinder.ens
+                    </code>
+                    on mainnet (it already registered). For Demo voting on the hackathon, we are using rinkeby
+                </p>
+                <h3>
+                    Skale
+                </h3>
+                <p>
+                    We deployed contracts to skale and put data to their file manager.
+                </p>
+                <h3>
+                    Thundercore
+                </h3>
+                <p>
+                    Since it's EVM-compatible blockchain - we put our contract on this network and to do very fast and private voting.
+                </p>
+                <h3>
+                    Graph:
+                </h3>
+                <p>
+                    We parsed kickback addresses by Graph API. So only whitelisted and registered address can vote for the "Best Gold Sponsor award".
+                    <a href="https://thegraph.com/explorer/subgraph/skywinder/kickback" rel="nofollow">
+                        https://thegraph.com/explorer/subgraph/skywinder/kickback
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            circom
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/truffle">
+                                truffle
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            zksnark
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/zdai-io/zkVoting" rel="nofollow" target="_blank" title="https://github.com/zdai-io/zkVoting">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://vote.zdai.io/" rel="nofollow" target="_blank" title="https://vote.zdai.io/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                vote.zdai.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

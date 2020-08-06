@@ -1,0 +1,427 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/OCzRD1E3LZ4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="520406" data-title="Bot Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/520/406/datas/original.png">
+                            <img alt="MiserBot - AWS Chatbot Challenge &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/520/406/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Bot Architecture
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="520407" data-title="Cost and Usage Processor Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/520/407/datas/original.png">
+                            <img alt="MiserBot - AWS Chatbot Challenge &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/520/407/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Cost and Usage Processor Architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Keeping track and optimizing AWS cost is a difficult and time consuming
+thing to do for AWS customers. Most AWS customers I talk to are concerned
+about cost management and they've mentioned the following problems:
+                </p>
+                <ul>
+                    <li>
+                        They're often overwhelmed by the complexity of AWS pricing.
+                    </li>
+                    <li>
+                        They often don't know how to monitor AWS cost or don't have time to do it effectively.
+                    </li>
+                    <li>
+                        Some are familiar with AWS Cost Explorer, but don't have time to visit
+the AWS console every day and monitor cost closely.
+                    </li>
+                    <li>
+                        They're afraid they will spend too much money on AWS at the end of the
+month. Some have learned the hard way and I've heard a few stories about
+a "bad AWS billing surprise".
+                    </li>
+                </ul>
+                <p>
+                    While there are tools out there, such as AWS Cost Explorer and 3rd party -such as
+Cloudyn, Cloudability, etc.- there is no easy way to integrate AWS Cost
+and Usage information with popular collaboration tools, such as Slack.
+                </p>
+                <p>
+                    In many cases, it doesn't make sense for customers to pay for sophisticated
+cost management tools, which start at a few hundred  dollars per month.
+This is especially true for customers that spend &lt; $5,000 per month and even
+for some larger ones.
+                </p>
+                <p>
+                    MiserBot saves AWS customers money and it increases productivity by making AWS cost information
+easily accessible, in a user-friendly chatbot format, from a proven collaboration
+tool such as Slack.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In this initial version, MiserBot supports the following features:
+                </p>
+                <ul>
+                    <li>
+                        Integration with Slack (this is the only entry point to use the bot at the time)
+                    </li>
+                    <li>
+                        IAM Role creation and bot OAuth authorization flow.
+                    </li>
+                    <li>
+                        It returns the total accumulated AWS cost for the current month.
+                    </li>
+                    <li>
+                        It informs customers when a new Cost and Usage report is ready, and it 
+tells them the new total AWS cost for the month.
+                    </li>
+                    <li>
+                        It returns a list of AWS services and their respective cost (e.g. EC2, S3, etc.)
+                    </li>
+                    <li>
+                        It returns a list of AWS usage types and their cost in the current month (e.g. t2.2xlarge box usage, 
+EBS storage, etc.)
+                    </li>
+                    <li>
+                        It returns a list of AWS resources IDs and their associated cost (e.g. EC2 instance
+ID, EBS volume ID, etc.). The list is sorted in descending order. This feature
+allows customers to see which resources incur in the most cost. This view
+is not available in AWS Cost Explorer.
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    MiserBot is implemented as a conversational bot using Amazon Lex, fulfilled
+by Lambda functions in the backend.
+                </p>
+                <p>
+                    A considerable portion of MiserBot consists in processing customers' AWS Cost and Usage reports, 
+analyzing them and making the digested data available to the Lambda functions that
+fulfill Lex intents.
+                </p>
+                <p>
+                    As a result, there are multiple processes running in the backend, making data available for the bot.
+                </p>
+                <p>
+                    MiserBot is implemented 100% Serverless, using the following AWS services:
+                </p>
+                <ul>
+                    <li>
+                        API Gateway
+                    </li>
+                    <li>
+                        Lex
+                    </li>
+                    <li>
+                        Lambda
+                    </li>
+                    <li>
+                        CloudWatch Events
+                    </li>
+                    <li>
+                        Dynamo DB
+                    </li>
+                    <li>
+                        Dynamo DB Streams
+                    </li>
+                    <li>
+                        S3
+                    </li>
+                    <li>
+                        Athena
+                    </li>
+                    <li>
+                        SNS
+                    </li>
+                    <li>
+                        CloudFormation
+                    </li>
+                </ul>
+                <h3>
+                    Architecture
+                </h3>
+                <p>
+                    <strong>
+                        Cost and Usage Report Processor
+                    </strong>
+                </p>
+                <p>
+                    <img alt="CUR Processor Architecture" data-canonical-url="https://www.concurrencylabs.com/img/awscostbot/cur-processor-architecture.png" src="https://res.cloudinary.com/devpost/image/fetch/s--sm7-1sW---/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://www.concurrencylabs.com/img/awscostbot/cur-processor-architecture.png">
+                </p>
+                <p>
+                    This is the block that fetches Cost and Usage reports from customers and
+then processes results. It takes care of the following tasks:
+                </p>
+                <ol>
+                    <li>
+                        Customers create an IAM Role that gives Concurrency Labs the following
+permissions: read-only for AWS resources, and only write permissions for the
+AWS Cost and Usage Report Service.
+                    </li>
+                    <li>
+                        A CloudWatch Events schedule triggers a function that looks for new Cost
+and Usage reports. This function uses control data stored in a Dynamo DB table to
+determine if new reports are ready for processing. If new reports are found,
+it starts Step Function executions to process them.
+                    </li>
+                    <li>
+                        Step Function orchestrates a number of tasks required to process Cost and
+Usage reports: 1)Copy reports to Concurrency Labs S3 bucket and do some
+transformations, 2)Create/Update Athena tables, 3)Pre-warm data by executing
+a number of Athena queries and storing results in S3, 4)Update control
+data in Dynamo DB.
+                    </li>
+                </ol>
+                <p>
+                    Code is publicly available in the following GitHub repo:
+                    <a href="https://github.com/ConcurrenyLabs/aws-cost-analysis" rel="nofollow">
+                        https://github.com/ConcurrenyLabs/aws-cost-analysis
+                    </a>
+                </p>
+                <p>
+                    <strong>
+                        Bot Interface
+                    </strong>
+                </p>
+                <p>
+                    <img alt="CUR Processor Architecture" data-canonical-url="https://www.concurrencylabs.com/img/awscostbot/bot-architecture.png" src="https://res.cloudinary.com/devpost/image/fetch/s--nneg8ML---/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://www.concurrencylabs.com/img/awscostbot/bot-architecture.png">
+                </p>
+                <p>
+                    This is the actual chatbot interface that gives customers cost and usage data.
+                </p>
+                <p>
+                    Code is available in the following private BitBucket repo:
+                    <a href="https://bitbucket.org/concurrencylabs/miserbot" rel="nofollow">
+                        https://bitbucket.org/concurrencylabs/miserbot
+                    </a>
+                </p>
+                <p>
+                    Lex definition is available under
+                    <code>
+                        lex/bot-definition.json
+                    </code>
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One challenge was using Lex's built-in integration with Slack. I tried Lex's built-in integration with Slack and although it's a great time saver, unfortunately I found it insufficient for the features I want the bot to have from day-1.
+                </p>
+                <p>
+                    The #1 reason I decided to implement my own integration is because Lex's built-in one doesn't give me access to Slack OAuth tokens. This is essential in order for MiserBot to initiate chat messages.
+                </p>
+                <p>
+                    For example:
+                </p>
+                <ul>
+                    <li>
+                        When the bot has been added successfully to the Slack channel and I want
+to communicate instructions for creating the required IAM role.
+                    </li>
+                    <li>
+                        When a new cost and usage report is available.
+                    </li>
+                    <li>
+                        When a cost anomaly or recommendation is found.
+                    </li>
+                    <li>
+                        New feature announcements.
+                    </li>
+                </ul>
+                <p>
+                    The #2 reason I built my own integration with Slack is because Lex's built-in integration limits flexibility 
+regarding message formatting options, such as buttons, attachments, icons, emojis, fields, etc. By building my own integration, I can do anything that Slack supports in terms of message formatting.
+                </p>
+                <p>
+                    In general, working with a relatively new type of interface for me -such as bots- was an interesting and challenging experience.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I built a complex platform using 100% serverless components. I've been using these components already for my own cost analysis and optimization tasks and they have saved me a lot of time. I hope the chatbot interface makes it even easier to reduce AWS cost. I will for sure use it with my clients.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Previous to this project, I hadn't used the Serverless Application Model extensively. I made it my goal to model the bot infrastructure 100% using SAM. This was a good learning experience and I'm planning to keep using SAM in future projects.
+                </p>
+                <p>
+                    Using Lex has been a learning experience too. I will continue to use it for other projects.
+                </p>
+                <h2>
+                    What's next for MiserBot - AWS Chatbot Challenge
+                </h2>
+                <p>
+                    I'm just getting started with MiserBot. At the time it supports basic functionality, such as total cost, cost by service, cost by usage and cost by resource.
+                </p>
+                <p>
+                    These are examples of the coming features in the pipeline:
+                </p>
+                <ul>
+                    <li>
+                        Add support to gather customer feedback directly from the bot. I want to make it easy for customers to tell the bot the features they'd like to see.
+                    </li>
+                    <li>
+                        Add graphs and visualizations to responses.
+                    </li>
+                    <li>
+                        Add more queries, such as: usage cost associated to a specific resource (e.g. compute time, EBS storage, data transfer for a specific EC2 instance)
+                    </li>
+                    <li>
+                        Add cost anomaly detection (compare against previous cost and trends)
+                    </li>
+                    <li>
+                        Integration with JIRA for assigning tasks to team members (i.e. investigate an anomaly, or a cost item).
+                    </li>
+                    <li>
+                        Integration with other channels, such as Facebook and Twilio.
+                    </li>
+                    <li>
+                        Integration with CloudWatch Billing Alarms. Send a message to Slack when a cost threshold has been exceeded.
+                    </li>
+                    <li>
+                        Fine-grained billing alerts (i.e. monitor when cost exceeds a threshold for a specific AWS resource, tag or service).
+                    </li>
+                    <li>
+                        Calculate and compare cost using AWS Price List API.
+                    </li>
+                    <li>
+                        Add more "help" utterances: explain price dimensions, cost saving tips.
+                    </li>
+                    <li>
+                        Find cost-savings recommendations (i.e. reserved instance recommendations, under-utilized resources, etc.)
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-athena
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-sns
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-step-functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cloudformation
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://bitbucket.org/concurrencylabs/miserbot" rel="nofollow" target="_blank" title="https://bitbucket.org/concurrencylabs/miserbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://miserbot.concurrencylabs.com/" rel="nofollow" target="_blank" title="http://miserbot.concurrencylabs.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                miserbot.concurrencylabs.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/ConcurrenyLabs/aws-cost-analysis" rel="nofollow" target="_blank" title="https://github.com/ConcurrenyLabs/aws-cost-analysis">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

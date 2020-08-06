@@ -1,0 +1,232 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="759489" data-title="kepler.gl map" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/489/datas/original.png">
+                            <img alt="GeoTwit &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/489/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                kepler.gl map
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="759666" data-title="Welcome to GeoTwit!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/666/datas/original.png">
+                            <img alt="GeoTwit &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/666/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Welcome to GeoTwit!
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="759834" data-title="GeoTwit page after uploading JSON File" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/834/datas/original.png">
+                            <img alt="GeoTwit &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/834/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                GeoTwit page after uploading JSON File
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    GeoTwit
+                </h1>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Analysis of local trending topics and the geographic distribution of data from social media such as Twitter can be extremely useful - for example, in disaster management or for analyzing viral outbreaks. Platforms like Twitter consist of rapidly evolving data as people discuss recent events. Therefore, rapidly obtaining up-to-date and trending data from social networks is desirable.
+                </p>
+                <p>
+                    With this in mind, we present GeoTwit, a data analysis and visualization workflow for geographic and temporal twitter data. Given a set of phrases, GeoTwit collects geotagged tweets containing each phrase and uses kepler.gl to visualize the resultant data set over space and time. For example, given a set of common political words ("Donald Trump", "Hillary Clinton", "Riot", "Yellow Vests") or weather events ("Fire", "Wildfire", "Smoke"), GeoTwit can visualize where and when tweets occur containing each of these phrases.
+                </p>
+                <p>
+                    Moreover, we provide functionality to extract important words from a corpus of tweets (these words represent "trending topics" for the timeframe over which the corpus was collected). With these words, one can generate a new corpus, providing an iterative approach to tracking trending topics over space and time.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    GeoTwit is an iterative data visualization workflow for geographic and temporal Twitter data. It provides tools to generate a corpus of tweets from a list of words or phrases via the free Twitter streaming API including the coordinates, timestamp, status text, and the associated word or phrase for each Tweet.
+                </p>
+                <p>
+                    This data may be directly mapped via Kepler.gl. However, GeoTwit provides additional functionality. The 400 most important words from the corpus can selected using tf-idf weighting with popular.py. (We use 400 words as this is the maximum number of features which may be tracked via the free Twitter streaming API)
+                </p>
+                <p>
+                    The recommended workflow is therefore to generate a seed corpus from the
+                    <a href="https://gist.github.com/deekayen/4148741" rel="nofollow">
+                        400 most common English words
+                    </a>
+                    , as this will generate an unbiased set of pseudo-random geo-tagged tweets. From this, the 400 top trending words or phrases are generated. Using this set of popular phrases, a new set of tweets can be generated, graphed, and analyzed. This may continue iteratively, with each successive iteration tracking the trending words, phrases, and topics of the previous corpus.
+                </p>
+                <p>
+                    As the corpus grows, tf-idf weighting increases in accuracy. Due to limitations of the free Twitter API and the relatively low number of tweets which are geo-tagged (~2-5%), generating a large body of data is time-intensive. Each iteration is therefore recommended to span multiple weeks.
+                </p>
+                <h2>
+                    Use and Workflow
+                </h2>
+                <p>
+                    If you simply wish to view our example data set, head to
+                    <a href="http://kepler.gl/demo" rel="nofollow">
+                        kepler.gl
+                    </a>
+                    and upload our provided keplergl.json file. Otherwise, continue.
+                </p>
+                <p>
+                    Install pipenv, run the command
+                    <code>
+                        pipenv shell
+                    </code>
+                    to enter the shell
+                </p>
+                <p>
+                    Create a track.txt file containing a list of phrases (one per line, max 400) to query. If you wish to generate a seed corpus from the most common english words,
+                    <a href="https://gist.github.com/deekayen/4148741" rel="nofollow">
+                        this list
+                    </a>
+                    is helpful.
+                </p>
+                <p>
+                    Run geotwit.py to generate the corpus.
+                    <strong>
+                        This is a long-running script, and may take weeks to generate a sufficiently large corpus
+                    </strong>
+                    .
+                </p>
+                <p>
+                    Run aggregate.py for post-processing, preparing data for Kepler.gl
+                </p>
+                <p>
+                    Go to
+                    <a href="http://kepler.gl/demo" rel="nofollow">
+                        kepler.gl
+                    </a>
+                    and upload keplergl.json
+                </p>
+                <p>
+                    This will generate a visualization of the dataset using our recommended parameters. From here, modify parameters via kepler.gl to fit your visualization needs.
+                </p>
+                <p>
+                    You may now run popular.py to generate a list of the 400 most important phrases (max 2 words) from the corpus. This will be saved to topn.txt.
+                </p>
+                <p>
+                    For the next iteration, copy topn.txt to track.txt and begin again with geotwit.py.
+                </p>
+                <h2>
+                    How We built it
+                </h2>
+                <p>
+                    Data collection and processing was done exclusively with Python. The Tweepy streaming API was used for collecting data from Twitter. Sklearn was used for tf-idf weighting.
+                </p>
+                <p>
+                    Data is visualized using Kepler.gl - we use a custom .json configuration to initialize the data in kepler.gl correctly.
+                </p>
+                <h2>
+                    Challenges We ran into
+                </h2>
+                <p>
+                    We had difficulty establishing a front-end for the service due to a lack of experience from our development team, which is composed of back-end and data analysis focused developers. Our main challenge was figuring out how to properly host a website using PHP/mySQL. This was necessary in order to save data collected from user input. Although this was an obstacle, we were able to create a basic web page where we used html/CSS/javascript to implement the design of the GeoTwit application. Examples of the expected layout can be viewed in the image gallery. Make sure to check out our progress directly in our
+                    <a href="https://github.com/jalberse/geotwit/blob/master/GeoTwit-webpage.zip" rel="nofollow">
+                        GeoTwit webpage zip.
+                    </a>
+                </p>
+                <p>
+                    It requires weeks to generate a proper corpus each iteration. Our current dataset is therefore inadequate to properly analyze.
+                </p>
+                <p>
+                    Our corpus is half its intended size, as half of the data collected had its coordinates saved as (longitude, longitude) due to an indexing error. This was fixed at midnight.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The Twitter streaming API allows the developer to track all tweets containing a phrase or set of phrases. We are interested in tracking all tweets containing any phrase from a set of 400 phrases. The Twitter API allows us to do so, but will not identify which phrase the tweet contains - we are not able to categorize tweets by which phrase they contain. To work around this, we manually parse the text of each Tweet to determine for which phrase it was a "hit."
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Some hard lessons about the work involved in front-end development.
+                </p>
+                <p>
+                    Story boarding and use case driven development.
+                </p>
+                <p>
+                    Lessons about properly organizing a team of developers.
+                </p>
+                <p>
+                    Finally, limiting the geographic range of the collected data would result in a larger body of data more quickly due to the limitations of the free Twitter API. It would be best in the future to look ahead to such limitations before gathering data.
+                </p>
+                <h2>
+                    What's next for GeoTwit
+                </h2>
+                <p>
+                    Establishing a front-end which decreases the friction of collecting and analyzing this data.
+                </p>
+                <p>
+                    Identification of trending words can be improved by implementing clustering of documents (tweets) for tfid vectorizer.
+                </p>
+                <p>
+                    Due to the low number of tweets which are geo-tagged, the corpus generated each iteration is relatively small. However, it is possible to predict the location of a tweet based off of information in the tweet. Integrating this research into the GeoTwit project could potentially increase the size of our data sets and decrease the time between each iteration.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            kepler.gl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jalberse/geotwit" rel="nofollow" target="_blank" title="https://github.com/jalberse/geotwit">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

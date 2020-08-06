@@ -1,0 +1,213 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    PPaaS (Power Plug as a Service)
+                </h1>
+                <p>
+                    For this hackathon, I have created a functional prototype of my PPaaS (Power Plug as a Service.)
+                </p>
+                <p>
+                    I have created a system where the user can go to a website and pay to turn on a power plug for a certain amount of time. One of the major uses of this would be to use this for electric cars.
+                </p>
+                <h3>
+                    How it works
+                </h3>
+                <p>
+                    When the user goes to the website on their phone or computer, they can check the status of a plug. If they go to the Buy tab, they can pay and choose how long they would like the plug to turn on for. To select the plug, they enter the unique, alphanumeric id that will be written on a sticker on the plug. They can then pay with their credit card(through
+                    <a href="https://stripe.com/" rel="nofollow">
+                        Stripe
+                    </a>
+                    ) or bitcoin, and then the plug will turn on.
+                </p>
+                <p>
+                    In the backend, I have created a Node.js server (running on a DigitalOcean Droplet Server) which serves the webpages, handles the payments(
+                    <a href="https://stripe.com/us/features#seamless-security" rel="nofollow">
+                        Although credit card data actually never reaches my server
+                    </a>
+                    ), and controls the plug. When the user fills the form and pays, the server first authenticates the payment, then turns on the plug. Because Weaved does not currently have an API to remotely access devices, I created a Selenium script using WebDriverJS to automatically log in to the Weaved website and get the proxy url for the plug, so it can control the plug using the built in http interface on the plug. No modification is required with a stock Weaved Plug. My program would work much more reliably if there was an API to automatically get the proxy url for the plug directly. Once the proxy url is obtained, it is a simple matter of sending a simple GET request to the /cgi-bin/devOn.sh file, which turns on the light. To turn it off, the /cgi-bin/devOff.sh file can be used.
+                </p>
+                <p>
+                    For testing purposes, the Bitcoin option is disabled in the code, and the "
+                    <a href="https://stripe.com/docs/testing" rel="nofollow">
+                        Test Mode
+                    </a>
+                    " in Stripe is used, which allows specific fake credit card numbers to be used for testing purposes.
+                </p>
+                <h3>
+                    Challenges I ran into
+                </h3>
+                <p>
+                    The biggest challenge was how to control the plug. There was no API, but by looking at the source of the default web page on the plug, I found that /cgi-bin/devOn.sh and /cgi-bin/devOff.sh could be used to control the plug. The second problem with the lack of an API was accessing the plug from an external network. The internal web server on the plug could only be accessed through the local network, or by going to the Weaved website and initiating a connection. To solve this, I used a workaround by creating a Selenium program to automatically connect to the Weaved website and connect to the plug over Weaved services, as described in the previous section.
+                </p>
+                <h3>
+                    Accomplishments that I'm proud of
+                </h3>
+                <p>
+                    I am happy that I created a completely functional prototype that can control an actual Weaved Plug. While building the prototype, I also learned many different things, mainly jQuery, Selenium, and AJAX(as described in the next section.)
+                </p>
+                <h3>
+                    What I learned
+                </h3>
+                <p>
+                    I learned several things during the course of this project. Because I usually work with mobile, hardware(such as Arduino and Intel Edison), and some backend coding(Node.js, Java EE), I did not have a lot of experience with HTML and JS, so I learned a few things there, mainly about how to use jQuery. Before this project I had not used jQuery, although I did have some experience with HTML5/JavaScript. I also learned how to use Selenium and WebDriverJS to automate accessing/testing websites. Another thing I learned was how to integrate Stripe and other payment processors into projects, and how to test them without paying real money, using the integrated test modes. The final thing I learned was how to use AJAX in Javascript to dynamically update a webpage and/or get data from a server without reloading the page.
+                </p>
+                <h3>
+                    What's next
+                </h3>
+                <p>
+                    The next step for this project would be to simplify the plug, maybe even integrating it into a wall socket. A major use case for this would be electric car charging stations. If the Weaved Plug was modified to be able to charge an electric car, it would encourage people to buy these plugs and set them up outside their home or business, where anyone can pay to access them, and the person who set them up will get most of the payment(with a small cut being taken out to pay for the server hosting and the Weaved services.)
+                </p>
+                <h3>
+                    Testing Directions
+                </h3>
+                <p>
+                    <em>
+                        Note that the following directions use the domain **anishsinghani.com
+                    </em>
+                    <em>
+                        , which may or may not correctly resolve to the right server, because I recently updated the DNS records, and they may not be available for you. If anishsinghani.com is not available, try replacing anishsinghani.com with
+                        <a href="http://104.236.150.84" rel="nofollow">
+                            104.236.150.84
+                        </a>
+                        in all the URLs. The DNS should most likely be fixed by the time you read this.
+                    </em>
+                </p>
+                <ol>
+                    <li>
+                        Make sure you have a Weaved Plug which is already setup to your account, and that the /www folder has not been edited from the stock image
+                    </li>
+                    <li>
+                        Then go to
+                        <a href="http://anishsinghani.com/addPlug.html" rel="nofollow">
+                            http://anishsinghani.com/addPlug.html
+                        </a>
+                        and follow the directions there to share your plug and provide the plug id.
+                    </li>
+                    <li>
+                        The page should give you a plug ID, store this ID safely. You will need it to activate your plug.
+                    </li>
+                    <li>
+                        Then go to
+                        <a href="http://anishsinghani.com/" rel="nofollow">
+                            http://anishsinghani.com/
+                        </a>
+                        and click on the
+                        <strong>
+                            Get More Time
+                        </strong>
+                        tab.
+                    </li>
+                    <li>
+                        Select
+                        <strong>
+                            Pay with Credit Card(via Stripe)
+                        </strong>
+                    </li>
+                    <li>
+                        Select a time amount. Although the times are specified in hours, but for testing purposes I have changed the hours to minutes, and the minutes to seconds.
+                    </li>
+                    <li>
+                        Then enter the plug id, and an email address if you would like an email notification when the plug turns off. If the payment button is not shown, click the button and it will be shown.
+                    </li>
+                    <li>
+                        Click Pay with Card, and fill out the dialog with these details(Stripe is configured to only except certain testing credit cards):
+                        <code>
+                            Card Number: 4242 4242 4242 4242,  CVC: Any 4 Digit Number,  Expiry Date: Any date in the future
+                        </code>
+                    </li>
+                    <li>
+                        The plug should then turn on.
+                    </li>
+                    <li>
+                        After the time has expired, you will receive an email(if you provided an email address), and the plug should turn off.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/digitalocean">
+                                digitalocean
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/stripe">
+                                stripe
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            weaved
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://www.anishsinghani.com" rel="nofollow" target="_blank" title="http://www.anishsinghani.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.anishsinghani.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/asinghani/PPaaS" rel="nofollow" target="_blank" title="https://github.com/asinghani/PPaaS">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://drive.google.com/file/d/0B1zzDW3lSluyc3h0MURDd0RLaTQ/view?usp=sharing" rel="nofollow" target="_blank" title="https://drive.google.com/file/d/0B1zzDW3lSluyc3h0MURDd0RLaTQ/view?usp=sharing">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                drive.google.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

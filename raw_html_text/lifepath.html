@@ -1,0 +1,218 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="743955" data-title="My anglocentric LifePath" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/743/955/datas/original.png">
+                            <img alt="LifePath &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/743/955/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                My anglocentric LifePath
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3>
+                    Inspiration
+                </h3>
+                <p>
+                    I realised I've carried a smartphone since 2011 so my location history was pretty reliably captured since then. You can download this from Google but it's just a block of coordinates in KML, so I wanted a visualisation. I thought a single unbroken line would be an elegant way to see where I'd been, like a wake or trail of footprints.
+                </p>
+                <h3>
+                    What it does
+                </h3>
+                <ol>
+                    <li>
+                        <p>
+                            <strong>
+                                Shorten the list of locations:
+                            </strong>
+                            <a href="https://support.google.com/accounts/answer/3024190" rel="nofollow">
+                                Google allows you to "checkout" your full location history as KML
+                            </a>
+                            . For me, this resulted in over 450,000 pairs of latitudes and longitudes. Most of these were very close together (e.g. home, office, supermarket, repeated
+                            <em>
+                                ad nauseum
+                            </em>
+                            ). Running
+                            <em>
+                                LifePath
+                            </em>
+                            with the
+                            <code>
+                                -shorten
+                            </code>
+                            flag will tidy up the huge KML file that Google gives you and reduce it to locations separated by at least 100km. For me, that stripped it down to just over 200 locations.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Plot geodesics between all those points:
+                            </strong>
+                            a
+                            <a href="https://en.wikipedia.org/wiki/Geodesic" rel="nofollow">
+                                geodesic
+                            </a>
+                            is the path of minimum distance across a curved surface (hence on flat map projections, flight paths appear curved). Using the
+                            <code>
+                                -plotall
+                            </code>
+                            flag will produce a single map with a single
+                            <em>
+                                LifePath
+                            </em>
+                            for all the input data. City name labels are optional. Using the
+                            <code>
+                                -plot
+                            </code>
+                            flag will produce a folder of images with each additional geodesic (which can then be combined into a GIF). This is what the combined
+                            <em>
+                                LifePath
+                            </em>
+                            looks like (higher quality version on
+                            <a href="https://i.imgur.com/3fVL6ar.png" rel="nofollow">
+                                Imgur
+                            </a>
+                            ):
+                            <img alt="Alt Text" data-canonical-url="https://i.imgur.com/3fVL6ar.png" src="https://res.cloudinary.com/devpost/image/fetch/s--Men6o_lP--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/3fVL6ar.png">
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Animate the LifePath in a GIF
+                            </strong>
+                            : all the geodesic maps created using the
+                            <code>
+                                -plot
+                            </code>
+                            flag can be combined into a GIF using the
+                            <code>
+                                -gif
+                            </code>
+                            flag. The result looks like this (higher quality version on
+                            <a href="https://i.imgur.com/Y4zwgfR.gifv" rel="nofollow">
+                                Imgur
+                            </a>
+                            ):
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    <img alt="Devpost-compressed GIF" data-canonical-url="https://i.imgur.com/ysMfohO.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--Ma9kNv0K--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/ysMfohO.gif">
+                </p>
+                <h3>
+                    How I built it
+                </h3>
+                <p>
+                    Once I had the first basic
+                    <em>
+                        LifePath
+                    </em>
+                    I realised I wanted to add some meaningful labels, but Google's data only contains geocoordinates. This is where
+                    <a href="https://developer.here.com/" rel="nofollow">
+                        HERE.com's API
+                    </a>
+                    came in. I used
+                    <a href="https://developer.here.com/documentation/geocoder/topics/example-reverse-geocoding.html" rel="nofollow">
+                        their reverse geocoding API
+                    </a>
+                    to extract the city names of some well-separated points, then passed those to my plotting routine to add labels (higher quality version on
+                    <a href="https://i.imgur.com/ujE5INg.png" rel="nofollow">
+                        Imgur
+                    </a>
+                    ):
+                    <img alt="Alt Text" data-canonical-url="https://i.imgur.com/ujE5INg.png" src="https://res.cloudinary.com/devpost/image/fetch/s--eTzfzAok--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/ujE5INg.png">
+                </p>
+                <h3>
+                    Challenges I ran into
+                </h3>
+                <p>
+                    Manually adding a bunch of coordinates from 10-20 family holidays before I had a smartphone took longer than I thought it would. However, in the end I think it's worth it to see my entire
+                    <em>
+                        LifePath
+                    </em>
+                    traced from birth, including childhood travel.
+                </p>
+                <h3>
+                    Accomplishments that I'm proud of
+                </h3>
+                <p>
+                    Implementing the labels in a couple of hours flat - HERE.com's API was much simpler to implement than I expected.
+                </p>
+                <h3>
+                    What I learned
+                </h3>
+                <p>
+                    I learned how to handle JSON data, as that was the format the HERE.com API supplied its results in.
+                </p>
+                <h3>
+                    What's next for LifePath
+                </h3>
+                <p>
+                    Interactivity. Rather than a static image, it would be nice to be able to zoom in and click on locations to see the dates when I was there.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            basemap
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/here-geocoder">
+                                here-geocoder
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jamcowl/LifePath" rel="nofollow" target="_blank" title="https://github.com/jamcowl/LifePath">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

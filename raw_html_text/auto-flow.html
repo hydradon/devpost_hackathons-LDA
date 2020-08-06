@@ -1,0 +1,179 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The majority of our time is spent waiting on others. Waiting for email replies, phone calls, and slack responses keep us from being productive in ways that would stretch us. For instance, creating a expense report might take 1 minute, but waiting for approval from your boss, co-workers and accounting could take hours. Over the course of a day, we have many of these "tasks" that need to be juggled in our heads.
+                </p>
+                <h2>
+                    What AutoFlow does
+                </h2>
+                <p>
+                    Auto Flow automatically generates custom workflow on the fly that creates the sequence of actions desired. To do this we have a number of different components, "services" that can interface with each other, along with a custom parsing language that can be used to robustly create such flows from user input.
+                </p>
+                <p>
+                    An example query the user could say to the application would be: "Message Keith, 'Hey, did we get flights approved? If Keith replies 'yes' on twilio then message Alex on slack "Flights are approved". This would create the appropriate sequence of events, such as waiting for a response from Keith, and then subsequently messaging Alex on slack.
+                </p>
+                <p>
+                    <img alt="Alt text" data-canonical-url="https://i.imgur.com/6g0EYVj.png" src="https://res.cloudinary.com/devpost/image/fetch/s--8B7bPKC6--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/6g0EYVj.png">
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Each component of the service does a different task.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            The speech processing component calls google's NLP API to convert speech into a text format which can be parsed.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The NLP parser module then breaks down the text. We developed a custom semi-rule based approach for this system. The commands issued by the user are instructional by design. The system first chunks the instruction into modules that contain action phrases, this is done using conditional keyword matching such as looking for if ... then ... else syntax. Next each action phrase is examined using a mixture of NLTK and rule-based parsing in order to determine the Verb e.g "message keith", Subject "Hello", and the relevant service "on Slack"
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    <img alt="Alt text" data-canonical-url="https://i.imgur.com/DDFov1b.png" src="https://res.cloudinary.com/devpost/image/fetch/s--wZg1yc8R--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/DDFov1b.png">
+                </p>
+                <ol>
+                    <li>
+                        The tree module then takes the relevant instructions and builds a parse tree in relevant JSON format which can be understood by the API engine.
+                    </li>
+                </ol>
+                <p>
+                    <img alt="Alt text" data-canonical-url="https://i.imgur.com/Cgk5OHr.png" src="https://res.cloudinary.com/devpost/image/fetch/s--IrF7krji--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/Cgk5OHr.png">
+                </p>
+                <ol>
+                    <li>
+                        The API module then does a depth first parse of the JSON tree which contain instructions, targets, and messages. It then calls the Stdlib APIs which performs the relevant calls with the required messages. This module also runs a web hook server in order to listen to the responses.
+                    </li>
+                </ol>
+                <p>
+                    <img alt="Alt text" data-canonical-url="https://i.imgur.com/oeGXAGS.png" src="https://res.cloudinary.com/devpost/image/fetch/s--rJy1Py5B--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/oeGXAGS.png">
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Reverse API calls.
+Design of NLP parser.
+Design of Query Language.
+Documentation of certain APIs
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We got the system to mostly work!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how to communicate between JavaScript and python applications.
+How to call APIs the right way and developing speech-to-text.
+That you have to say things really slowly in a quiet room for google speech to parse correctly. (For now)
+                </p>
+                <p>
+                    Sleep. Who is sleep.
+                </p>
+                <h2>
+                    What's next for Auto Flow
+                </h2>
+                <p>
+                    We believe this project is just the starting point. With more data we could move from a more rule-based NLP to deep learning NLP which could make the system more robust. Also we would like to add the ability for users to define their own APIs and actions, potentially from a marketplace.
+                </p>
+                <p>
+                    We envision a automation system similar to IFTTT but with user defined workflows on-the-fly! Maybe Stdlib.com could extend to such a functionality.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-web-speech-api">
+                                google-web-speech-api
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sentiment-analysis-online">
+                                sentiment-analysis-online
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/finnthedawg/HackPrinceton" rel="nofollow" target="_blank" title="https://github.com/finnthedawg/HackPrinceton">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

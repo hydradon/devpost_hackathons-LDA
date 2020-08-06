@@ -1,0 +1,76 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've always been inspired by music as a language -- as a long time instrumentalist, I have used music to communicate with my closest peers.  Music is incredibly structured -- in fact, it's widely considered a Mildly Context Sensitive Language.  I wanted to exploit music's inherent structure to find a some musical representation with an interesting and unexpected utility.  I decided to utilize chord analysis to create a one-to-one mapping from chord progressions to text.  With this, any musician can write a novel, a program, a blog, or just see what their favorite songs look like under their favorite mapping!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Music2Text does just what it sounds like: using real time audio input, Music2Text can turn any chord progression into writing.  Music2Text focuses on chord transitions as a mapping system, such that any transition from one chord to the next results in a text output.  Musicians can use an existing mapping or create their own.  Music2Text is multithreaded, partitioning tasks into stages, yielding fast translations from music to text.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Using portaudio in C++, Music2Text reads in raw audio from a USB midi device.  This data is then analyzed using a fast fourier transform, yielding a Chromagram, which consists of the intensities of the twelve tones in the Western scale.  A Chord Detector analyzes the Chromagram to determine the likeliest chord given the frequency distribution of the sample.  After determining what chord has been played, a queue keeps track of the chord changes (keeping their order).  A chord-transition to string map is initialized from a file, and the program determines which strings to print out based on the order of notes emerging from the queue.  The process continues in real time, translating chord transitions as they are played.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    This was the first time I've used any sort of driver API, so the learning curve kept progress slow.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Currently, this type of music to text mapping exists only for MIDI devices, the data out of which are easy to parse through.  I am proud that I successfully tackled the challenge of doing the same task with audio -- this way, ANY instrument can be used to create text.  I also feel I connected well with other hackers here: with some instruments here to help me with my project, I found some great musicians to play with throughout the night.  After completing a hack that I'm extremely proud of and also having some great jam sessions, this turned out to be my favorite hackathon so far!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about audio processing!
+                </p>
+                <h2>
+                    What's next for Music2Text
+                </h2>
+                <p>
+                    Better mappings: the key to a successful version of this project is a very useful and sensible mapping from chord transition to string.  Incorporating chord qualities (major, minor, extra harmonies, etc) will be key in this.  Also, I'd like to be able to map chord transitions to midi inputs that can be piped to the keyboard port -- with this, Music2Text can be used in any text editor!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            chord-detector-and-chromagram
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            postaudio
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

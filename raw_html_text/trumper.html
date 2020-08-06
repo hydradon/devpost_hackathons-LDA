@@ -1,0 +1,123 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When brainstorming for the SpartaHacks challenge, our team was determined to do some form of a hack for the Amazon Echo. We came up with a few ideas (some of which were already implemented by teams at past hackathons), but at some point we had this fun little joke idea of making a chat bot with the Echo. And who else would you rather have in your living room if not Donald J. Trump? And hence, Trumper was born.
+                </p>
+                <p>
+                    (A developer name for this project was also Dysalexia: after dyxlexia + Alexa. This was after the sometimes jumbled and confusing, yet humorous, blurbs that the bot would spit out)
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The chat bot is activated by calling "Alexa", and then asking the Echo device to "ask Trump" (or a number of similar intents). At that point, we enter a loop of conversation with fairly relevant replies (consisting of actual Donald Trump quotes) to what you say/ask.
+                </p>
+                <h2>
+                    Technical stuff
+                </h2>
+                <p>
+                    We hunted down over 250 quotes from Trump- half of which are from a speech he gave while running for President, and the other half of which were aggregated from various online social media websites, labelled as "The Best of Donald Trump", or similar. This constituted our Trump brain.
+                </p>
+                <p>
+                    <strong>
+                        Our original plan
+                    </strong>
+                    for simulating conversation was a first order (or even n-th order) Markov chain, in the style of the Monty chatbot. However, after a good chunk of playing around with the idea, and even implementing a working prototype in Ruby, we found out that the result was something that sounded somewhat Trump-y, but not very distinct and recognizable. This led to some confusion to testers of our product. Furthermore, since the phrases were being generated instead of being actual quotes, we felt as though the users were missing out on a good part of the experience. Therefore, we changed our technique.
+                </p>
+                <p>
+                    <strong>
+                        The second attempt
+                    </strong>
+                    was to create a kind of fitness function for our list of quotes, and select which one is the most relevant (or "fit") as a reply based on the input data that the user provides (aka, a question or phrase). We first determined that we could get a reasonable answer by comparing the quotes to the input, word-by-word, and generating a list of the top 10 or so most similar quotes, and picking from there. Most of the time, having a keyword like "America" or "great again" or "wall" would give a quote that's on the subject, allowing for a somewhat natural discussion.
+                </p>
+                <p>
+                    <strong>
+                        We had plans
+                    </strong>
+                    to expand on this idea and categorize the quotes into general buckets, and try to determine which bucket the input fell into to be able to get a response. Similarly, we were considering using keyword analysis to help branch into other, similar topics (i.e., "Obama" would be synonymous with "African American President", "our leader", "President", according to an analysis of the quotes we had), or at the very least help when determining which quote is most "fit" by its match compared to these different buckets. We made a couple of prototypes, but submitted the most stable version here, which used the second attempt described above.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    We used Javascript as the main language to write the logic in, and a little bit of Ruby for some smaller scripts on the side (stuff like sanitizing the quotes file, some calculations). We also used the Amazon Alexa online console to upload our files to the cloud for testing and usage purposes.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The initial setup of the Alexa dev environment was a bit of an involved process. There was also somewhat of a learning curve when it came to the actual programming, but the Amazon developers made sure that it wasn't all that bad when it came down to it.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We managed to make Alexa, a kind and gentle-mannered little AI, into Donald Trump. That's one part scary and two parts cool.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    A bit more about Javascript and a lot more about the Alexa- it's pretty neat! -George
+                </p>
+                <h2>
+                    What's next for Trumper
+                </h2>
+                <p>
+                    We will work on implementing the stretch ideas and continue to tweak the project, since natural language is still very much an open field for study. Perhaps instead of writing our own algorithms, we will integrate with an API of some kind to be able to focus more on the perfecting of the project, rather than the actual gritty details of implementation.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/rushingseas8/Alexa-Trumper" rel="nofollow" target="_blank" title="https://github.com/rushingseas8/Alexa-Trumper">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

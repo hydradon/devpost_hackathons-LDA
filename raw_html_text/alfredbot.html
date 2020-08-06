@@ -1,0 +1,174 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/UjFVMFDDwZc?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416769" data-title="Architectural Diagram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/769/datas/original.png">
+                            <img alt="Alfredbot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/769/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architectural Diagram
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Ever since the launch of slack, devOps are so 2015, this is the era of ChatOps!
+                </p>
+                <p>
+                    What best way to enable slack users to leverage the sheer power of AWS than to bring the CLI to their favourite platform of communication?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Alfredbot brings the full power of AWS CLI to slack. You can configure granular permissions by associating channels/groups/usergroups with different roles from your AWS account.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Alfredbot is split into 4 lambda functions, segregating responsibilities and limiting access to information as follows:
+                </p>
+                <p>
+                    <strong>
+                        Outsider
+                    </strong>
+                    - gets triggered as the callback hook from installing Alfredbot to slack, parsing the code queryparam in API gateway. Using the code and client id/secret an oAuth token is generated, KMS encrypted and stored in dynamoDB.
+                </p>
+                <p>
+                    <strong>
+                        Eagle
+                    </strong>
+                    - responsible for configuring the mapping between channels/groups/usergroups and AWS roles, only available for slack administrators. The information is saved in dynamoDB.
+                </p>
+                <p>
+                    <strong>
+                        Thaddeus
+                    </strong>
+                    - after you're done configuring the mappings, invoke /alfred-sync start to synchronize the users belonging to previously configured channels/groups/usergroups and store them in memcached.
+                </p>
+                <p>
+                    <strong>
+                        Alfred
+                    </strong>
+                    - entrypoint for your /alfred-invoke , retrieves the role associated with the caller from memcached, assumes it and tries to execute the aws command.
+                </p>
+                <p>
+                    The entire project is open source and can be found at
+                    <a href="https://github.com/gergo-debreczeni/alfredbot" rel="nofollow">
+                        https://github.com/gergo-debreczeni/alfredbot
+                    </a>
+                    .
+Feel free to have a look yourself and contribute if you want to see something added.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Porting AWS CLI to lambda was a challenge, luckily under the hood it's a python package and with some clever engineering we managed to get it working from lambda.
+                </p>
+                <p>
+                    Unfortunately certain aws commands even from terminal can take 2-3 seconds, with slacks default timeout of 3 seconds for a response for a slash command our main goal was performance, hence caching the invoker-role mapping and not determining it dynamically.
+                </p>
+                <p>
+                    One thing we still suffer from are lambda 'cold' calls, but once Alfrebot will be popular that won't be a problem anymore!
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Configuring API gateway and lambda to be used as slack redirect hook for installing the app was pretty ingenious if you ask me, everything is truly serverless.
+                </p>
+                <p>
+                    Pretty proud of getting the CLI on lambda.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    A lot, luckily there were some pretty awesome projects out there to make our lives easier lambkin/slacker/pynamodb/pymemcache, big shoutout to the maintainers!
+                </p>
+                <p>
+                    Logs are your best friend when debugging API Gateway and lambda.
+                </p>
+                <h2>
+                    What's next for Alfredbot
+                </h2>
+                <p>
+                    What we really want for alfredbot is full shell syntax support which is easy to do with Popen(shell=True) but that is a security hole in the application so we'll have to be more clever about it.
+                </p>
+                <p>
+                    Multi-account support.
+                </p>
+                <p>
+                    Aliases for frequently used commands.
+                </p>
+                <p>
+                    Standalone installation for organizations that want to manage Alfredbot on their own. This is almost done.
+                </p>
+                <p>
+                    Feel free to drop your suggestions on the github project!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.alfredbot.io" rel="nofollow" target="_blank" title="https://www.alfredbot.io">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.alfredbot.io
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/gergo-debreczeni/alfredbot" rel="nofollow" target="_blank" title="https://github.com/gergo-debreczeni/alfredbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

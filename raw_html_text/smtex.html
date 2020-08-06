@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="693634" data-title="Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/693/634/datas/original.png">
+                            <img alt="smtex &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/693/634/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Try it out!
+                </h2>
+                <p>
+                    Text
+                    <code>
+                        \sqrt{x}
+                    </code>
+                    to 970-400-1784!, or scan this QR code!
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="http://smtex.me/qr-code.png" src="https://res.cloudinary.com/devpost/image/fetch/s--EZceb9vO--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://smtex.me/qr-code.png">
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Most students in STEM majors have, at some point, run into the problem of needing to discuss equations over text. Unfortunately, it usually means sending SMS messages that look like
+                    <code>
+                        y = (int(x^2-4x)/(sqrt(x^2 + 4^2))
+                    </code>
+                    . Now I don't know about you, but looking at that just makes me want to give up on whatever I was trying to do. And, being someone  proficient in LaTeX, I often thought it would be awesome to be able to send LaTeX code to a phone number and have it respond with a picture, so I could quickly discuss equations over SMS or in person. Thus smtex was born.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    When you send a valid LaTeX equation to 970-400-1784, within a few seconds Twilio will respond with a professional-quality rendered image of your equation, along with a link to the image. This turns what would normally be a confusing, incomprehensible text formula into a form that can be easily shared with and understood by friends and colleagues!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We started trying to do most of the processing on AWS Lambda in Node JS. When doing this, we ran into a lot of issues with I/O restrictions (see Challenges). Eventually we shifted off of AWS Lambda an onto a t2.Nano ec2 instance. When our Twilio number gets a text, it sends all of the data from the message to an express.js server, which routes the contents of the message and the user's phone number to another API, this time a
+                    <a href="https://www.mathjax.org" rel="nofollow">
+                        MathJax
+                    </a>
+                    server. The MathJax server is the one that does the heavy-lifting of parsing the LaTeX into svg, converting the svg to a jpg, uploading the jpg to a S3 bucket, and calling the Twilio API to return the image to the user.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The underlying architecture of this application went through several heavy revisions before reaching its current form. In fact, the current technologies supporting smtex are almost completely opposite to what we originally thought they would be.
+                </p>
+                <p>
+                    The first iteration of the project was intended to be written using twilio for SMS integration, which would be routed through AWS API Gateway to an AWS Lambda function which would perform the svg-to-png transformation. The lambda function would then handle returning the png to the original sender.
+                </p>
+                <p>
+                    It did not take us very long to find a way to parse the LaTeX format into a .svg image. But .svg files on their own cannot actually be saved by mobile phones, so our next step was to change that .svg file into a .png. It was a seemingly simple process, but it lead to our most major road block. As it turns out, rasterizing (converting) svg files into normal images is not as easy as it might seem. As a result, nearly all third-party libraries for svg to png conversion were far too large to be used on AWS Lambda, which limits the maximum size of a function. We struggled to make Lambda work for quite some time, before we eventually were forced to the conclusion that Lambda would not work for our purposes and switched over to using an Amazon EC2 instance to do the svg-to-png conversion.
+                </p>
+                <p>
+                    However, even then we ran into more problems. Inexplicably, the Twilio API and Amazon's API Gateway could not be made to communicate. We spent hours isolating all the variables and incrementally testing and adding features, but no matter what we did we were unable to make the API Gateway consistently return the images to the original sender. So API Gateway had to be ditched too, and in its place we wrote a customized REST API in Express on our EC2 instance to coordinate twiliio with the svg-conversion backend.
+                </p>
+                <p>
+                    Only then did all the pieces start to fall into place.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are really proud of getting the data out of the Twilio API message body. For some reason getting that data to parse was very difficult. We were also proud of not giving up, even though we spent many hours on the frustratingly elusive task of converting one kind of image into another. It was really difficult not to give up when we were on the 10th hour of converting svgs, but the payoff was huge when we got that rendered text back for the first time.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    For one,don't be so set on using Lambda, especially when dealing with a lot of 3rd party APIs. Sometimes having a server where we can store our temp files can make things go a lot smoother and faster. We also learned 80% of the work comes from 20% of the issues. We thought we were pretty home free when we thought all we had left was the svg response and the API, but that portion of the project ended up taking us nearly half of the time of the competition.
+                </p>
+                <h2>
+                    What's next for smtex
+                </h2>
+                <p>
+                    There are a couple of priorities going forward with smtex. First, making it open source. Due to some time constraints we weren't able to clean up the code in time to publish it really, but I do really want to make it open source. Also, it would be cool to look into other API's like WhatsApp, Slack, and Telegram, or iMessage integration. Along with that, supporting more equation formats, so you can type in your simple "x=sqrt(x)' and get back what you want. It would also be really cool to try to connect with Voice APIs so you could speak your equations.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-ec2">
+                                amazon-ec2
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            domain.com
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/npm">
+                                npm
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://smtex.me" rel="nofollow" target="_blank" title="http://smtex.me">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                smtex.me
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

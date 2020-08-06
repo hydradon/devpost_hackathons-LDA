@@ -1,0 +1,155 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/312zpr88APQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="346555" data-title="One view of the device" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/346/555/datas/original.JPG">
+                            <img alt="POLL: Pong Over Laser Link &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/346/555/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                One view of the device
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="346718" data-title="Another view" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/346/718/datas/original.jpg">
+                            <img alt="POLL: Pong Over Laser Link &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/346/718/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Another view
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="346720" data-title="A schematic" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/346/720/datas/original.jpg">
+                            <img alt="POLL: Pong Over Laser Link &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/346/720/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A schematic
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to make something that was cool, unique, fun, and challenging to build. One recent article in Popular Science that interested our team was about a system known as a LIFI(Light Fidelity) network(100x faster than wifi), which allows for full duplex communication. Based on this idea, our team decided it was feasible to develop a small scale prototype of a LIFI network. This is how the idea to develop Pong Over Laser Link came to be. Our team wanted to develop the above network with a fun twist of gaming to test out the characteristics of the LIFI band. Implementing a video game added the challenge of minimizing processing delays and keeping the system as close to real time as possible.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Pong Over Laser Link implements a prototype of LIFI using 1mW red Keyes laser modules to transmit at a frequency of up to 3.6 kHz. Utilizing phototransistors on the receiving end of the link, we are able to reproduce the transmitted signal. In order to maximize efficiency and reliability, we developed a custom packet format. The master device transmits a start byte, six data bytes of information, a checksum, and an end bit. After reassembling the data, the slave receiving device verifies that the checksum is the sum of the six data bytes. In the event that a packet is lost or corrupted, the receiving device can infer the position of the paddles and ball based on the most recent transmitted positions and velocities.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The overall design of how we built POLL, was first we tested the simple concept of sending single bytes over a channel and detecting these bits. Hence, we started with a laser and phototransistor and tested out different voltage bias and configurations to create the digital values for the serial receiver. Once we were able to transfer a single byte from a receiver to a transmitter, we created a packet scheme which would be used for the pong game. The pong game basically consisted of two parts: a master and a slave. The master game transfered all the necessary data for the second game of pong to draw the necessary info for the screen. While on the other hand the slave provided the master with its paddle position since that was the only thing variable on the slave side. After this was successfully implemented, the master and slave link was tested to determine the efficiency of getting bits over the link in real time to provide real time gaming.  Additionally, then to provide debugging areas for a our system we developed a light system in order to identify when a good link has been established to transmit data between pong games.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One of the largest initial challenges that our group ran into was trying to test the initial proof of concept of sending data over a LIFI network. The reason for this is the band which the data is send leads to propagation delays. These delays had to be within a reasonable time period in order to ensure the time reliability for a gaming application. Additionally, another challenge we ran into with the initial testing was converting the phototransistor signals into digital values. The reason for this is the voltage range for these values was a very small value in volts. Therefore, it required precision from a ADC in order to map this value to a digital value.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    One of the coolest things that we were able to test was transceiving from a distance of at least one meter. The reason for this is we assumed we would have a reduced bandwidth as the separation distance increased. Although due to this small separation the transceivers were able to maintain proper link speed for this distance.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Throughout this whole experience we were able to learn a lot about different concepts pertaining to a wireless system. For example, many of us in our group have learned about reliable data transfer but never really implemented it. Therefore, it was interesting to see what it was really like when coding a reliable data transfer protocol. Another interesting thing that out group learned was the difference between a light dependent resistor(LDR) and a phototransistor. This was key part of our project as an LDR would provide noisy data due to slow switching speed when receiving from the laser. Hence, it was important to use a phototransistor which allows for fast switching speed that had the ability to send the data necessary for pong.
+                </p>
+                <h2>
+                    What's next for POLL: Pong Over Laser Link
+                </h2>
+                <p>
+                    Our current prototype incorporating 1mW red laser modules supports transmissions of about one meter. Utilization of more powerful laser modules, metallic reflectors and larger phototransistors would provide us with a much larger functional range. This would allow us to increase the use cases of our LIFI prototype, allowing transmissions between buildings, across campus, or through waveguides.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lasers
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://ponglaser.net/" rel="nofollow" target="_blank" title="http://ponglaser.net/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                ponglaser.net
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/maxton/PongOverLaserLink" rel="nofollow" target="_blank" title="https://github.com/maxton/PongOverLaserLink">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

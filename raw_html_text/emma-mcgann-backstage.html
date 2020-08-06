@@ -1,0 +1,176 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/Z7tCdTktwJM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="889109" data-title="Emma McGann Backstage" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/889/109/datas/original.jpg">
+                            <img alt="Emma McGann Backstage &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/889/109/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Emma McGann Backstage
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    It all started when Emma McGann was livestreaming to her fanbase. When she asked her own smart-speaker to turn on the lights, the smart-speakers in her fans&rsquo; homes responded! This was the lightbulb moment that led to the creation of the skill. Emma is always looking for new ways to interact with her fans and as an artist in the music industry, she is known for taking her business in disruptive directions. The idea was to create an Alexa-exclusive &ldquo;backstage access&rdquo; experience for fans. Emma has stated multiple times that smart speakers and smart devices are the future of the music industry, not only as a way to reach new fans, but also to provide unique experiences and interactions.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    There are 4 main features to the app:
+                    <strong>
+                        Finish the Lyric
+                    </strong>
+                    - A multiple-choice quiz where fans have to finish lyrics from some of Emma's most popular songs.
+                    <strong>
+                        Songwriting tip of the day
+                    </strong>
+                    - Each day of the month, aspiring songwriters can get a tip to help them realise their ambitions.
+                    <strong>
+                        Countdown
+                    </strong>
+                    - A countdown to the release of new singles, followed by a sneak peak of the new track. This is exclusive to Alexa. The audio isn&rsquo;t available anywhere else.
+                    <strong>
+                        Exclusive acoustic song
+                    </strong>
+                    - An in-app purchase option which allows fans access to an acoustic cover of the latest single, only available via the Alexa skill.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The skill was designed and developed by Emma&rsquo;s core team of three. We had no previous experience with voice UX. Emma came up with the overall concept, graphics and feature ideas. James Plester designed the conversation flow, conducted fan research, and produced all the necessary audio elements. Alex Kaye implemented the interaction models and back-end, as well as administering the AWS services that back the skill.
+                </p>
+                <p>
+                    We made good use of feedback directly from the fans. We set up a Discord group for the hardcore fans to beta test, giving us valuable feedback and a sense of what features people desired from the skill.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We started out trying to grok Alexa&rsquo;s conceptual framework from the developer docs, but found them a little too &ldquo;reference-oriented&rdquo;, lacking a narrative-structure that would have given a better overview of the system before deep-diving into specifics. The Alexa development YouTube videos were of some help here, but we feel the documentation could use some hand-holding tutorials of the high-level concepts.
+                </p>
+                <p>
+                    Once we had a handle on Alexa&rsquo;s interaction model, we started out with an Alexa-hosted skill to get the lay of the land, but found the developer tools painfully slow at the time. Thankfully this has improved, however when we hit the limitations of the in-browser tooling, we decided to make use of the provided AWS CodeStar template. This experience was several orders of magnitude worse due to a half-hour deployment time that had to be swallowed for each (even minor) adjustment to the skill.
+                </p>
+                <p>
+                    A half-hour feedback loop is completely untenable, especially for a Lisp programmer (used to REPLs), so in the end our coder set up the AWS infrastructure manually together with a toolchain that allowed him to use his preferred programming language (ClojureScript). This came with the cost of an impedance mismatch between the language and the Alexa Node.js SDK, but thankfully he was able to ditch that and exchange plain-old JSON with Alexa and AWS services, which was a much better fit with Clojure&rsquo;s data-in-data-out idioms.
+                </p>
+                <p>
+                    There were still some problems with the feedback cycle since, on every change, the code needed to be reuploaded to AWS Lambda in order to test the skill in the Alexa developer console. This was still too long to wait in order to test minor changes, but thankfully we were able to find an NPM package that allowed us to simulate Alexa interaction locally.
+                </p>
+                <p>
+                    We found that the interaction models available to us were geared more towards short interactions or one-off requests, and made more complex interactions quite difficult to implement in a reliable manner. The design guides hinted to make the skill &ldquo;conversational&rdquo; in nature, but the framework for implementation seemed to steer us in the opposite direction.
+                </p>
+                <p>
+                    Intents, the entry-points into the skill, were an overloaded concept. How you handle generic intents such as yes/no depends on where you are in the conversation, and this is something you have to track manually as Alexa has no built-in support. Another point of view is that words are the overloaded concept, and the Alexa interaction model can&rsquo;t handle the ambiguity with a modeless interface.
+                </p>
+                <p>
+                    Various documentation and blog posts pointed towards a flat interaction model as opposed to a hierarchical one, akin to an automated telephone system with a single menu, versus one with submenus. This wouldn&rsquo;t have been too tricky, however we ran into intermittent (difficult to reproduce) bugs where Alexa&rsquo;s speech recognition algorithms were confusing various monosyllabic utterances (e.g. yes, no, one, two). Since there is no way to bias the speech recognition model towards (or away from) certain intents at runtime, we had to come up with unique phrases for yes and no in certain circumstances (e.g. DJ hit repeat! DJ go home!). This did the job as a workaround, unintentionally adding to the &ldquo;fun factor&rdquo;, but we don&rsquo;t see it scaling particularly well.
+                </p>
+                <p>
+                    This lack of runtime flexibility made the Finish the Lyric game a challenge to implement. The tools provided (slots, dialog delegation etc.) didn&rsquo;t seem geared towards a multi-turn game that randomly selects questions at runtime. In addition, we would have liked for the user to be able to say, or, even better, sing the missing lyrics, however we were forced into a multiple-choice model. We understand that speech recognition models must be trained at &ldquo;compile-time&rdquo;, however if some progress were made towards a more versatile runtime interaction model, we feel it would really open up the directions that developers could take Alexa in.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Emma speaks at music industry events worldwide about her unique approach to making a living as an artist. She prides herself on leveraging new tech and platforms in a speculative fashion, diversifying her income stream in order to survive as an independent artist.
+                </p>
+                <p>
+                    Emma has spoken about her skill to many people in the industry, including Music Tectonics, who interviewed her for their podcast at MIDEM earlier this year.
+                    <a href="https://www.musictectonics.com/single-post/artist-emmamcgann-midem" rel="nofollow">
+                        https://www.musictectonics.com/single-post/artist-emmamcgann-midem
+                    </a>
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Voice interaction is an interesting domain coming from the browser-based experiences we have developed in the past, requiring a surprisingly different mindset. As with many things, we found it was easy to produce a naive voice interaction, but very difficult to create a &ldquo;minimal-friction&rdquo; experience that fans would frequent. Although we are now familiar with the technical aspects of developing and hosting an Alexa skill, the design experience we gained working with a voice-first platform is orders of magnitude more valuable to us, and we hope it will serve us well as Alexa continues to evolve as a platform.
+                </p>
+                <h2>
+                    What's next for Emma McGann Backstage
+                </h2>
+                <p>
+                    We intend to continue offering unique experiences for fans and listeners through this dedicated Alexa skill. We are drawing up a new &ldquo;Write a Song with&hellip;&rdquo; feature, which will have users select from multiple options for melody and lyrics in order to &ldquo;write&rdquo; a song with Emma and Alexa. This will yield a combinatorial number of possible outcomes for the user, who will then be able to listen to their version of the song on all major music streaming platforms. We also plan to expand the in-app purchase section of the skill with more exclusive offerings, as we find this works well with Emma&rsquo;s fans on other platforms (e.g. Patreon).
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            clojurescript
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dynamodb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shadow">
+                                shadow
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.co.uk/X-My-Heart-McGann-Backstage/dp/B07SGW758H/ref=sr_1_1?keywords=emma+mcgann&amp;qid=1573578697&amp;s=digital-skills&amp;sr=1-1" rel="nofollow" target="_blank" title="https://www.amazon.co.uk/X-My-Heart-McGann-Backstage/dp/B07SGW758H/ref=sr_1_1?keywords=emma+mcgann&amp;qid=1573578697&amp;s=digital-skills&amp;sr=1-1">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.co.uk
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,141 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/drfdLWqgvf8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="894652" data-title="TheThrow App" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/894/652/datas/original.jpg">
+                            <img alt="TheThrow &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/894/652/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                TheThrow App
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    The video is meant as a cheesy TV ad - not everything has to be 100% serious, right? :)
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    For decades there have been no big innovations in the art of the discuss throw. Due to the nature of the sport, practicing the throwing technique requires a large area and a trainer.
+                </p>
+                <p>
+                    We seek to change that by introducing TheThrow - combination of a special glove and an app! With TheThrow, all you need is a relatively small area, in which you can spin around and imitate the throw of the discus.
+                </p>
+                <p>
+                    Additionally, the grandfather of one of the team members is an award winning and still active track and field trainer, who has trained the Latvian national track and field youth team in the 1970s.
+By innovating the training of the discus throw, we are paying tribute to our elders and contributing to their legacy.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The App is always ready when you are. Just throw a discus (no actual discus needed) and within seconds, it will score your throw, provide feedback and give exact tips.
+                </p>
+                <p>
+                    It says which part of your movement you should improve, on which aspects you should focus while throwing, and where you lose your energy.
+                </p>
+                <p>
+                    The exact things a trainer would tell you, but faster, more precisely, and of course: Wherever you are!
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    We wanted a system that is fast, accurate, and user friendly.
+To achieve all of these goals, we used the "divide and conquer" technique.
+Splitting up the whole process into different parts allowed us to ensure that everything worked perfectly.
+                </p>
+                <p>
+                    First, we have different sensors (accelerometer, gyroscope, 3D-Hall sensor) that measure the needed data and (using I2C and Serial communication) share it with a microcontroller.
+A bluetooth module then is used to share this data instantly with a computer (which leads to our system being compatible with both android and iOS). 
+Additionally, a computer can analyze data way faster than any mobile device, even with more precise calculations and is thus more reliable.
+                </p>
+                <p>
+                    The raw data of the sensors is translated into forces, velocities, angles and relative distances of your arm, hand and fingers.
+Putting those together creates a digital representation of the whole throw.
+The main problem was to teach the system how to recognize mistakes that can happen during a throw. We decided to go trough a 3-step process:
+1) Collecting common and uncommon mistakes that can happen during a discus throw, and finding out every body part and movement that is involved
+2) Reproduce the mistake over and over again, to find patterns in the data that represent it.
+3) Create an algorithm for each mistake, train it, test it, improve it.
+                </p>
+                <p>
+                    The feedback and information about the throw are uploaded onto a database, to which the app connects and about one second after the throw, the final results are presented to the user in a clear and easy-to-use app.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Sharing the data with a bluetooth module is not as big as a deal as we initially thought, but sharing it fast enough to produce enough data during one throw (~1sec) was not that easy.
+We had to improve the sketch for our microcontroller, and the receiving computer, as well as the way of receiving the data several times, until we were satisfied with the results.
+                </p>
+                <p>
+                    The next challenge was the beginning of the data analysis. Not having any experience with the sensors, we had to find out (willingly and unwillingly) that the precision, the data ranges and physical side effects often are challenging. 
+But with enough data, there is always a way, so, fortunately, "challenging" didn't mean "impossible".
+                </p>
+                <p>
+                    Because our app should be as user friendly as possible, one of the main aspects was that the user decides when to throw, to ensure the best possible throwing technique.
+That meant that the app has to be able to decide what a throw is and what isn't.
+This proved to be not an easy task, as the athlete can make a few "warm up" swings, which aren't quite as easy to differentiate from the swings while actually performing the technique.
+We managed to accomplish that, as we had enough knowledge about our data to create the evaluation system.
+We trained the system to structure and score different mistakes, and improved the feedback provised during many many tests.
+                </p>
+                <h2>
+                    What's next for TheThrow
+                </h2>
+                <p>
+                    While the prototype, and the training part of the app works already seamlessly, there are many more possibilities to TheThrow.
+In the future we want to integrate challenges, that allows specific analysis of special aspects of the movement and an achievement system to keep the user motivated.
+A "Versus Mode", where you can play against your friends and people all over the world is planned as well, so that you can compete on the Leaderboards and compare yourself to others, creating an international discus throwing community.
+                </p>
+                <p>
+                    Furthermore, a new discus could also be developed with the sensors inside of it. With such a device an athlete could gain significant information about the quality of his actual throw.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            motionsensors
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

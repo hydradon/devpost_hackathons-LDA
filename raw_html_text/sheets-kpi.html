@@ -1,0 +1,119 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/iG87oeFrDMs?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="889292" data-title="a typical KPI dashboard speadsheet the skill can read from" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/889/292/datas/original.png">
+                            <img alt="Sheets KPI &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/889/292/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                a typical KPI dashboard speadsheet the skill can read from
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Before I started making Alexa skills, I worked in data and analytics, and execs would frequently have an urgent need for a particular key performance indicator, like month over month revenue. Of course we had systems where they could go find it, but for example, if they were standing up in front of investors getting grilled on the numbers, the last thing they'd want to do was fumble for their phone. It would have been great to have a voice interface to their most important metrics.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Sheets KPI allows users to link their google account. It's free for individual accounts @gmail.com, requiring an in skill subscription purchase for use with a G Suite account at a company domain. Once linked, the user can send the skill a reference to the document they want, and then have Alexa read key data to them. It recognizes the typical format of a KPI dashboard sheet, and lets users ask for data naturally, e.g. "give me our monthly revenue by category."
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used ask-sdk on node.js running on lambda. For local development, I used bespoken.io's local development tools along with webstorm to allow for easy local debugging. I created a google cloud project with a consent screen and client id, and got it approved by google. To select the sheets, I used the sendgrid api to send the user an email. The user then hits reply and copy-pastes the url of the spreadsheet they want. I made a zap in zapier to receive the email, parse it, and send it on to the skill as an in-skill message. I used fuzzyset to match the names of individual sheets and named ranges, to allow the user to be able to request data more naturally.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I had a a bit of a chicken and egg situation getting google's approval to use the spreadsheets read-only OAuth scope. They kept asking to see the public link to the skill, which of course I couldn't give them until it was approved, and of course it wouldn't be approved until the read-only scope was working :) I managed to escalate to someone who understood that and they eventually approved.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    What I like most about the skill is the way fuzzyset can allow it to read data by named range in a relatively natural way. So if you have a named range like 'month_revenue_by_category' and you say 'tell me our monthly revenue by category,' it will find it. That to me is what distinguishes it from other sheet readers out there.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about how in-skill purchases work, and some key details about getting amazon and google to communicate :)
+                </p>
+                <h2>
+                    What's next for Sheets KPI
+                </h2>
+                <p>
+                    Right now it's relatively limited in the data formats it can make sense of. I'd like to make it smarter about pulling out KPIs even from sheets that aren't organized in a way that it expects.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ask-sdk
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-cloud-apis
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sendgrid">
+                                sendgrid
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/zapier">
+                                zapier
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

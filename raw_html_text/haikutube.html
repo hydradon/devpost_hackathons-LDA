@@ -1,0 +1,90 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Introduction
+                </h2>
+                <p>
+                    r/youtubehaiku is a subreddit for posting YouTube videos under 30 seconds in length - 15 seconds to be exact - called haikus.  Submissions that are 30 seconds or under are called poetry.  From animated dancing crabs and unusual slice-of-life scenes, to celebrity and political references, to surrealist memes and jokes, these videos capture the attention of an extremely broad and populated audience with its spectacular content. Until now, a native solution to just watch a continuous stream of these videos simply didn't exist.  And streaming to big shared devices like TVs required screen sharing, which would not only rebuffer the video but significantly degrade its quality.
+                </p>
+                <p>
+                    YouTubeHaiku videos deserve the best and brightest screens at the highest resolution - they deserve a native tvOS application that puts the video content first and the chrome and buttons second.  YouTubeHaiku deserves HaikuTube.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    There were three parts to this application: The UI, communicating with Reddit, and communicating with YouTube.  We began the engineering with a simple goal: All Swift, All The Time.
+                </p>
+                <p>
+                    The UI was built in Xcode's Interface Builder as a storyboard and connected to the backend with a thin Swift wrapper that coordinates the fetching of content and metadata.
+                </p>
+                <p>
+                    The Reddit backend is remarkably simple.  Reddit provides a read-only json API that we transparently wrap in a client that automatically paginates its requests and translates the responses to native Swift objects.
+                </p>
+                <p>
+                    The YouTube backend is where the majority of the engineering went.  Google and YouTube currently sanction solutions that are too complex and involve far too many tradeoffs.  They use iOS' deprecated web technologies and iframes to embed their own YouTube video player in other apps.  Because we wanted a fully-native experience, we request and parse the metadata for video pages directly from YouTube.  These are used to gather streams, from which we select the highest-quality available stream on-device.  A stream whose contents are displayed in an iOS-native video playback control.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    On the surface, we produced a pure Swift application that plays a queue of videos.  But in the process of developing this app, we had to come up with a number of innovative solutions to tackle platform-imposed challenges.
+                </p>
+                <p>
+                    One such challenge is that YouTube doesn't provide a proper SDK.  So, we went out of our way to provide our own tidy, modern, native client.
+                </p>
+                <p>
+                    Another is that tvOS doesn't have a way to share content.  After wracking our brains for a while, we had a breakthrough: Everybody's phones have QR code parsers, and iOS provides a native way to generate QR codes (if, somewhat undocumented).  Now, if you long-press on your AppleTV remote, you can get a shareable QR code link that is openable simply by pointing your iPhone's camera at it.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Over the course of this hackathon, we gained a lot of experience with Swift, Xcode and the process of developing iOS apps start-to-finish.
+                </p>
+                <p>
+                    We also learned an enormous amount about the internal structure of YouTube and its content delivery subsystems.
+                </p>
+                <h2>
+                    What's next for HaikuTube
+                </h2>
+                <p>
+                    HaikuTube in its current state is feature complete and could be released to the App Store.  We have a number of stretch goals that we anticipate meeting in a series of future updates.  These include the ability to filter videos by title and by tag, minor UI tweaks and refinements, and major refactoring in the YouTube backend to make it suitable for release as a standalone open source library.
+                </p>
+                <p>
+                    We hope to release HaikuTube onto the App Store in the medium term, and to release it as open source in the short term.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tvos
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/xcode">
+                                xcode
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

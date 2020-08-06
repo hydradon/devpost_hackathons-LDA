@@ -1,0 +1,228 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="925096" data-title="code" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/925/096/datas/original.png">
+                            <img alt="B-Resilient Tool &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/925/096/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                code
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="925099" data-title="screenshot of tool" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/925/099/datas/original.png">
+                            <img alt="B-Resilient Tool &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/925/099/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                screenshot of tool
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    "...it&rsquo;s not good for air quality and it&rsquo;s not in line with our climate goals...Backup generators can emit nitrogen oxides, carbon monoxide, sulfur dioxide, particulate matter, and other compounds...&rdquo; Todd Sax chief of the California Air Resources Board&rsquo;s enforcement division
+                </p>
+                <p>
+                    There were at least two instances of fires started by generator use in Nevada County last year during public safety power shutoffs. This is just one example of the environmental and public health risks associated with the response of unprepared populations facing this new and ongoing threat.
+                </p>
+                <p>
+                    Most people cannot afford a Tesla PowerWall for emergency backup despite incentives such as the self generation incentive program.  Fortunately, governments have the capability, and responsibility, to support their most vulnerable residential customers, such as low income families, and those who require electric medical devices.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our interactive demand assessment tool equips governments with the information they need to properly plan and allocate clean energy resources to mitigate the risks to their most vulnerable populations.
+                </p>
+                <p>
+                    Furthermore, our solution will promote EV adoption, electric mobility and grid services, such as demand response.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    1) Reviewed UtilityAPI data and selected Gilroy, CA as our case study community
+                </p>
+                <p>
+                    2) Identified 4 representative meter interval data sets to estimate critical load energy and power demands by region in Gilroy, CA based on research by the Clean Coalition -
+                    <a href="https://clean-coalition.org/news/value-of-resilience-to-proliferate-community-microgrids/" rel="nofollow">
+                        https://clean-coalition.org/news/value-of-resilience-to-proliferate-community-microgrids/
+                    </a>
+                </p>
+                <p>
+                    3) Created GeoJSON polygons to represent said regions and assigned load values and boolean vulnerable community values
+                </p>
+                <p>
+                    <strong>
+                        From the code review
+                    </strong>
+                    fetch_polygons: This should take a bounded map area and return all of the load density 
+polygons that are in or intersect with the map area.
+The final goal, which may be out of scope for the hackathon, is to create polygons covering
+the entire service area from the UtilityApi info and then load the polygons into a postgres
+database, where the polygon intersect method is used to find the polygons to load from the database.
+                </p>
+                <p>
+                    The load area has a power consumption density (calculated from the peak of a a marked metered load 
+location in the polygon) as well as a boolean indicator of income (lower income locations being more 
+vulnerable), as well as a visual shading indicator.  MVP has the polygons manually calculated from 
+UtiltyAPI data for Gilroy and returns those.
+                </p>
+                <p>
+                    _ Example from early in GeoJSON development: _
+var loadPolygons = [
+{
+type: String, // load, fire, generate
+markerLoc: Array, // lat lng 
+isLowIncome: Boolean,
+loadIndex: Integer, // 0-100
+loadDensity: String,
+coordinates: [
+[
+[-67.13734351262877, 45.137451890638886],
+[-66.96466, 44.8097],
+[-68.03252, 44.3252],
+]
+]
+}
+];
+                </p>
+                <p>
+                    4) Created database to provide multilevel set of recommendations by days of autonomy
+                </p>
+                <p>
+                    <strong>
+                        From the code review
+                    </strong>
+                    calculate_recommendations: This function should take a user specified polygon, find all overlapping 
+load polygons in the database, then for each load polygon, calculate the overlap area, 
+calculate the % of the area of the overlap, then add that fraction of the load density to the total (i.e. 
+the entire load polygon represents 4.1 MW, and we have 25% in our area of interest, so we add 4.1*0.25=1.025MW to
+the load density total for the recommendation
+                </p>
+                <p>
+                    For the math in the recommendations, here are the assumptions mapping from UtilityApi data to 
+load density for load polygons, and then from load density to generator units
+Set beginning energy value per Voltstack + (# of days * daily energy in per Voltstack) - 
+(number of days * daily total energy out equal to zero)
+eg. 0=121 kWh*x + (7 days*17.8kWh*x) - (107112 kWh/day*7 days)
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    We ran out of time to dynamically generate the recommendation array based on the coverage of the user-generated polygon which represents the area affected by a grid outage. That is the next step in the development of the tool.
+                </p>
+                <p>
+                    We also ran out of time to host it on a local server for the demonstration.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We created a clear and usable framework on which to elaborate an automated demand assessment tool that CCAs, utilities, and governments can use to serve vulnerable communities affected by the ongoing SPS events and other emergencies.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We now have a better understanding of the requirements to build a fully dynamic tool of this nature.
+                </p>
+                <h2>
+                    What's next for B-Resilient
+                </h2>
+                <p>
+                    Partnering with utilities, CCAs and governments around California to build integrated multipurpose charging hubs and electrify their standby generator fleets.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mapbox">
+                                mapbox
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/openstreetmap">
+                                openstreetmap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            postpres
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vanilla
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/kmosher44/bresilient" rel="nofollow" target="_blank" title="https://github.com/kmosher44/bresilient">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

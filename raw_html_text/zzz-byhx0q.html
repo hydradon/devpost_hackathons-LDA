@@ -1,0 +1,142 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/6Lo189OKimo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="901043" data-title="Output results - Microsoft PowerBI" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/901/043/datas/original.JPG">
+                            <img alt="Deep Scenario Simulator &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/901/043/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Output results - Microsoft PowerBI
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Machine learning is touted as a solution capable of automatically learning complex functional relationships without the explicit need for programming. It has been applied in fields as varied as financial prediction or medical diagnosis, and has led to novel applications from both technology titans and agile start-ups. However,
+                    <strong>
+                        data is the lifeblood
+                    </strong>
+                    of this new emerging economy, i.e. the resulting solutions are as good as the data available to train and validate them. Deep learning (and especially reinforcement learning) can require millions of data samples to properly train a model. While these are readily available in high volume digitised domains like web traffic or e-commerce, when we turn to financial domain, we are confronted by
+                    <strong>
+                        a chronic data scarcity
+                    </strong>
+                    caused, among others (especially in our core Tier 3- customer base), by the lack of historical data, its bias, obsolesce (e.g. due to shifting economical regimes), and its quality, not mentioning the data privacy constraints. In addition, within the context of risk management, handling of potentially disastrous events is of utmost importance, but these are naturally rare and so under-represented in the available historical data. The challenge of having good data has therefore been increasingly noted and analysed (e.g. see [1],[2],[3],[4]). Still, the solutions are at early stage in general, and within financial domain, in particular for regional institutions and the fintech industry serving them.
+                </p>
+                <p>
+                    _  [1] Buehler, Hans, et al. "Deep Hedging: Hedging Derivatives Under Generic Market Frictions Using Reinforcement Learning-Machine Learning Version." Available at SSRN(2019). _
+                </p>
+                <p>
+                    _ [2] Li, Junyi, et al. "Generating Realistic Stock Market Order Streams." (2018). _
+                </p>
+                <p>
+                    _ [3] Moriyama, Koichi, et al. "Reinforcement Learning on a Futures Market Simulator." J. UCS 14.7 (2008): 1136-1153. _
+                </p>
+                <p>
+                    _ [4] Hernandez, Andres. "Model Calibration: Global Optimizer vs. Neural Network." Neural Network (July 3, 2017) (2017). _
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    To tackle this challenge, our approach is to
+                    <strong>
+                        learn and model the distribution
+                    </strong>
+                    of the underlying data driven by a possibly minimal real dataset and well-founded models  (e.g. for rare events/black swans). In particular, the solution incorporates the so-called _ Peek-over_Threshold _ model developed by University of Leeds (see the attached flyer). Once the application learns the distribution and/or its calibrating features, we can sample an infinite number of training examples, correlated with real data the distribution was derived from, to feed the data-hungry machine learning algorithms.
+                </p>
+                <p>
+                    Sample data has been analysed using Mixture Density Networks to retrieve the underlying data distribution (Gaussian distributions is currently supported), which then has been used to calibrate the associated survival Cox models supporting Weibull and log distributions.
+The prototype is able to generate loan prepayment events and associated data.
+                </p>
+                <p>
+                    Our aim is to make this tool available in FFDC such that it can be incorporated into the workflow of applications deployed on the platform, e.g. Fusion Optimum to train its Deep ALM optimizer,  and address the data deficiencies that limit their effectiveness.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The solution has been built in co-operation with the Department of Statistics University of Leeds leveraging Microsoft Azure and Machine Learning Studio platforms. The solution employed Keras available within TensorFlow 2.0 library and Azure DataBricks  for data management. We have also used proprietary C code to implement the statistical models designed by University of Leeds.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    It was difficult to get some real data due to data protection and ownership issues (surprise! ;).
+Challenging was also to define the data sample format/features, as well as the data model and API , so they are extendable/generic.
+Also testing was painful again due to the limited data availability but also user friendliness of the Azure ML Studio (web browser based, no offline mode, paid features, which were not available). Nevertheless, the fast prototyping capabilities of the platform helped to deliver the solution.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    As far as we am aware, this is the first case of a model augmented data simulator, where the data driven AI algos have been coupled with rigid mathematical models, avoiding the curse of dimensionality. The use cases are endless, starting from an outright scenario generator to the market environment simulation for reinforcement learning agents. The achievement has also been possible by a clever combination of existing reliable toolkits (Azure, ML studio, Keras) and proprietary experience of the team.
+The tool can be used by our customers and fintechs to generate the data badly needed to train their own AI models. It is also a critical supporter of our own work on the Deep ALM balance sheet optimiser, which employs reinforcement learning and so needs to have a simulation environment.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned to use the FFDC and Azure ML Studio efficiently, esp. in terms of including external libs, like tenor flow. Also, the models coming from the academic research enriched our understanding of data and its use scenarios.
+We&rsquo;ve learned the challenge of a proper data modelling and testing.
+It was refreshing to see that our thinking out of the box approach I possible to be implemented and used with the currently available technology.
+                </p>
+                <h2>
+                    What's next for Deep Scenario Simulator
+                </h2>
+                <p>
+                    We want to extend the use case scenarios and make it more generic in terms of the covered financial events and market data. We also want to investigate Generative Adversarial Networks, and other AI algos (e.g. RL A3C) to further improve the quality of generated data.Last but not least the UI and API needs to be further streamlined.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://app.powerbi.com/view?r=eyJrIjoiNmY1YTdkNzctNzVjNi00NzhhLTgyMTktOTc2MzBiODNjZWMwIiwidCI6IjBiOWI5MGRhLTNmZTEtNDU3YS1iMzQwLWYxYjY3ZTEwMjRmYiIsImMiOjl9" rel="nofollow" target="_blank" title="https://app.powerbi.com/view?r=eyJrIjoiNmY1YTdkNzctNzVjNi00NzhhLTgyMTktOTc2MzBiODNjZWMwIiwidCI6IjBiOWI5MGRhLTNmZTEtNDU3YS1iMzQwLWYxYjY3ZTEwMjRmYiIsImMiOjl9">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                app.powerbi.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

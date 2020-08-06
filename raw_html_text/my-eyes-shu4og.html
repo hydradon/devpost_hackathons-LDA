@@ -1,0 +1,413 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/SgYWW1DKnEk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="697576" data-title="My Eyes" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/697/576/datas/original.png">
+                            <img alt="Your Eyes &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/697/576/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                My Eyes
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719014" data-title="Components" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/014/datas/original.png">
+                            <img alt="Your Eyes &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/014/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Components
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My son, who keep showing stuff to Alexa and asking "Do you know what this is?"
+And no matter how powerful Amazon has made Alexa.The fact is,
+                    <strong>
+                        "Alexa can't see and can't read"
+                    </strong>
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It gives eyes to Alexa and ability to read things via camera of your phone.
+                </p>
+                <p>
+                    Step 1. Download an "Alexa Companion" app.
+                </p>
+                <p>
+                    Step 2. Click or Browse a picture in it.
+                </p>
+                <p>
+                    Step 3. And ask, "Alexa open your eyes"
+                </p>
+                <p>
+                    You can even ask "Alexa open your eyes and read this" in Spanish or Chinese or Japanese or more.Right now there is a support of 12 languages.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Following are the
+                    <strong>
+                        15 services
+                    </strong>
+                    running in the background to support this -
+                </p>
+                <h3>
+                    Lambda functions (2)
+                </h3>
+                <p>
+                    <strong>
+                        Alexa endpoint
+                    </strong>
+                    This lambda function is called whenever Alexa skill is invoked. This function decides which language translation to invoke based on user input.
+                </p>
+                <p>
+                    <strong>
+                        Triggered by S3 bucket
+                    </strong>
+                    Whenever image clicked using the
+                    <em>
+                        Alexa Companion
+                    </em>
+                    app is uploaded in the S3 bucket, this function is triggered. This function reads text using the Amazon Rekognition and push it to DynamoDB
+                </p>
+                <h3>
+                    AWS Serverless (1)
+                </h3>
+                <p>
+                    As Amazon doesn't have any SDK available for Xamarin for "Login with Amazon". I have to hack my way in using the API calls it makes to provide authentication for web. For that I used AWS Serverless and hosted an API which gets Auth Token from Amazon and return it to the app.
+                </p>
+                <h3>
+                    Login with Amazon (2)
+                </h3>
+                <p>
+                    <strong>
+                        Alexa Link Account
+                    </strong>
+                    The Alexa skill requires Amazon login to sync with the phone.
+                </p>
+                <p>
+                    <strong>
+                        Xamarin app login
+                    </strong>
+                    Mobile app authenticates using Login with Amazon. This is required to sync with Alexa app.
+                </p>
+                <h3>
+                    Microsoft Cognitive service instance (1)
+                </h3>
+                <p>
+                    <em>
+                        Alexa Companion
+                    </em>
+                    app uses this service to extract
+                    <em>
+                        caption
+                    </em>
+                    from the captured image which describes its contents in a simple sentence. Amazon Rekognition do not have a caption field instead it gives a list of labels.
+                </p>
+                <h3>
+                    Xamarin Forms Android/iOS app (2)
+                </h3>
+                <p>
+                    This app is used to either click or browse a picture from there phone/tablet/iPad/etc. The selected picture is then send to Microsoft Cognitive service and parallely uploaded to S3 bucket for further processing.
+                </p>
+                <h3>
+                    My Eyes - Alexa skill (1)
+                </h3>
+                <p>
+                    <em>
+                        My Eyes
+                    </em>
+                    is the Alexa skill. You can invoke it in folowing ways, by saying -
+                </p>
+                <ul>
+                    <li>
+                        <em>
+                            Alexa, open your eyes
+                        </em>
+                    </li>
+                    <li>
+                        <em>
+                            Alexa, open your eyes and read this
+                        </em>
+                    </li>
+                    <li>
+                        <em>
+                            Alexa, open your eyes and read this in [language]*
+                        </em>
+                    </li>
+                </ul>
+                <p>
+                    * you can use any language from arabic, chinese, czech, english, french, german, italian, japanese, portuguese, russian, spanish, turkish
+                </p>
+                <h3>
+                    Amazon DynamoDB instance (1)
+                </h3>
+                <p>
+                    All the information from the app linking code to translated text is stored in this DB
+                </p>
+                <h3>
+                    Amazon S3 buckets (2 folders)
+                </h3>
+                <p>
+                    <strong>
+                        For images
+                    </strong>
+                </p>
+                <p>
+                    All the images uploaded from
+                    <em>
+                        Alexa Companion
+                    </em>
+                    app are temporarily stored in this bucket(folder). An auto delete policy is set to delete them in one day(minimum available duration)
+                </p>
+                <p>
+                    <strong>
+                        For audio files
+                    </strong>
+                </p>
+                <p>
+                    All the audio files uploaded by Lambda function after converting them to a specific language are temporarily stored in this bucket(folder). An auto delete policy is set to delete them in one day(minimum available duration)
+                </p>
+                <h3>
+                    Amazon Translate instance (1)
+                </h3>
+                <p>
+                    All the text is translated using
+                    <em>
+                        Amazon Translate.
+                    </em>
+                </p>
+                <h3>
+                    Amazon Rekognition instance (1)
+                </h3>
+                <p>
+                    All the scanned images are sent to
+                    <em>
+                        Amazon Rekognition
+                    </em>
+                    to extract text from them.
+                </p>
+                <h3>
+                    Amazon Polly instance (1)
+                </h3>
+                <p>
+                    Text to speech for any supported language is performed using
+                    <em>
+                        Amazon Polly.
+                    </em>
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    <strong>
+                        Integration, integration and integration
+                    </strong>
+                </p>
+                <ul>
+                    <li>
+                        Linking mobile app with Alexa
+                    </li>
+                    <li>
+                        Pushing Polly generated file to S3
+                    </li>
+                    <li>
+                        Converting Polly generated mp3 to Alexa undestanding format
+                    </li>
+                    <li>
+                        Managing wait time for generating result, like translation, reading image, etc.
+                    </li>
+                    <li>
+                        Different set of languages supported by Amazon Translate, Amazon Rekognition and Amazon Polly
+                    </li>
+                    <li>
+                        Hacking Amazon Login as it does not provide SDK for Xamarin Forms apps
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Watching this whole integration work :)
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        Patience
+                    </li>
+                    <li>
+                        Dealing with limitations of products
+                    </li>
+                    <li>
+                        Dealing with limitations in features provided
+                    </li>
+                    <li>
+                        Reinventing the wheel for optimizing performance
+                    </li>
+                    <li>
+                        <p>
+                            Hacking my way in to things not provided out of the box
+                        </p>
+                        <h2>
+                            What's next for My Eyes
+                        </h2>
+                    </li>
+                    <li>
+                        <p>
+                            Recognize faces
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Independent device (like RPI) to act as eyes
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Using Alexa as a true Companion while you are driving your car
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-rekognition
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-translate
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ios">
+                                ios
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-cognitive
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/xamarin">
+                                xamarin
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/AppGrate-My-Eyes/dp/B07H97BC94/ref=sr_1_1?s=digital-skills&amp;ie=UTF8&amp;qid=1539890032&amp;sr=1-1&amp;keywords=my+eyes" rel="nofollow" target="_blank" title="https://www.amazon.com/AppGrate-My-Eyes/dp/B07H97BC94/ref=sr_1_1?s=digital-skills&amp;ie=UTF8&amp;qid=1539890032&amp;sr=1-1&amp;keywords=my+eyes">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://play.google.com/store/apps/details?id=com.appgrate.alexacompanion" rel="nofollow" target="_blank" title="https://play.google.com/store/apps/details?id=com.appgrate.alexacompanion">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                play.google.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://itunes.apple.com/us/app/alexa-companion/id1437746824?mt=8" rel="nofollow" target="_blank" title="https://itunes.apple.com/us/app/alexa-companion/id1437746824?mt=8">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                itunes.apple.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

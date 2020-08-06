@@ -1,0 +1,150 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    "You have reached 911, emergency services. All of our operators are busy. Please hold the line."
+                </p>
+                <p>
+                    When disaster strikes and seconds mean life or death, this is a truly terrifying message. Sadly, it's not exactly uncommon to hear [
+                    <a href="https://techcrunch.com/2009/06/27/9-1-1-should-never-give-me-a-busy-signal/" rel="nofollow">
+                        1
+                    </a>
+                    ,
+                    <a href="https://archive.triblive.com/local/pittsburgh-allegheny/just-hold-on-911-officials-say-of-busy-signals-but-frustrated-callers-want-explanation/" rel="nofollow">
+                        2
+                    </a>
+                    ,
+                    <a href="https://globalnews.ca/news/2006891/911-calls-sometimes-not-answered-right-away/" rel="nofollow">
+                        3
+                    </a>
+                    ]. Why is it still uncertain today that help will be available when we need it most?
+                </p>
+                <p>
+                    The answer is simple: our 911 system is broken. We're using 80's tech to support infrastructure that cannot fail. We're trusting our lives to a handful of overworked operators. We're relying on a system that simply wasn't designed for our exponentially-growing population.
+                </p>
+                <h2>
+                    Our solution
+                </h2>
+                <p>
+                    Vortex ensures that every 911 caller is immediately accounted for, regardless of which (if any) operators are available. We accomplish this by intelligently "clustering" calls based on their originating cell tower and a verbal incident description provided by the caller. This information is delivered through an interactive heatmap that conveys the location, severity, and nature of each incident. In this way, multiple calls about the same incident won't overwhelm the call center and starve out calls about newer incidents elsewhere. Vortex aims not to replace the 911 operator network outright, but rather to allocate operator resources as efficiently as possible during periods of peak demand.
+                </p>
+                <p>
+                    <img alt="screenshot" data-canonical-url="https://i.imgur.com/dEGsmGI.png" src="https://res.cloudinary.com/devpost/image/fetch/s--q53kjlwL--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/dEGsmGI.png">
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built the system on top of Rev.ai (for speech to text), an IBM Cloud Kubernetes cluster (backend/datastore), Google Cloud Compute Engine (data analysis). We also use Twilio to host a phone number that can accept calls and Bing Maps to display the results.
+                </p>
+                <p>
+                    First, a caller&rsquo;s voice is transcribed into text using Rev.ai. We pass this transcription and the caller&rsquo;s cell tower location to an application running on the IBM Cloud Kubernetes cluster, which serves as a backend and store for the data.
+                </p>
+                <p>
+                    The backend communicates with a program running on the Google Cloud Compute Engine, which analyzes the data and clusters the calls by incident based on their approximate location and their transcripts. The natural language pipeline uses spacy for part-of-speech tagging, tokenization, and lemmatization. It also uses InferSent, a state-of-the-art deep language model, for sentence summarization. We combine linguistic similarity with geographic similarity, and then apply k-means clustering to identify repeat calls about the same incident.
+                </p>
+                <p>
+                    After this is completed, we send our analysis to the frontend. For the user interface, we make asynchronous requests to facilitate back-and-forth communication between the client and web server, to allow for real-time updates in a disaster scenario. The web app displays all of the calls on the map, grouped by the disaster that they are related to. Vibrant animations are used to ensure visibility of new data as it arrives. The design toolkit is based upon material.io, with a minimalist theme to ensure ease of use and that no time is wasted when responding to a potentially life-threatening situation.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Generating accurate sentence vector representations
+Simultaneously taking into account both location and word similarity when trying to group calls by disaster
+Compute limits on IBM Cloud
+Establishing Ingress on Kubernetes
+Persistent file storage for the database
+Mounting large word vectors on a cloud instance
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We implemented a system that generates a heatmap of disaster areas given only raw audio from phone calls. We integrated a variety of APIs for completeness and deployed multiple data analysis techniques.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ibm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/kubernetes">
+                                kubernetes
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pytorch">
+                                pytorch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rev.ai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/hackmit2019" rel="nofollow" target="_blank" title="https://github.com/hackmit2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

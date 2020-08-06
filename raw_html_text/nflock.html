@@ -1,0 +1,104 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Immediately upon coming into HackTX, we were registered and the freetail hackers scanned our tags to register us. We immediately realized that their entire system worked through NFC.
+                </p>
+                <p>
+                    After realizing that this NFC sticker was used as an identifier for the entirety of HackTX, we came to the the conclusion that we could expand this to serve as a unique identifier per person - essentially a passcode. It can be used as almost anything - from identification, to passwords, to a boarding pass, to customer service tickets, to passports. It's uniqueness and secure properties to guarantee authenticity allow it to be a tie-in with anyone for any service.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Osiris replaces passwords with a passive NFC chip, a new technology for passively storing data in a physical chip. Users of Osiris can simply use a small sticker (like the white stickers on the back of your HackTX cards) to "log in" to any application. Osiris only sends a verification token to the server, guaranteeing that the secured information never stays anywhere but the chip, and it's generator.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We developed an Android application to facilitate writing and reading data to a passive NFC chip and generating a TOTP token whenever the user attempts to verify. The android app works in concert with an authentication server that records each existing NFC chip and a secret key that is used for authentication. In order to ensure that the client submitting an authentication is not fake or malicious, the server first checks the UID of the NFC chip and then computes its own time-based cryptographic value to compare against the client.
+                </p>
+                <p>
+                    We spent the first few hours working on research - we read up on NDefRecords stored on NFC chips, we read up on current implementations of cryptographic security on physical devices, and read up the spec sheet on the NFC stickers. We then devised a protocol that only stores secret information on the chip (not on the phone or any other vulnerable/exposed device) and only sends a precomputed verifier value over the network that constantly changes depending on a time interval (defending against man-in-the-middle attacks). This ensures the security of our scheme.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Firstly, we ran into issues when doing research. NFC isn't very cryptographically secure, but can be specially made to be in the newer generations. The NFC stickers provided have AFI lock; however, that wouldn't suffice for the entire 106 bytes of NFC storage.
+                </p>
+                <p>
+                    Secondly, there existed no API for easily interacting with NFC chips from android phones. We had to develop our own to interact and read/write. We also faced challenges when deriving a cryptographic scheme for NFC authentication. Because many computers do not have support for NFC. Because of this, we had to tie NFC authentication to phones, making authentication more difficult.
+                </p>
+                <p>
+                    Thirdly, we had to implement an authentication protocol which required us to research methods of authentication, and devise a new way to communicate between the chip/server/client.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Working Android app to read and write to NFC
+                    </li>
+                    <li>
+                        Cryptographic scheme implemented on authentication server and android app to prevent impersonation and secure.
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    How the NFC protocol stores data, and the protocol used to read/write to an NFC chip.
+                </p>
+                <p>
+                    NFC is a new and powerful technology with a lot of potential. However, NFC still has it's limitations which require software solutions.
+                </p>
+                <p>
+                    How to develop a secure cryptographic scheme to ensure security when authenticating using isolated devices. We learned the internals of TOTP and Secure Remote Password Authentication protocol.
+                </p>
+                <h2>
+                    What's next for NFLock
+                </h2>
+                <p>
+                    We hope to expand Osiris outside of just network to become a single point of authentication. A single NFC chip can uniquely identify a person, allowing them to use it as everything from a credit card to a boarding pass. Through making NFC the primary form of authentication, we could eliminate the insecurities of passwords and other forms of authentication while streamlining many complex processes.
+                </p>
+                <p>
+                    Moreover, we hope to continue this project with the help of more cryptographers. The number one role of cryptography is to never roll your own crypto - and it's essential we continue to develop on top of the cryptographic mechanisms we currently have.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kotlin
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nfc">
+                                nfc
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

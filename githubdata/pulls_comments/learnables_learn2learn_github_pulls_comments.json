@@ -1,0 +1,1429 @@
+[
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316664297",
+        "pull_request_review_id": 278401058,
+        "id": 316664297,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjY2NDI5Nw==",
+        "diff_hunk": "@@ -0,0 +1,166 @@\n+#!/usr/bin/env python3\n+",
+        "path": "examples/text/news_topic_classification.py",
+        "position": 2,
+        "original_position": 2,
+        "commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "original_commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "user": {
+            "login": "debajyotidatta",
+            "id": 680145,
+            "node_id": "MDQ6VXNlcjY4MDE0NQ==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/680145?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/debajyotidatta",
+            "html_url": "https://github.com/debajyotidatta",
+            "followers_url": "https://api.github.com/users/debajyotidatta/followers",
+            "following_url": "https://api.github.com/users/debajyotidatta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/debajyotidatta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/debajyotidatta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/debajyotidatta/subscriptions",
+            "organizations_url": "https://api.github.com/users/debajyotidatta/orgs",
+            "repos_url": "https://api.github.com/users/debajyotidatta/repos",
+            "events_url": "https://api.github.com/users/debajyotidatta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/debajyotidatta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "What changed because of which this now converges? ",
+        "created_at": "2019-08-22T13:01:45Z",
+        "updated_at": "2019-08-22T13:01:46Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/7#discussion_r316664297",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316664297"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/7#discussion_r316664297"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316664835",
+        "pull_request_review_id": 278401729,
+        "id": 316664835,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjY2NDgzNQ==",
+        "diff_hunk": "@@ -0,0 +1,166 @@\n+#!/usr/bin/env python3\n+\n+import argparse\n+import random\n+\n+import torch\n+from torch import nn, optim\n+from torch.nn import functional as F\n+from tqdm import tqdm\n+\n+import learn2learn as l2l\n+\n+\n+class Net(nn.Module):\n+    \"\"\"Head for sentence-level classification tasks.\"\"\"\n+\n+    def __init__(self, num_classes, input_dim=768, inner_dim=200, pooler_dropout=0.3):\n+        super().__init__()\n+        self.dense = nn.Linear(input_dim, inner_dim)\n+        self.activation_fn = nn.ReLU()\n+        self.dropout = nn.Dropout(p=pooler_dropout)\n+        self.out_proj = nn.Linear(inner_dim, num_classes)\n+\n+    def forward(self, x, **kwargs):\n+        x = self.dropout(x)\n+        x = self.dense(x)\n+        x = self.activation_fn(x)\n+        x = self.dropout(x)\n+        x = F.log_softmax(self.out_proj(x), dim=1)\n+        return x\n+\n+\n+def accuracy(predictions, targets):\n+    predictions = predictions.argmax(dim=1)\n+    acc = (predictions == targets).sum().float()\n+    acc /= len(targets)\n+    return acc.item()\n+\n+\n+def collate_tokens(values, pad_idx, eos_idx=None, left_pad=False, move_eos_to_beginning=False):\n+    \"\"\"Convert a list of 1d tensors into a padded 2d tensor.\"\"\"\n+    size = max(v.size(0) for v in values)\n+    res = values[0].new(len(values), size).fill_(pad_idx)\n+\n+    def copy_tensor(src, dst):\n+        assert dst.numel() == src.numel()\n+        if move_eos_to_beginning:\n+            assert src[-1] == eos_idx\n+            dst[0] = eos_idx\n+            dst[1:] = src[:-1]\n+        else:\n+            dst.copy_(src)\n+\n+    for i, v in enumerate(values):\n+        copy_tensor(v, res[i][size - len(v):] if left_pad else res[i][:len(v)])\n+    return res\n+\n+\n+def compute_loss(task, roberta, device, learner, loss_func, batch=15):\n+    loss = 0.0\n+    acc = 0.0\n+    for i, (x, y) in enumerate(torch.utils.data.DataLoader(\n+            task, batch_size=batch, shuffle=True, num_workers=0)):\n+        # RoBERTa ENCODING\n+        x = collate_tokens([roberta.encode(sent) for sent in x], pad_idx=1)\n+        with torch.no_grad():\n+            x = roberta.extract_features(x)\n+        x = x[:, 0, :]\n+\n+        # Moving to device\n+        x, y = x.to(device), y.view(-1).to(device)\n+\n+        output = learner(x)\n+        curr_loss = loss_func(output, y)\n+        acc += accuracy(output, y)\n+        loss += curr_loss / len(task)\n+    loss /= len(task)\n+    return loss, acc\n+\n+\n+def main(lr=0.005, maml_lr=0.01, iterations=1000, ways=5, shots=1, tps=32, fas=5, device=torch.device(\"cpu\"),\n+         download_location=\"/tmp/text\"):\n+    text_train = l2l.data.NewsClassification(root=download_location, download=True)\n+    train_gen = l2l.data.TaskGenerator(text_train, ways=ways)\n+\n+    torch.hub.set_dir(download_location)\n+    roberta = torch.hub.load('pytorch/fairseq', 'roberta.base')\n+    roberta.eval()\n+    roberta.to(device)\n+    model = Net(num_classes=ways)\n+    model.to(device)\n+    meta_model = l2l.MAML(model, lr=maml_lr)\n+    opt = optim.Adam(meta_model.parameters(), lr=lr)\n+    loss_func = nn.NLLLoss(reduction=\"sum\")\n+\n+    tqdm_bar = tqdm(range(iterations))\n+    for iteration in tqdm_bar:\n+        iteration_error = 0.0\n+        iteration_acc = 0.0\n+        for _ in range(tps):\n+            learner = meta_model.clone()\n+            train_task = train_gen.sample(shots=shots)\n+            valid_task = train_gen.sample(shots=shots, classes_to_sample=train_task.sampled_classes)\n+\n+            # Fast Adaptation\n+            for step in range(fas):\n+                train_error, _ = compute_loss(train_task, roberta, device, learner, loss_func, batch=shots * ways)\n+                learner.adapt(train_error)\n+\n+            # Compute validation loss\n+            valid_error, valid_acc = compute_loss(valid_task, roberta, device, learner, loss_func,\n+                                                  batch=shots * ways)\n+            iteration_error += valid_error\n+            iteration_acc += valid_acc\n+\n+        iteration_error /= tps\n+        iteration_acc /= tps\n+        tqdm_bar.set_description(\"Loss : {:.3f} Acc : {:.3f}\".format(iteration_error.item(), iteration_acc))\n+\n+        # Take the meta-learning step\n+        opt.zero_grad()\n+        iteration_error.backward()\n+        opt.step()\n+\n+\n+if __name__ == '__main__':",
+        "path": "examples/text/news_topic_classification.py",
+        "position": 126,
+        "original_position": 126,
+        "commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "original_commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "user": {
+            "login": "debajyotidatta",
+            "id": 680145,
+            "node_id": "MDQ6VXNlcjY4MDE0NQ==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/680145?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/debajyotidatta",
+            "html_url": "https://github.com/debajyotidatta",
+            "followers_url": "https://api.github.com/users/debajyotidatta/followers",
+            "following_url": "https://api.github.com/users/debajyotidatta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/debajyotidatta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/debajyotidatta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/debajyotidatta/subscriptions",
+            "organizations_url": "https://api.github.com/users/debajyotidatta/orgs",
+            "repos_url": "https://api.github.com/users/debajyotidatta/repos",
+            "events_url": "https://api.github.com/users/debajyotidatta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/debajyotidatta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I know everywhere people use argparse in the research community but I really like Google's fire library for doing the exact same thing, and it is so much more intuitive and less verbose. ",
+        "created_at": "2019-08-22T13:02:52Z",
+        "updated_at": "2019-08-22T13:03:56Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/7#discussion_r316664835",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316664835"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/7#discussion_r316664835"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316751355",
+        "pull_request_review_id": 278514692,
+        "id": 316751355,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjc1MTM1NQ==",
+        "diff_hunk": "@@ -0,0 +1,166 @@\n+#!/usr/bin/env python3\n+",
+        "path": "examples/text/news_topic_classification.py",
+        "position": 2,
+        "original_position": 2,
+        "commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "original_commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Oh the example was not running at all. Was erroring out. It wasn't on master probably because we started debugging locally before we ran it on your cluster.\r\n\r\nSmall changes here and there.",
+        "created_at": "2019-08-22T15:43:11Z",
+        "updated_at": "2019-08-22T15:43:12Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/7#discussion_r316751355",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/7",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316751355"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/7#discussion_r316751355"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/7"
+            }
+        },
+        "in_reply_to_id": 316664297
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316752198",
+        "pull_request_review_id": 278515716,
+        "id": 316752198,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjc1MjE5OA==",
+        "diff_hunk": "@@ -0,0 +1,166 @@\n+#!/usr/bin/env python3\n+\n+import argparse\n+import random\n+\n+import torch\n+from torch import nn, optim\n+from torch.nn import functional as F\n+from tqdm import tqdm\n+\n+import learn2learn as l2l\n+\n+\n+class Net(nn.Module):\n+    \"\"\"Head for sentence-level classification tasks.\"\"\"\n+\n+    def __init__(self, num_classes, input_dim=768, inner_dim=200, pooler_dropout=0.3):\n+        super().__init__()\n+        self.dense = nn.Linear(input_dim, inner_dim)\n+        self.activation_fn = nn.ReLU()\n+        self.dropout = nn.Dropout(p=pooler_dropout)\n+        self.out_proj = nn.Linear(inner_dim, num_classes)\n+\n+    def forward(self, x, **kwargs):\n+        x = self.dropout(x)\n+        x = self.dense(x)\n+        x = self.activation_fn(x)\n+        x = self.dropout(x)\n+        x = F.log_softmax(self.out_proj(x), dim=1)\n+        return x\n+\n+\n+def accuracy(predictions, targets):\n+    predictions = predictions.argmax(dim=1)\n+    acc = (predictions == targets).sum().float()\n+    acc /= len(targets)\n+    return acc.item()\n+\n+\n+def collate_tokens(values, pad_idx, eos_idx=None, left_pad=False, move_eos_to_beginning=False):\n+    \"\"\"Convert a list of 1d tensors into a padded 2d tensor.\"\"\"\n+    size = max(v.size(0) for v in values)\n+    res = values[0].new(len(values), size).fill_(pad_idx)\n+\n+    def copy_tensor(src, dst):\n+        assert dst.numel() == src.numel()\n+        if move_eos_to_beginning:\n+            assert src[-1] == eos_idx\n+            dst[0] = eos_idx\n+            dst[1:] = src[:-1]\n+        else:\n+            dst.copy_(src)\n+\n+    for i, v in enumerate(values):\n+        copy_tensor(v, res[i][size - len(v):] if left_pad else res[i][:len(v)])\n+    return res\n+\n+\n+def compute_loss(task, roberta, device, learner, loss_func, batch=15):\n+    loss = 0.0\n+    acc = 0.0\n+    for i, (x, y) in enumerate(torch.utils.data.DataLoader(\n+            task, batch_size=batch, shuffle=True, num_workers=0)):\n+        # RoBERTa ENCODING\n+        x = collate_tokens([roberta.encode(sent) for sent in x], pad_idx=1)\n+        with torch.no_grad():\n+            x = roberta.extract_features(x)\n+        x = x[:, 0, :]\n+\n+        # Moving to device\n+        x, y = x.to(device), y.view(-1).to(device)\n+\n+        output = learner(x)\n+        curr_loss = loss_func(output, y)\n+        acc += accuracy(output, y)\n+        loss += curr_loss / len(task)\n+    loss /= len(task)\n+    return loss, acc\n+\n+\n+def main(lr=0.005, maml_lr=0.01, iterations=1000, ways=5, shots=1, tps=32, fas=5, device=torch.device(\"cpu\"),\n+         download_location=\"/tmp/text\"):\n+    text_train = l2l.data.NewsClassification(root=download_location, download=True)\n+    train_gen = l2l.data.TaskGenerator(text_train, ways=ways)\n+\n+    torch.hub.set_dir(download_location)\n+    roberta = torch.hub.load('pytorch/fairseq', 'roberta.base')\n+    roberta.eval()\n+    roberta.to(device)\n+    model = Net(num_classes=ways)\n+    model.to(device)\n+    meta_model = l2l.MAML(model, lr=maml_lr)\n+    opt = optim.Adam(meta_model.parameters(), lr=lr)\n+    loss_func = nn.NLLLoss(reduction=\"sum\")\n+\n+    tqdm_bar = tqdm(range(iterations))\n+    for iteration in tqdm_bar:\n+        iteration_error = 0.0\n+        iteration_acc = 0.0\n+        for _ in range(tps):\n+            learner = meta_model.clone()\n+            train_task = train_gen.sample(shots=shots)\n+            valid_task = train_gen.sample(shots=shots, classes_to_sample=train_task.sampled_classes)\n+\n+            # Fast Adaptation\n+            for step in range(fas):\n+                train_error, _ = compute_loss(train_task, roberta, device, learner, loss_func, batch=shots * ways)\n+                learner.adapt(train_error)\n+\n+            # Compute validation loss\n+            valid_error, valid_acc = compute_loss(valid_task, roberta, device, learner, loss_func,\n+                                                  batch=shots * ways)\n+            iteration_error += valid_error\n+            iteration_acc += valid_acc\n+\n+        iteration_error /= tps\n+        iteration_acc /= tps\n+        tqdm_bar.set_description(\"Loss : {:.3f} Acc : {:.3f}\".format(iteration_error.item(), iteration_acc))\n+\n+        # Take the meta-learning step\n+        opt.zero_grad()\n+        iteration_error.backward()\n+        opt.step()\n+\n+\n+if __name__ == '__main__':",
+        "path": "examples/text/news_topic_classification.py",
+        "position": 126,
+        "original_position": 126,
+        "commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "original_commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I am open to it. In fact if you want to lead that you probably can, in a follow up PR?\r\n\r\nI'd be happy to review it.",
+        "created_at": "2019-08-22T15:44:43Z",
+        "updated_at": "2019-08-22T15:44:44Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/7#discussion_r316752198",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/7",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316752198"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/7#discussion_r316752198"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/7"
+            }
+        },
+        "in_reply_to_id": 316664835
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316805692",
+        "pull_request_review_id": 278582953,
+        "id": 316805692,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjgwNTY5Mg==",
+        "diff_hunk": "@@ -0,0 +1,166 @@\n+#!/usr/bin/env python3\n+",
+        "path": "examples/text/news_topic_classification.py",
+        "position": 2,
+        "original_position": 2,
+        "commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "original_commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "user": {
+            "login": "debajyotidatta",
+            "id": 680145,
+            "node_id": "MDQ6VXNlcjY4MDE0NQ==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/680145?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/debajyotidatta",
+            "html_url": "https://github.com/debajyotidatta",
+            "followers_url": "https://api.github.com/users/debajyotidatta/followers",
+            "following_url": "https://api.github.com/users/debajyotidatta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/debajyotidatta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/debajyotidatta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/debajyotidatta/subscriptions",
+            "organizations_url": "https://api.github.com/users/debajyotidatta/orgs",
+            "repos_url": "https://api.github.com/users/debajyotidatta/repos",
+            "events_url": "https://api.github.com/users/debajyotidatta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/debajyotidatta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "oh great!\r\n",
+        "created_at": "2019-08-22T17:44:59Z",
+        "updated_at": "2019-08-22T17:45:00Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/7#discussion_r316805692",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316805692"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/7#discussion_r316805692"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/7"
+            }
+        },
+        "in_reply_to_id": 316664297
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316805837",
+        "pull_request_review_id": 278583129,
+        "id": 316805837,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjgwNTgzNw==",
+        "diff_hunk": "@@ -0,0 +1,166 @@\n+#!/usr/bin/env python3\n+\n+import argparse\n+import random\n+\n+import torch\n+from torch import nn, optim\n+from torch.nn import functional as F\n+from tqdm import tqdm\n+\n+import learn2learn as l2l\n+\n+\n+class Net(nn.Module):\n+    \"\"\"Head for sentence-level classification tasks.\"\"\"\n+\n+    def __init__(self, num_classes, input_dim=768, inner_dim=200, pooler_dropout=0.3):\n+        super().__init__()\n+        self.dense = nn.Linear(input_dim, inner_dim)\n+        self.activation_fn = nn.ReLU()\n+        self.dropout = nn.Dropout(p=pooler_dropout)\n+        self.out_proj = nn.Linear(inner_dim, num_classes)\n+\n+    def forward(self, x, **kwargs):\n+        x = self.dropout(x)\n+        x = self.dense(x)\n+        x = self.activation_fn(x)\n+        x = self.dropout(x)\n+        x = F.log_softmax(self.out_proj(x), dim=1)\n+        return x\n+\n+\n+def accuracy(predictions, targets):\n+    predictions = predictions.argmax(dim=1)\n+    acc = (predictions == targets).sum().float()\n+    acc /= len(targets)\n+    return acc.item()\n+\n+\n+def collate_tokens(values, pad_idx, eos_idx=None, left_pad=False, move_eos_to_beginning=False):\n+    \"\"\"Convert a list of 1d tensors into a padded 2d tensor.\"\"\"\n+    size = max(v.size(0) for v in values)\n+    res = values[0].new(len(values), size).fill_(pad_idx)\n+\n+    def copy_tensor(src, dst):\n+        assert dst.numel() == src.numel()\n+        if move_eos_to_beginning:\n+            assert src[-1] == eos_idx\n+            dst[0] = eos_idx\n+            dst[1:] = src[:-1]\n+        else:\n+            dst.copy_(src)\n+\n+    for i, v in enumerate(values):\n+        copy_tensor(v, res[i][size - len(v):] if left_pad else res[i][:len(v)])\n+    return res\n+\n+\n+def compute_loss(task, roberta, device, learner, loss_func, batch=15):\n+    loss = 0.0\n+    acc = 0.0\n+    for i, (x, y) in enumerate(torch.utils.data.DataLoader(\n+            task, batch_size=batch, shuffle=True, num_workers=0)):\n+        # RoBERTa ENCODING\n+        x = collate_tokens([roberta.encode(sent) for sent in x], pad_idx=1)\n+        with torch.no_grad():\n+            x = roberta.extract_features(x)\n+        x = x[:, 0, :]\n+\n+        # Moving to device\n+        x, y = x.to(device), y.view(-1).to(device)\n+\n+        output = learner(x)\n+        curr_loss = loss_func(output, y)\n+        acc += accuracy(output, y)\n+        loss += curr_loss / len(task)\n+    loss /= len(task)\n+    return loss, acc\n+\n+\n+def main(lr=0.005, maml_lr=0.01, iterations=1000, ways=5, shots=1, tps=32, fas=5, device=torch.device(\"cpu\"),\n+         download_location=\"/tmp/text\"):\n+    text_train = l2l.data.NewsClassification(root=download_location, download=True)\n+    train_gen = l2l.data.TaskGenerator(text_train, ways=ways)\n+\n+    torch.hub.set_dir(download_location)\n+    roberta = torch.hub.load('pytorch/fairseq', 'roberta.base')\n+    roberta.eval()\n+    roberta.to(device)\n+    model = Net(num_classes=ways)\n+    model.to(device)\n+    meta_model = l2l.MAML(model, lr=maml_lr)\n+    opt = optim.Adam(meta_model.parameters(), lr=lr)\n+    loss_func = nn.NLLLoss(reduction=\"sum\")\n+\n+    tqdm_bar = tqdm(range(iterations))\n+    for iteration in tqdm_bar:\n+        iteration_error = 0.0\n+        iteration_acc = 0.0\n+        for _ in range(tps):\n+            learner = meta_model.clone()\n+            train_task = train_gen.sample(shots=shots)\n+            valid_task = train_gen.sample(shots=shots, classes_to_sample=train_task.sampled_classes)\n+\n+            # Fast Adaptation\n+            for step in range(fas):\n+                train_error, _ = compute_loss(train_task, roberta, device, learner, loss_func, batch=shots * ways)\n+                learner.adapt(train_error)\n+\n+            # Compute validation loss\n+            valid_error, valid_acc = compute_loss(valid_task, roberta, device, learner, loss_func,\n+                                                  batch=shots * ways)\n+            iteration_error += valid_error\n+            iteration_acc += valid_acc\n+\n+        iteration_error /= tps\n+        iteration_acc /= tps\n+        tqdm_bar.set_description(\"Loss : {:.3f} Acc : {:.3f}\".format(iteration_error.item(), iteration_acc))\n+\n+        # Take the meta-learning step\n+        opt.zero_grad()\n+        iteration_error.backward()\n+        opt.step()\n+\n+\n+if __name__ == '__main__':",
+        "path": "examples/text/news_topic_classification.py",
+        "position": 126,
+        "original_position": 126,
+        "commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "original_commit_id": "f4a32b50e4ca47d5370397cd790310fa6383f4e0",
+        "user": {
+            "login": "debajyotidatta",
+            "id": 680145,
+            "node_id": "MDQ6VXNlcjY4MDE0NQ==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/680145?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/debajyotidatta",
+            "html_url": "https://github.com/debajyotidatta",
+            "followers_url": "https://api.github.com/users/debajyotidatta/followers",
+            "following_url": "https://api.github.com/users/debajyotidatta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/debajyotidatta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/debajyotidatta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/debajyotidatta/subscriptions",
+            "organizations_url": "https://api.github.com/users/debajyotidatta/orgs",
+            "repos_url": "https://api.github.com/users/debajyotidatta/repos",
+            "events_url": "https://api.github.com/users/debajyotidatta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/debajyotidatta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Yeah! Very familiar with it. Will do it in a follow up PR.",
+        "created_at": "2019-08-22T17:45:21Z",
+        "updated_at": "2019-08-22T17:45:21Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/7#discussion_r316805837",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316805837"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/7#discussion_r316805837"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/7"
+            }
+        },
+        "in_reply_to_id": 316664835
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316864525",
+        "pull_request_review_id": 278659636,
+        "id": 316864525,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjg2NDUyNQ==",
+        "diff_hunk": "@@ -93,6 +94,7 @@ def main(lr=0.005, maml_lr=0.01, iterations=1000, ways=5, shots=1, tps=32, fas=5\n \n         iteration_error /= tps\n         iteration_acc /= tps\n+        print(iteration_error.item())",
+        "path": "examples/vision/meta_mnist.py",
+        "position": null,
+        "original_position": 12,
+        "commit_id": "c616c2a3ede23f43e534a7fc87561ab2f22d8437",
+        "original_commit_id": "2264b73f2a2b1eb00560d7d099c914734d683db2",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Can we remove this for now? I believe this was for debugging.",
+        "created_at": "2019-08-22T20:11:20Z",
+        "updated_at": "2019-08-22T22:03:31Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/8#discussion_r316864525",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/8",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316864525"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/8#discussion_r316864525"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/8"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316900889",
+        "pull_request_review_id": 278659636,
+        "id": 316900889,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxNjkwMDg4OQ==",
+        "diff_hunk": "@@ -134,11 +136,22 @@ def main(lr=0.005, maml_lr=0.01, iterations=1000, ways=5, shots=1, tps=32, fas=5\n \n     use_cuda = not args.no_cuda and torch.cuda.is_available()\n \n-    torch.manual_seed(args.seed)\n     random.seed(args.seed)\n+    np.random.seed(args.seed)\n+    torch.manual_seed(args.seed)\n+    if use_cuda:\n+        torch.cuda.manual_seed(args.seed)\n+    torch.backends.cudnn.deterministic = True",
+        "path": "examples/vision/meta_mnist.py",
+        "position": null,
+        "original_position": 26,
+        "commit_id": "c616c2a3ede23f43e534a7fc87561ab2f22d8437",
+        "original_commit_id": "2264b73f2a2b1eb00560d7d099c914734d683db2",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I believe cudnn is not used when the device is cpu. So looks like even line 144 and line 145 can move inside the `if use_cuda`. ",
+        "created_at": "2019-08-22T21:53:40Z",
+        "updated_at": "2019-08-22T22:03:31Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/8#discussion_r316900889",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/8",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/316900889"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/8#discussion_r316900889"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/8"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521452",
+        "pull_request_review_id": 285867687,
+        "id": 322521452,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMjUyMTQ1Mg==",
+        "diff_hunk": "@@ -0,0 +1,201 @@\n+from torch.utils.data import Dataset, ConcatDataset\n+import pandas as pd\n+from torchvision import transforms\n+from PIL import Image\n+import requests\n+import zipfile\n+import os\n+import numpy as np\n+import shutil\n+import os\n+\n+\n+def mkdir(dir):\n+    try:\n+        os.mkdir(dir)\n+    except:\n+        pass\n+\n+\n+def download_file_from_google_drive(id, destination):",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": 11,
+        "original_position": 20,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "fce8467aa4b1fa9995c2dd8c231b2b47020f9494",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Looks like we could probably move all this in a utils.data class.",
+        "created_at": "2019-09-10T01:44:28Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521452",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521452"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521452"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521529",
+        "pull_request_review_id": 285867687,
+        "id": 322521529,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMjUyMTUyOQ==",
+        "diff_hunk": "@@ -0,0 +1,201 @@\n+from torch.utils.data import Dataset, ConcatDataset\n+import pandas as pd\n+from torchvision import transforms\n+from PIL import Image\n+import requests\n+import zipfile\n+import os\n+import numpy as np\n+import shutil\n+import os\n+\n+\n+def mkdir(dir):\n+    try:\n+        os.mkdir(dir)\n+    except:\n+        pass\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params = { 'id' : id }, stream = True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = { 'id' : id, 'confirm' : token }\n+        response = session.get(URL, params = params, stream = True)\n+\n+    save_response_content(response, destination)    \n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk: # filter out keep-alive new chunks\n+                f.write(chunk)\n+                \n+\n+\n+class MiniImageNet(Dataset):\n+    def __init__(self, subset, transform=None, target_transform=None, data_path ='./data/'):\n+        \"\"\"Dataset class representing miniImageNet dataset\n+        # Arguments:\n+            subset: Whether the dataset represents the background or evaluation set\n+        \"\"\"\n+                 \n+        file_id = '0B3Irx3uQNoBMQ1FlNXJsZUdYWEE'",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 58,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "fce8467aa4b1fa9995c2dd8c231b2b47020f9494",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "```suggestion\r\n        google_drive_file_id = '0B3Irx3uQNoBMQ1FlNXJsZUdYWEE'\r\n```",
+        "created_at": "2019-09-10T01:44:54Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521529",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521529"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521529"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521640",
+        "pull_request_review_id": 285867687,
+        "id": 322521640,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMjUyMTY0MA==",
+        "diff_hunk": "@@ -0,0 +1,201 @@\n+from torch.utils.data import Dataset, ConcatDataset\n+import pandas as pd\n+from torchvision import transforms\n+from PIL import Image\n+import requests\n+import zipfile\n+import os\n+import numpy as np\n+import shutil\n+import os\n+\n+\n+def mkdir(dir):\n+    try:\n+        os.mkdir(dir)\n+    except:\n+        pass\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params = { 'id' : id }, stream = True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = { 'id' : id, 'confirm' : token }\n+        response = session.get(URL, params = params, stream = True)\n+\n+    save_response_content(response, destination)    \n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk: # filter out keep-alive new chunks\n+                f.write(chunk)\n+                \n+\n+\n+class MiniImageNet(Dataset):\n+    def __init__(self, subset, transform=None, target_transform=None, data_path ='./data/'):\n+        \"\"\"Dataset class representing miniImageNet dataset\n+        # Arguments:\n+            subset: Whether the dataset represents the background or evaluation set\n+        \"\"\"\n+                 \n+        file_id = '0B3Irx3uQNoBMQ1FlNXJsZUdYWEE'\n+        self.data_path = data_path\n+        destination_for_zip = self.data_path + '/miniImageNet.zip'\n+        destination_to_extract = self.data_path + '/miniImageNet/images'\n+        mkdir(self.data_path + '/miniImageNet/images_background')\n+        mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+\n+        self.transform = transform\n+        self.target_transform = target_transform\n+        if not self.transform:\n+            self.transform = transforms.Compose([",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 69,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "fce8467aa4b1fa9995c2dd8c231b2b47020f9494",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I am not sure if this was intentional, but shouldn't transforms always be at the users liberty?",
+        "created_at": "2019-09-10T01:45:36Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521640",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521640"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521640"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521721",
+        "pull_request_review_id": 285867687,
+        "id": 322521721,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMjUyMTcyMQ==",
+        "diff_hunk": "@@ -0,0 +1,201 @@\n+from torch.utils.data import Dataset, ConcatDataset\n+import pandas as pd\n+from torchvision import transforms\n+from PIL import Image\n+import requests\n+import zipfile\n+import os\n+import numpy as np\n+import shutil\n+import os\n+\n+\n+def mkdir(dir):\n+    try:\n+        os.mkdir(dir)\n+    except:\n+        pass\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params = { 'id' : id }, stream = True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = { 'id' : id, 'confirm' : token }\n+        response = session.get(URL, params = params, stream = True)\n+\n+    save_response_content(response, destination)    \n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk: # filter out keep-alive new chunks\n+                f.write(chunk)\n+                \n+\n+\n+class MiniImageNet(Dataset):\n+    def __init__(self, subset, transform=None, target_transform=None, data_path ='./data/'):\n+        \"\"\"Dataset class representing miniImageNet dataset\n+        # Arguments:\n+            subset: Whether the dataset represents the background or evaluation set\n+        \"\"\"\n+                 \n+        file_id = '0B3Irx3uQNoBMQ1FlNXJsZUdYWEE'\n+        self.data_path = data_path\n+        destination_for_zip = self.data_path + '/miniImageNet.zip'\n+        destination_to_extract = self.data_path + '/miniImageNet/images'\n+        mkdir(self.data_path + '/miniImageNet/images_background')\n+        mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+\n+        self.transform = transform\n+        self.target_transform = target_transform\n+        if not self.transform:\n+            self.transform = transforms.Compose([\n+                transforms.CenterCrop(224),\n+                transforms.Resize(84),\n+                transforms.ToTensor(),\n+                transforms.Normalize(mean=[0.485, 0.456, 0.406],\n+                                     std=[0.229, 0.224, 0.225])\n+            ])\n+        \n+        if not os.path.exists(destination_to_extract):\n+            os.makedirs(destination_to_extract)\n+            download_file_from_google_drive(file_id, destination_for_zip)\n+            with zipfile.ZipFile(destination_for_zip, 'r') as zip_ref:\n+                zip_ref.extractall(destination_to_extract)\n+            \n+            # Clean up folders\n+            mkdir(self.data_path + '/miniImageNet/images_background')\n+            mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+            # Find class identities\n+            classes = []",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 88,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "fce8467aa4b1fa9995c2dd8c231b2b47020f9494",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "```suggestion\r\n            classes = set()\r\n```",
+        "created_at": "2019-09-10T01:46:09Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521721",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521721"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521721"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521807",
+        "pull_request_review_id": 285867687,
+        "id": 322521807,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMjUyMTgwNw==",
+        "diff_hunk": "@@ -0,0 +1,201 @@\n+from torch.utils.data import Dataset, ConcatDataset\n+import pandas as pd\n+from torchvision import transforms\n+from PIL import Image\n+import requests\n+import zipfile\n+import os\n+import numpy as np\n+import shutil\n+import os\n+\n+\n+def mkdir(dir):\n+    try:\n+        os.mkdir(dir)\n+    except:\n+        pass\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params = { 'id' : id }, stream = True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = { 'id' : id, 'confirm' : token }\n+        response = session.get(URL, params = params, stream = True)\n+\n+    save_response_content(response, destination)    \n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk: # filter out keep-alive new chunks\n+                f.write(chunk)\n+                \n+\n+\n+class MiniImageNet(Dataset):\n+    def __init__(self, subset, transform=None, target_transform=None, data_path ='./data/'):\n+        \"\"\"Dataset class representing miniImageNet dataset\n+        # Arguments:\n+            subset: Whether the dataset represents the background or evaluation set\n+        \"\"\"\n+                 \n+        file_id = '0B3Irx3uQNoBMQ1FlNXJsZUdYWEE'\n+        self.data_path = data_path\n+        destination_for_zip = self.data_path + '/miniImageNet.zip'\n+        destination_to_extract = self.data_path + '/miniImageNet/images'\n+        mkdir(self.data_path + '/miniImageNet/images_background')\n+        mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+\n+        self.transform = transform\n+        self.target_transform = target_transform\n+        if not self.transform:\n+            self.transform = transforms.Compose([\n+                transforms.CenterCrop(224),\n+                transforms.Resize(84),\n+                transforms.ToTensor(),\n+                transforms.Normalize(mean=[0.485, 0.456, 0.406],\n+                                     std=[0.229, 0.224, 0.225])\n+            ])\n+        \n+        if not os.path.exists(destination_to_extract):\n+            os.makedirs(destination_to_extract)\n+            download_file_from_google_drive(file_id, destination_for_zip)\n+            with zipfile.ZipFile(destination_for_zip, 'r') as zip_ref:\n+                zip_ref.extractall(destination_to_extract)\n+            \n+            # Clean up folders\n+            mkdir(self.data_path + '/miniImageNet/images_background')\n+            mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+            # Find class identities\n+            classes = []\n+            for root, _, files in os.walk(self.data_path + '/miniImageNet/images/'):\n+                for f in files:\n+                    if f.endswith('.jpg'):\n+                        classes.append(f[:-12])",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 92,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "fce8467aa4b1fa9995c2dd8c231b2b47020f9494",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "```suggestion\r\n                        classes.add(f[:-12])\r\n```",
+        "created_at": "2019-09-10T01:46:43Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521807",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521807"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521807"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521826",
+        "pull_request_review_id": 285867687,
+        "id": 322521826,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMjUyMTgyNg==",
+        "diff_hunk": "@@ -0,0 +1,201 @@\n+from torch.utils.data import Dataset, ConcatDataset\n+import pandas as pd\n+from torchvision import transforms\n+from PIL import Image\n+import requests\n+import zipfile\n+import os\n+import numpy as np\n+import shutil\n+import os\n+\n+\n+def mkdir(dir):\n+    try:\n+        os.mkdir(dir)\n+    except:\n+        pass\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params = { 'id' : id }, stream = True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = { 'id' : id, 'confirm' : token }\n+        response = session.get(URL, params = params, stream = True)\n+\n+    save_response_content(response, destination)    \n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk: # filter out keep-alive new chunks\n+                f.write(chunk)\n+                \n+\n+\n+class MiniImageNet(Dataset):\n+    def __init__(self, subset, transform=None, target_transform=None, data_path ='./data/'):\n+        \"\"\"Dataset class representing miniImageNet dataset\n+        # Arguments:\n+            subset: Whether the dataset represents the background or evaluation set\n+        \"\"\"\n+                 \n+        file_id = '0B3Irx3uQNoBMQ1FlNXJsZUdYWEE'\n+        self.data_path = data_path\n+        destination_for_zip = self.data_path + '/miniImageNet.zip'\n+        destination_to_extract = self.data_path + '/miniImageNet/images'\n+        mkdir(self.data_path + '/miniImageNet/images_background')\n+        mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+\n+        self.transform = transform\n+        self.target_transform = target_transform\n+        if not self.transform:\n+            self.transform = transforms.Compose([\n+                transforms.CenterCrop(224),\n+                transforms.Resize(84),\n+                transforms.ToTensor(),\n+                transforms.Normalize(mean=[0.485, 0.456, 0.406],\n+                                     std=[0.229, 0.224, 0.225])\n+            ])\n+        \n+        if not os.path.exists(destination_to_extract):\n+            os.makedirs(destination_to_extract)\n+            download_file_from_google_drive(file_id, destination_for_zip)\n+            with zipfile.ZipFile(destination_for_zip, 'r') as zip_ref:\n+                zip_ref.extractall(destination_to_extract)\n+            \n+            # Clean up folders\n+            mkdir(self.data_path + '/miniImageNet/images_background')\n+            mkdir(self.data_path + '/miniImageNet/images_evaluation')\n+\n+            # Find class identities\n+            classes = []\n+            for root, _, files in os.walk(self.data_path + '/miniImageNet/images/'):\n+                for f in files:\n+                    if f.endswith('.jpg'):\n+                        classes.append(f[:-12])\n+\n+            classes = list(set(classes))",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 94,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "fce8467aa4b1fa9995c2dd8c231b2b47020f9494",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "```suggestion\r\n```",
+        "created_at": "2019-09-10T01:46:50Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521826",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/322521826"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r322521826"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/323027802",
+        "pull_request_review_id": 286515969,
+        "id": 323027802,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMzAyNzgwMg==",
+        "diff_hunk": "@@ -0,0 +1,111 @@\n+\n+import requests\n+from __future__ import print_function\n+import torch.utils.data as data\n+import numpy as np\n+import os\n+import torch\n+import pickle\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params={'id': id}, stream=True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = {'id': id, 'confirm': token}\n+        response = session.get(URL, params=params, stream=True)\n+\n+    save_response_content(response, destination)\n+\n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk:  # filter out keep-alive new chunks\n+                f.write(chunk)\n+\n+\n+def download_pkl(google_drive_id, data_root, mode):\n+    filename = 'mini-imagenet-cache-' + mode\n+    file_path = os.path.join(data_root, filename)\n+\n+    if not os.path.exists(file_path + '.pkl'):\n+        download_file_from_google_drive(google_drive_id, file_path + '.pkl')\n+        print(\"Download finished\")\n+    else:\n+        print(\"Data was already downloaded\")\n+\n+\n+def index_classes(items):\n+    idx = {}\n+    for i in items:\n+        if (not i in idx):\n+            idx[i] = len(idx)\n+    return idx\n+\n+\n+class MiniImagenetDataset(data.Dataset):\n+    def __init__(self, root, mode='train', transform=None, target_transform=None):\n+        '''\n+        The items are (filename,category). The index of all the categories can be found in self.idx_classes\n+        Args:\n+        - root: the directory where the dataset will be stored or downloaded to if not available\n+        - transform: how to transform the input\n+        - target_transform: how to transform the target\n+        '''\n+        super(MiniImagenetDataset, self).__init__()\n+        self.root = root\n+        self.transform = transform\n+        self.target_transform = target_transform\n+        self.mode = mode\n+        if self.mode == 'test':\n+            file_id = '1wpmY-hmiJUUlRBkO9ZDCXAcIpHEFdOhD'\n+        elif self.mode == 'train':\n+            file_id = '1I3itTXpXxGV68olxM5roceUMG8itH9Xj'\n+        elif self.mode == 'val':\n+            file_id = '1KY5e491bkLFqJDp0-UWou3463Mo8AOco'\n+        else:\n+            raise ('ValueError', 'Needs to be train, test or val')\n+\n+        if not self._check_exists():\n+            download_pkl(file_id, root, mode)\n+\n+        pickle_file = os.path.join(self.root, 'mini-imagenet-cache-' + mode + '.pkl')\n+        f = open(pickle_file, 'rb')\n+        self.data = pickle.load(f)\n+\n+        self.x = [np.transpose(x, (2, 0, 1)) for x in self.data['image_data']]",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 92,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "4aeb9651571e5c73f3f3975e051e73564422ff3f",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "If it were to me I'd do this\r\n\r\n```\r\nself.x = torch.FloatTensor([x for x in self.data['image_data']]).permute(2,0,1)\r\nself.y = [-1 for _ in range(len(self.x))]\r\n```",
+        "created_at": "2019-09-11T01:36:39Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r323027802",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/323027802"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r323027802"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/323027888",
+        "pull_request_review_id": 286515969,
+        "id": 323027888,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMzAyNzg4OA==",
+        "diff_hunk": "@@ -0,0 +1,111 @@\n+\n+import requests\n+from __future__ import print_function\n+import torch.utils.data as data\n+import numpy as np\n+import os\n+import torch\n+import pickle\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params={'id': id}, stream=True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = {'id': id, 'confirm': token}\n+        response = session.get(URL, params=params, stream=True)\n+\n+    save_response_content(response, destination)\n+\n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk:  # filter out keep-alive new chunks\n+                f.write(chunk)\n+\n+\n+def download_pkl(google_drive_id, data_root, mode):\n+    filename = 'mini-imagenet-cache-' + mode\n+    file_path = os.path.join(data_root, filename)\n+\n+    if not os.path.exists(file_path + '.pkl'):\n+        download_file_from_google_drive(google_drive_id, file_path + '.pkl')\n+        print(\"Download finished\")\n+    else:\n+        print(\"Data was already downloaded\")\n+\n+\n+def index_classes(items):\n+    idx = {}\n+    for i in items:\n+        if (not i in idx):\n+            idx[i] = len(idx)\n+    return idx\n+\n+\n+class MiniImagenetDataset(data.Dataset):\n+    def __init__(self, root, mode='train', transform=None, target_transform=None):\n+        '''\n+        The items are (filename,category). The index of all the categories can be found in self.idx_classes\n+        Args:\n+        - root: the directory where the dataset will be stored or downloaded to if not available\n+        - transform: how to transform the input\n+        - target_transform: how to transform the target\n+        '''\n+        super(MiniImagenetDataset, self).__init__()\n+        self.root = root\n+        self.transform = transform\n+        self.target_transform = target_transform\n+        self.mode = mode\n+        if self.mode == 'test':\n+            file_id = '1wpmY-hmiJUUlRBkO9ZDCXAcIpHEFdOhD'",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 77,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "4aeb9651571e5c73f3f3975e051e73564422ff3f",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I'd still recommend that we rename it to `google_drive_file_id` or something..",
+        "created_at": "2019-09-11T01:37:09Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r323027888",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/323027888"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r323027888"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/323028287",
+        "pull_request_review_id": 286515969,
+        "id": 323028287,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyMzAyODI4Nw==",
+        "diff_hunk": "@@ -0,0 +1,111 @@\n+\n+import requests\n+from __future__ import print_function\n+import torch.utils.data as data\n+import numpy as np\n+import os\n+import torch\n+import pickle\n+\n+\n+def download_file_from_google_drive(id, destination):\n+    URL = \"https://docs.google.com/uc?export=download\"\n+\n+    session = requests.Session()\n+\n+    response = session.get(URL, params={'id': id}, stream=True)\n+    token = get_confirm_token(response)\n+\n+    if token:\n+        params = {'id': id, 'confirm': token}\n+        response = session.get(URL, params=params, stream=True)\n+\n+    save_response_content(response, destination)\n+\n+\n+def get_confirm_token(response):\n+    for key, value in response.cookies.items():\n+        if key.startswith('download_warning'):\n+            return value\n+\n+    return None\n+\n+\n+def save_response_content(response, destination):\n+    CHUNK_SIZE = 32768\n+\n+    with open(destination, \"wb\") as f:\n+        for chunk in response.iter_content(CHUNK_SIZE):\n+            if chunk:  # filter out keep-alive new chunks\n+                f.write(chunk)\n+\n+\n+def download_pkl(google_drive_id, data_root, mode):\n+    filename = 'mini-imagenet-cache-' + mode\n+    file_path = os.path.join(data_root, filename)\n+\n+    if not os.path.exists(file_path + '.pkl'):\n+        download_file_from_google_drive(google_drive_id, file_path + '.pkl')\n+        print(\"Download finished\")\n+    else:\n+        print(\"Data was already downloaded\")\n+\n+\n+def index_classes(items):\n+    idx = {}\n+    for i in items:\n+        if (not i in idx):",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": null,
+        "original_position": 57,
+        "commit_id": "7783faed1ffb5499e4d1faf2314d48adce4c540d",
+        "original_commit_id": "4aeb9651571e5c73f3f3975e051e73564422ff3f",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I personally find this more readable.\r\n```python\r\n        if (i not in idx):\r\n```",
+        "created_at": "2019-09-11T01:39:48Z",
+        "updated_at": "2019-09-11T03:13:55Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/46#discussion_r323028287",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/46",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/323028287"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/46#discussion_r323028287"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/46"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/324446706",
+        "pull_request_review_id": 288346008,
+        "id": 324446706,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyNDQ0NjcwNg==",
+        "diff_hunk": "@@ -88,41 +91,39 @@ def __init__(self, classes):\n \n class TaskGenerator:\n     \"\"\"\n-\n     [[Source]](https://github.com/learnables/learn2learn/blob/master/learn2learn/data/task_generator.py)\n \n-    **Description**\n-\n     A wrapper to generate few-shot classification tasks.\n \n-\n-\n-    `tasks` can both indicate predefined tasks, or just the number of tasks to sample.\n-    If specified as an int, a list of size `task` would be generated from which we'll sample.\n-    If specified as a list, then that list of tasks would be used to sample always.\n-\n-    The acceptable shape of list would be `n * w`, with n the number of tasks to sample and w the number of ways.\n-\n-    Each of the task should have w distinct elements all of which are required to be a subset of ways.\n-\n-    **Arguments**\n-\n-    * **dataset** (MetaDataset or Dataset) - The (meta-) dataset to wrap.\n-    * **classes** (list, *optional*, default=None) - List of classes to sample from,\n+    # Arguments\n+    dataset (MetaDataset or Dataset): The (meta-) dataset to wrap.\n+    classes (list, *optional*, default=None): List of classes to sample from,\n         if none then sample from all available classes in dataset. (default: None)\n-    * **ways** (int, *optional*, default=2) - Number of labels to sample from.\n-    * **shots** (int, *optional*, default=1) - Number of data points per task to sample.\n-    * **tasks** (int or list, *optional*, default=1) - Tasks to be generated.\n+    ways (int, *optional*, default=2):  Number of labels to sample from.\n+    shots (int, *optional*, default=1): Number of data points per task to sample.\n+    tasks (int or list, *optional*, default=1): Tasks to be generated.\n+        It Can indicate both predefined tasks, or just the number of tasks to sample.\n+        If it's an int, then a list of size `task` would be generated from which we'll sample.\n+        If it's a list then that list would be used to sample tasks.\n+        The acceptable shape of list would be `n * w`, with n the number of tasks to sample and w the number of ways.\n+        Each of the task should have w distinct elements all of which are required to be a subset of ways.\n+\n+    # Attributes\n+    dataset (MetaDataset):",
+        "path": "learn2learn/data/task_generator.py",
+        "position": 85,
+        "original_position": 85,
+        "commit_id": "114826e4c6ab4937624de0658cb0a8865dc325c0",
+        "original_commit_id": "114826e4c6ab4937624de0658cb0a8865dc325c0",
+        "user": {
+            "login": "seba-1511",
+            "id": 626253,
+            "node_id": "MDQ6VXNlcjYyNjI1Mw==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/626253?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/seba-1511",
+            "html_url": "https://github.com/seba-1511",
+            "followers_url": "https://api.github.com/users/seba-1511/followers",
+            "following_url": "https://api.github.com/users/seba-1511/following{/other_user}",
+            "gists_url": "https://api.github.com/users/seba-1511/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/seba-1511/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/seba-1511/subscriptions",
+            "organizations_url": "https://api.github.com/users/seba-1511/orgs",
+            "repos_url": "https://api.github.com/users/seba-1511/repos",
+            "events_url": "https://api.github.com/users/seba-1511/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/seba-1511/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Those attributes need descriptions.",
+        "created_at": "2019-09-15T05:51:55Z",
+        "updated_at": "2019-09-15T05:54:01Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/54#discussion_r324446706",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/54",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/324446706"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/54#discussion_r324446706"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/54"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/324452092",
+        "pull_request_review_id": 288351362,
+        "id": 324452092,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyNDQ1MjA5Mg==",
+        "diff_hunk": "@@ -1,6 +1,27 @@\n body {\n     padding-top: 70px;\n }\n+.col-md-9 h1::before {",
+        "path": "docs/l2l_theme/css/base.css",
+        "position": 4,
+        "original_position": 4,
+        "commit_id": "114826e4c6ab4937624de0658cb0a8865dc325c0",
+        "original_commit_id": "114826e4c6ab4937624de0658cb0a8865dc325c0",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "hmm interesting, we'll probably need a better alternative in that case, since I am not sure how we can resolve that.",
+        "created_at": "2019-09-15T08:35:43Z",
+        "updated_at": "2019-09-15T08:35:43Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/54#discussion_r324452092",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/54",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/324452092"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/54#discussion_r324452092"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/54"
+            }
+        },
+        "in_reply_to_id": 324446690
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/324446690",
+        "pull_request_review_id": 288346008,
+        "id": 324446690,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyNDQ0NjY5MA==",
+        "diff_hunk": "@@ -1,6 +1,27 @@\n body {\n     padding-top: 70px;\n }\n+.col-md-9 h1::before {",
+        "path": "docs/l2l_theme/css/base.css",
+        "position": 4,
+        "original_position": 4,
+        "commit_id": "114826e4c6ab4937624de0658cb0a8865dc325c0",
+        "original_commit_id": "114826e4c6ab4937624de0658cb0a8865dc325c0",
+        "user": {
+            "login": "seba-1511",
+            "id": 626253,
+            "node_id": "MDQ6VXNlcjYyNjI1Mw==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/626253?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/seba-1511",
+            "html_url": "https://github.com/seba-1511",
+            "followers_url": "https://api.github.com/users/seba-1511/followers",
+            "following_url": "https://api.github.com/users/seba-1511/following{/other_user}",
+            "gists_url": "https://api.github.com/users/seba-1511/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/seba-1511/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/seba-1511/subscriptions",
+            "organizations_url": "https://api.github.com/users/seba-1511/orgs",
+            "repos_url": "https://api.github.com/users/seba-1511/repos",
+            "events_url": "https://api.github.com/users/seba-1511/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/seba-1511/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This makes functions manually added in the pydocmd.yml appear as classes.\r\n\r\nFor an example of the behaviour, see the generated docs for `l2l.clone_module`.",
+        "created_at": "2019-09-15T05:51:04Z",
+        "updated_at": "2019-09-15T17:45:17Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/54#discussion_r324446690",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/54",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/324446690"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/54#discussion_r324446690"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/54"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/329887588",
+        "pull_request_review_id": 295379185,
+        "id": 329887588,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyOTg4NzU4OA==",
+        "diff_hunk": "@@ -0,0 +1,85 @@\n+#!/usr/bin/env python3\n+\n+import unittest\n+import torch as th\n+import learn2learn as l2l\n+\n+NUM_INPUTS = 7\n+INPUT_SIZE = 10\n+HIDDEN_SIZE = 20\n+INNER_LR = 0.01\n+EPSILON = 1e-8\n+\n+\n+def close(x, y):\n+    return (x-y).norm(p=2) <= EPSILON\n+\n+\n+class TestMAMLAlgorithm(unittest.TestCase):\n+\n+    def setUp(self):\n+        pass\n+\n+    def tearDown(self):\n+        pass\n+\n+    def test_clone_module(self):\n+        for first_order in [False, True]:\n+            model = th.nn.Sequential(th.nn.Linear(INPUT_SIZE, HIDDEN_SIZE),\n+                                     th.nn.ReLU(),\n+                                     th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                     th.nn.Sigmoid(),\n+                                     th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                     th.nn.Softmax())\n+            maml = l2l.algorithms.MAML(model,\n+                                       lr=INNER_LR,\n+                                       first_order=first_order)\n+            X = th.randn(NUM_INPUTS, INPUT_SIZE)\n+            ref = model(X)\n+            for clone in [maml.clone(), maml.clone()]:\n+                out = clone(X)\n+                self.assertTrue(close(ref, out))",
+        "path": "tests/unit/algorithms/maml_test.py",
+        "position": 43,
+        "original_position": 41,
+        "commit_id": "e7e166b9dc80914a2f0169bda8dc20131c76eb6c",
+        "original_commit_id": "c5e3e556da6c30dcc725f18a169acf4764bb3f82",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "What's the reason that they'll be close on and not exactly the same?",
+        "created_at": "2019-10-01T05:51:41Z",
+        "updated_at": "2019-10-02T17:41:18Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/71#discussion_r329887588",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/71",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/329887588"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/71#discussion_r329887588"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/71"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/329889698",
+        "pull_request_review_id": 295379185,
+        "id": 329889698,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyOTg4OTY5OA==",
+        "diff_hunk": "@@ -0,0 +1,85 @@\n+#!/usr/bin/env python3\n+\n+import unittest\n+import torch as th\n+import learn2learn as l2l\n+\n+NUM_INPUTS = 7\n+INPUT_SIZE = 10\n+HIDDEN_SIZE = 20\n+INNER_LR = 0.01\n+EPSILON = 1e-8\n+\n+\n+def close(x, y):\n+    return (x-y).norm(p=2) <= EPSILON\n+\n+\n+class TestMAMLAlgorithm(unittest.TestCase):\n+\n+    def setUp(self):\n+        pass\n+\n+    def tearDown(self):\n+        pass\n+\n+    def test_clone_module(self):\n+        for first_order in [False, True]:\n+            model = th.nn.Sequential(th.nn.Linear(INPUT_SIZE, HIDDEN_SIZE),\n+                                     th.nn.ReLU(),\n+                                     th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                     th.nn.Sigmoid(),\n+                                     th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                     th.nn.Softmax())\n+            maml = l2l.algorithms.MAML(model,\n+                                       lr=INNER_LR,\n+                                       first_order=first_order)\n+            X = th.randn(NUM_INPUTS, INPUT_SIZE)\n+            ref = model(X)\n+            for clone in [maml.clone(), maml.clone()]:\n+                out = clone(X)\n+                self.assertTrue(close(ref, out))\n+\n+    def test_graph_connection(self):\n+        model = th.nn.Sequential(th.nn.Linear(INPUT_SIZE, HIDDEN_SIZE),\n+                                 th.nn.ReLU(),\n+                                 th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                 th.nn.Sigmoid(),\n+                                 th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                 th.nn.Softmax())\n+        maml = l2l.algorithms.MAML(model,\n+                                   lr=INNER_LR,\n+                                   first_order=False)\n+        X = th.randn(NUM_INPUTS, INPUT_SIZE)\n+        ref = maml(X)\n+        clone = maml.clone()\n+        out = clone(X)\n+        out.norm(p=2).backward()\n+        for p in model.parameters():\n+            self.assertTrue(hasattr(p, 'grad'))\n+            self.assertTrue(p.grad.norm(p=2).item() > 0.0)\n+\n+    def test_adaptation(self):\n+        model = th.nn.Sequential(th.nn.Linear(INPUT_SIZE, HIDDEN_SIZE),\n+                                 th.nn.ReLU(),\n+                                 th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                 th.nn.Sigmoid(),\n+                                 th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                 th.nn.Softmax())\n+        maml = l2l.algorithms.MAML(model,\n+                                   lr=INNER_LR,\n+                                   first_order=False)\n+        X = th.randn(NUM_INPUTS, INPUT_SIZE)\n+        clone = maml.clone()\n+        loss = clone(X).norm(p=2)\n+        clone.adapt(loss)\n+        new_loss = clone(X).norm(p=2)\n+        self.assertTrue(loss >= new_loss)\n+        new_loss.backward()\n+        for p in model.parameters():\n+            self.assertTrue(hasattr(p, 'grad'))\n+            self.assertTrue(p.grad.norm(p=2).item() > 0.0)\n+\n+\n+if __name__ == '__main__':",
+        "path": "tests/unit/algorithms/maml_test.py",
+        "position": 74,
+        "original_position": 84,
+        "commit_id": "e7e166b9dc80914a2f0169bda8dc20131c76eb6c",
+        "original_commit_id": "c5e3e556da6c30dcc725f18a169acf4764bb3f82",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "The following part of code is not being tested, while we are at this PR it'll be good to add a small test case for it too.\r\n\r\n```python\r\n        buff = model._buffers[buffer_key]\r\n        if buff is not None and buff.grad is not None:\r\n            model._buffers[buffer_key] = buff - lr * buff.grad\r\n```",
+        "created_at": "2019-10-01T06:01:54Z",
+        "updated_at": "2019-10-02T17:41:18Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/71#discussion_r329889698",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/71",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/329889698"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/71#discussion_r329889698"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/71"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/329890628",
+        "pull_request_review_id": 295379185,
+        "id": 329890628,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyOTg5MDYyOA==",
+        "diff_hunk": "@@ -0,0 +1,101 @@\n+#!/usr/bin/env python3\n+\n+import unittest",
+        "path": "tests/unit/algorithms/metasgd_test.py",
+        "position": 3,
+        "original_position": 3,
+        "commit_id": "e7e166b9dc80914a2f0169bda8dc20131c76eb6c",
+        "original_commit_id": "c5e3e556da6c30dcc725f18a169acf4764bb3f82",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Looks like the following functions in the `meta_sgd` files are not being tested\r\n\r\n```python\r\n    # Second, handle the buffers if necessary\r\n    for buffer_key in model._buffers:\r\n        buff = model._buffers[buffer_key]\r\n        if buff is not None and buff.grad is not None and buff._lr is not None:\r\n            model._buffers[buffer_key] = buff - buff._lr * buff.grad\r\n```",
+        "created_at": "2019-10-01T06:06:48Z",
+        "updated_at": "2019-10-02T17:41:18Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/71#discussion_r329890628",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/71",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/329890628"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/71#discussion_r329890628"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/71"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/330345123",
+        "pull_request_review_id": 295979428,
+        "id": 330345123,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMzMDM0NTEyMw==",
+        "diff_hunk": "@@ -0,0 +1,85 @@\n+#!/usr/bin/env python3\n+\n+import unittest\n+import torch as th\n+import learn2learn as l2l\n+\n+NUM_INPUTS = 7\n+INPUT_SIZE = 10\n+HIDDEN_SIZE = 20\n+INNER_LR = 0.01\n+EPSILON = 1e-8\n+\n+\n+def close(x, y):\n+    return (x-y).norm(p=2) <= EPSILON\n+\n+\n+class TestMAMLAlgorithm(unittest.TestCase):\n+\n+    def setUp(self):\n+        pass\n+\n+    def tearDown(self):\n+        pass\n+\n+    def test_clone_module(self):\n+        for first_order in [False, True]:\n+            model = th.nn.Sequential(th.nn.Linear(INPUT_SIZE, HIDDEN_SIZE),\n+                                     th.nn.ReLU(),\n+                                     th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                     th.nn.Sigmoid(),\n+                                     th.nn.Linear(HIDDEN_SIZE, HIDDEN_SIZE),\n+                                     th.nn.Softmax())\n+            maml = l2l.algorithms.MAML(model,\n+                                       lr=INNER_LR,\n+                                       first_order=first_order)\n+            X = th.randn(NUM_INPUTS, INPUT_SIZE)\n+            ref = model(X)\n+            for clone in [maml.clone(), maml.clone()]:\n+                out = clone(X)\n+                self.assertTrue(close(ref, out))",
+        "path": "tests/unit/algorithms/maml_test.py",
+        "position": 43,
+        "original_position": 41,
+        "commit_id": "e7e166b9dc80914a2f0169bda8dc20131c76eb6c",
+        "original_commit_id": "c5e3e556da6c30dcc725f18a169acf4764bb3f82",
+        "user": {
+            "login": "seba-1511",
+            "id": 626253,
+            "node_id": "MDQ6VXNlcjYyNjI1Mw==",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/626253?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/seba-1511",
+            "html_url": "https://github.com/seba-1511",
+            "followers_url": "https://api.github.com/users/seba-1511/followers",
+            "following_url": "https://api.github.com/users/seba-1511/following{/other_user}",
+            "gists_url": "https://api.github.com/users/seba-1511/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/seba-1511/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/seba-1511/subscriptions",
+            "organizations_url": "https://api.github.com/users/seba-1511/orgs",
+            "repos_url": "https://api.github.com/users/seba-1511/repos",
+            "events_url": "https://api.github.com/users/seba-1511/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/seba-1511/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "They should be equal, but for numerical reasons they might not be.",
+        "created_at": "2019-10-02T01:50:40Z",
+        "updated_at": "2019-10-02T17:41:18Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/71#discussion_r330345123",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/71",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/330345123"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/71#discussion_r330345123"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/71"
+            }
+        },
+        "in_reply_to_id": 329887588
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/331318529",
+        "pull_request_review_id": 297234418,
+        "id": 331318529,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMzMTMxODUyOQ==",
+        "diff_hunk": "@@ -92,18 +92,20 @@ def __init__(self, root, mode='train', transform=None, target_transform=None):\n         f = open(pickle_file, 'rb')\n         self.data = pickle.load(f)\n \n-        self.x = torch.FloatTensor([np.transpose(x, (2, 0, 1)) for x in self.data['image_data']])\n-        self.y = [-1 for _ in range(len(self.x))]\n+        self.x = torch.from_numpy(self.data[\"image_data\"]).permute(0, 3, 1, 2).float()",
+        "path": "learn2learn/vision/datasets/mini_imagenet.py",
+        "position": 33,
+        "original_position": 33,
+        "commit_id": "8aed053cdb5af4aed773a0524d21674e113c7271",
+        "original_commit_id": "8aed053cdb5af4aed773a0524d21674e113c7271",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "fyi, from a preliminary test, This also improves the speed of dataset initialization",
+        "created_at": "2019-10-04T02:03:53Z",
+        "updated_at": "2019-10-04T02:03:54Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/77#discussion_r331318529",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/77",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/331318529"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/77#discussion_r331318529"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/77"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/332343571",
+        "pull_request_review_id": 298543386,
+        "id": 332343571,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMzMjM0MzU3MQ==",
+        "diff_hunk": "@@ -0,0 +1,21 @@\n+### Description\n+\n+Fixes #[ISSUE NUMBER]\n+\n+Replace this line by a one sentence summary of your PR.\n+\n+If necessary, use the following space to provide context or more details.\n+\n+### Contribution Checklist\n+\n+If your contribution modifies code in the core library (not docs, tests, or examples), please fill the following checklist.\n+\n+- [x] My contribution modifies code in the main library.\n+- [ ] My modifications are tested.\n+- [ ] My modifications are documented.\n+\n+Please copy-paste the output of running `make alltests` below.",
+        "path": ".github/pull_request_template.md",
+        "position": null,
+        "original_position": 17,
+        "commit_id": "91bdf9f2a86844d35a05951e92531a0ef24e4a03",
+        "original_commit_id": "c0212cf57d46285377d821aa821f26438c55e158",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "My development flow doesn't really require me to do `make alltests`, probably we could remove this part and replace with additional comments or something... YKWIM?",
+        "created_at": "2019-10-08T05:48:03Z",
+        "updated_at": "2019-10-08T06:10:31Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/80#discussion_r332343571",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/80",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/332343571"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/80#discussion_r332343571"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/80"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/332168788",
+        "pull_request_review_id": 298322699,
+        "id": 332168788,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMzMjE2ODc4OA==",
+        "diff_hunk": "@@ -0,0 +1,158 @@\n+#!/usr/bin/env python3\n+\n+import unittest\n+import random\n+\n+import numpy as np\n+import torch as th\n+from torch import nn\n+from torch import optim\n+\n+import learn2learn as l2l\n+\n+\n+def accuracy(predictions, targets):\n+    predictions = predictions.argmax(dim=1).view(targets.shape)\n+    return (predictions == targets).sum().float() / targets.size(0)\n+\n+\n+def fast_adapt(adaptation_data, evaluation_data, learner, loss, adaptation_steps, device):\n+    for step in range(adaptation_steps):\n+        data = [d for d in adaptation_data]\n+        X = th.cat([d[0].unsqueeze(0) for d in data], dim=0).to(device)\n+        y = th.cat([th.tensor(d[1]).view(-1) for d in data], dim=0).to(device)\n+        train_error = loss(learner(X), y)\n+        train_error /= len(adaptation_data)\n+        learner.adapt(train_error)\n+    data = [d for d in evaluation_data]\n+    X = th.cat([d[0].unsqueeze(0) for d in data], dim=0).to(device)\n+    y = th.cat([th.tensor(d[1]).view(-1) for d in data], dim=0).to(device)\n+    predictions = learner(X)\n+    valid_error = loss(predictions, y)\n+    valid_error /= len(evaluation_data)\n+    valid_accuracy = accuracy(predictions, y)\n+    return valid_error, valid_accuracy\n+\n+\n+def main(\n+        ways=5,\n+        shots=5,\n+        meta_lr=0.003,\n+        fast_lr=0.5,\n+        meta_batch_size=32,\n+        adaptation_steps=1,\n+        num_iterations=60000,\n+        cuda=False,\n+        seed=42,\n+):\n+    random.seed(seed)\n+    np.random.seed(seed)\n+    th.manual_seed(seed)\n+    device = th.device('cpu')\n+    if cuda and th.cuda.device_count():\n+        th.cuda.manual_seed(seed)\n+        device = th.device('cuda')\n+\n+    # Create Datasets\n+    train_dataset = l2l.vision.datasets.MiniImagenet(root='./data', mode='train')\n+    valid_dataset = l2l.vision.datasets.MiniImagenet(root='./data', mode='validation')\n+    test_dataset = l2l.vision.datasets.MiniImagenet(root='./data', mode='test')\n+    train_dataset = l2l.data.MetaDataset(train_dataset)",
+        "path": "tests/integration/maml_miniimagenet_test.py",
+        "position": null,
+        "original_position": 60,
+        "commit_id": "be8ff32adb90b63ac6e241cd5ecad464ea0f175d",
+        "original_commit_id": "79a6c8754e403599d2f5a41e9c18537bff6ad6ec",
+        "user": {
+            "login": "praateekmahajan",
+            "id": 7589415,
+            "node_id": "MDQ6VXNlcjc1ODk0MTU=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7589415?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/praateekmahajan",
+            "html_url": "https://github.com/praateekmahajan",
+            "followers_url": "https://api.github.com/users/praateekmahajan/followers",
+            "following_url": "https://api.github.com/users/praateekmahajan/following{/other_user}",
+            "gists_url": "https://api.github.com/users/praateekmahajan/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/praateekmahajan/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/praateekmahajan/subscriptions",
+            "organizations_url": "https://api.github.com/users/praateekmahajan/orgs",
+            "repos_url": "https://api.github.com/users/praateekmahajan/repos",
+            "events_url": "https://api.github.com/users/praateekmahajan/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/praateekmahajan/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "```python\r\n    train_dataset = l2l.data.MetaDataset(train_dataset, labels_to_indices=train_dataset.data['class_dict'])\r\n```\r\n\r\nAssuming everything works in the new PR that I had created, the suggested change should save us a lot of time.",
+        "created_at": "2019-10-07T18:24:51Z",
+        "updated_at": "2019-10-08T06:42:57Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/79#discussion_r332168788",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/79",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/332168788"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/79#discussion_r332168788"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/79"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/352255851",
+        "pull_request_review_id": 324867538,
+        "id": 352255851,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1MjI1NTg1MQ==",
+        "diff_hunk": "@@ -43,32 +43,33 @@ import learn2learn as l2l\n mnist = torchvision.datasets.MNIST(root=\"/tmp/mnist\", train=True)\n \n mnist = l2l.data.MetaDataset(mnist)\n-task_generator = l2l.data.TaskGenerator(mnist,\n-                                        ways=3,\n-                                        classes=[0, 1, 4, 6, 8, 9],\n-                                        tasks=10)\n+train_tasks = l2l.data.TaskDataset(mnist,\n+                                   task_transforms=[\n+                                        NWays(mnist, n=3),\n+                                        KShots(mnist, k=1),\n+                                        LoadData(mnist),\n+                                   ],\n+                                   num_tasks=10)",
+        "path": "README.md",
+        "position": 14,
+        "original_position": 14,
+        "commit_id": "06b2cef5c77901e31c013abf24dcdf7a7d72651c",
+        "original_commit_id": "7490bb561fe8d1a2d44805c504c4c8602bfd2cc0",
+        "user": {
+            "login": "debajyotidatta",
+            "id": 680145,
+            "node_id": "MDQ6VXNlcjY4MDE0NQ==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/680145?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/debajyotidatta",
+            "html_url": "https://github.com/debajyotidatta",
+            "followers_url": "https://api.github.com/users/debajyotidatta/followers",
+            "following_url": "https://api.github.com/users/debajyotidatta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/debajyotidatta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/debajyotidatta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/debajyotidatta/subscriptions",
+            "organizations_url": "https://api.github.com/users/debajyotidatta/orgs",
+            "repos_url": "https://api.github.com/users/debajyotidatta/repos",
+            "events_url": "https://api.github.com/users/debajyotidatta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/debajyotidatta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This is really neat! \ud83d\udc6f\u200d\u2642 ",
+        "created_at": "2019-11-29T23:28:48Z",
+        "updated_at": "2019-12-08T02:06:53Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/90#discussion_r352255851",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/90",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/352255851"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/90#discussion_r352255851"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/90"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/352255984",
+        "pull_request_review_id": 324867538,
+        "id": 352255984,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDM1MjI1NTk4NA==",
+        "diff_hunk": "@@ -62,9 +68,39 @@ def main(\n     train_dataset = l2l.data.MetaDataset(train_dataset)\n     valid_dataset = l2l.data.MetaDataset(valid_dataset)\n     test_dataset = l2l.data.MetaDataset(test_dataset)\n-    train_generator = l2l.data.TaskGenerator(dataset=train_dataset, ways=ways, tasks=20000)\n-    valid_generator = l2l.data.TaskGenerator(dataset=valid_dataset, ways=ways, tasks=1024)\n-    test_generator = l2l.data.TaskGenerator(dataset=test_dataset, ways=ways, tasks=1024)\n+\n+    train_transforms = [\n+        l2l.data.transforms.NWays(train_dataset, ways),\n+        l2l.data.transforms.KShots(train_dataset, 2*shots),\n+        l2l.data.transforms.LoadData(train_dataset),\n+        l2l.data.transforms.RemapLabels(train_dataset),\n+        l2l.data.transforms.ConsecutiveLabels(train_dataset),\n+    ]\n+    train_tasks = l2l.data.TaskDataset(train_dataset,\n+                                       task_transforms=train_transforms,\n+                                       num_tasks=20000)\n+\n+    valid_transforms = [\n+        l2l.data.transforms.NWays(valid_dataset, ways),\n+        l2l.data.transforms.KShots(valid_dataset, 2*shots),\n+        l2l.data.transforms.LoadData(valid_dataset),\n+        l2l.data.transforms.ConsecutiveLabels(train_dataset),\n+        l2l.data.transforms.RemapLabels(valid_dataset),\n+    ]\n+    valid_tasks = l2l.data.TaskDataset(valid_dataset,\n+                                       task_transforms=valid_transforms,\n+                                       num_tasks=600)\n+\n+    test_transforms = [\n+        l2l.data.transforms.NWays(test_dataset, ways),\n+        l2l.data.transforms.KShots(test_dataset, 2*shots),\n+        l2l.data.transforms.LoadData(test_dataset),\n+        l2l.data.transforms.RemapLabels(test_dataset),\n+        l2l.data.transforms.ConsecutiveLabels(train_dataset),\n+    ]",
+        "path": "examples/vision/maml_miniimagenet.py",
+        "position": null,
+        "original_position": 75,
+        "commit_id": "06b2cef5c77901e31c013abf24dcdf7a7d72651c",
+        "original_commit_id": "7490bb561fe8d1a2d44805c504c4c8602bfd2cc0",
+        "user": {
+            "login": "debajyotidatta",
+            "id": 680145,
+            "node_id": "MDQ6VXNlcjY4MDE0NQ==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/680145?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/debajyotidatta",
+            "html_url": "https://github.com/debajyotidatta",
+            "followers_url": "https://api.github.com/users/debajyotidatta/followers",
+            "following_url": "https://api.github.com/users/debajyotidatta/following{/other_user}",
+            "gists_url": "https://api.github.com/users/debajyotidatta/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/debajyotidatta/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/debajyotidatta/subscriptions",
+            "organizations_url": "https://api.github.com/users/debajyotidatta/orgs",
+            "repos_url": "https://api.github.com/users/debajyotidatta/repos",
+            "events_url": "https://api.github.com/users/debajyotidatta/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/debajyotidatta/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Is it not better to just have an import of the form:\r\n\r\n`from l2l.data.transforms import NWays, KShots, LoadData, RemapLabels, ConsecutiveLabels`\r\n\r\nand then directly use them?",
+        "created_at": "2019-11-29T23:31:23Z",
+        "updated_at": "2019-12-08T02:06:53Z",
+        "html_url": "https://github.com/learnables/learn2learn/pull/90#discussion_r352255984",
+        "pull_request_url": "https://api.github.com/repos/learnables/learn2learn/pulls/90",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/comments/352255984"
+            },
+            "html": {
+                "href": "https://github.com/learnables/learn2learn/pull/90#discussion_r352255984"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/learnables/learn2learn/pulls/90"
+            }
+        }
+    }
+]

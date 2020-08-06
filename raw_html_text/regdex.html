@@ -1,0 +1,164 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/7K94_fRPCBU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="691212" data-title="Dharma secondary market" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/691/212/datas/original.png">
+                            <img alt="RegDEX &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/691/212/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Dharma secondary market
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="691214" data-title="KYC verification" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/691/214/datas/original.png">
+                            <img alt="RegDEX &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/691/214/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                KYC verification
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Decentralized exchanges enable an unprecedented paradigm shift when it comes to aggregation and distribution of liquidity. Never before was it possible to bootstrap an asset exchange without the need for license, expensive technical infrastructure, custody of assets and other complex matters. In addition, ability to share liquidity with automatic attribution of fees creates incentives for strong network effects.
+                </p>
+                <p>
+                    As the industry progresses towards tokenization of traditional financial assets ("security tokens") there is no doubt financial protocols like 0x or Dharma have potential to play major role in this market. However, the open nature of this protocols creates challenges for institutional players who often are required by law to adhere to KYC and other regulations.
+                </p>
+                <p>
+                    As a result, there is need for liquidity pools with on-chain verification that ensures all participants follow the rules ("Permissioned liquidity pool").
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    RegDEX is a 0x V2 - compliant relayer that uses SendWyre on-chain and off-chain APIs to verify users' information and allows trading only to users that completed the KYC process. When users come to the exchange, their current MetaMask address is automatically checked for verification status. In case the address is not verified, the KYC process starts.
+                </p>
+                <p>
+                    In addition to predefined ERC20 pairs, the system pulls Dharma ERC721 Debt Tokens owned by the user in order to enable secondary market for Dharma debt.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used 8base platform to quickly build the backend application and the GraphQL API to manage orders. The platform is currently in private beta and is launching later in October. We used truffle/solidity to build smart contracts and React/Apollo for front-end.
+                </p>
+                <p>
+                    Below is high-level technical overview:
+                </p>
+                <ol>
+                    <li>
+                        When user is verified through Wyre they get an ERC721 token corresponding to verification of their address.
+                    </li>
+                    <li>
+                        We implemented so-called Filter smart contract that is used to fill 0x orders. Before passing order fill to the Exchange contract, the Filter contract checks maker and taker balances of the Wyre ERC721. Balance of more than 0 means user has been verified.
+                    </li>
+                    <li>
+                        The relayer accepts only orders with 'senderAddress' set to the address of the Filter contract. That requires that Exchange.fillOrder is only called by the Filter contract and not directly by users. That makes it impossible to bypass the verification and still fill orders directly with 0x.
+                    </li>
+                </ol>
+                <h2>
+                    Additional use case with Dharma protocol and Bloqboard API
+                </h2>
+                <p>
+                    Provide a widget to Bloqboard creditors to easily offer their Debt Token NFTs on RegDEX in a compliant manner (e.g. accredited investors only). This can easily be accomplished, since our relayer provides 0x Standard Relayer API.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    0x recently upgraded to v2, with significant changes across the entire spec. This created certain problems here and there, but we were able to fix them.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    It is truly fascinating to get a glimpse of the future financial infrastructure. In blows our minds to think how easy and cheap it will be for anyone to run an exchange in the future and how connected various liquidity pools will be.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            0x
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            8base
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dharma
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sendwyre
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/8base/eth-sanfran" rel="nofollow" target="_blank" title="https://github.com/8base/eth-sanfran">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

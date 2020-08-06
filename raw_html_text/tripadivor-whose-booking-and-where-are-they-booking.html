@@ -1,0 +1,183 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="769363" data-title="Most Popular Hotel on the map" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/363/datas/original.png">
+                            <img alt="TripAdivor: Who's Booking and Where are they Booking? &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/363/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Most Popular Hotel on the map
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769332" data-title="Booking percent by country groups." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/332/datas/original.png">
+                            <img alt="TripAdivor: Who's Booking and Where are they Booking? &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/332/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Booking percent by country groups.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769340" data-title="City booked by country group" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/340/datas/original.png">
+                            <img alt="TripAdivor: Who's Booking and Where are they Booking? &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/340/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                City booked by country group
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769342" data-title="User activity vs device for users that booked." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/342/datas/original.png">
+                            <img alt="TripAdivor: Who's Booking and Where are they Booking? &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/342/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                User activity vs device for users that booked.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We started with the given TripAdvisor data which included information about users history over a month and hotel information in the NYC area.  We wanted to know if basic user activity and information could be used to predict which users were most likely to book.  Other questions we had after exploring the data a bit were does country or device make a difference in the likelihood that a user would book.
+                </p>
+                <p>
+                    Once we were able to predict whether a user was going to make a booking, we wanted to know if we could predict characteristics of the hotel they booked.  We focused on star ratings and locations since this information is crucial for ranking hotels on the website.  We built an interactive map which shows the most popular hotels by location - this was telling that just general city was not enough information, we wanted zipcodes.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The first part of our project was to predict if a user would book given the following features: number of price clicks, device, country, number of views, and number of website clicks for each user.  This was essentially all information we had about an individual user.
+                </p>
+                <p>
+                    The second part of our project has two separate algorithms to predict star rating and location (zip code).  To predict star rating we used information about the user and the hotels that they viewed.  We summarized the information of all hotels viewed in our features.  The features we used are as follows: country, device, stars(min/max/average), bubbles rating (min/max/average), number of reviews (min/max/geometric average), and number of hotels viewed.  We then predicted the zipcode the hotel was located in using some external data.  The following features were used: country, device, stars(min/max/average), bubbles rating (min/max/average), number of reviews (min/max/geometric average), average price of 1-bedroom apartment in hotel zipcode (min/max/average) and number of hotels viewed.
+                </p>
+                <p>
+                    We were also able to find feature importance for all of the models.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Part 1: Prediction of Whether a User Books
+We first cleaned the data.  There were users who used more than one device or were in multiple countries; these users we dropped in order to have well defined features.  This left us will 99% of the original data set.  We then manipulated the data in order to create the features: number of views, number of price clicks and number of website clicks for each user.  We split the data into train/test sets using 75% of the data to train and 25% of the data for testing.  The training data was inputted a XGBoost classifier.
+                </p>
+                <p>
+                    Part 2.1: Star Ratings Prediction
+To predict the star rating of booking made by users, we consider only users that made exactly one booking during the month of data provided.  This dropped about 9% of the data.  We split the data into train/test sets using 75% of the data to train and 25% of the data for testing.  The training data was inputted a XGBoost classifier.
+                </p>
+                <p>
+                    Part 2.2: Zipcode Prediction
+For this we first supplemented our data with zipcodes for each hotel and the average 1 bedroom rental price for each zipcode.  The zipcodes for each hotel was gotten from the TripAdvisor website.  We were able to reverse engineer the corresponding hotel detail page url for each hotel_id on TripAdvisor. We wrote a python crawler with Selenium to read the address and zip code from TripAdvisor's page of every hotel appeared in the hotel data set. In fact, if we had more time, we could possibly write a better parser to extract more data from TripAdvisor's hotel review page. This could include the detailed rating of location etc, and reviews as bag of words. 
+The rental prices per zipcode were gotten from Zillow data.  We then combined the data we needed and cleaned it up.  We did the same cleaning as the star rating prediction.  We additionally dropped users that viewed hotels with no associated zip code and average housing price. After the cleaning we only had 62% of the original data.  We split the data into train/test sets using 75% of the data to train and 25% of the data for testing.  The training data was inputted a XGBoost classifier.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The main challenge we ran into was the amount of data.  We felt like we didn't have enough data about the hotels, especially location and price.  We also couldn't do any sequence data since we didn't have time stamps for the activities for each user.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Part 1: We got a 97-98% accuracy.  The most important features were the number of price clicks, device, and country.  Number of website clicks is the least important feature by far.
+                </p>
+                <p>
+                    Part 2.1: We had an accuracy of 79%.  When calling a prediction correct if it was within .5 stars of the actual star rating, we got a 93% accuracy. The most important features were star min/max/average.  The least important features were device and bubble min/max.
+                </p>
+                <p>
+                    Part 2.2: We had an accuracy of 71% to predict zipcode.  The most important feature was the min, max, and average of the rental price of the zipcodes.  The least important features included bubble max/min and star max/min.  In general, the averages were more important than the min/max.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that we can predict if a user will booked based on some of their history on TripAdvisor.  Given that a user will book, we can predict the star rating of the hotel they will book - especially within 0.5 stars.  Our results suggest with more information we could accurately predict the zipcode of the hotel booked by a user.
+                </p>
+                <h2>
+                    What's next for TripAdivor: Who's Booking and Where are they Booking?
+                </h2>
+                <p>
+                    With more data:
+                </p>
+                <p>
+                    -Using the user history for each day, predict what hotel they&rsquo;ll view next to ultimately show the hotel they&rsquo;ll likely to book (RNN).  Only half of the users viewed and booked on different days.
+                </p>
+                <p>
+                    -Use the click stream to predict what hotel they&rsquo;re more likely to view/book (RNN)
+                </p>
+                <p>
+                    -Given a hotel, predict how likely/how many times is booked using all the features available of the hotel with zipcode information, pricing of the zipcode area (XGBoost)
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            python-pandas-sklearn-xgboost
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://sites.google.com/brown.edu/demodemodemo/" rel="nofollow" target="_blank" title="https://sites.google.com/brown.edu/demodemodemo/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                sites.google.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/vsaraph/brown-datathon-19" rel="nofollow" target="_blank" title="https://github.com/vsaraph/brown-datathon-19">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,114 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As mechanical engineers and software engineers, there isn't too much in our daily lives that require flashcards in order for us to study. However, we've had plenty of chances to speak to people in medical school and have learned of the sheer amount of flashcards that are a daily part of their routines. On the order of hundreds per day, med students utilize apps such as Quizlet far more than we thought possible. Consequent of the sheer amount of flashcards, the time it takes to make them must be very consuming and mundane. That is why we built an app that hopes to allow medical (and many other students) spend more time studying and less time copying over.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Automatic Quizlet Flashcards takes in a pdf of handwritten notes (compatible with Notability, OneNote, or scanned notes) and scans the page for a certain color highlight. We decided on a default yellow highlight to indicate that the user designates this writing as a vocab card. Any writing that is highlighted in yellow is then extracted from the image and converted into text using Googles OCR Tesseract. From there, we parse the text to look for different "dividers" such as arrows, colons, and other indicators that separate a left (word) side from the right (definition) side. With this parsed text, we automatically upload it to Quizlet using their API to create a flashcard set.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We first convert the pdf and convert it into one or more jpeg images, allowing us to make the formatting static. From here, we parse through the pixels on the image using OpenCV and Numpy in order to find our designated vocab color (yellow). Then, we run a BFS algorithm which essentially connects this yellow pixel to all other non-white pixels in its vicinity. This algorithm will output separate images, each one is a to-be vocab card. We then run all these images through Google Tesseract in order to retrieve the text from the handwritten snippets. After parsing through the text one last time in order to divide it into word and definition, we upload all the vocab cards up to the user's Quizlet account for their usage.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We ran into challenges largely with our detection algorithm for finding highlighting as often the region wheres colors border (such as yellow highlight and black text) would often be merged leading to a darkish yellow. In our algorithm, we had to account for this discrepancy in order to get all the pixels of interest. This is why we transitioned to finding all non-white text that touches a yellow pixel. We also ran into inaccuracy difficulties with Microsoft Azure which prompted a last-minute transition to using Googles Tesseract OCR, which performed very well.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're very proud of the idea itself, as we think it truly is a case of coding for good. We believe this has the potential to help the millions of students who utilize Quizlet as well as other flashcarding services every day. Our team also consists of two mechanical engineers with limited experience in coding, and therefore there was a lot of mentorship within our team. Lastly, our software engineers played a large role in both utilizing the various APIs and SDKs but also helping the other members with their parts of the project as well.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a great deal about OCR, user verification with regards to Quizlet, image processing, file management, and system integration.
+                </p>
+                <h2>
+                    What's next for Automatic Quizlet Flashcards
+                </h2>
+                <p>
+                    We hope to work on making the app more user-friendly, potentially opening the door for just an online service.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pdf2image
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pillow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pip
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            quizlet
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/tesseract">
+                                tesseract
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,445 @@
+[
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229515770",
+        "pull_request_review_id": 170035852,
+        "id": 229515770,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyOTUxNTc3MA==",
+        "diff_hunk": "@@ -73,79 +77,91 @@ bool ParseHTML::operator()()\n         }\n         break;\n       case TITLE:\n-        if ((*m_html)[i] == '<') {state = OPEN;} else if ((*m_html)[i] == '>') {\n+        if ((*m_html)[i] == '<') {",
+        "path": "src/ParseHTML.cpp",
+        "position": 22,
+        "original_position": 22,
+        "commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "original_commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "user": {
+            "login": "shaneallcroft",
+            "id": 32019046,
+            "node_id": "MDQ6VXNlcjMyMDE5MDQ2",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/32019046?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shaneallcroft",
+            "html_url": "https://github.com/shaneallcroft",
+            "followers_url": "https://api.github.com/users/shaneallcroft/followers",
+            "following_url": "https://api.github.com/users/shaneallcroft/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shaneallcroft/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shaneallcroft/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shaneallcroft/subscriptions",
+            "organizations_url": "https://api.github.com/users/shaneallcroft/orgs",
+            "repos_url": "https://api.github.com/users/shaneallcroft/repos",
+            "events_url": "https://api.github.com/users/shaneallcroft/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shaneallcroft/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this is a really good change for readability",
+        "created_at": "2018-10-30T22:57:05Z",
+        "updated_at": "2018-10-30T23:16:04Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229515770",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/9",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229515770"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229515770"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229516896",
+        "pull_request_review_id": 170035852,
+        "id": 229516896,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyOTUxNjg5Ng==",
+        "diff_hunk": "@@ -73,79 +77,91 @@ bool ParseHTML::operator()()\n         }\n         break;\n       case TITLE:\n-        if ((*m_html)[i] == '<') {state = OPEN;} else if ((*m_html)[i] == '>') {\n+        if ((*m_html)[i] == '<') {\n+          state = OPEN;\n+        } else if ((*m_html)[i] == '>') {\n           state = START;\n           m_title.clear();\n-        } else {m_title += (*m_html)[i];}\n+        } else {\n+          m_title += (*m_html)[i];\n+        }\n         break;\n       case CONTENT:\n-        if ((*m_html)[i] == '<') {state = OPEN;} else {(*m_content) += (*m_html)[i];}\n+        if ((*m_html)[i] == '<') {\n+          state = OPEN;\n+        } else {\n+          (*m_content) += (*m_html)[i];\n+        }\n         break;\n     }\n   }\n   std::cerr << \"end parsing\" << std::endl;\n \n   parseContent();\n   // returns false if no content is found\n-  if (m_content->size() == 0 && m_urls.size() == 0) {return false;}\n-  return true;\n+  return !(m_content->size() == 0 && m_urls.size() == 0);\n }\n \n const QString & ParseHTML::getTitle() {return m_title;}\n-const QString & ParseHTML::getHtml() {return *m_html;}\n-const QString & ParseHTML::getContent() {return *m_content;}\n+const std::unique_ptr<QString> & ParseHTML::getHtml() {return m_html;}\n+std::unique_ptr<QString> ParseHTML::getContent() {return std::move(m_content);}\n const QQueue<QString> & ParseHTML::getUrls() {return m_urls;}\n-const QMap<QString, int> & ParseHTML::getKeywords() {return m_keywords;}\n+std::unique_ptr<std::unordered_map<QString, int>> ParseHTML::getKeywords()\n+{\n+  return std::move(m_keywords);\n+}\n \n-bool ParseHTML::isUrl(QString _url)\n+bool ParseHTML::isUrl(const QString & _url) const\n {\n-  if (_url.contains(\"mailto:\") || _url.contains(\".a\") || _url.contains(\".cpio\") ||\n-    _url.contains(\".shar\") || _url.contains(\".LBR\") ||\n-    _url.contains(\".iso\") || _url.contains(\".lbr\") || _url.contains(\".mar\") ||\n-    _url.contains(\".bz2\") || _url.contains(\".F\") || _url.contains(\".gz\") ||\n-    _url.contains(\".lz\") || _url.contains(\".rz\") || _url.contains(\".sfark\") ||\n-    _url.contains(\".sz\") || _url.contains(\".?\") || _url.contains(\".x\") ||\n-    _url.contains(\".z\") || _url.contains(\".Z\") || _url.contains(\".t\") ||\n-    _url.contains(\".u\") || _url.contains(\".w\"))\n-  {\n-    return false;\n-  }\n-  return true;\n+  return !(_url.contains(\"mailto:\") || _url.contains(\".a\") || _url.contains(\".cpio\") ||\n+         _url.contains(\".shar\") || _url.contains(\".LBR\") ||\n+         _url.contains(\".iso\") || _url.contains(\".lbr\") || _url.contains(\".mar\") ||\n+         _url.contains(\".bz2\") || _url.contains(\".F\") || _url.contains(\".gz\") ||\n+         _url.contains(\".lz\") || _url.contains(\".rz\") || _url.contains(\".sfark\") ||\n+         _url.contains(\".sz\") || _url.contains(\".?\") || _url.contains(\".x\") ||\n+         _url.contains(\".z\") || _url.contains(\".Z\") || _url.contains(\".t\") ||\n+         _url.contains(\".u\") || _url.contains(\".w\"));\n }\n \n void ParseHTML::parseUrl(QString _url)\n {\n   // call isUrl then parse if it is a url\n-  if (!isUrl(_url)) {return;}\n-  if (m_url.contains(_url)) {return;}\n-  if (!_url.contains(\"http://\") && !_url.contains(\"https://\")) {\n-    if (_url[0] == '/' && m_url[m_url.size() - 1] == '/') {\n-      _url.remove(0, 1);\n-    }\n-    if ((_url[0] == '/' && m_url[m_url.size() - 1] != '/') ||\n-      (_url[0] != '/' && m_url[m_url.size() - 1] == '/'))\n-    {\n-      _url = m_url + _url;\n-    } else {\n-      _url = m_url + '/' + _url;\n-    }\n+  if (!isUrl(_url)) {\n+    return;\n+  } else if (m_url.contains(_url)) {\n+    return;\n+  }\n+  auto enqueue_at_exit = make_scope_exit([this, &_url]() {\n+        m_urls.enqueue(std::move(_url));\n+      });\n+  if (_url.contains(\"http://\") || _url.contains(\"https://\")) {\n+    return;  // _url is still enqueued\n+  }\n+  if (_url[0] == '/' && m_url[m_url.size() - 1] == '/') {\n+    _url.remove(0, 1);\n+  }\n+  if ((_url[0] == '/' && m_url[m_url.size() - 1] != '/') ||\n+    (_url[0] != '/' && m_url[m_url.size() - 1] == '/'))\n+  {\n+    _url = m_url + _url;\n+  } else {\n+    _url = m_url + '/' + _url;\n   }\n-  m_urls.enqueue(_url);\n }\n \n QString ParseHTML::parseTag(QString _tag)\n {\n   // call parseUrl() if href found\n-  int index = _tag.indexOf(\"href=\");\n+  const int index = _tag.indexOf(\"href=\");",
+        "path": "src/ParseHTML.cpp",
+        "position": 132,
+        "original_position": 132,
+        "commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "original_commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "user": {
+            "login": "shaneallcroft",
+            "id": 32019046,
+            "node_id": "MDQ6VXNlcjMyMDE5MDQ2",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/32019046?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shaneallcroft",
+            "html_url": "https://github.com/shaneallcroft",
+            "followers_url": "https://api.github.com/users/shaneallcroft/followers",
+            "following_url": "https://api.github.com/users/shaneallcroft/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shaneallcroft/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shaneallcroft/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shaneallcroft/subscriptions",
+            "organizations_url": "https://api.github.com/users/shaneallcroft/orgs",
+            "repos_url": "https://api.github.com/users/shaneallcroft/repos",
+            "events_url": "https://api.github.com/users/shaneallcroft/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shaneallcroft/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "*const intensifies*",
+        "created_at": "2018-10-30T23:02:16Z",
+        "updated_at": "2018-10-30T23:16:04Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229516896",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/9",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229516896"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229516896"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229517966",
+        "pull_request_review_id": 170035852,
+        "id": 229517966,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyOTUxNzk2Ng==",
+        "diff_hunk": "@@ -213,23 +218,23 @@ QString * BinarySearchDictionary::keys(int * n)\n // Sort array using heap sort\n void BinarySearchDictionary::sort()\n {\n-  // Add your implementation here\n-  int s = h->getSize();\n-  ArrayDictionaryNode * a = new ArrayDictionaryNode[s];\n-  for (int i = 0; i < s; i++) {\n+  size_t s = h->getSize();",
+        "path": "src/bsearch-dictionary.cpp",
+        "position": 63,
+        "original_position": 63,
+        "commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "original_commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "user": {
+            "login": "shaneallcroft",
+            "id": 32019046,
+            "node_id": "MDQ6VXNlcjMyMDE5MDQ2",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/32019046?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shaneallcroft",
+            "html_url": "https://github.com/shaneallcroft",
+            "followers_url": "https://api.github.com/users/shaneallcroft/followers",
+            "following_url": "https://api.github.com/users/shaneallcroft/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shaneallcroft/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shaneallcroft/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shaneallcroft/subscriptions",
+            "organizations_url": "https://api.github.com/users/shaneallcroft/orgs",
+            "repos_url": "https://api.github.com/users/shaneallcroft/repos",
+            "events_url": "https://api.github.com/users/shaneallcroft/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shaneallcroft/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "good stuff heck yeah",
+        "created_at": "2018-10-30T23:08:16Z",
+        "updated_at": "2018-10-30T23:16:04Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229517966",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/9",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229517966"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229517966"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229518712",
+        "pull_request_review_id": 170035852,
+        "id": 229518712,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyOTUxODcxMg==",
+        "diff_hunk": "@@ -64,31 +64,35 @@ struct heap\n \n class BinarySearchDictionary : public Dictionary\n {\n-  // Add any member variables you need\n-  bool sorted;\n-  heap * h;\n-\n public:\n   // Constructor\n   BinarySearchDictionary();\n   ~BinarySearchDictionary();\n \n-  bool addRecord(QString key, int record);\n+  bool add_record(const QString & key, int record) override;\n \n   // Sort array using heap sort.\n   void sort();\n \n   int find(QString key);\n \n   // Removes one element from the table\n-  bool removeElement(QString key);\n+  bool remove_element(const QString & key) override;\n \n   // Returns all the elements in the table as an array of strings.\n   // *n is the size of the table and it is returned by reference\n-  QString * keys(int * n);\n+  std::unique_ptr<QString[]> keys(size_t * n) override;",
+        "path": "src/bsearch-dictionary.hpp",
+        "position": 41,
+        "original_position": 41,
+        "commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "original_commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "user": {
+            "login": "shaneallcroft",
+            "id": 32019046,
+            "node_id": "MDQ6VXNlcjMyMDE5MDQ2",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/32019046?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shaneallcroft",
+            "html_url": "https://github.com/shaneallcroft",
+            "followers_url": "https://api.github.com/users/shaneallcroft/followers",
+            "following_url": "https://api.github.com/users/shaneallcroft/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shaneallcroft/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shaneallcroft/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shaneallcroft/subscriptions",
+            "organizations_url": "https://api.github.com/users/shaneallcroft/orgs",
+            "repos_url": "https://api.github.com/users/shaneallcroft/repos",
+            "events_url": "https://api.github.com/users/shaneallcroft/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shaneallcroft/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I noticed that you've made use of std::unique alot more, what are the benefits of this?",
+        "created_at": "2018-10-30T23:12:10Z",
+        "updated_at": "2018-10-30T23:16:04Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229518712",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/9",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229518712"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229518712"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229523651",
+        "pull_request_review_id": 170044681,
+        "id": 229523651,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyOTUyMzY1MQ==",
+        "diff_hunk": "@@ -64,31 +64,35 @@ struct heap\n \n class BinarySearchDictionary : public Dictionary\n {\n-  // Add any member variables you need\n-  bool sorted;\n-  heap * h;\n-\n public:\n   // Constructor\n   BinarySearchDictionary();\n   ~BinarySearchDictionary();\n \n-  bool addRecord(QString key, int record);\n+  bool add_record(const QString & key, int record) override;\n \n   // Sort array using heap sort.\n   void sort();\n \n   int find(QString key);\n \n   // Removes one element from the table\n-  bool removeElement(QString key);\n+  bool remove_element(const QString & key) override;\n \n   // Returns all the elements in the table as an array of strings.\n   // *n is the size of the table and it is returned by reference\n-  QString * keys(int * n);\n+  std::unique_ptr<QString[]> keys(size_t * n) override;",
+        "path": "src/bsearch-dictionary.hpp",
+        "position": 41,
+        "original_position": 41,
+        "commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "original_commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "user": {
+            "login": "allenh1",
+            "id": 2013091,
+            "node_id": "MDQ6VXNlcjIwMTMwOTE=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/2013091?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/allenh1",
+            "html_url": "https://github.com/allenh1",
+            "followers_url": "https://api.github.com/users/allenh1/followers",
+            "following_url": "https://api.github.com/users/allenh1/following{/other_user}",
+            "gists_url": "https://api.github.com/users/allenh1/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/allenh1/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/allenh1/subscriptions",
+            "organizations_url": "https://api.github.com/users/allenh1/orgs",
+            "repos_url": "https://api.github.com/users/allenh1/repos",
+            "events_url": "https://api.github.com/users/allenh1/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/allenh1/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Good question! `std::unique_ptr` is really nice since it frees the resource automatically, and ensures that it cannot exist in multiple locations. The copy constructor/copy assignment operators are explicitly deleted in its implementation, allowing only for it to be created via r-value reference (`T &&`).\r\n\r\nIn easier English, it makes it so that you have to explicitly move the object to a different place or it gets cleaned up.\r\n\r\n```c++\r\na = std::make_unique<int>(7);\r\n\r\n{\r\n  auto b = std::make_unique<int>(4);\r\n  auto c = std::make_unique<int>(5);\r\n  a = std::move(c);. // a is freed\r\n}  // b is freed\r\n// c exists, but is held by a\r\n```\r\n\r\nIf that makes sense.",
+        "created_at": "2018-10-30T23:37:11Z",
+        "updated_at": "2018-10-30T23:37:11Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229523651",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/9",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229523651"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229523651"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/9"
+            }
+        },
+        "in_reply_to_id": 229518712
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229525893",
+        "pull_request_review_id": 170047375,
+        "id": 229525893,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyOTUyNTg5Mw==",
+        "diff_hunk": "@@ -225,10 +226,9 @@ void crawler::run()\n       }\n     }\n     QMap<QString, int>::const_iterator x;\n-    for (x = parser.getKeywords().begin();\n-      x != parser.getKeywords().end(); ++x)\n-    {\n-      add_keyword_to_db(url, x.key(), x.value());\n+    auto keywords{parser.getKeywords()};\n+    for (auto[key, val] : *keywords) {\n+      add_keyword_to_db(url, key, val);",
+        "path": "src/crawler.cpp",
+        "position": 24,
+        "original_position": 24,
+        "commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "original_commit_id": "cbb5ad9bdec853198963d7c752c95f637bb08439",
+        "user": {
+            "login": "allenh1",
+            "id": 2013091,
+            "node_id": "MDQ6VXNlcjIwMTMwOTE=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/2013091?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/allenh1",
+            "html_url": "https://github.com/allenh1",
+            "followers_url": "https://api.github.com/users/allenh1/followers",
+            "following_url": "https://api.github.com/users/allenh1/following{/other_user}",
+            "gists_url": "https://api.github.com/users/allenh1/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/allenh1/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/allenh1/subscriptions",
+            "organizations_url": "https://api.github.com/users/allenh1/orgs",
+            "repos_url": "https://api.github.com/users/allenh1/repos",
+            "events_url": "https://api.github.com/users/allenh1/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/allenh1/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@shaneallcroft not sure if you caught this change, but this syntax is super dope. New C++17-enabled structural binding.\r\n\r\nAnd I missed the `const_iterator` above... Whole point here was to remove it, haha.",
+        "created_at": "2018-10-30T23:50:12Z",
+        "updated_at": "2018-10-30T23:50:12Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229525893",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/9",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/229525893"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/9#discussion_r229525893"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/310317939",
+        "pull_request_review_id": 270421458,
+        "id": 310317939,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxMDMxNzkzOQ==",
+        "diff_hunk": "@@ -57,7 +57,7 @@ def test_ament_uncrustify(container, auto_fix=False, verbose=False):\n \n def test_ament_copyright(container, auto_fix=False, verbose=False):\n     container.add_bash_command('cd %s' % repo_location)\n-    container.add_bash_command('source /opt/ros/bouncy/setup.bash')\n+    container.add_bash_command('source /opt/ros/dashing/setup.bash')",
+        "path": "test/test.py",
+        "position": 14,
+        "original_position": 14,
+        "commit_id": "61210c4e3b9baa87bab5311511a9c414252e39cb",
+        "original_commit_id": "61210c4e3b9baa87bab5311511a9c414252e39cb",
+        "user": {
+            "login": "shaneallcroft",
+            "id": 32019046,
+            "node_id": "MDQ6VXNlcjMyMDE5MDQ2",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/32019046?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shaneallcroft",
+            "html_url": "https://github.com/shaneallcroft",
+            "followers_url": "https://api.github.com/users/shaneallcroft/followers",
+            "following_url": "https://api.github.com/users/shaneallcroft/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shaneallcroft/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shaneallcroft/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shaneallcroft/subscriptions",
+            "organizations_url": "https://api.github.com/users/shaneallcroft/orgs",
+            "repos_url": "https://api.github.com/users/shaneallcroft/repos",
+            "events_url": "https://api.github.com/users/shaneallcroft/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shaneallcroft/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "DASHING",
+        "created_at": "2019-08-02T22:40:33Z",
+        "updated_at": "2019-08-02T22:41:18Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/11#discussion_r310317939",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/11",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/310317939"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/11#discussion_r310317939"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/11"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/310318051",
+        "pull_request_review_id": 270421458,
+        "id": 310318051,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxMDMxODA1MQ==",
+        "diff_hunk": "@@ -18,8 +18,8 @@ FileDownloader::FileDownloader(QUrl _url, QObject * parent)\n : QObject(parent)\n {\n   connect(\n-    &m_WebCtrl, SIGNAL(finished(QNetworkReply *)),\n-    this, SLOT(fileDownloaded(QNetworkReply *))\n+    &m_WebCtrl, SIGNAL(finished(QNetworkReply*)),\n+    this, SLOT(fileDownloaded(QNetworkReply*))",
+        "path": "src/file_downloader.cpp",
+        "position": 7,
+        "original_position": 7,
+        "commit_id": "61210c4e3b9baa87bab5311511a9c414252e39cb",
+        "original_commit_id": "61210c4e3b9baa87bab5311511a9c414252e39cb",
+        "user": {
+            "login": "shaneallcroft",
+            "id": 32019046,
+            "node_id": "MDQ6VXNlcjMyMDE5MDQ2",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/32019046?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shaneallcroft",
+            "html_url": "https://github.com/shaneallcroft",
+            "followers_url": "https://api.github.com/users/shaneallcroft/followers",
+            "following_url": "https://api.github.com/users/shaneallcroft/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shaneallcroft/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shaneallcroft/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shaneallcroft/subscriptions",
+            "organizations_url": "https://api.github.com/users/shaneallcroft/orgs",
+            "repos_url": "https://api.github.com/users/shaneallcroft/repos",
+            "events_url": "https://api.github.com/users/shaneallcroft/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shaneallcroft/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": ">nice\r\nlooks better this way",
+        "created_at": "2019-08-02T22:41:12Z",
+        "updated_at": "2019-08-02T22:41:18Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/11#discussion_r310318051",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/11",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/310318051"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/11#discussion_r310318051"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/11"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/310335716",
+        "pull_request_review_id": 270442763,
+        "id": 310335716,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMxMDMzNTcxNg==",
+        "diff_hunk": "@@ -18,8 +18,8 @@ FileDownloader::FileDownloader(QUrl _url, QObject * parent)\n : QObject(parent)\n {\n   connect(\n-    &m_WebCtrl, SIGNAL(finished(QNetworkReply *)),\n-    this, SLOT(fileDownloaded(QNetworkReply *))\n+    &m_WebCtrl, SIGNAL(finished(QNetworkReply*)),\n+    this, SLOT(fileDownloaded(QNetworkReply*))",
+        "path": "src/file_downloader.cpp",
+        "position": 7,
+        "original_position": 7,
+        "commit_id": "61210c4e3b9baa87bab5311511a9c414252e39cb",
+        "original_commit_id": "61210c4e3b9baa87bab5311511a9c414252e39cb",
+        "user": {
+            "login": "allenh1",
+            "id": 2013091,
+            "node_id": "MDQ6VXNlcjIwMTMwOTE=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/2013091?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/allenh1",
+            "html_url": "https://github.com/allenh1",
+            "followers_url": "https://api.github.com/users/allenh1/followers",
+            "following_url": "https://api.github.com/users/allenh1/following{/other_user}",
+            "gists_url": "https://api.github.com/users/allenh1/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/allenh1/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/allenh1/subscriptions",
+            "organizations_url": "https://api.github.com/users/allenh1/orgs",
+            "repos_url": "https://api.github.com/users/allenh1/repos",
+            "events_url": "https://api.github.com/users/allenh1/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/allenh1/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "*shrug* apparently \r\n\r\nNot my call.",
+        "created_at": "2019-08-03T02:31:09Z",
+        "updated_at": "2019-08-03T02:31:09Z",
+        "html_url": "https://github.com/allenh1/derp-engine/pull/11#discussion_r310335716",
+        "pull_request_url": "https://api.github.com/repos/allenh1/derp-engine/pulls/11",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/comments/310335716"
+            },
+            "html": {
+                "href": "https://github.com/allenh1/derp-engine/pull/11#discussion_r310335716"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/allenh1/derp-engine/pulls/11"
+            }
+        },
+        "in_reply_to_id": 310318051
+    }
+]

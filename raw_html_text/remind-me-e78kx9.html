@@ -1,0 +1,326 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration for this project came from the issues that we as a group all have faced. We as consumers are constantly overspending on our subscriptions because often times we tend to forget about them. The average American spends $800 every month on subscriptions which is a tremendous amount of money.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This application records all of the subscriptions that the user has, while also recording their usage as well to determine if paying for the subscription is worth it. The app puts all of the data that the user has inputted as well as screen time and puts it in a visual manner so that users are encouraged to save more.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The app was built using java and the minimal prior experience our group members have.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    A few challenges that we encountered include:
+                </p>
+                <ol>
+                    <li>
+                        Having trouble using frameworks
+                    </li>
+                    <li>
+                        Creating an identity for our brand that differentiated it from other budgeting applications
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ol>
+                    <li>
+                        Designing an interface that somewhat works
+                    </li>
+                    <li>
+                        Creating a design that is easy to understand and use
+                    </li>
+                </ol>
+                <h2>
+                    What's next for Remind Me
+                </h2>
+                <p>
+                    Creating a point system that creates an incentive for people to save and we can collaborate with other brands and create a rewards system.
+                </p>
+                <p>
+                    import java.awt.
+                    <em>
+                        ;
+import javax.swing.
+                    </em>
+                    ;
+import java.awt.event.*;
+import java.applet.Applet;
+                </p>
+                <p>
+                    public class remindme extends Applet implements ActionListener
+{
+                </p>
+                <pre class="language-nolang"><code>// Place instance variables here
+Panel p_card;
+// creates a panel to place all the cards
+Panel card1, card2, card3, card4, card5; 
+CardLayout cdLayout = new CardLayout();
+JPanel grid;
+
+ public void init ()
+{
+p_card = new Panel ();
+p_card.setLayout (cdLayout);
+screen1();
+screen2();
+screen3();
+screen4();
+screen5();
+// in the init method, the layout is set and all of the screens are added as methods. 
+String q;
+
+setLayout (new BorderLayout());
+
+add ("Center", p_card);
+}
+
+public void screen1 ()
+{
+card1= new Panel ();
+
+
+
+//makes all buttons and adds to card. 
+
+JLabel title = new JLabel ("Remind Me");
+
+JLabel username = new JLabel ("Username: ");
+JTextField Entry1 = new JTextField(10);
+
+//password and username is entered. 
+
+JLabel password = new JLabel ("Password: ");
+JTextField Entry2 = new JTextField(10);
+
+JButton two = new JButton ("Next Page");
+
+two.setFont(new Font ("Courier", Font.PLAIN, 36));
+
+//fonts sizes is set
+two.setActionCommand ("goal");
+two.addActionListener (this);
+
+//action command is set up for the next page. 
+
+
+card1.add(title);
+
+
+card1.add(username);
+card1.add(Entry1);
+card1.add(password);
+card1.add(Entry2);
+card1.add(two);
+
+//everything is added to card 1 which is added to the panel. 
+p_card.add ("1", card1);
+}
+public void screen2 ()
+{
+
+card2 = new Panel();
+//card2 is set up with a new panel 
+JLabel title1 = new JLabel ("Goal: ");
+
+//user is asked to enter their goal in terms of saving money 
+title1.setFont(new Font ("Courier", Font.PLAIN, 48));
+
+JLabel text = new JLabel ("How much would you like to save per month?: ");
+JTextField a1= new JTextField(10);
+
+JLabel reason = new JLabel ("To help us create your profile, please enter all reasons, with a comma, that apply");
+JTextField a2= new JTextField(10);
+
+
+//in order to create a connection and better assist the user, their reason of downloading the app is asked. 
+
+JButton one1 = new JButton ("Next");
+
+one1.setActionCommand ("input");
+one1.addActionListener (this);
+one1.setFont(new Font ("Courier", Font.PLAIN, 36));
+
+
+card2.add (title1);
+card2.add(text);
+card2.add (a1);
+card2.add(reason);
+card2.add(a2); 
+card2.add(one1);
+
+//everything is added to card 2
+p_card.add ("2",card2);
+}
+public void screen3()
+{    
+
+
+// card 3 is set up
+card3 = new Panel ();
+JLabel subscriptions = new JLabel ("Enter a subscription you would like to track: ") ;
+subscriptions.setFont(new Font("Courier", Font.BOLD, 48));
+
+JTextField a3 = new JTextField (10);
+//first, the name of the subscription is asked that they would like to track 
+
+JLabel monthly = new JLabel ("Enter monthly cost: ");
+
+JTextField a4 = new JTextField (10);
+//the monthly cost is asked. The point of this is to provide an indepth analysis. Basically to see if they are getting their money's worth. 
+JLabel start = new JLabel ("Enter the date that your subscription renews monthly:");
+JTextField a5 = new JTextField (2);
+
+//Date that their subscription renews monthly is asked. Which will be used to provide reminders. 
+
+JButton next = new JButton ("Next");
+next.setActionCommand ("usage");
+next.addActionListener (this);
+
+
+
+card3.add(subscriptions);
+card3.add(a3);
+card3.add(monthly);
+card3.add(a4);
+card3.add(start);
+card3.add(a5);
+card3.add(next);
+
+p_card.add ("3", card3);
+
+}
+public void screen4 ()
+{
+
+
+card4 = new Panel();
+
+JLabel title = new JLabel ("Your Usage");
+
+title.setFont(new Font("Courier", Font.BOLD, 48));
+
+
+//insert code for forming a graph from data obtained from phone on users' usage.//
+JLabel image = new JLabel("");
+image.setIcon(new ImageIcon("m.JPG"));
+
+JButton next = new JButton ("Next");
+next.setActionCommand ("all");
+next.addActionListener (this);
+next.setBackground(Color.white);
+next.setForeground(Color.orange);
+
+card4.add(title);
+card4.add(next);
+
+
+
+
+p_card.add ("4", card4);
+
+
+
+}
+public void screen5 ()
+{
+
+
+card5 = new Panel();
+
+JLabel title = new JLabel ("Your Subscriptions: ");
+
+title.setFont(new Font("Courier", Font.BOLD, 48));
+
+
+JButton first = new JButton ("Netflix");
+first.setActionCommand ("netflix");
+first.addActionListener (this);
+
+//example for what should show
+//real code would take the data entered by user and present it as a JButton. 
+
+//insert code for forming a graph from data obtained from phone on users' usage.//
+
+
+card5.add(title);
+card5.add(first);
+
+
+
+
+p_card.add ("5", card5);
+
+
+
+}
+public void actionPerformed (ActionEvent e)
+{
+
+if (e.getActionCommand().equals ("goal"))
+{
+
+cdLayout.show(p_card, "2");
+}
+else if (e.getActionCommand().equals ("input"))
+{
+
+cdLayout.show(p_card, "3");
+}
+else if (e.getActionCommand().equals ("usage")){
+cdLayout.show(p_card, "4");
+}
+else if (e.getActionCommand().equals("all")){
+cdLayout.show(p_card, "5");
+}
+else if (e.getActionCommand().equals ("netflix")){
+cdLayout.show(p_card, "4");
+}
+</code></pre>
+                <p>
+                    }
+protected static ImageIcon createImageIcon (String path) {
+java.net.URL imgURL = TicTacToe2.class.getResource (path);
+if (imgURL != null) {
+return new ImageIcon (imgURL);
+} else {
+System.err.println ("Couldn&rsquo;t find file: " + path);
+return null;
+}
+}
+}
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,85 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    CVDcor is a daltonizer library; it contains functions for taking an image and attempting to apply corrections to it so that color contrast is preserved for individuals with specified types of CVD (Color Vision Deficiency). The library currently supports the three most common forms of CVD and assumes worst-case for the condition.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Starting with example code for the LMS daltonization algorithm from daltonize.org, I mainly worked on optimization. The base algorithm is quite inefficient, as it contains 4 matrix multiplications as well as a vector addition and a vector subtraction. Since several of the transformation matrices were composed of constants, I was able to pre-compute one large matrix, eliminating 2 multiplications. I was also able to simplify the remaining multiplications as they contained extraneous scalar multiplications which could be eliminated without affecting the result. Using this revised algorithm, I made a C API which allows the daltonization of 24-bit RGB pixels as well as the simulation of CVD.
+                </p>
+                <p>
+                    I have also created some example programs to demonstrate CVDcor's abilities. These programs were made using OpenCV and include a live webcam daltonizer, video player and an image daltonizer (the image daltonizer uses lodepng instead of OpenCV, but I plan to create an OpenCV version to replace it).
+                </p>
+                <p>
+                    CVDcor itself has no dependencies outside the C standard library.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        Did math for optimization wrong... three times
+                    </li>
+                    <li>
+                        Partner had to leave a couple of hours into the project, all his work became moot by the end
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        Ability to handle live video at 640x480 without saturating cpu
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <h2>
+                    What's next for CVDcor
+                </h2>
+                <ul>
+                    <li>
+                        Moving to GPU rendering
+                    </li>
+                    <li>
+                        Building a full-desktop daltonizer
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

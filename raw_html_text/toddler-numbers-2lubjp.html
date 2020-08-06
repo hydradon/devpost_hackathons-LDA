@@ -1,0 +1,193 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/298042910?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="715655" data-title="Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/715/655/datas/original.png">
+                            <img alt="Toddler Numbers &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/715/655/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3>
+                    Elevator Pitch
+                </h3>
+                <p>
+                    We are Toddler Numbers, we've created a counting game to help pre-school kids learn how to count. The game can be played on chat or through Alexa devices. It's interactive and expandable so kids don't get bored. Just type "I want to play the counting game".
+                </p>
+                <h3>
+                    Inspiration
+                </h3>
+                <p>
+                    My daughter is at the age where I feel that she can start learning to count. She is really fascinated by Alexa and loves to interact with it. Using this hackathon as an opportunity, we came up with the idea to create a counting game to help kids learn using technology.
+                </p>
+                <h3>
+                    What it does
+                </h3>
+                <p>
+                    It helps kids to learn how to count interactively by showing them images and asking them to answer simple counting questions.
+                </p>
+                <h3>
+                    How we built it
+                </h3>
+                <p>
+                    We used Amazon Lex to create a chatbot which connects to Lambda. Our Lambda function pulls images from S3 which are annotated with counts using user-defined meta data. The images then get run through Rekognition and the function formulates questions that get asked to the user via the chatbot.
+                </p>
+                <p>
+                    Bonus:
+We exported this chatbot to create an Alexa skill which allows you to play the game on any Alexa device.
+                </p>
+                <h3>
+                    Challenges we ran into
+                </h3>
+                <h4>
+                    Permissioning
+                </h4>
+                <p>
+                    Getting the Lambda function to be able to read from an S3 bucket required specific roles/policies to be activated. Similarly, calling Rekognition from our Lambda function needed additional permissions as well. While the documentation of AWS services is vast, sometimes it was hard to find the exact settings we needed to make things work together.
+                </p>
+                <h4>
+                    Integration with Slack
+                </h4>
+                <p>
+                    When we created the Chatbot under Channels for Slack, we thought the integration was not working, but after some trial and error, we realized that an older version of the chatbot interaction model was integrated within Slack. So we learned that every time we updated the interaction model, we needed to publish a new version of the Lex bot and update the postback and OAuth urls on the Slack side.
+                </p>
+                <h4>
+                    Alexa Skill
+                </h4>
+                <p>
+                    We expected that the Alexa skill would be modelled in a similar way to the Lex chatbot. So we went about searching for similar JSON request/response samples to build the Alexa skill. While this worked and we got something going, we later learned that Alexa has a skill builder API that makes this process easier.
+                </p>
+                <h4>
+                    Learning Curve on AWS
+                </h4>
+                <p>
+                    This is the first time we are working with AWS services and just general development took sometime to get a hang of. For example, knowing that the logs show up in CloudWatch, and permissioning our Lambdas to correctly write logs in CloudWatch. Also, working with Lambdas in the AWS Console and then learning to optimize the feedback loop by creating a script to push up the Lambda code and working locally in our editors.
+                </p>
+                <h3>
+                    Accomplishments that we're proud of
+                </h3>
+                <ol>
+                    <li>
+                        <p>
+                            It's quite easy for us to keep this game interesting. All we need to do is add more images in the S3 bucket and annotate the images with counts of things in the images. Once we have done this, the Bot will automatically pick up on these new questions.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We have used the different AWS services quite efficiently. We skipped having a database by using meta-data in S3 images. We generate public URLs for our S3 images so Rekognition can read them without needing any uploads. We also cache all the S3 images before starting the game so we can move quickly from one question to the next thus keeping the game moving.
+                        </p>
+                    </li>
+                </ol>
+                <h3>
+                    What we learned
+                </h3>
+                <h4>
+                    Dynamic Responding Chatbot
+                </h4>
+                <p>
+                    When we began, it wasn't absolutely clear to us how we would have the bot dynamically generate the questions based on image recognition. But by researching a bunch online and trial and error, we were able to come up with a solution that worked. We used the dialogAction to customize how we asked the user for slot information.
+                </p>
+                <h4>
+                    Exporting to an Alexa Skill
+                </h4>
+                <p>
+                    Once we had the Lex bot working, we wanted to have another friendly way to interact with our bot. So we decided to create an Alexa skill. The documentation makes it seem really easy to export a Lex bot to an Alexa skill but we soon realized that this was easy for only part of the process. The export/import feature allowed us to port the interaction model for the bot i.e. the intents, the slots, and prompts, but the request/response format in which Alexa and Lex operate is quite different.
+                </p>
+                <h3>
+                    What's next for Toddler Numbers
+                </h3>
+                <p>
+                    We want to expand this game to have more themes. Currently, we have only collected pictures of fruits, but we would like to have animals and vegetables as part of the image sets as well. We can then add options to play in a random format or by categories.
+                </p>
+                <p>
+                    We would like to expand the reach of this game to speakers of other languages. We thought we could use other AWS services like Amazon Translate to help us with this goal.
+                </p>
+                <h3>
+                    Known issues
+                </h3>
+                <p>
+                    We realized that Slack requires images uploaded in the chat to be under a certain limit. This forced us to reduce the quality of one of our images (the blueberry one), which caused Rekognition to stop correctly recognizing the image as blueberries and rather recognizing them as accessories. We can fix this by getting another image of another fruit.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/rekognition">
+                                rekognition
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://bitbucket.org/ksk385/aws-ai-hackathon/src/master/" rel="nofollow" target="_blank" title="https://bitbucket.org/ksk385/aws-ai-hackathon/src/master/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bitbucket.org
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,742 @@
+[
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/198856802",
+        "pull_request_review_id": 132862522,
+        "id": 198856802,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE5ODg1NjgwMg==",
+        "diff_hunk": "@@ -0,0 +1,129 @@\n+import React, { Component } from 'react';\n+import { Alert, View, Button, Text, StyleSheet } from 'react-native';\n+import BackgroundGeolocation from 'react-native-mauron85-background-geolocation';\n+\n+class BgTracking extends Component {\n+  startTrack = () => {",
+        "path": "Bgtracker.js",
+        "position": null,
+        "original_position": 6,
+        "commit_id": "cf6fbad7fab8acb579370db34452900fb2758a40",
+        "original_commit_id": "2c116888bcacb486da3deb0c994e73effa14048b",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@lustoykov this piece of code was actually in `componentDidMount()` as shown [in this example.](https://github.com/mauron85/react-native-background-geolocation/#quick-example)\r\n\r\nBut I changed it to a local function instead. It works, but is it okay to do so? I'm a little confused.",
+        "created_at": "2018-06-28T14:14:24Z",
+        "updated_at": "2018-06-29T11:01:28Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/1#discussion_r198856802",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/1",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/198856802"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/1#discussion_r198856802"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/199058750",
+        "pull_request_review_id": 133104302,
+        "id": 199058750,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE5OTA1ODc1MA==",
+        "diff_hunk": "@@ -1,57 +1,16 @@\n-import React, {Component} from 'react';\n-import {View, Text, Button} from 'react-native';\n-\n-class GeolocationExample extends Component {\n-    constructor(props) {\n-        super(props);\n-\n-        this.state = {\n-            latitude: null,\n-            longitude: null,\n-            error: null\n-        };\n-    }\n-\n-    startTracking = () => {\n-        let longitudes = [];\n-        let latitudes = [];\n-\n-        this.watchId = navigator.geolocation.watchPosition(\n-            (position) => {\n-                this.setState({\n-                    latitude: position.coords.latitude,\n-\n-                    longitude: position.coords.longitude,\n-\n-                    error: null,\n-                });\n-                console.log(\"Latitude: \" + position.coords.latitude),\n-                    console.log(\"Longitude: \" + position.coords.longitude)\n-            },\n-\n-            (error) => this.setState({error: error.message}),\n-            {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000, distanceFilter: 1},\n-        );\n-    }\n-\n-    stopTracking = () => {\n-        navigator.geolocation.clearWatch(this.watchId);\n-        navigator.geolocation.stopObserving();\n-    }\n-\n-    render() {\n-        return (\n-            <View>\n-                <Button title=\"Start tracking\" onPress={this.startTracking}/>\n-                <View style={{flexGrow: 1, alignItems: 'center', justifyContent: 'center'}}>\n-                    <Text>Latitude: {this.state.latitude}</Text>\n-                    <Text>Longitude: {this.state.longitude}</Text>\n-                    {this.state.error ? <Text>Error: {this.state.error}</Text> : null}\n-                </View>\n-                <Button title=\"Stop tracking\" onPress={this.stopTracking} color=\"red\"/>\n-            </View>\n-        );\n-    }\n-}\n-\n-export default GeolocationExample;\n\\ No newline at end of file\n+import React, { Component } from 'react';\n+import { View, Text, Button } from 'react-native';\n+\n+import Bgtracker from './Bgtracker';\n+\n+// class App extends Component {\n+//     render() {\n+//         return (\n+//             <View>\n+//                 <Button title=\"Start tracking\" onPress={Bgtracker} />\n+//             </View>\n+//         )\n+//     }\n+// }\n+",
+        "path": "App.js",
+        "position": null,
+        "original_position": 73,
+        "commit_id": "cf6fbad7fab8acb579370db34452900fb2758a40",
+        "original_commit_id": "2c116888bcacb486da3deb0c994e73effa14048b",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Do you still need this code? \r\n\r\nIn general, you try to get rid of code in comments, because soon nobody remembers, whether it is safe to delete the code or remove the comment. ;)",
+        "created_at": "2018-06-29T05:51:21Z",
+        "updated_at": "2018-06-29T11:01:28Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/1#discussion_r199058750",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/199058750"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/1#discussion_r199058750"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/199059199",
+        "pull_request_review_id": 133104824,
+        "id": 199059199,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE5OTA1OTE5OQ==",
+        "diff_hunk": "@@ -1,57 +1,16 @@\n-import React, {Component} from 'react';\n-import {View, Text, Button} from 'react-native';\n-\n-class GeolocationExample extends Component {\n-    constructor(props) {\n-        super(props);\n-\n-        this.state = {\n-            latitude: null,\n-            longitude: null,\n-            error: null\n-        };\n-    }\n-\n-    startTracking = () => {\n-        let longitudes = [];\n-        let latitudes = [];\n-\n-        this.watchId = navigator.geolocation.watchPosition(\n-            (position) => {\n-                this.setState({\n-                    latitude: position.coords.latitude,\n-\n-                    longitude: position.coords.longitude,\n-\n-                    error: null,\n-                });\n-                console.log(\"Latitude: \" + position.coords.latitude),\n-                    console.log(\"Longitude: \" + position.coords.longitude)\n-            },\n-\n-            (error) => this.setState({error: error.message}),\n-            {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000, distanceFilter: 1},\n-        );\n-    }\n-\n-    stopTracking = () => {\n-        navigator.geolocation.clearWatch(this.watchId);\n-        navigator.geolocation.stopObserving();\n-    }\n-\n-    render() {\n-        return (\n-            <View>\n-                <Button title=\"Start tracking\" onPress={this.startTracking}/>\n-                <View style={{flexGrow: 1, alignItems: 'center', justifyContent: 'center'}}>\n-                    <Text>Latitude: {this.state.latitude}</Text>\n-                    <Text>Longitude: {this.state.longitude}</Text>\n-                    {this.state.error ? <Text>Error: {this.state.error}</Text> : null}\n-                </View>\n-                <Button title=\"Stop tracking\" onPress={this.stopTracking} color=\"red\"/>\n-            </View>\n-        );\n-    }\n-}\n-\n-export default GeolocationExample;\n\\ No newline at end of file\n+import React, { Component } from 'react';\n+import { View, Text, Button } from 'react-native';\n+\n+import Bgtracker from './Bgtracker';\n+\n+// class App extends Component {\n+//     render() {\n+//         return (\n+//             <View>\n+//                 <Button title=\"Start tracking\" onPress={Bgtracker} />\n+//             </View>\n+//         )\n+//     }\n+// }\n+\n+export default Bgtracker;",
+        "path": "App.js",
+        "position": null,
+        "original_position": 74,
+        "commit_id": "cf6fbad7fab8acb579370db34452900fb2758a40",
+        "original_commit_id": "2c116888bcacb486da3deb0c994e73effa14048b",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Personal taste coming \ud83d\ude05 \r\n\r\nI don't like shortcuts in class names, methods or variables. When you use a reasonable IDE, there should be autocompletion during typing, therefore it takes you no longer to type the stuff.\r\nMoreover, readability of your code would increase a lot, when you write out BackgroundTracker. \r\n\r\nBtw. I first thought it is BugTracker :D \r\n",
+        "created_at": "2018-06-29T05:55:12Z",
+        "updated_at": "2018-06-29T11:01:28Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/1#discussion_r199059199",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/1",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/199059199"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/1#discussion_r199059199"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/200151804",
+        "pull_request_review_id": 134411243,
+        "id": 200151804,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMDE1MTgwNA==",
+        "diff_hunk": "@@ -30,6 +30,9 @@ build/\n local.properties\n *.iml\n \n+\n+/android/app/build\n+",
+        "path": ".gitignore",
+        "position": 6,
+        "original_position": 6,
+        "commit_id": "756544f93cf4c6fea38fb294e529b8d21ebe3dfe",
+        "original_commit_id": "e99823b61cadd579df5caca1e28141af438fe6cd",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "It's also safe to add `/android/.gradle`",
+        "created_at": "2018-07-04T14:57:10Z",
+        "updated_at": "2018-07-09T08:26:01Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/2#discussion_r200151804",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/2",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/200151804"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/2#discussion_r200151804"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/2"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/201315154",
+        "pull_request_review_id": 135790331,
+        "id": 201315154,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMTMxNTE1NA==",
+        "diff_hunk": "@@ -62,11 +66,18 @@ class StartStopButton extends Component {\n             currentButtonBorderWidth: this.stopButtonProps.stopButtonBorderWidth\n         });\n         console.log(\"Reached start tracking function!\");\n+        \n         this.props.changeStateScreenState();\n+        this.props.changeDatabaseFalse();\n     }\n \n     stopTrackingFunction() {\n         stopTrack();\n+        \n+        console.log('stop ', this.lat)\n+        this.props.geoStates.lat = this.lat;\n+        this.props.geoStates.lon = this.lon;\n+        this.props.geoStates.timestamp = this.timestamp;",
+        "path": "src/components/StartStopButton/StartStopButton.js",
+        "position": 37,
+        "original_position": 37,
+        "commit_id": "b13229d02962cb8e3bb4d1a4c98c6f0c323195d4",
+        "original_commit_id": "b13229d02962cb8e3bb4d1a4c98c6f0c323195d4",
+        "user": {
+            "login": "lustoykov",
+            "id": 20355307,
+            "node_id": "MDQ6VXNlcjIwMzU1MzA3",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/20355307?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/lustoykov",
+            "html_url": "https://github.com/lustoykov",
+            "followers_url": "https://api.github.com/users/lustoykov/followers",
+            "following_url": "https://api.github.com/users/lustoykov/following{/other_user}",
+            "gists_url": "https://api.github.com/users/lustoykov/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/lustoykov/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/lustoykov/subscriptions",
+            "organizations_url": "https://api.github.com/users/lustoykov/orgs",
+            "repos_url": "https://api.github.com/users/lustoykov/repos",
+            "events_url": "https://api.github.com/users/lustoykov/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/lustoykov/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This is inproper usage of React, you never modify directly props, but rather setState where the props come from & let the changes propagate down. Never mutate directly state or props",
+        "created_at": "2018-07-10T12:01:11Z",
+        "updated_at": "2018-07-10T12:01:11Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/5#discussion_r201315154",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/5",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/201315154"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/5#discussion_r201315154"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/201327662",
+        "pull_request_review_id": 135805601,
+        "id": 201327662,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMTMyNzY2Mg==",
+        "diff_hunk": "@@ -62,11 +66,18 @@ class StartStopButton extends Component {\n             currentButtonBorderWidth: this.stopButtonProps.stopButtonBorderWidth\n         });\n         console.log(\"Reached start tracking function!\");\n+        \n         this.props.changeStateScreenState();\n+        this.props.changeDatabaseFalse();\n     }\n \n     stopTrackingFunction() {\n         stopTrack();\n+        \n+        console.log('stop ', this.lat)\n+        this.props.geoStates.lat = this.lat;\n+        this.props.geoStates.lon = this.lon;\n+        this.props.geoStates.timestamp = this.timestamp;",
+        "path": "src/components/StartStopButton/StartStopButton.js",
+        "position": 37,
+        "original_position": 37,
+        "commit_id": "b13229d02962cb8e3bb4d1a4c98c6f0c323195d4",
+        "original_commit_id": "b13229d02962cb8e3bb4d1a4c98c6f0c323195d4",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Should\r\n```\r\ngeoStates : {\r\n                lon : [],\r\n                lat : [],\r\n                timestamp : []\r\n            }\r\n``` \r\nbe declared inside the state in the file it came from (`BackgroundTracker.js`), and a function should setState it there, and the actual values should be passed to `BackgroundTracker.js` from  this file `StartStopButton.js`?\r\n\r\nEDIT : got it.\r\n",
+        "created_at": "2018-07-10T12:47:16Z",
+        "updated_at": "2018-07-10T12:52:19Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/5#discussion_r201327662",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/5",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/201327662"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/5#discussion_r201327662"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/5"
+            }
+        },
+        "in_reply_to_id": 201315154
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/201330861",
+        "pull_request_review_id": 135809608,
+        "id": 201330861,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMTMzMDg2MQ==",
+        "diff_hunk": "@@ -62,11 +66,18 @@ class StartStopButton extends Component {\n             currentButtonBorderWidth: this.stopButtonProps.stopButtonBorderWidth\n         });\n         console.log(\"Reached start tracking function!\");\n+        \n         this.props.changeStateScreenState();\n+        this.props.changeDatabaseFalse();\n     }\n \n     stopTrackingFunction() {\n         stopTrack();\n+        \n+        console.log('stop ', this.lat)\n+        this.props.geoStates.lat = this.lat;\n+        this.props.geoStates.lon = this.lon;\n+        this.props.geoStates.timestamp = this.timestamp;",
+        "path": "src/components/StartStopButton/StartStopButton.js",
+        "position": 37,
+        "original_position": 37,
+        "commit_id": "b13229d02962cb8e3bb4d1a4c98c6f0c323195d4",
+        "original_commit_id": "b13229d02962cb8e3bb4d1a4c98c6f0c323195d4",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Made the changes in `master`",
+        "created_at": "2018-07-10T12:57:58Z",
+        "updated_at": "2018-07-10T12:57:58Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/5#discussion_r201330861",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/5",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/201330861"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/5#discussion_r201330861"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/5"
+            }
+        },
+        "in_reply_to_id": 201315154
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203699950",
+        "pull_request_review_id": 138639417,
+        "id": 203699950,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzY5OTk1MA==",
+        "diff_hunk": "@@ -0,0 +1,34 @@\n+import Realm from 'realm';\n+\n+var username = 'parth';\n+var password = 'parth';\n+var server = 'https://movemintserver.de1a.cloud.realm.io/';\n+\n+class Tripsdb extends Realm.Object { }\n+Tripsdb.schema = {\n+    name: 'Trips',\n+    properties: {\n+        tripID: { type: 'int' },\n+        lat: { type: 'list', objectType: 'string' },\n+        lon: { type: 'list', objectType: 'string' },\n+        timestamp: { type: 'list', objectType: 'string' }",
+        "path": "src/utilities/realm.js",
+        "position": 14,
+        "original_position": 14,
+        "commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "original_commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "There are couple of issues from a **data modeling** perpective. \r\n\r\nFirst of all, you shouldn't separate Lat, Lon, Timestamp in 3 lists. A easier approach would be something like \r\n`[{\r\n       \"lat\": float,\r\n       \"lon\": float,\r\n       \"timestamp\": long\r\n    }\r\n  ]`\r\n\r\nThe analysis part gets much easier, if done like that. _(Don't know whether the following applies for Realm)_ Moreover, storing everything as string is not very efficient both on storage and lookup.",
+        "created_at": "2018-07-19T12:03:02Z",
+        "updated_at": "2018-07-19T12:14:22Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203699950",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203699950"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203699950"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203700737",
+        "pull_request_review_id": 138639417,
+        "id": 203700737,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzcwMDczNw==",
+        "diff_hunk": "@@ -0,0 +1,34 @@\n+import Realm from 'realm';\n+\n+var username = 'parth';\n+var password = 'parth';\n+var server = 'https://movemintserver.de1a.cloud.realm.io/';\n+\n+class Tripsdb extends Realm.Object { }\n+Tripsdb.schema = {\n+    name: 'Trips',\n+    properties: {\n+        tripID: { type: 'int' },\n+        lat: { type: 'list', objectType: 'string' },\n+        lon: { type: 'list', objectType: 'string' },\n+        timestamp: { type: 'list', objectType: 'string' }\n+    }\n+};\n+\n+class Usersdb extends Realm.Object { }\n+Usersdb.schema = {\n+    name: 'Users',\n+    properties: {\n+        userName: { type: 'string' },\n+        userID: { type: 'int' },\n+        totalDistance: { type: 'int' },\n+        totalTrips: { type: 'int' },",
+        "path": "src/utilities/realm.js",
+        "position": 25,
+        "original_position": 25,
+        "commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "original_commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Why don't you get this from the length of the list in the trip field? \r\n\r\nIf you do it like that, you have to guarantee atomic updates. ;) ",
+        "created_at": "2018-07-19T12:06:12Z",
+        "updated_at": "2018-07-19T12:14:22Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203700737",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203700737"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203700737"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203701017",
+        "pull_request_review_id": 138639417,
+        "id": 203701017,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzcwMTAxNw==",
+        "diff_hunk": "@@ -0,0 +1,11 @@\n+export function msToTime(duration) {",
+        "path": "src/utilities/msToTime.js",
+        "position": 1,
+        "original_position": 1,
+        "commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "original_commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Is there no Date library in JS? \ud83e\udd14 ",
+        "created_at": "2018-07-19T12:07:29Z",
+        "updated_at": "2018-07-19T12:14:23Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203701017",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203701017"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203701017"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203703559",
+        "pull_request_review_id": 138643874,
+        "id": 203703559,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzcwMzU1OQ==",
+        "diff_hunk": "@@ -0,0 +1,34 @@\n+import Realm from 'realm';\n+\n+var username = 'parth';\n+var password = 'parth';\n+var server = 'https://movemintserver.de1a.cloud.realm.io/';\n+\n+class Tripsdb extends Realm.Object { }\n+Tripsdb.schema = {\n+    name: 'Trips',\n+    properties: {\n+        tripID: { type: 'int' },\n+        lat: { type: 'list', objectType: 'string' },\n+        lon: { type: 'list', objectType: 'string' },\n+        timestamp: { type: 'list', objectType: 'string' }\n+    }\n+};\n+\n+class Usersdb extends Realm.Object { }\n+Usersdb.schema = {\n+    name: 'Users',\n+    properties: {\n+        userName: { type: 'string' },\n+        userID: { type: 'int' },\n+        totalDistance: { type: 'int' },\n+        totalTrips: { type: 'int' },",
+        "path": "src/utilities/realm.js",
+        "position": 25,
+        "original_position": 25,
+        "commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "original_commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "We are now going to remove the `User` part of the database since we don't have a login. We will just record trips.",
+        "created_at": "2018-07-19T12:17:16Z",
+        "updated_at": "2018-07-19T12:17:17Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203703559",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203703559"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203703559"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8"
+            }
+        },
+        "in_reply_to_id": 203700737
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203706187",
+        "pull_request_review_id": 138646963,
+        "id": 203706187,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzcwNjE4Nw==",
+        "diff_hunk": "@@ -0,0 +1,34 @@\n+import Realm from 'realm';\n+\n+var username = 'parth';\n+var password = 'parth';\n+var server = 'https://movemintserver.de1a.cloud.realm.io/';\n+\n+class Tripsdb extends Realm.Object { }\n+Tripsdb.schema = {\n+    name: 'Trips',\n+    properties: {\n+        tripID: { type: 'int' },\n+        lat: { type: 'list', objectType: 'string' },\n+        lon: { type: 'list', objectType: 'string' },\n+        timestamp: { type: 'list', objectType: 'string' }",
+        "path": "src/utilities/realm.js",
+        "position": 14,
+        "original_position": 14,
+        "commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "original_commit_id": "7ae77bad906359372195f002d8643326782d54e4",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I agree and we were just having a discussion about it. I agree with the `string` not being a good option.\r\n\r\nMy understanding was that in the database, each database entry could be one whole trip : \r\n```\r\n{\r\n    { \r\n         tripID:1,\r\n         lat:[...]\r\n         lon:[...]\r\n         timestamp:[...]\r\n    },\r\n    {\r\n         tripID: 2,\r\n         lat:[...]\r\n         lon:[...]\r\n         timestamp:[...]\r\n    },\r\n}\r\n```\r\nFor this, what I had in my mind was that tripID should be a primary key, and we get information about each point of time with `lat[index] lon[index] timestamp[index]`. \r\n\r\nWe could also create one trip as a list of timepoints with `lat, lon, timestamp`. Do you like this approach better?\r\n",
+        "created_at": "2018-07-19T12:26:04Z",
+        "updated_at": "2018-07-19T12:26:04Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203706187",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203706187"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/8#discussion_r203706187"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/8"
+            }
+        },
+        "in_reply_to_id": 203699950
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203774225",
+        "pull_request_review_id": 138731335,
+        "id": 203774225,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzc3NDIyNQ==",
+        "diff_hunk": "@@ -1,9 +1,12 @@\n import Realm from 'realm';\n \n+var username = 'parth';\n+var password = 'parth';\n+var server = 'https://movemintserver.de1a.cloud.realm.io/';",
+        "path": "src/utilities/realm.js",
+        "position": 5,
+        "original_position": 5,
+        "commit_id": "9fe179597de5bf6166632a3ae62b6ffa07050b1a",
+        "original_commit_id": "9fe179597de5bf6166632a3ae62b6ffa07050b1a",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "You don't have to change it here for the prototype. \r\nBut in general, you should try to avoid having passwords hard coded in the code. ;)",
+        "created_at": "2018-07-19T15:35:56Z",
+        "updated_at": "2018-07-19T15:35:56Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/10#discussion_r203774225",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/10",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203774225"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/10#discussion_r203774225"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203774485",
+        "pull_request_review_id": 138731679,
+        "id": 203774485,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzc3NDQ4NQ==",
+        "diff_hunk": "@@ -24,5 +26,9 @@ Usersdb.schema = {\n         trips: { type: 'list', objectType: 'Trips' }\n     }\n };\n-\n-export default new Realm({ schema: [Tripsdb, Usersdb] });\n\\ No newline at end of file\n+Realm.Sync.User.login(server, username, password, (error, user) => {\n+    if (!error) {\n+      console.log(user)\n+    }",
+        "path": "src/utilities/realm.js",
+        "position": 32,
+        "original_position": 32,
+        "commit_id": "9fe179597de5bf6166632a3ae62b6ffa07050b1a",
+        "original_commit_id": "9fe179597de5bf6166632a3ae62b6ffa07050b1a",
+        "user": {
+            "login": "mstockerl",
+            "id": 10283674,
+            "node_id": "MDQ6VXNlcjEwMjgzNjc0",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/10283674?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mstockerl",
+            "html_url": "https://github.com/mstockerl",
+            "followers_url": "https://api.github.com/users/mstockerl/followers",
+            "following_url": "https://api.github.com/users/mstockerl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mstockerl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mstockerl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mstockerl/subscriptions",
+            "organizations_url": "https://api.github.com/users/mstockerl/orgs",
+            "repos_url": "https://api.github.com/users/mstockerl/repos",
+            "events_url": "https://api.github.com/users/mstockerl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mstockerl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "It might be helpful for debugging if you at least log the error. ",
+        "created_at": "2018-07-19T15:36:37Z",
+        "updated_at": "2018-07-19T15:36:38Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/10#discussion_r203774485",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/10",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203774485"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/10#discussion_r203774485"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203852751",
+        "pull_request_review_id": 138828015,
+        "id": 203852751,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIwMzg1Mjc1MQ==",
+        "diff_hunk": "@@ -1,9 +1,12 @@\n import Realm from 'realm';\n \n+var username = 'parth';\n+var password = 'parth';\n+var server = 'https://movemintserver.de1a.cloud.realm.io/';",
+        "path": "src/utilities/realm.js",
+        "position": 5,
+        "original_position": 5,
+        "commit_id": "9fe179597de5bf6166632a3ae62b6ffa07050b1a",
+        "original_commit_id": "9fe179597de5bf6166632a3ae62b6ffa07050b1a",
+        "user": {
+            "login": "Parth-Vader",
+            "id": 16269320,
+            "node_id": "MDQ6VXNlcjE2MjY5MzIw",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/16269320?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Parth-Vader",
+            "html_url": "https://github.com/Parth-Vader",
+            "followers_url": "https://api.github.com/users/Parth-Vader/followers",
+            "following_url": "https://api.github.com/users/Parth-Vader/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Parth-Vader/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Parth-Vader/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Parth-Vader/subscriptions",
+            "organizations_url": "https://api.github.com/users/Parth-Vader/orgs",
+            "repos_url": "https://api.github.com/users/Parth-Vader/repos",
+            "events_url": "https://api.github.com/users/Parth-Vader/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Parth-Vader/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "That's true! :P",
+        "created_at": "2018-07-19T19:59:48Z",
+        "updated_at": "2018-07-19T19:59:48Z",
+        "html_url": "https://github.com/DigitalProductschool/batch4--movemint/pull/10#discussion_r203852751",
+        "pull_request_url": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/10",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/comments/203852751"
+            },
+            "html": {
+                "href": "https://github.com/DigitalProductschool/batch4--movemint/pull/10#discussion_r203852751"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/DigitalProductschool/batch4--movemint/pulls/10"
+            }
+        },
+        "in_reply_to_id": 203774225
+    }
+]

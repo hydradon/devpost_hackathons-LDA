@@ -1,0 +1,143 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We were inspired by a recent New York Times article (
+                    <a href="https://www.nytimes.com/2019/05/25/opinion/gender-marriage-spreadsheet.html" rel="nofollow">
+                        https://www.nytimes.com/2019/05/25/opinion/gender-marriage-spreadsheet.html
+                    </a>
+                    ) about how a couple examined their life analytically, in order to spot (and fix) patterns that inordinatnly affected their well-being. Additionally, there has been a lot of discussion about mental health at our college, Swarthmore, and when we were trying to think of simple but effetive ways we might be able to help, we thought of Journaling. There has been a lot of recent academic articles about how journaling represents a suprisingly effective, zero-cost way of improving anxiety (
+                    <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6305886/" rel="nofollow">
+                        https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6305886/
+                    </a>
+                    ). We wanted to see if there was a way of using computers to offer a modern version of the simple journal and, while we were digitizing it anyway, if there was a way to apply math/statiscis to help spot these types of patterns. We found that messenger bots offer an easy way of interactively adding to a journal,  which has the added benefit of being able to capture metadata (weather, time of day, etc) that can also be augmented by automated collection of useful statistics (such as sleep and time-on-phone).
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We designed Healthy Buddy to combat the toxic stress found at all levels of education. Using a messenger bot, a user can easily log activities (running, meditating, yoga, etc), physiological symptoms (headaches), and daily journal entries with both a numerical rating and free-form notes. Additionally, we automatically track phone usage, also allowing for sleep-tracking. Because we have the user&rsquo;s self-reported ground-truth measure of their daily overall happiness, we can then run comprehensvie statistical tests on what of these factors affect their happiness. For the numerical rating, we can display a spider-plot and calculate a covariance matrix to see which of the factors have the greatestpositive/negative impact on happiness. For the free-form journal notes, we first preprocessed through Azure&rsquo;s &ldquo;relevant phrases&rdquo; semantic knowledge API, to get the most critical word, transformed them using a specially-trained Word2Vec Neural Network, and finally projected to a visualizable space using UMAP.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built this projezct by connecting frameworks multiple frameowrks across Facebook, Google, and Microsoft Azure. The user primarily communicates with a Facebook Messenger bot,  which communicates to Azure&rsquo;s BotBuilder framework. Because we want this data to be fully controlled by the user and easily exportable, we decied to use Google Sheets as the backend &lsquo;database&rsquo; for ingest/export. So, after the BotBuilder parses the message, it pushes it to a Google Sheet. The android app which detects phone usage (as a proxy measurement for sleep) uses Android Studio.
+                </p>
+                <p>
+                    For the website, we used an openly available HTML template with a modern web stack (ES6). For the data-processing which powers the graphs, we also leveraged the data processing provided by Python and R to interpret our data and produce output images or Plotly plots to be displayed on the site. For many of the standard statistics provided, we used a mix of R and python for statistical analysis, inevitably exporting the graphs using Plotly for an interactive experience. For the word cloud mapping, we used a number of frameworks. First, we filtered text input by querying Azure for meaningful phrases of each sentence. Then, we used Word2Vec to embed the words into (we chose) some 10 dimensional space, where we then used
+                    <a href="https://github.com/lmcinnes/umap" rel="nofollow">
+                        umap
+                    </a>
+                    to project the higher dimensional data manifold to an easier-to-interpret 2 dimensions.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We struggled with staying on course and not veering off while working was surprisingly hard. It was hard not to get bogged down by details. We needed to focus on getting a working prototype, not a fully polished product! It was also difficult to wrangle all these different frameworks together cohesively.
+                </p>
+                <p>
+                    24 hours is very tiring. It gets hard to tell when you&rsquo;re working productively and as a result when you should take a break and rest.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    It surprised us how much we could get done in such a short period of time. We&rsquo;re used to working on assignments for one or two weeks, maybe a semester project here or there, but 24 hours! That&rsquo;s something else.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Getting frameworks and packages to work together in unison is difficult. And (this isn&rsquo;t so new) python often gives uninformative error messages.
+                </p>
+                <p>
+                    It&rsquo;s possible to somehow embed sentences in R^n where that mapping then maintains local distances of words across the set of sentences. That&rsquo;s nuts.
+                </p>
+                <h2>
+                    What's next for Health Buddy
+                </h2>
+                <p>
+                    Networking capabilities; applying differential privacy to user database to give publishable statistics while maintaining the privacy of users; more customizable user interface; Migrating database structure to a more robust set of tools; further application of ML to predict what a user should do to be happy for that day
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/umap">
+                                umap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            word2vector
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Madison-Shoraka/HackMIT-HealthyBuddy" rel="nofollow" target="_blank" title="https://github.com/Madison-Shoraka/HackMIT-HealthyBuddy">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

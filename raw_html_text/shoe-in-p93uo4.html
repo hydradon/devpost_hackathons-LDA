@@ -1,0 +1,119 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Medical professionals who see patients in different rooms end up having to log in to each computer to access records. Due to the nature of their data, their authentication must be highly secure. As a result, their passwords change often and physical tokens are too insecure because of the potential for theft. We wanted to design a system that would automatically log a user into any workstation quickly and securely while preventing potential vulnerability to theft.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Shoe-in consists of a smart shoe with a receiver mat, where the shoe acts as a token. When the shoe interfaces with the mat, the authentication information gets sent to the mat, which forwards the information to a server. The first time, the server prompts the user to sign in the standard way: with their username and password. All subsequent requests are recognized and the user is signed in automatically. The key to Shoe-In is the semi-persistent signing information stored in the shoe. When the shoe detects that it has been taken off, it changes the info. After the info has been changed, the next log in must take place the standard way.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The shoe consists of an Arduino, a battery pack, and a light sensor. The Arduino keeps track of a permanent key pair used to identify the device as well as a temporary key pair. When the photosensor detects a transition from light to dark, it signals the Arduino to regenerate the temporary key.
+                </p>
+                <p>
+                    The mat consists of an Arduino that interfaces with a python script on the computer. The mat forwards data from the computer to the shoe and vice versa. The python script performs the requests to the central authentication server, which we wrote in node.js.
+                </p>
+                <p>
+                    The flow of an authentication request proceeds as follows:
+-- The shoe interfaces with the mat. Once a connection is established, the shoe requests a challenge from the mat, providing its unique identifier and temporary public key. 
+-- The mat forwards the information through the python script to the server. 
+-- The server determines whether the unique key is valid and the temporary key is associated with a user. 
+-- If unique is valid and temporary is associated, then the server logs the user in
+-- Otherwise, if the unique key is valid, the user is prompted to sign in and the unique key is associated with that user.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We would have preferred to interface over bluetooth or RF. Due to limited resources, we implemented our interface with 6 wires on digital pins. We spent a large amount of time writing the protocol to transmit data reliably between the mat and the shoe. With most Arduinos, it is trivial to do a master-slave communication system, but with the available Arduino 101s, slave mode is not possible, so we had to write it from the ground up.
+                </p>
+                <p>
+                    In addition to the floor-mat interface, we also implemented a serial interface for the Arduino to access the web server. There were tempting libraries for convenient implementation, but they were often useless due to the lack of documentation and specific use cases. As a result, we spent a lot of time trying to understand the libraries before just using the bare serial interface in Python.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The Ardiuno interface was a fairly large feat in such a small time. We think that our design is also particularity novel due to the safety mechanism and the versatility and potential for saving time in people-helping professions, reducing the cost of healthcare.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Hardware projects at hackathons are ambitious due to the potential lack of resources. While software hack can import new libraries when different components become necessary, we learned the hard way that components needed to test a design are not readily available.
+                </p>
+                <h2>
+                    What's next for Shoe-In
+                </h2>
+                <p>
+                    Next for Shoe-In is bluetooth and pressure sensor technology in the mat with bluetooth or RF in the shoe. Of course, a looks-like mockup is in the cards.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://www.ziggypop.mooo.com:8081" rel="nofollow" target="_blank" title="http://www.ziggypop.mooo.com:8081">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.ziggypop.mooo.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/willstogin/shoein_server.git" rel="nofollow" target="_blank" title="https://github.com/willstogin/shoein_server.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

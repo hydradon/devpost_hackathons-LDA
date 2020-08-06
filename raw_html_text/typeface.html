@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="339939" data-title="Hello World!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/339/939/datas/original.PNG">
+                            <img alt="TypeFace &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/339/939/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Hello World!
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="339957" data-title="Brains are confusing - but fun!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/339/957/datas/original.PNG">
+                            <img alt="TypeFace &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/339/957/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Brains are confusing - but fun!
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We set out to create a tool that could be used to allow individuals suffering from temporary or permanent near-paralysis to communicate with their loved ones and express themselves in an accessible, intuitive and relatively inexpensive way. Our hope is to offer an option for the broadest possible audience of mobility impaired individuals, be they victims of genetic diseases, stroke, trauma or various other misfortunes, to easily input information into a computer.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In its current state, our device allows any individual with moderate control over forehead muscles and/or the ability to blink to communicate messages comprising the full alphabet through their computer. Aggressive predictive text modeling assists the user in achieving reasonable speeds of transmission, helping combat one of the most frustrating dimensions of alternative input devices.
+                </p>
+                <p>
+                    One additional benefit of our system is that (unlike Morse code or many muscular-activity based devices with a wide range of inputs) our user interface is designed to be intuitive enough that most users will be writing coherent messages within minutes of affixing the EEG band to their head.
+                </p>
+                <p>
+                    Finally, although this  a communication tool and
+                    <em>
+                        not
+                    </em>
+                    a medical device - the price differential between a $300 headband + open source hardware and other communication options available to victims of near-total paralysis is significant. Our hope is that, through future projects such as Typeface, the cost of communication will diminish greatly.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The key components of our system are as follows:
+1) A python-based OSC server to receive and interpret data from the Muse headband. The Muse communicates over Bluetooth to a Muse provided input diver (in this case for Windows) which acts as a client and connects over UDP to our server.
+                </p>
+                <p>
+                    2) Our OSC server monitors the streams passing along this socket connection and isolates data of interest. This includes a value indicating the probability of muscle movement around the forehead and eyes - our most reliable metric for input at this time. We also have a few theoretical models that interpret EEG data without relying on muscle contractions of any type, and, with some calibration we have have limited success translating this data into codeable inputs. However, the lengthy calibration requirement as well as the general unpredictability of these models did not meet our needs for an intuitive and accessible device and thus remain a project for future development.
+                </p>
+                <p>
+                    3) The OSC server interprets this data and they relays that interpretation via a Tornado server, through websockets, to a web frontend. We chose a web frontend over a client side GUI for two chief reasons: from a project management perspective, web development was much easier to isolate from the hardware and sever development allowing us to better work concurrently during the hackathon; from a design perspective, web development + our python stack makes us readily cross-platform in a way that many OS-specific GUI libraries do not.
+                </p>
+                <p>
+                    4) The web GUI displays an array of values to the user and iterates through them in a predictable way - allowing the user to first select a column, and then a row of values from a 6*6 grid. This type of input is easily learned and relatively self-explanatory which means that users can start communicating right away.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Our original plan was to build a device that would convert EEG readings to Morse Code based on K-Means clustering. It was not long until we realized this was not a viable strategy. In addition to neither of us having a background in Morse Code - a highly timing-sensitive protocol that isn't easily interpreted by computers to begin with - finding two distinct clusters amid the noise generated by our brains proved impossible. In general, the information monitored by the Muse headband seems better suited to recognizing overall states (such as drowsiness) than to isolating snap deviations in thought patterns.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Despite these setbacks, we remain proud of the fact that our core objective - making it cheaper and easier for paralyzed individuals to communicate with friends and loved ones - was more or less met. The chief reason for this was our ability to devise a reliable, unary input protocol that averages a rate of 1 character every three seconds (comparable with many commercial devices, even without accounting for the predictive text modeling). Although this realization was more the result of a serendipitous recollection of a story about POWs who communicated using a similar scheme during Vietnam than the result of any particular insight on our parts, we feel strongly that it is one of the better ways to key input into a machine with use of only one (and in this case, virtual) button.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Despite it not making its way into the final project, we learned a great deal about big data analytics (most of our models needed to wrestle with millions of data points in four+ dimensions) .
+                </p>
+                <p>
+                    Our sense of UI design was also pushed in new ways as we struggled with devising a user interface that could accept complex information from a user without the use of either a keyboard or mouse.
+                </p>
+                <h2>
+                    What's next for TypeFace
+                </h2>
+                <p>
+                    Perhaps more so than any other hackathon project we've completed, we'd like to ensure that this one has a future. Not only was it a blast to code, but we also hope that it might make someone's life easier or at least inspire someone better at EEG interpretation and biohacking than us to push this frontier forward.
+                </p>
+                <p>
+                    For the remaining hours of the hackathon we will be continuing to work with our data modeling algorithms so maybe there'll be a surprise EEG-only option by the time demos start!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            osc
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/tornado">
+                                tornado
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/websockets">
+                                websockets
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/pavja2/TypeFace" rel="nofollow" target="_blank" title="https://github.com/pavja2/TypeFace">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

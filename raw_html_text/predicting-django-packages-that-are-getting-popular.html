@@ -1,0 +1,153 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="474129" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/129/datas/original.png">
+                            <img alt="Django Pop &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/129/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="474130" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/130/datas/original.png">
+                            <img alt="Django Pop &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/130/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="474131" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/131/datas/original.png">
+                            <img alt="Django Pop &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/131/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="474132" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/132/datas/original.png">
+                            <img alt="Django Pop &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/474/132/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We can predict the popularity of existing packages by looking at star ratings on djangopackages.org. However, for new packages, we only have their release dates and people working on them, but not their star ratings. As a result, we are unable to predict their popularity.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our project aims to predict the popularity of new packages via star ratings based on popularity of existing packages and participants who have worked on them, assuming that participants working on new packages have worked on an existing one.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    ● We scrape data from
+                    <a href="https://djangopackages.org/python3/" rel="nofollow">
+                        https://djangopackages.org/python3/
+                    </a>
+                    to obtain package information of all the Django packages being used in Python3 development projects. 
+● After that, popularity of new packages is predicted based on the names of participants working on the package and a score vector of their previous contributions. 
+● The score vector consists of the usage counts (number of people working on the package), forks (number of times the package is downloaded), and star ratings (project ranking) of each project.
+● A matrix consisting of the names of participants and the package(s) is multiplied by the score vector to obtain a transition matrix which signifies the reputation of each participant based on their earlier contributions to packages. 
+● Another matrix consisting of the same length as the transition matrix is obtained for participants who are working on the new package. It is multiplied by the transition matrix to get a score vector, and output the column that gives the star rating to predict the popularity of a new package.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    ● After conceiving the idea, it took time to come up with the plan to proceed ahead.
+● Which factor to consider for predicting was also one of the challenge
+● Initially, when we do not have star ratings for Django packages, we thought of using a linear regression to predict the star ratings based on the correlation between forks and usage counts against watchers. However, it did not perform well on testing data due to one outlier value. 
+● It was unnecessary to utilize linear regression when we had enough data that showed us the star ratings. Thus, we changed the scope of our question, as documented in the lessons learned.
+● We decided to include PageRank (PR) of packages as one of the criteria to predict the popularity of the package, but after 2 hours of coding and seeing the result, we figured out that PR cannot be applied here. It is because all the packages become sink nodes here - nodes with no outgoing links but only the incoming links.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Despite the challenges faced, we are proud of proposing a new question that we have not seen or thought of before. Although the project did not turn out as expected, we were still able to generate an output and a working model to test our cases.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that when working on a new project, initial ideas would not work as hoped and we had to spend a lot of time figuring out new ways to approach the problem or change the scope of our question. For example, we initially thought of predicting popular Django packages based on the limited data we have by predicting the correlation of forks and usage counts against watchers. However, after scraping more data, we found that we can get star ratings and determine the popularity of packages based on star ratings. Therefore, we had to change our question to predicting popularity of new packages, utilizing data from existing packages.
+                </p>
+                <h2>
+                    What's next for Predicting Django packages that are getting Popular
+                </h2>
+                <p>
+                    Predicting Django packages that are getting popular allows users to utilize popular packages that would enhance their credibility. Doing so would also serve as a standard for developing packages that would gain sufficient attention. Analyzing common features of recent popular packages and providing guidelines to develop them could serve as future directions.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/beautiful-soup">
+                                beautiful-soup
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            scrapy
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

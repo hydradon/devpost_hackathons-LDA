@@ -1,0 +1,178 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/Jn9BtDHHaM0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="549725" data-title="side panel to type chat comments" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/725/datas/original.png">
+                            <img alt="GIPHY REACT &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/725/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                side panel to type chat comments
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="549726" data-title="when chat side panel is not open it shows if there are any new messages" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/726/datas/original.png">
+                            <img alt="GIPHY REACT &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/726/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                when chat side panel is not open it shows if there are any new messages
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="549727" data-title="another example" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/727/datas/original.png">
+                            <img alt="GIPHY REACT &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/727/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                another example
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Slack. Giphy has made slack almost like a game. It's incredibly fun way to express over emojis.
+Way more expressive. Yet most of the internet is still stuck on plain text to exclamation marks. 
+With my extension you can leave a Giphy comment on any site, even on urls of SPA build with react or angular.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    You write a comment, it saves the comment by url you are on in database, and everybody who has this extensions and happens to be on same page gets notified of new reaction. And then they can respond with a Giphy as well.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Firebase: to save gif urls and get notification using its builtin websocket functionality. 
+Chrome Extension Api: that allows to inject some html/css/js into every page of user who has installed it. This way GIPHYREACT widget gets displayed.
+                </p>
+                <p>
+                    Giphy Api: to get gifs from keywords.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    First I was building database in postgress, however, I quickly realized that to include websocket and build api for sql would take more than a day. So I knew of Firebase, so I decided to give it a try. Majority of my time went into fighting with firebase.
+                </p>
+                <p>
+                    Problem #1: I couldn't include firebase sdk into extension due to some file encoding issue utf-8, for some reason file is being seen and of different encoding and chrome is refusing to accept it. So I had to find a way to load it through javascript from url while bypassing third party origin restrictions. Remember extension's code runs in sandbox, separate from actual webpage and it doesn't have access to any JS on page.
+                </p>
+                <p>
+                    Problem #2: This is partially solved, but page own css affects widget/extension css, have to define every css property and not leave anything to be default as there could be inherited properties that can change defaults, but if defined very concisely they wont get over written.
+                </p>
+                <p>
+                    Problem #3: React/Angular/etc SPA frameworks utilize html 5 history api which allows developer to change url of page without having to reload the page. Which is great, but it sucked for my app which has to show gifs based on what page user is at. And due to hindsight of century there is no event in html 5 that would let me know that url has changed via JS. So I had two ways, run a interval timer that checks url every second Or monkey patch JS api to trigger an event on pushState and replaceState. For performance reason I choose later.
+                </p>
+                <p>
+                    Problem #4: not as much of a problem but concern, firebase rules have not been set.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    A) Overcoming series of problems
+B) Being able to pick up Firebase and Giphy api in timely manner
+C) Being able to grab snacks at least once 
+D) Actually come up with idea that fits time and scope.
+E) Built Idea into functioning thing
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about Firebase, Giphy api, and Chrome Extension Api.
+                </p>
+                <h2>
+                    What's next for GIPHY REACT
+                </h2>
+                <ul>
+                    <li>
+                        Definitely address some of the problems listed above in better manner. Like make it secure.
+                    </li>
+                    <li>
+                        Also limit the amout of comments per page, there is no need to have 3000 comments.
+                    </li>
+                    <li>
+                        Allow people to thumbs up Gifs
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chrome">
+                                chrome
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/giphy">
+                                giphy
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/techsin/giphy-react/tree/master/extension" rel="nofollow" target="_blank" title="https://github.com/techsin/giphy-react/tree/master/extension">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,230 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-gif-player="true" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/204/datas/original.gif">
+                            <img alt="Chasing Blues &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/204/datas/gallery.jpg">
+                        </a>
+                        <span class="gif-tag">
+                            GIF
+                        </span>
+                        <a class="gif-play">
+                            <i class="fas fa-play">
+                            </i>
+                        </a>
+                        <p>
+                            <i>
+                                Time slide of change in poor mental health days experienced across states
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769270" data-title="Formula" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/270/datas/original.png">
+                            <img alt="Chasing Blues &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/270/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Formula
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769279" data-title="Screenshot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/279/datas/original.png">
+                            <img alt="Chasing Blues &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/279/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Screenshot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Mental health issues can affect individuals from all walks of life, posing a huge burden to individual productivity and happiness. While recovery is possible with treatment and intervention, many vulnerable populations may not have access to adequate mental health treatment, or are unaware of treatment options available. If these subpopulations are promptly identified early, policies can be put in place for targeted outreach to these groups to promote early intervention before mental health issues reach the critical points in disease progression.
+                </p>
+                <p>
+                    At the same time, vulnerable populations may also show less mental resilience and experience more severe mental health effects when faced with natural disasters, since they often face more social and economic challenges. For example, a snow storm may have a larger impact on single moms compared to whole families, as single moms may have a larger burden for paying bills and taking care of her kids at the same time.
+                </p>
+                <p>
+                    In this project, we explored the BRFSS 2017 dataset and determined the subpopulations from each state most at risk of suffering from poor mental health. Next, we analyzed mental health resilience in two prominent disasters in 2017, namely the crippling snowstorm in Northeastern US and Hurricane Irma in Florida. We determined that individuals who are poor are significantly more likely to suffer from mental health issues during the aftermath of these disasters compared to the general population. Finally, we also explored the temporal trends of poor mental health across states and hypothesize that these are affected by major events in the state.
+                </p>
+                <h2>
+                    The Statistical Models
+                </h2>
+                <p>
+                    Our investigation of the factors that adversely affect the mental health of vulnerable population strata is organized as followed:
+Regression model to explain correlation between different socioeconomic status, membership in ethnic/minority group, and the self-reported state of mental health
+Regression-based causal model with difference-in-difference (DD) estimator to analyze the effect of catastrophic event such as Hurricane Irma or the 2016 Snow Storms on the socioeconomically vulnerable groups of the affected area.
+                </p>
+                <h3>
+                    Correlation between social factors and state of mental health:
+                </h3>
+                <p>
+                    We decided to model the effects of social factors such as Income, membership in ethnic/minority group, education level and the state of mental health. We decided to use the
+                    <strong>
+                        MENTHLTH
+                    </strong>
+                    variable as a proxy for mental health condition, where interviewees responded to the following question: &ldquo;
+                    <em>
+                        Now thinking about your mental health, which includes stress, depression, and problems with emotions, for how many days during the past 30 days was your mental health not good?
+                    </em>
+                    &rdquo;
+                </p>
+                <p>
+                    Towards the end of establishing correlation between social-economic factors and mental health conditions of interviews, we develop a
+                    <strong>
+                        Negative Binomial Regression
+                    </strong>
+                    . There are several reasons why we believe that this is an appropriate approach to model these effects:
+                </p>
+                <ul>
+                    <li>
+                        The measured dependent variable is
+                        <em>
+                            Count of days of mental health issue
+                        </em>
+                        , which we finds to follow a distribution that resembles a negative binomial distribution.
+                    </li>
+                    <li>
+                        For policy makers or advocates, modelling the raw number of counts is usually not a topic of interest. Instead, we usually want to model the ratio of poor mental health days between a specific group vs a control group (e.g: the ratio difference of poor mental health days between Poverty-level respondents vs Middle Income Respondents). The coefficient of the Negative Binomial Regression provides a natural interpretation of this nature.
+                    </li>
+                    <li>
+                        Most importantly, during data diagnostic steps, we realized that while the mean value of
+                        <strong>
+                            MENTHLTH
+                        </strong>
+                        varies according to the social economic factor (which suggests that social economic factors are good correlators to mental health state), the variance of these social economic factors are higher than their mean values. This phenomenon suggests that over-dispersion, where data is naturally clustered, is present and causing distortion in the estimate of Standard Error (SE) in simple method such as Poisson Count model.
+                    </li>
+                </ul>
+                <p>
+                    Thus, for each state, we fit a negative binomial regression model and report the top 3 social economic factors that are estimated to have the largest effect of the change in mental health. Although the robustness of these models are limited by the small amount of data associated with each state, we found some general trends across all states: 
+The ratio of poor mental health days between the lowest income group and the general population was 3 to 1
+Minority groups such as Asian and African Americans (as compared to general population) has higher number of poor mental health days experienced by the ratio of 4 to 1.
+                </p>
+                <h3>
+                    The effect of catastrophic event on the mental health conditions of socially vulnerable group
+                </h3>
+                <p>
+                    <img alt="" data-canonical-url="https://scontent.fzty2-1.fna.fbcdn.net/v/t1.15752-9/s2048x2048/53026424_385226518701700_750877488703340544_n.png?_nc_cat=100&amp;_nc_ht=scontent.fzty2-1.fna&amp;oh=b9382a283bfa5575f97e22e7f4cb15bc&amp;oe=5CF218EC" src="https://res.cloudinary.com/devpost/image/fetch/s--cxZVmGLy--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://scontent.fzty2-1.fna.fbcdn.net/v/t1.15752-9/s2048x2048/53026424_385226518701700_750877488703340544_n.png%3F_nc_cat%3D100%26_nc_ht%3Dscontent.fzty2-1.fna%26oh%3Db9382a283bfa5575f97e22e7f4cb15bc%26oe%3D5CF218EC">
+                </p>
+                <p>
+                    Our analyses logically exploit 2 catastrophic events (Hurricane Irma and the 2016 snowstorm) as natural experiments where mental health outcomes of individuals are examined across pre- and post-exposure time periods, as well as exposed and unexposed areas. A regression-based Difference-in-Difference procedure is used to isolate the independent mental health impacts these natural events had on affected persons.
+                </p>
+                <p>
+                    The logic of DD analysis is as follows. Let $$t = 0$$ denote the pre-exposure period, $$t = 1$$ denote the post-exposure period, and $$Y_{it}$$ denote the mental health condition for person $$i$$ in period $$t$$. A regression-based estimator is modeled as:
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/270/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--zAwpjs1B--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/270/datas/gallery.jpg">
+                </p>
+                <p>
+                    Where $$x_i$$ is a dummy variable assuming a value of 1 if an individual resides in an exposed area and 0 if the individual respondent resides in an unexposed area, and $$\pi_{t}$$  is a dummy variable taking a value of 1 if an individual is surveyed in the post-exposure period and 0 if the respondent was interviewed in the pre-exposure period. The DD estimator is $$\beta_3$$ (the coefficient of interaction between $$x_i$$ and $$\pi_{t}$$). Our DD estimator assumes a value of 1 only for individuals in exposed areas and interviewed in the post-exposure period.
+                </p>
+                <p>
+                    DD parameter estimates are statistically adjusted by the physical health, social support, income, education, and marital status of each respondent.
+                </p>
+                <p>
+                    We found a significant (though modest) increase 4% in days of bad mental healths conditions across the pre and post-exposure period. More importantly, we found that population with the lowest income experiences a 67% increase in days of bad mental healths conditions as compared to general population in the unaffected area.
+                </p>
+                <p>
+                    <strong>
+                        This supports our hypothesis that natural disaster is a disproportionate mental burden for disadvantaged population strata
+                    </strong>
+                </p>
+                <h2>
+                    The User Interface
+                </h2>
+                <p>
+                    Our user interface is a website built using React.js that allows an interactive holistic user experience. The user can freely view summarized information about any state in any time slice of the dataset. Moving down to the finer level, the user can look at specific case studies relating to major disasters and understand the context behind each scenario. This intuitive interface allows the general public to learn more about the underlying structure of mental health issues, while informing activists and policy makers on several key statistics.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The initial preprocessing of data took longer than expected due to the formatting of the data file. Furthermore, we spent a lot of time deliberating on which set of variables to analyze, as well as choosing the most appropriate data science techniques.
+                </p>
+                <h2>
+                    Accomplishments that we&rsquo;re proud of
+                </h2>
+                <p>
+                    We are proud of the sleek, simple user interface that facilitates the viewing of mental health patterns and trends across different demographic groups. The final analysis shows a summarized view of the most important factors, allowing users to learn the main points without getting overwhelmed.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learnt a great deal on binomial and counting regression techniques for extracting relative risk ratios between populations. In addition, we learnt that there were always many hidden dimensions within a dataset that one could only see after rigorous processing and analysis.
+                </p>
+                <h2>
+                    What's next?
+                </h2>
+                <p>
+                    A useful and viable extension would be to source disaster data as a list and integrate it into our current system in order to generalize to a wider scale. In addition, we want to port this interface to different platforms (e.g. mobile devices) to facilitate a greater range of end-users.
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://scontent.fzty2-1.fna.fbcdn.net/v/t1.15752-9/s2048x2048/52631648_295757584446212_8416562713769017344_n.png?_nc_cat=108&amp;_nc_ht=scontent.fzty2-1.fna&amp;oh=81115e57fbb12efb351e61644b9e8e99&amp;oe=5D27FE42" src="https://res.cloudinary.com/devpost/image/fetch/s--0hEr0vTR--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://scontent.fzty2-1.fna.fbcdn.net/v/t1.15752-9/s2048x2048/52631648_295757584446212_8416562713769017344_n.png%3F_nc_cat%3D108%26_nc_ht%3Dscontent.fzty2-1.fna%26oh%3D81115e57fbb12efb351e61644b9e8e99%26oe%3D5D27FE42">
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/JohnAmadeo/browndatathon2019" rel="nofollow" target="_blank" title="https://github.com/JohnAmadeo/browndatathon2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

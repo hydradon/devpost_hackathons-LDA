@@ -1,0 +1,119 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/xsby2MlbYPk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="508652" data-title="Current DoubleMap web app for tracking shuttles (https://uc.doublemap.com/map/)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/652/datas/original.png">
+                            <img alt="Shuttle Tracker &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/652/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Current DoubleMap web app for tracking shuttles (https://uc.doublemap.com/map/)
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    DoubleMap provides GPS shuttle tracking service for 150+ universities, corporations, hospitals and airports. As students at the University of Cincinnati and regular users of the shuttle system, we recognized that it would be nice to know when the next shuttle will arrive without needing to pull out your phone or laptop. Our skill voice-enables shuttle tracking and makes getting the ETA for shuttles at the closest stop much easier.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Shuttle Tracker allows a user to ask Alexa for the next shuttle&rsquo;s ETA at the stop closest to a given address. If the stop has multiple stops then the user will be prompted to say their preferred route, then Shuttle Tracker will give the user the ETA of the next shuttle on this route.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    In order to build this skill, we partnered with DoubleMap to get access to their private APIs that expose sites, routes, stops, and ETAs from all of their shuttle services across the United States and Canada. We utilized Google&rsquo;s Location API to take the user&rsquo;s spoken address and convert it to longitude and latitude coordinates. We use this location to find the closest site and the closest stop associated with that site. We are hosting the skill using the Lambda service, and the address of the user is saved using the DynamoDB service so that the user does not have to repeat their address each time.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Building this skill required two main tasks: (1) build voice interface and intent handlers for Alexa and (2) collect the shuttle data from the DoubleMap service.
+                </p>
+                <p>
+                    As part of the first task, we ran into trouble getting the user&rsquo;s location with the new Device Address API. In particular, collecting the necessary permission from the user was not well supported with the Alexa Skills Kit SDK for Node.js. Also, if the user has not already set up their address in the Alexa companion app, then they would not be able to use our skill using their voice only. To get around this, we needed to build our own way of getting the user&rsquo;s location. Our skill allows users to simply say their address. We use Google&rsquo;s Location API to process this, because it is extremely lenient and does a great job of filling in the blanks.
+                </p>
+                <p>
+                    Both of us have very limited experience using Node.JS. So, we had to learn a lot about asynchronous programming and promises to be able to handle our API calls to DoubleMap&rsquo;s service. Developing in Lambda was very different and challenging at first. We started by using only the Lambda in-line editor and
+                    <code>
+                        Test
+                    </code>
+                    features, but we quickly outgrew those. In the end, we ended up with a setup that allowed us to test locally with Mocha/Chai and deploy directly from Sublime using custom build settings leveraging AWS-CLI.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We faced a lot of challenges, and surmounting those challenges to get the skill to finally work feels great! We are excited that our skill utilizes a fully voice-only interface that allows the user to conveniently track shuttles. We are also excited that our skill has an incredibly wide reach since many of the 150+ organizations service each service 10&rsquo;s of thousands of users.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Through the process we learned how to use the Alexa Skills Kit, Lambda, DynamoDB, DoubleMap&rsquo;s API, Google&rsquo;s API, Node.JS, Mocha, and Chai to build an Alexa skill!
+                </p>
+                <h2>
+                    What's next for Shuttle Tracker
+                </h2>
+                <p>
+                    Currently, Shuttle Tracker simply gives you the ETA for the next shuttle to come to your closest stop. In future updates of Shuttle Tracker, we&rsquo;d like to support more advanced trip planning. We&rsquo;d love to see Alexa support push notifications, so we could verbally update the user when the shuttle that they are tracking is getting closer.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

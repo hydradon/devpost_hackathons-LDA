@@ -1,0 +1,147 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/_VOPNfeGgGY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="583651" data-title="Alexa, Tag! You're It!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/651/datas/original.png">
+                            <img alt="Tag! You're It!  &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/651/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Alexa, Tag! You're It!
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Alexa loves to play tag!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    To start playing, just say "Alexa, Tag! You're It!" ... no tag backs!
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The "Tag! You're It!" skill is a fun way for everyone to interact with Alexa using a phrase from a very popular playground game. The purpose of the skill is to engage new users with a well known and easy to remember phrase, so they can get comfortable exploring and interacting with Alexa in a very simple, fun, and engaging manner.
+                </p>
+                <p>
+                    The skill was updated for the Alexa Kids Challenge to incorporate a dynamic range of new features called interjections.  Every time a user says "Alexa, Tag! You're It!", she responds with a random interjection from an array. Each response is unique and demonstrates to the user a broad range of Alexa's personality and emotion.
+                </p>
+                <p>
+                    <code>
+                        &lt;say-as interpret-as="interjection"&gt;cowabunga&lt;/say-as&gt;&lt;break time=\"0.2s\"/&gt; you\'re it!
+                    </code>
+                </p>
+                <p>
+                    Similar to the playground rules, the game ends when you say "no tag backs"!
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The skill was also updated to return an image card to the Alexa app or the screen of an Echo Show.  To add the image card, I updated the code to include the following variables with the text to be displayed.
+                </p>
+                <p>
+                    <code>
+                        var cardContent = 'Just say, TAG, or, NO TAG BACKS!';
+                    </code>
+                    <code>
+                        var cardTitle = 'You\'ve Been Tagged!!';
+                    </code>
+                </p>
+                <p>
+                    For the images, two different sized PNG files are required. I used S3 to store these files and configured the bucket so it could be accessible by the skill.
+                </p>
+                <p>
+                    <code>
+                        var imageObj = { smallImageUrl: 'https://s3.amazonaws.com/bucket-name/image-small.png', largeImageUrl: 'https://s3.amazonaws.com/bucket-name/image-large.png' };
+                    </code>
+                </p>
+                <p>
+                    Once the variables were defined and images stored properly in S3, the output was updated to include the information to include on the image card.
+                </p>
+                <p>
+                    <code>
+                        const speechOutput = this.t('GET_MESSAGE') + randomInterjection;
+                    </code>
+                    <code>
+                        this.emit(':tellWithCard', speechOutput, cardTitle, cardContent, imageObj);
+                    </code>
+                </p>
+                <h2>
+                    What's next for Tag! You're It?
+                </h2>
+                <p>
+                    The next steps for "Tag! You're It" is to leverage the notifications API and "tag" your friend's Alexa.  When you "tag" another user's Alexa, they would see an indicator that they're "it".
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alexa-skills-kit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ssml
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/Drew-Firment-Tag-Youre-It/dp/B075PL9SWJ/" rel="nofollow" target="_blank" title="https://www.amazon.com/Drew-Firment-Tag-Youre-It/dp/B075PL9SWJ/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

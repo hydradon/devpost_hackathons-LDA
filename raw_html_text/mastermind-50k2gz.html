@@ -1,0 +1,714 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    MASTER MIND API v1.0
+                </h1>
+                <h2>
+                    Overview
+                </h2>
+                <p>
+                    This API allows you to develop your own
+                    <a href="https://en.wikipedia.org/wiki/Mastermind_(board_game)#Genetic_algorithm" rel="nofollow">
+                        Mastermind game
+                    </a>
+                    with HTML5, CSS3 and Javascript. Don't worry about game rules, as they are already implemented in this API. This documentation have all the information you need to make a good use of this API.
+                </p>
+                <p>
+                    This API have 3 gaming modes:
+                </p>
+                <ol>
+                    <li>
+                        Single Player
+                    </li>
+                    <li>
+                        Challenge
+                    </li>
+                    <li>
+                        Multiplayer
+                    </li>
+                </ol>
+                <h2>
+                    General rules
+                </h2>
+                <h3>
+                    The Game Rules Object
+                </h3>
+                <p>
+                    Every time a Game is created the player will receive the Game Rules, which can be seen in th example bellow:
+                </p>
+                <pre class="language-javascript"><code>{
+                        "key" : "81667709EE96491EB04E8A5BD0897690",
+      "allowed" : "ABCDEF",
+      "minutesAlive" : 5,
+      "maximumGuesses" : 0,
+      "passwordSize" : 4,
+      "repeatAllowed" : true
+}
+</code></pre>
+                <p>
+                    Where:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            key
+                        </strong>
+                        is the game identification in the pool. You need it to make guesses;
+                    </li>
+                    <li>
+                        <strong>
+                            allowed
+                        </strong>
+                        are the letters that were used to make the password. You can try to guess with letter that are listed here, no error will be thrown by the server;
+                    </li>
+                    <li>
+                        <strong>
+                            minutesAlive
+                        </strong>
+                        is the time, in minutes, this game will be hold in the game pool. After that it will expire and no longer be available;
+                    </li>
+                    <li>
+                        <strong>
+                            maximumGuesses
+                        </strong>
+                        is the maximum number of tries allowed to this game: 0 means infinite tries;
+                    </li>
+                    <li>
+                        <strong>
+                            passwordSize
+                        </strong>
+                        is the size of the generated password;
+                    </li>
+                    <li>
+                        <strong>
+                            repeatAllowed
+                        </strong>
+                        indicates that the password could have been created with repeated letters;
+                    </li>
+                </ul>
+                <h3>
+                    The Guess Object
+                </h3>
+                <p>
+                    Everytime a user makes a guess, the API will respond with a Guess object. Example bellow:
+                </p>
+                <pre class="language-javascript"><code>{
+        "guess" : "ABCD",
+  "clue" : "9XXX",
+  "dateTime" : "21/05/2016 21:18:41",
+  "status" : "WRONG"
+}
+</code></pre>
+                <p>
+                    Where:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            guess
+                        </strong>
+                        is the guess sent by the user;
+                    </li>
+                    <li>
+                        <strong>
+                            clue
+                        </strong>
+                        is the result of the processed guess. When guessing the concealed password the API will respond with "1" (perfect match), "9" (match a letter but not it's position) or "X" (bad shot);
+                    </li>
+                    <li>
+                        <strong>
+                            dateTime
+                        </strong>
+                        is the date/hour (dd/mm/yyyy HH:MM:SS) the user made the guess (date and hour taken from the server);
+                    </li>
+                    <li>
+                        <strong>
+                            status
+                        </strong>
+                        is the result of the guess;
+                    </li>
+                </ul>
+                <p>
+                    Games in a the Multiplayer Mode will also return the name of the player who made the guess.
+                </p>
+                <h3>
+                    The Game Object
+                </h3>
+                <p>
+                    When the game is over (user discovers the password or game reaches maximum tries), you will receive the game object:
+                </p>
+                <pre class="language-javascript"><code>{
+        "created" : "21/05/2016 21:58:32",
+  "closed" : "21/05/2016 21:58:49",
+  "key" : "0B300E67C64E494FAB33FBF9FC8A5DF6",
+  "password" : "FEBA",
+  "rules" : {
+  "key" : "0B300E67C64E494FAB33FBF9FC8A5DF6",
+  "allowed" : "ABCDEF",
+  "minutesAlive" : 5,
+  "maximumGuesses" : 0,
+  "passwordSize" : 4,
+  "repeatAllowed" : true
+  },
+  "guesses" : [ {
+  "guess" : "FEBA",
+  "clue" : "1111",
+  "dateTime" : "21/05/2016 21:58:49",
+  "status" : "CORRECT"
+  } ],
+  "status" : "BEATEN",
+  "expired" : false
+}
+</code></pre>
+                <p>
+                    Where
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            created
+                        </strong>
+                        is the date/hour (dd/mm/yyyy HH:MM:SS) the game was created (date and hour taken from the server);
+                    </li>
+                    <li>
+                        <strong>
+                            closed
+                        </strong>
+                        is the date/hour (dd/mm/yyyy HH:MM:SS) the game was finished (date and hour taken from the server);
+                    </li>
+                    <li>
+                        <strong>
+                            key
+                        </strong>
+                        unique identification of this game;
+                    </li>
+                    <li>
+                        <strong>
+                            password
+                        </strong>
+                        game's password;
+                    </li>
+                    <li>
+                        <strong>
+                            rules
+                        </strong>
+                        the Game Rules object previously mentioned;
+                    </li>
+                    <li>
+                        <strong>
+                            guesses
+                        </strong>
+                        an array of all guesses made to this game;
+                    </li>
+                    <li>
+                        <strong>
+                            status
+                        </strong>
+                        status of the game (BEATEN, LOST, WAIT);
+                    </li>
+                    <li>
+                        <strong>
+                            expired
+                        </strong>
+                        is used by the BackEnd server to verify if the game expired it's "minutes alive" or not, you can ignore this information;
+                    </li>
+                </ul>
+                <h2>
+                    SINGLE PLAYER MODE
+                </h2>
+                <p>
+                    To play in the Single Player Mode the base URL is:
+                </p>
+                <pre class="language-nolang"><code>http://&lt;server-name&gt;/mastermind/api/single
+</code></pre>
+                <p>
+                    Allowed commands are listed bellow:
+                </p>
+                <h4>
+                    create
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        create
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://server-name/mastermind/api/single/create
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        The "create" command will create a new Game and store it in the Games Pool. When successful, it will return a HTTP 200 code and the Game Rules JSON (mentioned in the General Rules topic).
+                    </li>
+                </ul>
+                <h4>
+                    guess
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        guess/{key}/{guess}
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/single/guess/81667709EE96491EB04E8A5BD0897690/ABCD
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        The "guess" command will try to solve the password. When successful, it will return a HTTP 200 code and an JSON object. The returned object depends on the result of the guess: if the password was not fully discovered then this method will return the Guess object (mentioned in the General Rules topic), else if the password is fully discovered OR the game reaches it's maximum possible tries, it will return the Game object (mentioned in the General Rules topic);
+                    </li>
+                </ul>
+                <h5>
+                    Important information
+                </h5>
+                <ul>
+                    <li>
+                        if the user informs an inexistent key, this method will return HTTP Code 204;
+                    </li>
+                    <li>
+                        if the password size does not match the Game Rules size, the API will return the biggest one, filling with X the remained size;
+                    </li>
+                </ul>
+                <h2>
+                    CHALLENGE MODE
+                </h2>
+                <p>
+                    To play in the Single Player Mode the base URL is:
+                </p>
+                <pre class="language-nolang"><code>http://&lt;server-name&gt;/mastermind/api/challenge
+</code></pre>
+                <p>
+                    Allowed commands are listed bellow:
+                </p>
+                <h4>
+                    create
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        create
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        POST
+                    </li>
+                    <li>
+                        <strong>
+                            Data:
+                        </strong>
+                        The Proposed Game Rules, which will be explained bellow
+                    </li>
+                    <li>
+                        <strong>
+                            Content type:
+                        </strong>
+                        application/json
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/challenge/create
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        The "create" command will create a new Game and store it in the Games Pool. When successful, it will return a HTTP 200 code and the Game Rules JSON (mentioned in the General Rules topic). The difference of this create command from the one of Single Player Mode is that this one can receive a Proposed Game Rules Object which has a "password" property, that allows you to inform the password you want to be used in the game. You can see the object description bellow:
+                    </li>
+                </ul>
+                <pre class="language-javascript"><code>{
+        "password" : "AUWZ",
+  "allowed" : "TUVWXYZ",
+  "minutesAlive" : 5,
+  "maximumGuesses" : 200,
+  "passwordSize" : 12,
+  "allowRepeats" : true
+}   
+</code></pre>
+                <p>
+                    Where
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            password
+                        </strong>
+                        is the proposed password.
+                        <strong>
+                            NOTE THAT
+                        </strong>
+                        it can contain letters that are not in the "allowed" property;
+                    </li>
+                    <li>
+                        <strong>
+                            allowRepeats
+                        </strong>
+                        differs from the "Game Rules Object" "repeatAllowed";
+                    </li>
+                </ul>
+                <h4>
+                    guess
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        guess/{key}/{guess}
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/challenge/guess/81667709EE96491EB04E8A5BD0897690/ABCD
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        Similar to the "guess" command from the Single Player Mode
+                    </li>
+                </ul>
+                <h2>
+                    MULTIPLAYER PLAYER MODE
+                </h2>
+                <p>
+                    To play in the Multiplayer Mode the base URL is:
+                </p>
+                <pre class="language-nolang"><code>http://&lt;server-name&gt;/mastermind/api/multi
+</code></pre>
+                <p>
+                    Allowed commands are listed bellow:
+                </p>
+                <h4>
+                    create
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        create/{player}
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/multi/create/paullus
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        The "create" command will create a new Multiplayer Game, add the informed user and store it in the Games Pool. When successful, it will return a HTTP 200 code and the Multiplayher Game Info object listed bellow:
+                    </li>
+                </ul>
+                <pre class="language-javascript"><code>{
+        "key" : "0843BD687AD04C228CE169BA4323F286",
+  "rules" : {
+  "key" : "0843BD687AD04C228CE169BA4323F286",
+  "allowed" : "ABCDEF",
+  "minutesAlive" : 5,
+  "maximumGuesses" : 0,
+  "passwordSize" : 4,
+  "repeatAllowed" : true
+  },
+  "guesses" : [ ],
+  "status" : "WAIT",
+  "registeredPlayers" : [ "PAULLUS" ]
+}
+</code></pre>
+                <p>
+                    Where:
+                </p>
+                <ul>
+                    <li>
+                        <strong>
+                            key
+                        </strong>
+                        unique game identifier;
+                    </li>
+                    <li>
+                        <strong>
+                            rules
+                        </strong>
+                        game rules object;
+                    </li>
+                    <li>
+                        <strong>
+                            guesses
+                        </strong>
+                        array with total tries until that moment;
+                    </li>
+                    <li>
+                        <strong>
+                            status
+                        </strong>
+                        status of the game; WAIT means it's waiting for, at least, 2 players to enter;
+                    </li>
+                    <li>
+                        <strong>
+                            registeredPlayers
+                        </strong>
+                        array containing the name of the players;
+                    </li>
+                </ul>
+                <h4>
+                    enter
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        enter/{key}/{user}
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/multi/enter/35D5B41695A249F9BCB95DB56D412165/axiom
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        Inserts the user into the Registered Users pool of the game, allowing him or her to make guesses. If the user is already inserted in the game's pool, then no action is taken, but if the inserted player didn't exist yet, he or she is inserted in the game's pool and the status of the game changes to "OPEN", wich permits the pĺayers to make guesses.
+                    </li>
+                </ul>
+                <h4>
+                    status
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        status/{key}
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/multi/status/35D5B41695A249F9BCB95DB56D412165
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        Returns the status of the game, if no game is found it returns the message "Multiplayer game not found".
+                    </li>
+                </ul>
+                <h4>
+                    guess
+                </h4>
+                <ul>
+                    <li>
+                        <strong>
+                            Command:
+                        </strong>
+                        guess/{key}/{user}/{guess}
+                    </li>
+                    <li>
+                        <strong>
+                            HTTP Method:
+                        </strong>
+                        GET
+                    </li>
+                    <li>
+                        <strong>
+                            Example:
+                        </strong>
+                        <code>
+                            http://&lt;server-name&gt;/mastermind/api/multi/guess/35D5B41695A249F9BCB95DB56D412165/paullus/DBBD
+                        </code>
+                    </li>
+                    <li>
+                        <strong>
+                            Description:
+                        </strong>
+                        Similar to the "guess" command from the Single Player Mode, but instead of the last guess made by the user returns all the guesses made;
+                    </li>
+                </ul>
+                <h2>
+                    Questions
+                </h2>
+                <h4>
+                    1. What was the hardest part?
+                </h4>
+                <p>
+                    The hardest part of all was to decided which kind of implementation should I use. Actually I made 3 projects before deciding for the architecture that I used.
+                </p>
+                <h4>
+                    2. If you could go back and give yourself advice at the beginning of the project, what would it be?
+                </h4>
+                <p>
+                    <em>
+                        <em>
+                            "Read the entire challenge and test the provided example, before making decisions and do some code."
+                        </em>
+                    </em>
+                </p>
+                <h4>
+                    3. If you could change something about this challenge, what would it be?
+                </h4>
+                <p>
+                    I did it. In the challenge mode I made the game customizable. You can set available characters if you want to. You can also decide the size of the password, if it will have repeated characters or not. I could have made it available on Single Player and Multiplayer modes also, but I was afraid it could have drained too much of my time. Maybe I'll do it after a few days.
+                </p>
+                <h2>
+                    FAQ
+                </h2>
+                <h4>
+                    What technologies were used?
+                </h4>
+                <p>
+                    <strong>
+                        MASTER MIND API v1.0
+                    </strong>
+                    was built in Java using Jersey and Jackson, package dependencies are held by Maven. I used
+                    <a href="https://chrome.google.com/webstore/detail/simple-rest-client/fhjcajmcbmldlhcimfajhfbgofnpcjmb" rel="nofollow">
+                        Simple REST Client
+                    </a>
+                    to make the tests.
+The project was based on
+                    <a href="https://jersey.java.net/documentation/latest/user-guide.html#new-from-archetype" rel="nofollow">
+                        this Maven archetype
+                    </a>
+                    .
+                </p>
+                <h4>
+                    How do I run the project?
+                </h4>
+                <p>
+                    The project was made with Maven. Go to the directory where the pom.xml file is located and run the command bellow in the command line.
+                </p>
+                <pre class="language-nolang"><code>mvn clean compile package -U exec:java -Dexec.mainClass="br.com.paullus.mastermind.Main"
+</code></pre>
+                <h4>
+                    Why, in the Challenge Mode, did you allow the user that is creating the game to provide a password with letters that are not in the "allowed" list?
+                </h4>
+                <p>
+                    For two simple reasons:
+                </p>
+                <ol>
+                    <li>
+                        I wanted the API to respond the most "unbreakable" way, avoiding error messages and HTTP codes different from the 200 (OK).
+                    </li>
+                    <li>
+                        Friends can prank each other ;)
+                    </li>
+                </ol>
+                <h4>
+                    What came first: the chicken or the egg?
+                </h4>
+                <p>
+                    <a href="http://science.howstuffworks.com/life/genetic/question85.htm" rel="nofollow">
+                        The egg
+                    </a>
+                    . Period. =D
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/paulluscastro/mastermind" rel="nofollow" target="_blank" title="https://github.com/paulluscastro/mastermind">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

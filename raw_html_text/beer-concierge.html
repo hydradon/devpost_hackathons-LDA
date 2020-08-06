@@ -1,0 +1,159 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/311304035?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Category of Submission
+                </h2>
+                <p>
+                    Brand Engagement and Retail
+                </p>
+                <h2>
+                    Summary
+                </h2>
+                <p>
+                    When thinking about how hosts could be utilized in retail, we thought about the extensive beer sections in grocery stores and how it would be nice to be able to casually and naturally have a quick conversation to find beers that you like. Especially when visiting new places, it&rsquo;s impossible to know what the best local beers are. If you ever go to the grocery store, you find people just roaming the aisle for extended periods of time, trying to read each beer label to find one that looks interesting. If you ever grab an employee for help, you generally supply them with what types of beer you like (IPA, stout, pilsner, &hellip;), what characteristics you prefer (hoppy, malty, &hellip;), and then if you&rsquo;re looking for local beers or not. As a result, we wanted to explore the idea of using Sumerian for a kiosk-style experience, to gather this information as if you were speaking with a beer expert right there in the store.
+                </p>
+                <p>
+                    The first thing we tackled when approaching this topic was how to initiate the experience without requiring a standard touch or click like normal kiosks without a host. We simulated the hardware portion with a Raspberry Pi. Using a PIR motion sensor to detect someone walking up to the kiosk, we then emit a message over web sockets using socket.io. This communication is intercepted by the Sumerian scene and initiates the chatbot.
+                </p>
+                <p>
+                    The next thing we wanted to figure out was how to let the user have a conversation with the Sumerian host without having to use key presses or other methods to signify the start and end of a speech input. We used the Web Speech API which has built-in support for automatic speech start / end detection. Once these events are received in our custom scripts, we emit SystemBus messages to communicate with the host chatbot&rsquo;s state machine and have them hooked into the normal chatbot flow with some slight updates.
+                </p>
+                <p>
+                    In order to detect the end of the conversation and respond accordingly, we added a listener to the Lex bot. Messages are received from Lex throughout the conversation for each input / output but we listen for the state of the chatbot to be &ldquo;Fulfilled&rdquo; and then send the result over a postMessage. A custom HTML entity with a React / Redux app is waiting for this postMessage and grabs those parameters, sends them to an API, and displays results.
+                </p>
+                <h2>
+                    Designated Device
+                </h2>
+                <p>
+                    Chromium-based touch screen kiosk (or desktop Chrome browser for demo purposes due to limited support for the Web Speech API).
+                </p>
+                <h2>
+                    Additional Notes
+                </h2>
+                <ol>
+                    <li>
+                        This demo MUST be viewed in Chrome.
+                    </li>
+                    <li>
+                        Since part of our hack was focused on a physical hardware aspect, specifically a Raspberry Pi, we added a hook into the Sumerian scene demo for the space bar to kick off the experience, rather than waiting for a socket message from the Pi. For demo purposes, please use the space bar to start the demo but you do not need to use the space bar to continue to interface with the chatbot.
+                    </li>
+                    <li>
+                        Make sure your volume is turned on.
+                    </li>
+                    <li>
+                        Since the focus was on the hardware and chatbot rather than the depth of the resulting API utilization, we are not filtering responses based on your location for local beers. In order to simulate this, we are automatically applying a location filter for California, Washington, and Oregon, as if you were in a Seattle, WA store when using the Beer Concierge.
+                    </li>
+                </ol>
+                <h2>
+                    Repos
+                </h2>
+                <p>
+                    In addition to the Sumerian scene demo, here are the repos for the hardware server and beer results app:
+                </p>
+                <h4>
+                    RaspberryPi motion sensor repo
+                </h4>
+                <p>
+                    <a href="https://bitbucket.org/brustj/raspberrypi_chatbot_sensor_websockets/src/master/" rel="nofollow">
+                        https://bitbucket.org/brustj/raspberrypi_chatbot_sensor_websockets/src/master/
+                    </a>
+                </p>
+                <h4>
+                    Beer results React app repo
+                </h4>
+                <p>
+                    <a href="https://bitbucket.org/brustj/beer_concierge_app/src/master/" rel="nofollow">
+                        https://bitbucket.org/brustj/beer_concierge_app/src/master/
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-web-speech-api">
+                                google-web-speech-api
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pir-sensor
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redux">
+                                redux
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sumerian
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://756050f8ec37489b87b29c4c5a9aeece.us-east-1.sumerian.aws/?" rel="nofollow" target="_blank" title="https://756050f8ec37489b87b29c4c5a9aeece.us-east-1.sumerian.aws/?">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                756050f8ec37489b87b29c4c5a9aeece.us-east-1.sumerian.aws
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

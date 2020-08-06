@@ -1,0 +1,128 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    The problem
+                </h2>
+                <p>
+                    Kik posted a data science challenge for Hack the North 2018 relating to spam detection. The problem was designed specifically such that simple machine learning methods would not work. We thought the problem was interesting and wanted to see what we could do to solve it.
+                </p>
+                <p>
+                    The problem involved a dataset with approximately 480 000 rows. Each row represented an alien with good or bad intentions. We had to figure out which aliens were good and which were evil.
+                </p>
+                <p>
+                    A testing set and a challenge set of similar length were provided. For each of the rows, there were 77 columns of data. Each column contains numbers. There was no information provided to detect what each column represented. The testing set had an additional column that identified each row as good or evil.
+                </p>
+                <h2>
+                    Data Exploration
+                </h2>
+                <p>
+                    We began by exploring the data, looking for any patterns.
+                </p>
+                <p>
+                    While projecting the data into 2-D, we found it initially appeared to be completely dense. However, after we imposed a loose constraint on each axis, we noticed the data was actually quite sparse and only appeared dense due to projecting a very high dimensional space into two dimensions.
+                </p>
+                <p>
+                    After analyzing just the evil data points we found that the points appeared to be clustered inside scattered hyper-cubes. This was significant because the good data points did not have this relationship. This was the key to our approach.
+                </p>
+                <h2>
+                    Training
+                </h2>
+                <p>
+                    A reasonable direction to take with the model is to measure the number of nearby points for each point then classify based on that. Due to the size of the dataset, this is computationally infeasible by brute force.
+                </p>
+                <p>
+                    To simplify this process, we employ k-means clustering. This creates partitions of the data which tries to group together dense regions of the space. We also wanted each centroid to roughly represent each cluster, so we chose 300 mean points (which is roughly the number of means that we have found via experimentation).
+                </p>
+                <p>
+                    Now we have many clusters that are much smaller than the total dataset, so doing computations in these clusters is significantly easier. Within these clusters, if a point is near another point nearby, we consider it to be a potential bad point, but if the converse occurs it is almost definitely a good point. This drastically reduces the number of points that need to be considered as bad points.
+                </p>
+                <p>
+                    To do a strict filtering for the bad points, we realize that the neighbours for a point are bad (bad points have many bad neighbours while good points have very few neighbours). This means that when we want to look for the nearby neighbours of a point, it suffices to only look at the potential bad points that were determined from before. Since this set is much smaller than the whole dataset, it is now computationally feasible and we simply brute force on the whole dataset by comparing only to these potential bad points. Anything that is found to have many nearby points (greater than 4) is classified as a bad point, otherwise it's classified as good.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    There were a number of challenges that made this project difficult:
+                </p>
+                <ol>
+                    <li>
+                        The sheer size of the dataset meant that many solutions simply took too long to run
+                    </li>
+                    <li>
+                        The evil data clusters within the training set were not found within the challenge set. This means that we could not use the training set (and the labels in the training set) to identify the regions to classify the challenge set. We had to therefore treat the problem as an unsupervised learning problem and develop a solution that did not depend on the labels in the training set
+                    </li>
+                    <li>
+                        It was difficult to initially analyze the data due to the number of data points and the complexity of 77-dimensional space. We had to figure out how to see through the noise in the data before we could begin analysis
+                    </li>
+                </ol>
+                <h2>
+                    Results
+                </h2>
+                <p>
+                    We were able to achieve 99.98% accuracy on the challenge set. We were very satisfied with this result.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            colab
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ArthurRab/HTN2018-KikDataScienceChallenge" rel="nofollow" target="_blank" title="https://github.com/ArthurRab/HTN2018-KikDataScienceChallenge">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

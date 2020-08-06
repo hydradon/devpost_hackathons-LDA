@@ -1,0 +1,228 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Seismic-Data-Analysis
+                </h2>
+                <h3>
+                    Introduction
+                </h3>
+                <p>
+                    The dangers associated with coal mining are myriad; black lung, flammable gas pockets,
+rock-bursts, and tunnel collapses are all very real dangers that mining companies must consider
+when attempting to provide safe working conditions for miners. One class of mining hazard,
+commonly called 'seismic hazards', are notoriously difficult to protect against and even more
+difficult to predict with certainty. Therefore, predicting these hazards has become a well-known
+problem for machine learning and predictive analytics. The UCI Machine Learning Repository
+(
+                    <a href="https://archive.ics.uci.edu" rel="nofollow">
+                        https://archive.ics.uci.edu
+                    </a>
+                    ) provides a 'seismic bumps' data set that contains many records of
+combined categorical and numeric variables that could be used to predict seismic hazards. This
+'seismic bumps' data set can be found at
+                    <a href="https://archive.ics.uci.edu/ml/datasets/seismic-bumps" rel="nofollow">
+                        https://archive.ics.uci.edu/ml/datasets/seismic-bumps
+                    </a>
+                    .
+                </p>
+                <h3>
+                    Agenda
+                </h3>
+                <p>
+                    Task of hazards prediction bases on the relationship between the energy of recorded tremors and seismoacoustic activity with the possibility of rockburst occurrence. &nbsp;With the information about the&nbsp;possibility of hazardous situation occurrence, an appropriate supervision service can reduce a risk of&nbsp;rockburst .
+                </p>
+                <h3>
+                    Problem Statement
+                </h3>
+                <p>
+                    Our analysis attempts to use logistic regression techniques to predict whether a seismic
+'bump' is predictive of a notable seismic hazard. We attempt to characterize our prediction
+accuracy and compare the results against the state of the art results from other statistical and
+machine learning techniques, that are included within the data set.
+                </p>
+                <h3>
+                    Data Set Description
+                </h3>
+                <p>
+                    The data were taken from instruments in the Zabrze-Bielszowice coal mine, in Poland.
+There are 2,584 records, with only 170 class = 1 variables, so the data are significantly skewed
+towards non-hazardous training data. Field descriptions are below, but essentially energy
+readings and bump counts during one work shift are used to predict a 'hazardous' bump during
+the next shift. From the data description, a 'hazardous bump' is a seismic event with &gt; 10,000
+Joules, and a 'shift' is a period of 8 hours. For the sake of reference, a practical example of
+10,000 Joules would be the approximate energy required to lift 10,000 tomatoes 1m above the
+ground. A class = 1 variable result signifies that a hazardous bump did, indeed, occur in the
+following shift to the measured data.
+                </p>
+                <h3>
+                    Main Effects
+                </h3>
+                <p>
+                    The main effects for this study are considered to be the all numeric variables, plus
+ghazard, seismoacoustic and shift. This stands to reason, since numerical energy readings and
+shift activity type all seem like they would impact the number of hazardous seismic events in
+the next shift. The nbumps class of variables are left out for more advanced models, since the
+resonance and frequency ranges could have a multitude of confounding variables that we,
+without significant mining expertise, would miss. To test that nbumps isn&rsquo;t necessarily the
+largest effect, we looked at a side-by-side histogram of nbump records for each of the two
+output classes:
+                </p>
+                <p>
+                    The pattern of frequency distributions appears to be consistent, regardless of class. Therefore, we will
+not be making &lsquo;nbumps&rsquo; one of our main effects variables.
+                </p>
+                <h3>
+                    Logistic Regression Assumptions
+                </h3>
+                <h4>
+                    Output Variable
+                </h4>
+                <p>
+                    Logistic regression requires a categorical output variable. In this case, our output variable (class) is a
+binary categorical variable.
+                </p>
+                <h4>
+                    Independence of Observations
+                </h4>
+                <p>
+                    We are making the assumption that each measurement is an independent measurement, taken at
+different times, from the same mine. This is based on the data set description at the UCI Machine
+Learning repository, and the fact that you can&rsquo;t take multiple simultaneous readings from the same
+instrument.
+                </p>
+                <h4>
+                    Multi-collinearity
+                </h4>
+                <p>
+                    We used the following chart to assess the correlation of variables with each other. The most highly
+correlated variables are energy and maxenergy. It is also interesting that the gpuls:genergy and
+gdpuls:gdenergy are somewhat correlated, but we would expect that an increase in the count of pulses
+per shift would raise the calculated energy per shift. We would also expect the change in variance in the
+number of pulses per shift (gdpuls) to correlate somewhat with the variance in the energy measured
+(gdenergy). For this model, we decided to leave all the main effects variables intact and address any
+multicollinearity issues after glmnet&rsquo;s automatic feature selection, if necessary (spoiler: it wasn&rsquo;t).
+                </p>
+                <h4>
+                    Problem with unbalanced class variable
+                </h4>
+                <p>
+                    The dependent variable in our model is quite unevenly balanced with a 14:1 ratio for
+non-hazardous to hazardous. To illustrate the problem with having an unbalanced class
+variable we compare accuracy of the logistic regression full model with the null model.
+                </p>
+                <h4>
+                    Full Model
+                </h4>
+                <p>
+                    We first built a logistic regression model taking all the observations and variables into account.
+glm(class ~ . , data = sb, family = "binomial"). Next we predict using this full model and calculate
+the probability of getting a hazardous bump. To convert these probabilities to classes, we
+defined a threshold. A good value for threshold is the mean of the original response variable.
+Probabilities greater than this threshold are categorized into hazardous bump class and
+probabilities lesser than the threshold are categorized into non-hazardous bump class. Model
+accuracy is then calculated by comparing with the actual class variable.
+Our calculation show that the logistic regression model with all the observations and variables
+made a correct prediction 59% of the time.
+                </p>
+                <h4>
+                    Accuracy using other ML Algorithms
+                </h4>
+                <ul>
+                    <li>
+                        Decision Tree : 0.8897485493230
+                    </li>
+                    <li>
+                        KNN: 0.9323017408123792,
+                    </li>
+                    <li>
+                        KernelSVC': 0.9264990328820116,
+                    </li>
+                    <li>
+                        LinearSVC': 0.9264990328820116,
+                    </li>
+                    <li>
+                        Naive Bayes: 0.11798839458413926,
+                    </li>
+                    <li>
+                        Random Forest': 0.9226305609284333
+                    </li>
+                    <li>
+                        ANN : 0.9129593810444874
+                    </li>
+                </ul>
+                <h4>
+                    Conclusion
+                </h4>
+                <p>
+                    This data set has been used in many, many papers and theories. This seismic bump problem is an
+interesting problem, an important problem, and has a fascinating data set. However, it is challenging
+due in no small part to the unbalanced data. Like the infamous Challenger O-Ring data set, the lack of a
+hazardous result is not a &lsquo;null&rsquo; case but instead informs the model about situations where nothing bad
+happens&hellip; a class = 0 event. Unlike the Challenger data set, we have many more parameters to choose
+from, and myriad ways of dealing with the imbalanced data. We chose to Randomly Under-Sample, but
+we could also do Synthetic Minority Over-Sampling, Cluster-Based Over-Sampling, Random
+Over-Sampling, Algorithmic Ensemble Sampling, Bagging, Boosting, and probably many other techniques
+which aren&rsquo;t covered in a graduate level statistics course. We chose a pretty straightforward solution,
+which definitely impacts the performance of our model.
+                </p>
+                <p>
+                    Our logistic regression model predicts the test set with around 60 to 70% accuracy, after
+random under-sampling.
+                </p>
+                <p>
+                    While the methods for calculating the results of these various methods aren&rsquo;t clearly documented in the
+data set, we can assume that we understand a few of them through inference. Accuracy (Acc.) is the
+percentage of times our model correctly predicted the class in the test set.
+                </p>
+                <h4>
+                    Some different ideas on this dataset:
+                </h4>
+                <ul>
+                    <li>
+                        <p>
+                            Where are the geophones located? Is it possible to do TRM (time reverse modeling) of stress wave propagation? With this dataset we simply know that if a rock burst occurs in a longwall but not where.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            What to do with the results? We may end up knowing if a rock burst is likely to occur or not. Can we use the recorded data to estimate locations and therefore controll stress release before the burst?
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Can we extract another set of useful information from the raw data from the geophones (what we got here is heavily processed)?
+                        </p>
+                    </li>
+                </ul>
+                <h4>
+                    References
+                </h4>
+                <ul>
+                    <li>
+                        <a href="https://www.hindawi.com/journals/sv/2016/8740868/#B13" rel="nofollow">
+                            https://www.hindawi.com/journals/sv/2016/8740868/#B13
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

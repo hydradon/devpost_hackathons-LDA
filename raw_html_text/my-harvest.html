@@ -1,0 +1,158 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="756866" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/756/866/datas/original.png">
+                            <img alt="My Harvest &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/756/866/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Before we even got to the challenge, our team had, ironically, already ruled out challenge #1. We didn't see how gamification could be used to improve performance - we assumed that combine drivers wouldn't want to optimize the performance of their machine by an app.
+                </p>
+                <p>
+                    When arrived at the hackathon and listened to the presentations, we realized that we completely misinterpreted the prompt. The issue isn't that the combine drivers didn't want to improve the performance of the machines, it was that they might not know
+                    <em>
+                        how
+                    </em>
+                    . Through apps such as AgCommand and Smart Connect, the driver has access to a large number of parameters that affect machine performance. For example, they can see the speed of the vehicle, the moisture levels of the grain, and the outside air temperature. However, not all of these parameters are relevant to combine performance, and it isn't exactly clear how the driver can optimize their performance using this information. This leads to a cluttered, confusing dashboard that is difficult for any human being to navigate.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    My Harvest uses the same information that AGCO's existing apps use, but simplifies the user interface by determining which parameters are most important as well and providing real-time recommendations on how to use that information to improve performance.
+                </p>
+                <p>
+                    Using the dataset provided to us, we found the most important parameters that were needed to predict a few key measures of performance. For instance, we found that capacity average was highly correlated with grain loss. With that information, we decided what parameters would be most important for the driver to see. We combined those parameters with ones that weren't found as important but were still important to the combine driver, such as total fuel, to create our dashboard.
+                </p>
+                <p>
+                    The dashboard not only shows measurements for these parameters, it also calculates optimal ranges for them using the model we created from the dataset using real-time information. It displays those ranges in a way that is satisfying for the user if they achieve a measurement that is optimal for the machine's performance - for instance, meters that show a "green" reading for an optimal fan speed.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The heart of our project is the model that we built that determines the most important features for combine performance. We did all of our data analysis in Python and used pandas as our dataframe. Originally, the dataset was arranged so that each row was a recorded event for a change in some parameter value. We reorganized it so that each row contained every parameter value for an instant in time, essentially transposing the data we were given.
+                </p>
+                <p>
+                    Using this data, we trained a Random Forest Classifier with sci-kit-learn and JMP Statistical Analysis to predict various performance metrics - the three we focused on were grain loss rotor, yield, and fuel rate. We found this method produced extremely accurate results, with r-squared measurements of up to 0.927 (highly statistically significant). After training this model, we were able to find the most important features that the model depended on to make its prediction.
+                </p>
+                <p>
+                    After we had an idea of these most important features, we were able to start fleshing out the design for the app's user interface. We decided to focus on this aspect rather than creating a prototype for the app due to time constraints. We created this mockup using Sketch.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Our biggest obstacles occurred during our pre-processing steps for the dataset. Initially, we spent hours operating on the false assumption that the information recorded in each row of the dataset was purely instantaneous and not continuous. After discussing with AGCO experts, we realized that each row was only recorded when the value for a parameter
+                    <em>
+                        changed
+                    </em>
+                    - at other time intervals, we could assume that the value for a certain parameter was the same as it had been after the last event change. After we altered our pre-processing steps to account for this, our r-squared measurements for the Random Forest Classifiers we trained drastically increased.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The accomplishment we're most proud of is how we restructured the dataset. Our use of existing machine learning and data science resources such as pandas, sci-kit-learn, and JMP was highly effective. We leveraged our knowledge of these machine learning algorithms with our intuition on model predictions to properly debug our model and our data structures.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Half of our team focused on developing an iOS app, which they had no prior experience with, so they spent a lot of time learning how to use Swift and Xcode. Even though we decided we didn't have time to make a working prototype, this was a very valuable learning experience. We also learned a lot about how to restructure datasets and how to best use sci-kit-learn and pandas to produce an effective model.
+                </p>
+                <h2>
+                    What's next for My Harvest
+                </h2>
+                <p>
+                    Our biggest next step would be to develop the actual iOS app. While we were disappointed that we didn't have time to do this, we recognized that we didn't have access to a real-time updating database so it would be difficult to make a nice prototype in under 24 hours anyways. We also hope to fine tune our model to better provide ranges on the operating values for important parameters.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            jmp
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            randomforestclassifier
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sci-kit-learn
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sketch">
+                                sketch
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jmather625/AGCO-Hackathon" rel="nofollow" target="_blank" title="https://github.com/jmather625/AGCO-Hackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

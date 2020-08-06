@@ -1,0 +1,88 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Hojun Chan, Brian Yeh, Carin Yao, Prudential HACKRU Challenge 2
+                </h1>
+                <p>
+                    test &lt;- read.csv('C:/Users/hojun/Desktop/HackRU_testData2.csv', row.names=1)
+train &lt;- read.csv('C:/Users/hojun/Desktop/HackRU_trainData.csv', row.names=1)
+                </p>
+                <h1>
+                    Reads in the data
+                </h1>
+                <h1>
+                    Had to clean up the test data cause it was missing ID column and to put in empty column for Lowest Risk
+                </h1>
+                <p>
+                    model1 = glm(LowestRisk ~ ., family = binomial(logit), data = train)
+summary(model1)
+                </p>
+                <h1>
+                    Summary of the Linear Model
+                </h1>
+                <h1>
+                    Small p-values , reject null, shows which variables are significant
+                </h1>
+                <h1>
+                    More asterisks on the output p value = more significant
+                </h1>
+                <p>
+                    AIC_criteria &lt;-step(lm(LowestRisk~.,data = train),direction = "backward")
+summary(AIC_criteria)
+                </p>
+                <h1>
+                    Removes the variable that are insigificant to predicting the Lowest Risk using the
+                </h1>
+                <h1>
+                    AIC Akaike's 'An Information Criterion' function stepwise regression (backwards)
+                </h1>
+                <h1>
+                    Regression Equation -&gt; Variables that are significant to predicting whether a customer is Low Risk:
+                </h1>
+                <h1>
+                    BIC can also be used to see which variables are important
+                </h1>
+                <p>
+                    pred &lt;- predict(model1, test, type = "response")
+df = data.frame(pred)
+head(df)
+                </p>
+                <p>
+                    pred2 &lt;- predict(AIC_criteria, test, type = "response")
+df2 = data.frame(pred2)
+head(df2)
+                </p>
+                <h1>
+                    Dataframe with the ID and the predicted LowestRisk score.
+                </h1>
+                <h1>
+                    If the LowestRisk score is lower than 0, then the risk is very significant.
+                </h1>
+                <h1>
+                    The closer to 1, the less risk they impose
+                </h1>
+                <h1>
+                    Two models
+                </h1>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

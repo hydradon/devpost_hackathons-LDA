@@ -1,0 +1,338 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    "manifest_version": 2,
+    "name":    "Fortunext",
+    "version": "0.1",
+                </p>
+                <pre class="language-nolang"><code>"background": {
+                "scripts": ["background.js"]
+},
+"content_scripts": [{
+"matches": ["*://*/*"],
+"js":      ["content.js"]
+}],
+"browser_action": {
+"default_title": "Click here to find coffee!",
+"default_icon": "coffee.png"
+}
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    /**
+                </p>
+                <ul>
+                    <li>
+                        Converts an RGB color value to HSL. Conversion formula
+                    </li>
+                    <li>
+                        adapted from
+                        <a href="http://en.wikipedia.org/wiki/HSL_color_space" rel="nofollow">
+                            http://en.wikipedia.org/wiki/HSL_color_space
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Assumes r, g, and b are contained in the set [0, 255] and
+                    </li>
+                    <li>
+                        returns h, s, and l in the set [0, 1].
+*
+                    </li>
+                    <li>
+                        @param   Number  r       The red color value
+                    </li>
+                    <li>
+                        @param   Number  g       The green color value
+                    </li>
+                    <li>
+                        @param   Number  b       The blue color value
+                    </li>
+                    <li>
+                        <p>
+                            @return  Array           The HSL representation
+*/
+function rgbToHsl(r, g, b){
+r /= 255, g /= 255, b /= 255;
+var max = Math.max(r, g, b), min = Math.min(r, g, b);
+var h, s, l = (max + min) / 2;
+                        </p>
+                        <p>
+                            if(max == min){
+    h = s = 0; // achromatic
+}else{
+var d = max - min;
+s = l &gt; 0.5 ? d / (2 - max - min) : d / (max + min);
+switch(max){
+case r: h = (g - b) / d + (g &lt; b ? 6 : 0); break;
+case g: h = (b - r) / d + 2; break;
+case b: h = (r - g) / d + 4; break;
+}
+h /= 6;
+}
+                        </p>
+                        <p>
+                            return [h, s, l];
+}
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    /**
+                </p>
+                <ul>
+                    <li>
+                        Converts an HSL color value to RGB. Conversion formula
+                    </li>
+                    <li>
+                        adapted from
+                        <a href="http://en.wikipedia.org/wiki/HSL_color_space" rel="nofollow">
+                            http://en.wikipedia.org/wiki/HSL_color_space
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Assumes h, s, and l are contained in the set [0, 1] and
+                    </li>
+                    <li>
+                        returns r, g, and b in the set [0, 255].
+*
+                    </li>
+                    <li>
+                        @param   Number  h       The hue
+                    </li>
+                    <li>
+                        @param   Number  s       The saturation
+                    </li>
+                    <li>
+                        @param   Number  l       The lightness
+                    </li>
+                    <li>
+                        <p>
+                            @return  Array           The RGB representation
+*/
+function hslToRgb(h, s, l){
+var r, g, b;
+                        </p>
+                        <p>
+                            if(s == 0){
+    r = g = b = l; // achromatic
+}else{
+function hue2rgb(p, q, t){
+if(t &lt; 0) t += 1;
+if(t &gt; 1) t -= 1;
+if(t &lt; 1/6) return p + (q - p) * 6 * t;
+if(t &lt; 1/2) return q;
+if(t &lt; 2/3) return p + (q - p) * (2/3 - t) * 6;
+return p;
+}
+                        </p>
+                        <pre class="language-nolang"><code>var q = l &lt; 0.5 ? l * (1 + s) : l + s - l * s;
+var p = 2 * l - q;
+r = hue2rgb(p, q, h + 1/3);
+g = hue2rgb(p, q, h);
+b = hue2rgb(p, q, h - 1/3);
+</code></pre>
+                        <p>
+                            }
+                        </p>
+                        <p>
+                            return [r * 255, g * 255, b * 255];
+}
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    /**
+                </p>
+                <ul>
+                    <li>
+                        Converts an RGB color value to HSV. Conversion formula
+                    </li>
+                    <li>
+                        adapted from
+                        <a href="http://en.wikipedia.org/wiki/HSV_color_space" rel="nofollow">
+                            http://en.wikipedia.org/wiki/HSV_color_space
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Assumes r, g, and b are contained in the set [0, 255] and
+                    </li>
+                    <li>
+                        returns h, s, and v in the set [0, 1].
+*
+                    </li>
+                    <li>
+                        @param   Number  r       The red color value
+                    </li>
+                    <li>
+                        @param   Number  g       The green color value
+                    </li>
+                    <li>
+                        @param   Number  b       The blue color value
+                    </li>
+                    <li>
+                        <p>
+                            @return  Array           The HSV representation
+*/
+function rgbToHsv(r, g, b){
+r = r/255, g = g/255, b = b/255;
+var max = Math.max(r, g, b), min = Math.min(r, g, b);
+var h, s, v = max;
+                        </p>
+                        <p>
+                            var d = max - min;
+s = max == 0 ? 0 : d / max;
+                        </p>
+                        <p>
+                            if(max == min){
+    h = 0; // achromatic
+}else{
+switch(max){
+case r: h = (g - b) / d + (g &lt; b ? 6 : 0); break;
+case g: h = (b - r) / d + 2; break;
+case b: h = (r - g) / d + 4; break;
+}
+h /= 6;
+}
+                        </p>
+                        <p>
+                            return [h, s, v];
+}
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    /**
+                </p>
+                <ul>
+                    <li>
+                        Converts an HSV color value to RGB. Conversion formula
+                    </li>
+                    <li>
+                        adapted from
+                        <a href="http://en.wikipedia.org/wiki/HSV_color_space" rel="nofollow">
+                            http://en.wikipedia.org/wiki/HSV_color_space
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Assumes h, s, and v are contained in the set [0, 1] and
+                    </li>
+                    <li>
+                        returns r, g, and b in the set [0, 255].
+*
+                    </li>
+                    <li>
+                        @param   Number  h       The hue
+                    </li>
+                    <li>
+                        @param   Number  s       The saturation
+                    </li>
+                    <li>
+                        @param   Number  v       The value
+                    </li>
+                    <li>
+                        <p>
+                            @return  Array           The RGB representation
+*/
+function hsvToRgb(h, s, v){
+var r, g, b;
+                        </p>
+                        <p>
+                            var i = Math.floor(h * 6);
+var f = h * 6 - i;
+var p = v * (1 - s);
+var q = v * (1 - f * s);
+var t = v * (1 - (1 - f) * s);
+                        </p>
+                        <p>
+                            switch(i % 6){
+    case 0: r = v, g = t, b = p; break;
+    case 1: r = q, g = v, b = p; break;
+    case 2: r = p, g = v, b = t; break;
+    case 3: r = p, g = q, b = v; break;
+    case 4: r = t, g = p, b = v; break;
+    case 5: r = v, g = p, b = q; break;
+}
+                        </p>
+                        <p>
+                            return [r * 255, g * 255, b * 255];
+}
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    /* A function creator for callbacks */
+function findCoffeeInTheDOM(domContent) {
+// Search regular expression for coffee and alert if found
+if (typeof domContent != 'undefined') {
+var re = /stocks/;
+var myArray = domContent.match(re);
+                </p>
+                <pre class="language-nolang"><code>    if (myArray &amp;&amp; myArray.length &gt; 0) {
+                                alert('finance term "stock" found. Please visit: https://www.fortunext.com/terms/s/stock.asp');
+    }
+    else {
+    alert('finance term "stock" found. Please visit: https://www.fortunext.com/terms/s/stock.asp');
+    }
+}
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    /* When the browser-action button is clicked, send a message to content.js requesting DOM */
+chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.tabs.sendMessage(
+tab.id,
+{ from: 'background', subject: 'return_dom' },
+findCoffeeInTheDOM);
+});
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

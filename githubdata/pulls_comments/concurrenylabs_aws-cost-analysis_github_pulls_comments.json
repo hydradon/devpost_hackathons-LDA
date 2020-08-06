@@ -1,0 +1,349 @@
+[
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/163966482",
+        "pull_request_review_id": 91669795,
+        "id": 163966482,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2Mzk2NjQ4Mg==",
+        "diff_hunk": "@@ -2,17 +2,147 @@ AWSTemplateFormatVersion : '2010-09-09'\n Transform: AWS::Serverless-2016-10-31\n Description: Processes incoming AWS Cost and Usage Reports and gets them ready for analysis in Athena and QuickSight\n Parameters:\n-  EnvConfigFileS3Uri:\n-    Description: \"Location of the YAML file that contains the environment variables used by all functions. Must be in the format s3://<bucket>/<dir>/<dir>/<file-name.yml>. See example in config/example/env-variables.yml\"\n-    Type: String\n+  \n   StackTag:\n     Description: \"Value of the 'stack' tag\"\n     Type: String\n     Default: \"cur-processor\"\n \n+  xAccountStarter:\n+    Description: \"Do you want to enable the xAcctStepFunctionStarter function?\"\n+    Type: String\n+    Default: \"Disabled\"\n+    AllowedValues: [ \"Disabled\", \"Enabled\" ] # Custom for Enterprise\n+    \n+  BucketName:\n+    Description: The name of the bucket that we will use for the reporting.\n+    Type: String\n+\n+  ReportPathPrefix:\n+    Description: The path prefix that will be used for the AWS Report delivery.\n+    Type: String\n+    Default: aws-reports\n+\n+  CloudWatchRetention:\n+    Description: \"The number of days that we will store the AWS CloudWatch Logs\"\n+    Type: String\n+    Default: 7\n+\n+  AccessKey:\n+    Description: \"<aws-iam-key-id-(only-used-in-cross-account-scenarios)>\"\n+    Type: String\n+    Default: \"\"\n+    \n+  SecretAccessKey:\n+    Description: \"<secret-access-key-(only-used-in-cross-account-scenarios)>\"\n+    NoEcho: true\n+    Type: String\n+    Default: \"\"\n+\n+Conditions:\n+  xAcctStepFunctionStarterEnabled: !Equals [!Ref xAccountStarter, 'Enabled']\n+\n Resources:\n \n+  CostUsageReportTopic:\n+    Type: AWS::SNS::Topic\n+\n+  CostUsageReport:\n+    Type: AWS::S3::Bucket\n+    Properties: \n+      AccessControl: Private\n+      BucketName: !Ref BucketName\n+      \n+  CostUsageReportBucketPolicy:\n+    Type: AWS::S3::BucketPolicy\n+    Properties: \n+      Bucket: !Ref CostUsageReport\n+      PolicyDocument: \n+        Id: AllowLogDelivery\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: !Sub ${CostUsageReport.Arn}\n+            Action:\n+              - s3:GetBucketAcl\n+              - s3:GetBucketPolicy\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: \n+              - !Sub ${CostUsageReport.Arn}/${ReportPathPrefix}*\n+              - !Sub ${CostUsageReport.Arn}/aws-programmatic-access-test-object\n+            Action: s3:PutObject\n+     \n+  StepFunctionsRole:\n+    Type: AWS::IAM::Role\n+    Properties:\n+      Path: /\n+      AssumeRolePolicyDocument:\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Action: sts:AssumeRole\n+            Principal:\n+              Service: !Sub states.${AWS::Region}.amazonaws.com\n+      Policies:\n+        - PolicyName: InvokeLambdaFunctions\n+          PolicyDocument:\n+            Statement:\n+              - Effect: Allow\n+                Resource:\n+                  - !GetAtt ProcessCostUsageFunction.Arn\n+                  - !GetAtt CreateAthenaResourcesFunction.Arn\n+                  - !GetAtt UpdateMetadataFunction.Arn\n+                  - !GetAtt InitializeAthenaQueriesFunction.Arn\n+                Action:\n+                  - lambda:InvokeFunction\n+\n+  StepFunctions:\n+    Type: AWS::StepFunctions::StateMachine\n+    Properties:\n+      StateMachineName: AWSCostUsageReport \n+      RoleArn: !GetAtt StepFunctionsRole.Arn\n+      DefinitionString: !Sub |\n+          {\n+            \"Comment\": \"Process AWS Cost and Usage reports and prepare them for Athena.\",\n+            \"StartAt\": \"ProcessCostUsageReport\",\n+            \"States\": {\n+              \"ProcessCostUsageReport\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${ProcessCostUsageFunction.Arn}\",\n+                \"Next\": \"CreateAthenaResources\"\n+              },\n+              \"CreateAthenaResources\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${CreateAthenaResourcesFunction.Arn}\",\n+                \"Next\": \"UpdateMetadata\"\n+              },\n+              \"UpdateMetadata\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${UpdateMetadataFunction.Arn}\",\n+                \"Next\": \"InitializeAthenaQueries\"\n+              },\n+              \"InitializeAthenaQueries\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${InitializeAthenaQueriesFunction.Arn}\",\n+                \"End\": true\n+              }\n+            }\n+          }\n+\n+  xAcctStepFunctionStarterLogGroup:",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": 146,
+        "original_position": 138,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "concurrencylabs",
+            "id": 17148977,
+            "node_id": "MDQ6VXNlcjE3MTQ4OTc3",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/17148977?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/concurrencylabs",
+            "html_url": "https://github.com/concurrencylabs",
+            "followers_url": "https://api.github.com/users/concurrencylabs/followers",
+            "following_url": "https://api.github.com/users/concurrencylabs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/concurrencylabs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/concurrencylabs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/concurrencylabs/subscriptions",
+            "organizations_url": "https://api.github.com/users/concurrencylabs/orgs",
+            "repos_url": "https://api.github.com/users/concurrencylabs/repos",
+            "events_url": "https://api.github.com/users/concurrencylabs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/concurrencylabs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "What is the reason for creating a Log Group in the template? Is it in order to have control over the retention period? Lambda creates log groups automatically, so other than the retention period there doesn't seem to be any benefit in defining the log group here.",
+        "created_at": "2018-01-25T21:01:20Z",
+        "updated_at": "2018-01-26T19:04:25Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r163966482",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/163966482"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r163966482"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/163968573",
+        "pull_request_review_id": 91672336,
+        "id": 163968573,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2Mzk2ODU3Mw==",
+        "diff_hunk": "@@ -2,17 +2,147 @@ AWSTemplateFormatVersion : '2010-09-09'\n Transform: AWS::Serverless-2016-10-31\n Description: Processes incoming AWS Cost and Usage Reports and gets them ready for analysis in Athena and QuickSight\n Parameters:\n-  EnvConfigFileS3Uri:\n-    Description: \"Location of the YAML file that contains the environment variables used by all functions. Must be in the format s3://<bucket>/<dir>/<dir>/<file-name.yml>. See example in config/example/env-variables.yml\"\n-    Type: String\n+  \n   StackTag:\n     Description: \"Value of the 'stack' tag\"\n     Type: String\n     Default: \"cur-processor\"\n \n+  xAccountStarter:\n+    Description: \"Do you want to enable the xAcctStepFunctionStarter function?\"\n+    Type: String\n+    Default: \"Disabled\"\n+    AllowedValues: [ \"Disabled\", \"Enabled\" ] # Custom for Enterprise\n+    \n+  BucketName:\n+    Description: The name of the bucket that we will use for the reporting.\n+    Type: String\n+\n+  ReportPathPrefix:\n+    Description: The path prefix that will be used for the AWS Report delivery.\n+    Type: String\n+    Default: aws-reports\n+\n+  CloudWatchRetention:\n+    Description: \"The number of days that we will store the AWS CloudWatch Logs\"\n+    Type: String\n+    Default: 7\n+\n+  AccessKey:\n+    Description: \"<aws-iam-key-id-(only-used-in-cross-account-scenarios)>\"\n+    Type: String\n+    Default: \"\"\n+    \n+  SecretAccessKey:\n+    Description: \"<secret-access-key-(only-used-in-cross-account-scenarios)>\"\n+    NoEcho: true\n+    Type: String\n+    Default: \"\"\n+\n+Conditions:\n+  xAcctStepFunctionStarterEnabled: !Equals [!Ref xAccountStarter, 'Enabled']\n+\n Resources:\n \n+  CostUsageReportTopic:\n+    Type: AWS::SNS::Topic\n+\n+  CostUsageReport:\n+    Type: AWS::S3::Bucket\n+    Properties: \n+      AccessControl: Private\n+      BucketName: !Ref BucketName\n+      \n+  CostUsageReportBucketPolicy:\n+    Type: AWS::S3::BucketPolicy\n+    Properties: \n+      Bucket: !Ref CostUsageReport\n+      PolicyDocument: \n+        Id: AllowLogDelivery\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: !Sub ${CostUsageReport.Arn}\n+            Action:\n+              - s3:GetBucketAcl\n+              - s3:GetBucketPolicy\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: \n+              - !Sub ${CostUsageReport.Arn}/${ReportPathPrefix}*\n+              - !Sub ${CostUsageReport.Arn}/aws-programmatic-access-test-object\n+            Action: s3:PutObject\n+     \n+  StepFunctionsRole:\n+    Type: AWS::IAM::Role\n+    Properties:\n+      Path: /\n+      AssumeRolePolicyDocument:\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Action: sts:AssumeRole\n+            Principal:\n+              Service: !Sub states.${AWS::Region}.amazonaws.com\n+      Policies:\n+        - PolicyName: InvokeLambdaFunctions\n+          PolicyDocument:\n+            Statement:\n+              - Effect: Allow\n+                Resource:\n+                  - !GetAtt ProcessCostUsageFunction.Arn\n+                  - !GetAtt CreateAthenaResourcesFunction.Arn\n+                  - !GetAtt UpdateMetadataFunction.Arn\n+                  - !GetAtt InitializeAthenaQueriesFunction.Arn\n+                Action:\n+                  - lambda:InvokeFunction\n+\n+  StepFunctions:\n+    Type: AWS::StepFunctions::StateMachine\n+    Properties:\n+      StateMachineName: AWSCostUsageReport \n+      RoleArn: !GetAtt StepFunctionsRole.Arn\n+      DefinitionString: !Sub |\n+          {\n+            \"Comment\": \"Process AWS Cost and Usage reports and prepare them for Athena.\",\n+            \"StartAt\": \"ProcessCostUsageReport\",\n+            \"States\": {\n+              \"ProcessCostUsageReport\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${ProcessCostUsageFunction.Arn}\",\n+                \"Next\": \"CreateAthenaResources\"\n+              },\n+              \"CreateAthenaResources\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${CreateAthenaResourcesFunction.Arn}\",\n+                \"Next\": \"UpdateMetadata\"\n+              },\n+              \"UpdateMetadata\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${UpdateMetadataFunction.Arn}\",\n+                \"Next\": \"InitializeAthenaQueries\"\n+              },\n+              \"InitializeAthenaQueries\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${InitializeAthenaQueriesFunction.Arn}\",\n+                \"End\": true\n+              }\n+            }\n+          }\n+\n+  xAcctStepFunctionStarterLogGroup:",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": 146,
+        "original_position": 138,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "concurrencylabs",
+            "id": 17148977,
+            "node_id": "MDQ6VXNlcjE3MTQ4OTc3",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/17148977?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/concurrencylabs",
+            "html_url": "https://github.com/concurrencylabs",
+            "followers_url": "https://api.github.com/users/concurrencylabs/followers",
+            "following_url": "https://api.github.com/users/concurrencylabs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/concurrencylabs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/concurrencylabs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/concurrencylabs/subscriptions",
+            "organizations_url": "https://api.github.com/users/concurrencylabs/orgs",
+            "repos_url": "https://api.github.com/users/concurrencylabs/repos",
+            "events_url": "https://api.github.com/users/concurrencylabs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/concurrencylabs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "One issue with having log groups created in the template is that it breaks compatibility with existing stacks. It's not possible to update an existing CloudFormation stack with the new template, since a log group already exists with the same name and CloudFormation aborts the stack update. One workaround would be to delete existing log groups, but that would mean losing log data for existing functions, which is not really an option. Perhaps making Log Group conditional, but it feels like log group creation in the template is not necessary.",
+        "created_at": "2018-01-25T21:10:55Z",
+        "updated_at": "2018-01-26T19:04:25Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r163968573",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/163968573"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r163968573"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/163992887",
+        "pull_request_review_id": 91700845,
+        "id": 163992887,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2Mzk5Mjg4Nw==",
+        "diff_hunk": "@@ -64,14 +207,40 @@ Resources:\n       Timeout: 30\n       MemorySize: 128\n       CodeUri: ../\n-      Fn::Transform:\n-        Name: AWS::Include\n-        Parameters:\n-          Location : !Ref EnvConfigFileS3Uri\n+      Events:\n+        Manifests:\n+          Type: S3\n+          Properties:\n+            Bucket: !Ref CostUsageReport\n+            Events: s3:ObjectCreated:*\n+            Filter:\n+              S3Key:\n+                Rules:\n+                  - Name: prefix\n+                    Value: aws-reports/",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": null,
+        "original_position": 201,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "concurrencylabs",
+            "id": 17148977,
+            "node_id": "MDQ6VXNlcjE3MTQ4OTc3",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/17148977?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/concurrencylabs",
+            "html_url": "https://github.com/concurrencylabs",
+            "followers_url": "https://api.github.com/users/concurrencylabs/followers",
+            "following_url": "https://api.github.com/users/concurrencylabs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/concurrencylabs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/concurrencylabs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/concurrencylabs/subscriptions",
+            "organizations_url": "https://api.github.com/users/concurrencylabs/orgs",
+            "repos_url": "https://api.github.com/users/concurrencylabs/repos",
+            "events_url": "https://api.github.com/users/concurrencylabs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/concurrencylabs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This should be a reference to ReportPathPrefix (!Sub '${ReportPathPrefix}/'",
+        "created_at": "2018-01-25T22:55:16Z",
+        "updated_at": "2018-01-26T19:04:25Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r163992887",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/163992887"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r163992887"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164049693",
+        "pull_request_review_id": 91764167,
+        "id": 164049693,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2NDA0OTY5Mw==",
+        "diff_hunk": "@@ -2,17 +2,147 @@ AWSTemplateFormatVersion : '2010-09-09'\n Transform: AWS::Serverless-2016-10-31\n Description: Processes incoming AWS Cost and Usage Reports and gets them ready for analysis in Athena and QuickSight\n Parameters:\n-  EnvConfigFileS3Uri:\n-    Description: \"Location of the YAML file that contains the environment variables used by all functions. Must be in the format s3://<bucket>/<dir>/<dir>/<file-name.yml>. See example in config/example/env-variables.yml\"\n-    Type: String\n+  \n   StackTag:\n     Description: \"Value of the 'stack' tag\"\n     Type: String\n     Default: \"cur-processor\"\n \n+  xAccountStarter:\n+    Description: \"Do you want to enable the xAcctStepFunctionStarter function?\"\n+    Type: String\n+    Default: \"Disabled\"\n+    AllowedValues: [ \"Disabled\", \"Enabled\" ] # Custom for Enterprise\n+    \n+  BucketName:\n+    Description: The name of the bucket that we will use for the reporting.\n+    Type: String\n+\n+  ReportPathPrefix:\n+    Description: The path prefix that will be used for the AWS Report delivery.\n+    Type: String\n+    Default: aws-reports\n+\n+  CloudWatchRetention:\n+    Description: \"The number of days that we will store the AWS CloudWatch Logs\"\n+    Type: String\n+    Default: 7\n+\n+  AccessKey:\n+    Description: \"<aws-iam-key-id-(only-used-in-cross-account-scenarios)>\"\n+    Type: String\n+    Default: \"\"\n+    \n+  SecretAccessKey:\n+    Description: \"<secret-access-key-(only-used-in-cross-account-scenarios)>\"\n+    NoEcho: true\n+    Type: String\n+    Default: \"\"\n+\n+Conditions:\n+  xAcctStepFunctionStarterEnabled: !Equals [!Ref xAccountStarter, 'Enabled']\n+\n Resources:\n \n+  CostUsageReportTopic:\n+    Type: AWS::SNS::Topic\n+\n+  CostUsageReport:\n+    Type: AWS::S3::Bucket\n+    Properties: \n+      AccessControl: Private\n+      BucketName: !Ref BucketName\n+      \n+  CostUsageReportBucketPolicy:\n+    Type: AWS::S3::BucketPolicy\n+    Properties: \n+      Bucket: !Ref CostUsageReport\n+      PolicyDocument: \n+        Id: AllowLogDelivery\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: !Sub ${CostUsageReport.Arn}\n+            Action:\n+              - s3:GetBucketAcl\n+              - s3:GetBucketPolicy\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: \n+              - !Sub ${CostUsageReport.Arn}/${ReportPathPrefix}*\n+              - !Sub ${CostUsageReport.Arn}/aws-programmatic-access-test-object\n+            Action: s3:PutObject\n+     \n+  StepFunctionsRole:\n+    Type: AWS::IAM::Role\n+    Properties:\n+      Path: /\n+      AssumeRolePolicyDocument:\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Action: sts:AssumeRole\n+            Principal:\n+              Service: !Sub states.${AWS::Region}.amazonaws.com\n+      Policies:\n+        - PolicyName: InvokeLambdaFunctions\n+          PolicyDocument:\n+            Statement:\n+              - Effect: Allow\n+                Resource:\n+                  - !GetAtt ProcessCostUsageFunction.Arn\n+                  - !GetAtt CreateAthenaResourcesFunction.Arn\n+                  - !GetAtt UpdateMetadataFunction.Arn\n+                  - !GetAtt InitializeAthenaQueriesFunction.Arn\n+                Action:\n+                  - lambda:InvokeFunction\n+\n+  StepFunctions:\n+    Type: AWS::StepFunctions::StateMachine\n+    Properties:\n+      StateMachineName: AWSCostUsageReport \n+      RoleArn: !GetAtt StepFunctionsRole.Arn\n+      DefinitionString: !Sub |\n+          {\n+            \"Comment\": \"Process AWS Cost and Usage reports and prepare them for Athena.\",\n+            \"StartAt\": \"ProcessCostUsageReport\",\n+            \"States\": {\n+              \"ProcessCostUsageReport\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${ProcessCostUsageFunction.Arn}\",\n+                \"Next\": \"CreateAthenaResources\"\n+              },\n+              \"CreateAthenaResources\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${CreateAthenaResourcesFunction.Arn}\",\n+                \"Next\": \"UpdateMetadata\"\n+              },\n+              \"UpdateMetadata\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${UpdateMetadataFunction.Arn}\",\n+                \"Next\": \"InitializeAthenaQueries\"\n+              },\n+              \"InitializeAthenaQueries\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${InitializeAthenaQueriesFunction.Arn}\",\n+                \"End\": true\n+              }\n+            }\n+          }\n+\n+  xAcctStepFunctionStarterLogGroup:",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": 146,
+        "original_position": 138,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "Nr18",
+            "id": 1660601,
+            "node_id": "MDQ6VXNlcjE2NjA2MDE=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/1660601?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Nr18",
+            "html_url": "https://github.com/Nr18",
+            "followers_url": "https://api.github.com/users/Nr18/followers",
+            "following_url": "https://api.github.com/users/Nr18/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Nr18/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Nr18/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Nr18/subscriptions",
+            "organizations_url": "https://api.github.com/users/Nr18/orgs",
+            "repos_url": "https://api.github.com/users/Nr18/repos",
+            "events_url": "https://api.github.com/users/Nr18/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Nr18/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "So the reason why i always create LogGroups from the CFN template is that you have control on the cleanup path. If you delete your stack your logging is removed which is useful for dev and test for prod you are not deleting the stack unless you discontinue the service in that case and you want to retain the logs you can archive it to glacier or set a delete policy to retain the log group.\r\n\r\nAn option is to rename the resource id's of the functions that way an update should work but the template as it is now you first need to deploy it then fill in the values in a local file and then redeploy. Took some effort for me to set this up (hence the reason why i created the PR to make it easier for other people to give this a try) so do you have any idea how many deployments we are talking about?\r\n\r\nOr i can delete the log group resources, your project your call.",
+        "created_at": "2018-01-26T07:58:54Z",
+        "updated_at": "2018-01-26T19:04:25Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164049693",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164049693"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164049693"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        },
+        "in_reply_to_id": 163968573
+    },
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164050044",
+        "pull_request_review_id": 91764583,
+        "id": 164050044,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2NDA1MDA0NA==",
+        "diff_hunk": "@@ -64,14 +207,40 @@ Resources:\n       Timeout: 30\n       MemorySize: 128\n       CodeUri: ../\n-      Fn::Transform:\n-        Name: AWS::Include\n-        Parameters:\n-          Location : !Ref EnvConfigFileS3Uri\n+      Events:\n+        Manifests:\n+          Type: S3\n+          Properties:\n+            Bucket: !Ref CostUsageReport\n+            Events: s3:ObjectCreated:*\n+            Filter:\n+              S3Key:\n+                Rules:\n+                  - Name: prefix\n+                    Value: aws-reports/",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": null,
+        "original_position": 201,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "Nr18",
+            "id": 1660601,
+            "node_id": "MDQ6VXNlcjE2NjA2MDE=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/1660601?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Nr18",
+            "html_url": "https://github.com/Nr18",
+            "followers_url": "https://api.github.com/users/Nr18/followers",
+            "following_url": "https://api.github.com/users/Nr18/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Nr18/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Nr18/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Nr18/subscriptions",
+            "organizations_url": "https://api.github.com/users/Nr18/orgs",
+            "repos_url": "https://api.github.com/users/Nr18/repos",
+            "events_url": "https://api.github.com/users/Nr18/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Nr18/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Ah totally missed that one, added it thanks!",
+        "created_at": "2018-01-26T08:01:46Z",
+        "updated_at": "2018-01-26T19:04:25Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164050044",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164050044"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164050044"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        },
+        "in_reply_to_id": 163992887
+    },
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164162452",
+        "pull_request_review_id": 91898873,
+        "id": 164162452,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2NDE2MjQ1Mg==",
+        "diff_hunk": "@@ -2,17 +2,147 @@ AWSTemplateFormatVersion : '2010-09-09'\n Transform: AWS::Serverless-2016-10-31\n Description: Processes incoming AWS Cost and Usage Reports and gets them ready for analysis in Athena and QuickSight\n Parameters:\n-  EnvConfigFileS3Uri:\n-    Description: \"Location of the YAML file that contains the environment variables used by all functions. Must be in the format s3://<bucket>/<dir>/<dir>/<file-name.yml>. See example in config/example/env-variables.yml\"\n-    Type: String\n+  \n   StackTag:\n     Description: \"Value of the 'stack' tag\"\n     Type: String\n     Default: \"cur-processor\"\n \n+  xAccountStarter:\n+    Description: \"Do you want to enable the xAcctStepFunctionStarter function?\"\n+    Type: String\n+    Default: \"Disabled\"\n+    AllowedValues: [ \"Disabled\", \"Enabled\" ] # Custom for Enterprise\n+    \n+  BucketName:\n+    Description: The name of the bucket that we will use for the reporting.\n+    Type: String\n+\n+  ReportPathPrefix:\n+    Description: The path prefix that will be used for the AWS Report delivery.\n+    Type: String\n+    Default: aws-reports\n+\n+  CloudWatchRetention:\n+    Description: \"The number of days that we will store the AWS CloudWatch Logs\"\n+    Type: String\n+    Default: 7\n+\n+  AccessKey:\n+    Description: \"<aws-iam-key-id-(only-used-in-cross-account-scenarios)>\"\n+    Type: String\n+    Default: \"\"\n+    \n+  SecretAccessKey:\n+    Description: \"<secret-access-key-(only-used-in-cross-account-scenarios)>\"\n+    NoEcho: true\n+    Type: String\n+    Default: \"\"\n+\n+Conditions:\n+  xAcctStepFunctionStarterEnabled: !Equals [!Ref xAccountStarter, 'Enabled']\n+\n Resources:\n \n+  CostUsageReportTopic:\n+    Type: AWS::SNS::Topic\n+\n+  CostUsageReport:\n+    Type: AWS::S3::Bucket\n+    Properties: \n+      AccessControl: Private\n+      BucketName: !Ref BucketName\n+      \n+  CostUsageReportBucketPolicy:\n+    Type: AWS::S3::BucketPolicy\n+    Properties: \n+      Bucket: !Ref CostUsageReport\n+      PolicyDocument: \n+        Id: AllowLogDelivery\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: !Sub ${CostUsageReport.Arn}\n+            Action:\n+              - s3:GetBucketAcl\n+              - s3:GetBucketPolicy\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: \n+              - !Sub ${CostUsageReport.Arn}/${ReportPathPrefix}*\n+              - !Sub ${CostUsageReport.Arn}/aws-programmatic-access-test-object\n+            Action: s3:PutObject\n+     \n+  StepFunctionsRole:\n+    Type: AWS::IAM::Role\n+    Properties:\n+      Path: /\n+      AssumeRolePolicyDocument:\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Action: sts:AssumeRole\n+            Principal:\n+              Service: !Sub states.${AWS::Region}.amazonaws.com\n+      Policies:\n+        - PolicyName: InvokeLambdaFunctions\n+          PolicyDocument:\n+            Statement:\n+              - Effect: Allow\n+                Resource:\n+                  - !GetAtt ProcessCostUsageFunction.Arn\n+                  - !GetAtt CreateAthenaResourcesFunction.Arn\n+                  - !GetAtt UpdateMetadataFunction.Arn\n+                  - !GetAtt InitializeAthenaQueriesFunction.Arn\n+                Action:\n+                  - lambda:InvokeFunction\n+\n+  StepFunctions:\n+    Type: AWS::StepFunctions::StateMachine\n+    Properties:\n+      StateMachineName: AWSCostUsageReport \n+      RoleArn: !GetAtt StepFunctionsRole.Arn\n+      DefinitionString: !Sub |\n+          {\n+            \"Comment\": \"Process AWS Cost and Usage reports and prepare them for Athena.\",\n+            \"StartAt\": \"ProcessCostUsageReport\",\n+            \"States\": {\n+              \"ProcessCostUsageReport\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${ProcessCostUsageFunction.Arn}\",\n+                \"Next\": \"CreateAthenaResources\"\n+              },\n+              \"CreateAthenaResources\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${CreateAthenaResourcesFunction.Arn}\",\n+                \"Next\": \"UpdateMetadata\"\n+              },\n+              \"UpdateMetadata\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${UpdateMetadataFunction.Arn}\",\n+                \"Next\": \"InitializeAthenaQueries\"\n+              },\n+              \"InitializeAthenaQueries\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${InitializeAthenaQueriesFunction.Arn}\",\n+                \"End\": true\n+              }\n+            }\n+          }\n+\n+  xAcctStepFunctionStarterLogGroup:",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": 146,
+        "original_position": 138,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "concurrencylabs",
+            "id": 17148977,
+            "node_id": "MDQ6VXNlcjE3MTQ4OTc3",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/17148977?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/concurrencylabs",
+            "html_url": "https://github.com/concurrencylabs",
+            "followers_url": "https://api.github.com/users/concurrencylabs/followers",
+            "following_url": "https://api.github.com/users/concurrencylabs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/concurrencylabs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/concurrencylabs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/concurrencylabs/subscriptions",
+            "organizations_url": "https://api.github.com/users/concurrencylabs/orgs",
+            "repos_url": "https://api.github.com/users/concurrencylabs/repos",
+            "events_url": "https://api.github.com/users/concurrencylabs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/concurrencylabs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "How about adding a condition, something like `CreateLambdaFunctionLogGroups` that defaults to 'Enabled'? This way new stack creations will work, but updates to existing ones can set it to 'Disabled'. ",
+        "created_at": "2018-01-26T16:50:29Z",
+        "updated_at": "2018-01-26T19:04:25Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164162452",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164162452"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164162452"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        },
+        "in_reply_to_id": 163968573
+    },
+    {
+        "url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164195699",
+        "pull_request_review_id": 91937434,
+        "id": 164195699,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE2NDE5NTY5OQ==",
+        "diff_hunk": "@@ -2,17 +2,147 @@ AWSTemplateFormatVersion : '2010-09-09'\n Transform: AWS::Serverless-2016-10-31\n Description: Processes incoming AWS Cost and Usage Reports and gets them ready for analysis in Athena and QuickSight\n Parameters:\n-  EnvConfigFileS3Uri:\n-    Description: \"Location of the YAML file that contains the environment variables used by all functions. Must be in the format s3://<bucket>/<dir>/<dir>/<file-name.yml>. See example in config/example/env-variables.yml\"\n-    Type: String\n+  \n   StackTag:\n     Description: \"Value of the 'stack' tag\"\n     Type: String\n     Default: \"cur-processor\"\n \n+  xAccountStarter:\n+    Description: \"Do you want to enable the xAcctStepFunctionStarter function?\"\n+    Type: String\n+    Default: \"Disabled\"\n+    AllowedValues: [ \"Disabled\", \"Enabled\" ] # Custom for Enterprise\n+    \n+  BucketName:\n+    Description: The name of the bucket that we will use for the reporting.\n+    Type: String\n+\n+  ReportPathPrefix:\n+    Description: The path prefix that will be used for the AWS Report delivery.\n+    Type: String\n+    Default: aws-reports\n+\n+  CloudWatchRetention:\n+    Description: \"The number of days that we will store the AWS CloudWatch Logs\"\n+    Type: String\n+    Default: 7\n+\n+  AccessKey:\n+    Description: \"<aws-iam-key-id-(only-used-in-cross-account-scenarios)>\"\n+    Type: String\n+    Default: \"\"\n+    \n+  SecretAccessKey:\n+    Description: \"<secret-access-key-(only-used-in-cross-account-scenarios)>\"\n+    NoEcho: true\n+    Type: String\n+    Default: \"\"\n+\n+Conditions:\n+  xAcctStepFunctionStarterEnabled: !Equals [!Ref xAccountStarter, 'Enabled']\n+\n Resources:\n \n+  CostUsageReportTopic:\n+    Type: AWS::SNS::Topic\n+\n+  CostUsageReport:\n+    Type: AWS::S3::Bucket\n+    Properties: \n+      AccessControl: Private\n+      BucketName: !Ref BucketName\n+      \n+  CostUsageReportBucketPolicy:\n+    Type: AWS::S3::BucketPolicy\n+    Properties: \n+      Bucket: !Ref CostUsageReport\n+      PolicyDocument: \n+        Id: AllowLogDelivery\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: !Sub ${CostUsageReport.Arn}\n+            Action:\n+              - s3:GetBucketAcl\n+              - s3:GetBucketPolicy\n+          - Effect: Allow\n+            Principal: \n+              AWS: \"arn:aws:iam::386209384616:root\" \n+            Resource: \n+              - !Sub ${CostUsageReport.Arn}/${ReportPathPrefix}*\n+              - !Sub ${CostUsageReport.Arn}/aws-programmatic-access-test-object\n+            Action: s3:PutObject\n+     \n+  StepFunctionsRole:\n+    Type: AWS::IAM::Role\n+    Properties:\n+      Path: /\n+      AssumeRolePolicyDocument:\n+        Version: 2012-10-17\n+        Statement:\n+          - Effect: Allow\n+            Action: sts:AssumeRole\n+            Principal:\n+              Service: !Sub states.${AWS::Region}.amazonaws.com\n+      Policies:\n+        - PolicyName: InvokeLambdaFunctions\n+          PolicyDocument:\n+            Statement:\n+              - Effect: Allow\n+                Resource:\n+                  - !GetAtt ProcessCostUsageFunction.Arn\n+                  - !GetAtt CreateAthenaResourcesFunction.Arn\n+                  - !GetAtt UpdateMetadataFunction.Arn\n+                  - !GetAtt InitializeAthenaQueriesFunction.Arn\n+                Action:\n+                  - lambda:InvokeFunction\n+\n+  StepFunctions:\n+    Type: AWS::StepFunctions::StateMachine\n+    Properties:\n+      StateMachineName: AWSCostUsageReport \n+      RoleArn: !GetAtt StepFunctionsRole.Arn\n+      DefinitionString: !Sub |\n+          {\n+            \"Comment\": \"Process AWS Cost and Usage reports and prepare them for Athena.\",\n+            \"StartAt\": \"ProcessCostUsageReport\",\n+            \"States\": {\n+              \"ProcessCostUsageReport\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${ProcessCostUsageFunction.Arn}\",\n+                \"Next\": \"CreateAthenaResources\"\n+              },\n+              \"CreateAthenaResources\": {\n+                \"Type\": \"Task\",\n+                \"Resource\": \"${CreateAthenaResourcesFunction.Arn}\",\n+                \"Next\": \"UpdateMetadata\"\n+              },\n+              \"UpdateMetadata\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${UpdateMetadataFunction.Arn}\",\n+                \"Next\": \"InitializeAthenaQueries\"\n+              },\n+              \"InitializeAthenaQueries\": {\n+                \"Type\" : \"Task\",\n+                \"Resource\": \"${InitializeAthenaQueriesFunction.Arn}\",\n+                \"End\": true\n+              }\n+            }\n+          }\n+\n+  xAcctStepFunctionStarterLogGroup:",
+        "path": "cloudformation/curprocessor-sam.yml",
+        "position": 146,
+        "original_position": 138,
+        "commit_id": "c5c2c461cf416d805a0284c1bcf349187eed8c0b",
+        "original_commit_id": "bc77e15998d5459a4838be709b661dab9f82c3cc",
+        "user": {
+            "login": "Nr18",
+            "id": 1660601,
+            "node_id": "MDQ6VXNlcjE2NjA2MDE=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/1660601?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/Nr18",
+            "html_url": "https://github.com/Nr18",
+            "followers_url": "https://api.github.com/users/Nr18/followers",
+            "following_url": "https://api.github.com/users/Nr18/following{/other_user}",
+            "gists_url": "https://api.github.com/users/Nr18/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/Nr18/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/Nr18/subscriptions",
+            "organizations_url": "https://api.github.com/users/Nr18/orgs",
+            "repos_url": "https://api.github.com/users/Nr18/repos",
+            "events_url": "https://api.github.com/users/Nr18/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/Nr18/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "That's actually a better solution, i have pushed it to the PR.",
+        "created_at": "2018-01-26T19:05:09Z",
+        "updated_at": "2018-01-26T19:05:09Z",
+        "html_url": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164195699",
+        "pull_request_url": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/comments/164195699"
+            },
+            "html": {
+                "href": "https://github.com/concurrencylabs/aws-cost-analysis/pull/7#discussion_r164195699"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/concurrencylabs/aws-cost-analysis/pulls/7"
+            }
+        },
+        "in_reply_to_id": 163968573
+    }
+]

@@ -1,0 +1,194 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <blockquote>
+                    <p>
+                        The real problem is that programmers have spent far too much time worrying about efficiency in the wrong places and at the wrong times;
+                        <strong>
+                            premature optimization is the root of all evil
+                        </strong>
+                        (or at least most of it) in programming.
+                    </p>
+                    <p>
+                        -- Donald Knuth (Computer Programming as an Art; 1974; page 671)
+                    </p>
+                </blockquote>
+                <p>
+                    When optimizing C++ code I made heavy use of profiling tools. This gave me insights on which lines of code the running time is spend. More often than not, this was not in the place where I expected it to be.
+                </p>
+                <p>
+                    Solidity is only different in the metric. We are not interested in time, but in gas cost.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Given a contract address, it will show the Solidity source code with the gas cost for each line in the left margin. The gas cost is the total gas cost for past transaction on the Ethereum main net.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    It is built using NodeJS, Solc-js, Express, React, etc. It is forked of the 0x monorepo as a starter-kit, but honestly it does not use much of it and can easily be turned into an independent project.
+                </p>
+                <p>
+                    It works as follows:
+                </p>
+                <ol>
+                    <li>
+                        The user submits a contract address.
+                    </li>
+                    <li>
+                        The contract source code and compilation options is fetched from Etherscan.
+                    </li>
+                    <li>
+                        The correct historic version of Solidity is instantiated and the contract is recompiled with sourcemaps.
+                    </li>
+                    <li>
+                        The bytecode, sourcemap and sourcecode are parsed to create a mapping from program counter to line of code.
+                    </li>
+                    <li>
+                        Execution traces for historical transactions on the contract are fetched using
+                        <code>
+                            debug_trace
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Traces are converted to mappings from program counter to gas consumption and aggregated.
+                    </li>
+                    <li>
+                        Program counters are mapped to line numbers and aggregated.
+                    </li>
+                    <li>
+                        The contract source code is presented with syntax highlighting.
+                    </li>
+                    <li>
+                        The gas cost is presented in customizable formats in the margin.
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Internet connectivity.
+                    </li>
+                    <li>
+                        Access to healthy drinks and food.
+                    </li>
+                    <li>
+                        Access to sanitary facilities.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    It works!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    -
+                </p>
+                <h2>
+                    What's next for Profiler
+                </h2>
+                <p>
+                    <strong>
+                        Code coverage tool
+                    </strong>
+                    : If the profiler is run on unit tests, it effectively becomes a code-coverage tool. If there is gas consumed on a line of code, then it is covered by the tests.
+                </p>
+                <ul>
+                    <li>
+                        Support cross-contract calls.
+                    </li>
+                    <li>
+                        Statistics on conditional branches.
+                    </li>
+                    <li>
+                        Profiler guided optimization in Solidity.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ethereum
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            evm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            fabio
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            leo
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            remco
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/typescript">
+                                typescript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/LogvinovLeon/ETH-Denver/tree/development/packages/profiler" rel="nofollow" target="_blank" title="https://github.com/LogvinovLeon/ETH-Denver/tree/development/packages/profiler">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

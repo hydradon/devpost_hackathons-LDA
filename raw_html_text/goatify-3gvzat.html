@@ -1,0 +1,168 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to see if we could effectively parse useful information from an audio file and make something fun out of it while learning more about digital signal processing along the way.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It replaces the melody at any given time during the song with an audio clip of a screaming goat at the correct pitch. The resulting audio can either be played alone or alongside an instrumental version of the song. Goatify can be accessed through
+                    <a href="http://goatifymysong.com" rel="nofollow">
+                        http://goatifymysong.com
+                    </a>
+                    , where users can input their own songs with instrumental versions for goatification.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used many python data science and audio libraries to analyze the input sound data and create the output data. More specifically, we used Essentia to parse the melody using a Short-Time Fourier Transform with a Blackman-Harris window function. We then used Librosa to pitch-shift the goat to the appropriate pitch, memoizing each shifted goat clip as we encountered them. We then used ffmpeg for various audio processing tasks including converting file formats and overlaying the instrumental background.
+                </p>
+                <p>
+                    We then made a Flask web server for our website. We used it to serve an html page that used bootstrap and jQuery. When a user uploads their files, it uses ajax to run the goatification on the backend, and then gives the output audio blob back to be dynamically played in an Audio element, right in the page. This can then be downloaded.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Adjusting all of the necessary parameters in the STFT was a challenge, because a very specific set of parameters was needed for the songs to be recognizable, so we had to change the hop size, pitch continuity, and voice guessing parameters of the STFT many times, as well as how our algorithm handled zeroes and repeated pitches, among other things.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Getting songs to sound recognizable after about six hours of only getting jumbled beeps.
+Eliminating most of the random beeps after a long period of tweaking our code.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Determining the melody from an audio file is highly nontrivial, and even with songs with very clear melodies, separating it is incredibly difficult
+Windowing functions are very important when doing a Fourier transform on parts of a signal, because otherwise the sharp edges will introduce unwanted frequencies into your data.
+Listening to goats scream at various pitches for ten hours straight will drive you insane
+                </p>
+                <h2>
+                    What's next for Goatify
+                </h2>
+                <p>
+                    More animal noises/other noises
+Using multiple randomized noises in the same song
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            essentia
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jinja">
+                                jinja
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            librosa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scipy">
+                                scipy
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://goatifymysong.com" rel="nofollow" target="_blank" title="http://goatifymysong.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                goatifymysong.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Maltysen/Goatify" rel="nofollow" target="_blank" title="https://github.com/Maltysen/Goatify">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

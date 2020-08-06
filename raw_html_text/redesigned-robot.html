@@ -1,0 +1,235 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="625705" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/625/705/datas/original.jpg">
+                            <img alt="redesigned-robot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/625/705/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="625706" data-title="normalization function" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/625/706/datas/original.png">
+                            <img alt="redesigned-robot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/625/706/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                normalization function
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="625707" data-title="normalization graph" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/625/707/datas/original.png">
+                            <img alt="redesigned-robot &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/625/707/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                normalization graph
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    This project is a way to readily visualize sentiment over long periods of time in a usable manner, in this case, with twitter. This could be useful for trying to gauge public reception to a topic, or how the populace feels about something.
+                </p>
+                <p>
+                    What its made with:
+tweepy: python library for accessing the Twitter API
+python 3;
+VADER Sentiment Analysis Framework: to analyze the sentiment of the database
+Dash: Graph visualization and frontend., Ploty for the graphs
+                </p>
+                <p>
+                    How VADER works:
+First, we must understand how the sentiment of a single word is found, then we can move on to the sentence;
+Emotion intensity or sentiment score is measured on a scale from -4 to +4, where -4 is the most negative and +4 is the most positive. The midpoint 0 represents a neutral sentiment. Sample entries in the dictionary are &ldquo;horrible&rdquo; and &ldquo;okay,&rdquo; which get mapped to -2.5 and 0.9, respectively.  In addition, the emoticons &ldquo;/-:&rdquo; and &ldquo;0:-3&rdquo; get mapped to  -1.3 and 1.5.
+The next question is, how do we construct this dictionary?By using human raters from Amazon Mechanical Turk!
+Once we have the sentiment of a word, we can construct the sentiment of a whole sentence:
+VADER sentiment analysis (well, in the Python implementation anyway) returns a sentiment score in the range -1 to 1, from most negative to most positive.
+The sentiment score of a sentence is calculated by summing up the sentiment scores of each VADER-dictionary-listed word in the sentence. Now here you may notice a contradiction: individual words have a sentiment score between -4 to 4, but the returned sentiment score of a sentence is between -1 to 1.
+They&rsquo;re both true. The sentiment score of a sentence is the sum of the sentiment score of each sentiment-bearing word. However, we apply a normalization to the total to map it to a value between -1 to 1.
+The normalization used is shown above under 'normalization function'. In that equation, x is the sum of the sentiment scores of the constituent words of the sentence and alpha is a normalization parameter that we set to 15. The normalization is also shown graphed above under 'normalization graph'.
+                </p>
+                <p>
+                    We see here that as x grows larger, it gets more and more close to -1 or 1. To similar effect, if there are a lot of words in the document you&rsquo;re applying VADER sentiment analysis to, you get a score close to -1 or 1. Thus, VADER sentiment analysis works best on short documents, like tweets and sentences, not on large documents.
+                </p>
+                <h2>
+                    General Information and Usage
+                </h2>
+                <p>
+                    This app is a web app designed to show live and long-term sentiment graphs with Dash of twitter feeds using the tweepy api.
+                </p>
+                <h2>
+                    Repo Contents:
+                </h2>
+                <ul>
+                    <li>
+                        <code>
+                            dash_mess.py
+                        </code>
+                        - front-end. Runs on local or external server
+                    </li>
+                    <li>
+                        <code>
+                            twitter_stream.py
+                        </code>
+                        - streams from twitter, creates database, runs in background.
+                    </li>
+                    <li>
+                        <code>
+                            config.py
+                        </code>
+                        - Words not in "trending"
+                    </li>
+                    <li>
+                        <code>
+                            cache.py
+                        </code>
+                        -  For caching purposes in effort to get things to run faster.
+                    </li>
+                    <li>
+                        <code>
+                            db-truncate.py
+                        </code>
+                        - A script to truncate the infinitely-growing sqlite database. You will get about 3.5 millionish tweets per day, depending on how fast you can process. You can keep these, but, as the database grows, search times will dramatically suffer.
+                    </li>
+                </ul>
+                <h2>
+                    Quick start
+                </h2>
+                <ul>
+                    <li>
+                        Clone repo
+                    </li>
+                    <li>
+                        install
+                        <code>
+                            requirements.txt
+                        </code>
+                        using
+                        <code>
+                            pip install -r requirements.txt
+                        </code>
+                    </li>
+                    <li>
+                        Fill in your Twitter App credentials to
+                        <code>
+                            twitter_stream.py
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Run
+                        <code>
+                            twitter_stream.py
+                        </code>
+                        to build database
+                    </li>
+                    <li>
+                        If you're using this locally, you can run the application with the
+                        <code>
+                            dev_server.py
+                        </code>
+                        script.
+                    </li>
+                    <li>
+                        You might need the latest version of sqlite.
+                        <code>
+                            sudo add-apt-repository ppa:jonathonf/backports
+sudo apt-get update &amp;&amp; sudo apt-get install sqlite3
+                        </code>
+                    </li>
+                    <li>
+                        Consider running the
+                        <code>
+                            db-truncate.py
+                        </code>
+                        from time to time (or via a cronjob), to keep the database reasonably sized. In its current state, the database really doesn't need to store more than 2-3 days of data most likely.
+                    </li>
+                </ul>
+                <p>
+                    NOTE:
+This is deployed at socialsentiment.net
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/dash">
+                                dash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twitter">
+                                twitter
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vadersentiment
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/sidsrini/redesigned-robot" rel="nofollow" target="_blank" title="https://github.com/sidsrini/redesigned-robot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://socialsentiment.net" rel="nofollow" target="_blank" title="http://socialsentiment.net">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                socialsentiment.net
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

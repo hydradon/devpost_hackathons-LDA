@@ -1,0 +1,126 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/NFrRAXNk97I?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="600413" data-title="DeepLens running ASLens locally (Wi-Fi disabled)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/600/413/datas/original.jpg">
+                            <img alt="ASLens &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/600/413/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                DeepLens running ASLens locally (Wi-Fi disabled)
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="600654" data-title="Trailing log for probability" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/600/654/datas/original.png">
+                            <img alt="ASLens &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/600/654/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Trailing log for probability
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="600656" data-title="Recording ASLens in action" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/600/656/datas/original.png">
+                            <img alt="ASLens &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/600/656/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Recording ASLens in action
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    ASLens uses the AWS DeepLens to translate the American Sign Language alphabet to speech.
+                </p>
+                <p>
+                    The AWS DeepLens captures video and runs a deep learning model (built with AWS SageMaker) against each frame. When a letter from the ASL alphabet is recognised the AWS DeepLens plays the audio of that letter (using an MP3 file, generated using AWS Polly).
+                </p>
+                <p>
+                    ASLens runs locally on the AWS DeepLens, as such an internet connection is not required (which eliminates bandwidth issues and increases speed, by eliminating hops between networks).
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The ASLens deep learning model was created with AWS SageMaker. Using the image transfer learning example I was able to go from training data to my first model in under an hour!
+                </p>
+                <p>
+                    The Lambda function first optimises the AWS SageMaker model to run on the AWS DeepLens GPU, and then crops and scales each frame. Once resized, the video frame is run against the model, and if an ASL letter is detected, a corresponding MP3 file is played.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    As the letters J and Z include motion, I excluded these from the training set.
+                </p>
+                <p>
+                    I spent a significant amount of time, using trial and error, to get AWS Polly MP3s to play on the AWS DeepLens. For anyone else struggling with this, in summary: add the ggc_user to the audio group, add resources to the Greengrass group (and the Lambda functions therein) - repeat after every deploy!
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I still can&rsquo;t believe it works! It&rsquo;s like magic! My wife came up with the idea, and I thought it was too big to work. Whilst I was confident I could master the AWS DeepLens hardware, I was concerned that I lacked the experience to create the appropriate model. Thankfully, AWS SageMaker takes care of all of the machine learning heavy lifting, which meant I could focus on collating training data (and getting audio to play on the AWS DeepLens device).
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    As the AWS DeepLens uses AWS Greengrass behind the scenes, I've learnt a lot about this service. This project has also inspired me to resume an online course on deep learning, so that I can advance my usage of AWS SageMaker to include custom algorithms.
+                </p>
+                <h2>
+                    What's next for ASLens
+                </h2>
+                <p>
+                    ASLens is currently limited to the ASL alphabet, and omits J and Z as they are not static. I'd like to continue my work on ASLens by identifying words, including movement and expression.
+                </p>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/chriscoombs/ASLens" rel="nofollow" target="_blank" title="https://github.com/chriscoombs/ASLens">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

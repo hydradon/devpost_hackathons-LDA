@@ -1,0 +1,153 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    BioGeoBias
+                </h1>
+                <h2>
+                    Summary
+                </h2>
+                <p>
+                    This project looks at geographic (spatial) sampling bias, which is particularly relevant in the context of species distribution modelling (SDM). Spatial sampling bias can distort the predictions derived from SDMs and therefore lead to erroneous conclusions. Methods to correct for sampling bias in presence-only species occurrence data, such as the target-group-background approach, were introduced years ago, but their application in the community is not yet very widespread. Part of the reason is an uncertainty amongst end-users about the correct application and technical implementation of the method (see for example
+                    <a href="https://groups.google.com/forum/#!topic/maxent/ePip6Eufelw" rel="nofollow">
+                        https://groups.google.com/forum/#!topic/maxent/ePip6Eufelw
+                    </a>
+                    ,
+                    <a href="https://scottrinnan.wordpress.com/2015/08/31/how-to-construct-a-bias-file-with-r-for-use-in-maxent-modeling/" rel="nofollow">
+                        https://scottrinnan.wordpress.com/2015/08/31/how-to-construct-a-bias-file-with-r-for-use-in-maxent-modeling/
+                    </a>
+                    and
+                    <a href="https://github.com/zoonproject/zoon/issues/121" rel="nofollow">
+                        https://github.com/zoonproject/zoon/issues/121
+                    </a>
+                    ).
+                </p>
+                <p>
+                    BioGeoBias is an R package that provides various functions to assess and account for sampling bias in species occurrence data from GBIF. Functions are hierarchically structured to allow users with varying levels of expertise to either use an out-of-the-box solution or to apply the specific method they deem most suitable to their needs. With easy-to-use base functions, smart edge-case handling, and informative error messaging, the package helps users less comfortable with R to adapt a working solution to their specific needs. Advanced users can customise the functions. BioGeoBias also makes extensive use of the GBIF map API, which was previously not easily accessible from R. The call_map_api function allows for the generation of rasters based on customly defined web map tiles. I propose that this function should be integrated into rgbif to extent the functionality of this well-known and widely used package by yet another useful feature.
+                </p>
+                <p>
+                    This package is a minimum viable product. As a starting point it aims at making sampling bias correction more accessible to a wider audience. Additional functionality can be added by tapping into the large community of ecological modellers using GBIF data and R.
+                </p>
+                <h2>
+                    Use
+                </h2>
+                <p>
+                    install.packages('devtools')
+library(devtools)
+install_github('JanLauGe/BioGeoBias')
+library(BioGeoBias)
+?BioGeoBias
+                </p>
+                <h2>
+                    Introduction
+                </h2>
+                <p>
+                    Data on species&rsquo; distributions are a central prerequisite for the management, conservation, and sustainable use of natural resources. However, our knowledge of the distribution of many species is still poor. This problem, often referred to as the Wallacean shortfall, impairs our ability to plan and adequately respond to many challenges relating to biodiversity assessment.
+                </p>
+                <p>
+                    The Global Biodiversity Information Facility (GBIF) has been at the forefront of addressing this problem by making vast amounts of primary biodiversity data freely available online.
+As a consequence, hundreds of papers use GBIF-mediated data for SDM applications [@taskforce].
+                </p>
+                <h2>
+                    Sampling bias in GBIF data
+                </h2>
+                <p>
+                    The GBIF Task Group on Data Fitness for Use in Distribution Modelling states that "were GBIF to implement tools capable of detecting and characterising gaps, well-surveyed sites, and uncertain sites, it would be a great asset for progress towards the development of more efficient distribution models" [@taskforce].
+                </p>
+                <p>
+                    Some methods to correct for spatial sampling bias in species occurrence data do already exist, and they have been shown to increase model prediction accuracy and realism [@ranc2016performance, @phillips2009sample], but the wider adoption of these methods in the SDM community has been slow. Some of this is due to some degree of confusion amongst end users as to how these methods are best implemented [as demonstrated for example in these posts: @webscott, @webzoon].
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This package makes available to a wide audience methods to generate datasets of target-group-background data and bias-grids using GBIF data.  It deliberately focuses on providing easy access to these methods, documenting the underlying paradigms and assumptions, and handling potential problems along the way with informative error messages and warnings that will help researchers to implement the solution most suitable to their specific research question.
+                </p>
+                <h2>
+                    Why an R-package?
+                </h2>
+                <p>
+                    R has been the weapon of choice for a large part of the ecological modelling community. Rather than publishing yet another paper, making yet another website, or linking yet another set of databases to talk to one another, this package will empower users to conduct their own analyses in a smoother and more coherent way using proven methods and the existing GBIF infrastructure.
+                </p>
+                <p>
+                    A focus of the project has been to provide basic functionality with standard settings for less experienced users, thoroughly check user input, and supply informative error messages. These will help users with little R experience to make the functions implement working solutions with their specific datasets. On the other hand, I tried to retain as many customisation options as possible for more experienced users to allow the adaptation of the methods to very specific use cases.
+                </p>
+                <p>
+                    The package is completely open source, with the code available on GitHub. This means that in the spirit of perpetual prototyping, it can be adjusted according to user feedback, changes of the GBIF API, and advancements of the field.
+                </p>
+                <p>
+                    Naming convention for variables and function names was chosen to closely represent the schema of the rgbif package. Moreover, the function used in BioGeoBias to interact with the GBIF map tile API is a standalone solution that can and should be pulled into rgbif to offer this additional bit of functionality to a wider audience.
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Will be added
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    In R, using the usual candidate packages, particularly rgbif and raster. To get spatial data from GBIF more quickly, I 'hacked' the GBIF maps API to generate raster files from the web map tiles, and implemented a function to generate custom colour schemes that translate into raster values.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Working on this by myself while also working full time wasn't always easy. I would have liked to include so much more, but time is up and it is what it is! I am keen to continue working on this later on, so any feedback would be very welcome!
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Successfully 'hacking' the GBIF map API! It is a neat little tool as a web tile, but BioGeoBias goes beyond that and allows users to download taxon richness maps generated from large numbers of occurrence data in the popular RasterLayer format in no time, which will allow for numerous creative applications and analyses.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    How to build an R-package. This was a first for me, and it was great fun! Hadley Wickham stated that R packages should be the easiest way for R-users to share code, and I am glad, proud, and happy to now become part of that community!
+                </p>
+                <h2>
+                    What's next for BioGeoBias
+                </h2>
+                <p>
+                    Prettify some visualisations, particularly raster plots! Including methods to use species accumulation curves is half way done but did not finish in time for submission. It would be great to add this functionality; potentially even in collaboration with GBIF, since download and computation of accumulation curves on the whole dataset are very bandwidth- and computation intense. GBIF, if you read this, get in touch if you are keen :D
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/JanLauGe/BioGeoBias" rel="nofollow" target="_blank" title="https://github.com/JanLauGe/BioGeoBias">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

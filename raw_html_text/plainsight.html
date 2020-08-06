@@ -1,0 +1,89 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    <strong>
+                        PlainSight
+                    </strong>
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration for PlainSight was as the name implies. Often times people say hiding in plain sight is the best thing to do, so we figured, why not have the ability to encode messages within something we probably all look at every day, pictures.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    PlainSight uses a simple algorithm for adjusting pixel colors in a 24 bit/color bitmap file. There is a basic caesar cipher implemented on our messages, so we store a ciphered message within our image. We use different areas in the BMP file header to be able to store information like where our message starts, where our message ends, and the spacing between characters in the image, without affecting the integrity of the file.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built the program in C, originally using some public code to help parse the header data from the BMP file. From there we deconstructed the header, found strictly reserved areas, as well as areas that could be manipulated without breaking the file. We developed our encryption algorithm in such a way as to minimize the color change in affected pixels so that the human eye shouldn't be able to spot the difference. We set up other parameters like pixel spacing, so in case of images being noticeably different, we have the ability to further obfuscate the data within the image and spread the affected pixels out more as to further dissolve the pattern.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Minimizing the impact of color change on the pixels, instead of simply incrementing or decrementing color fields on pixels, we needed to account for multiple things like an overflow of color fields, whether or not to increment or decrement for the minimum possible impact. Another challenge was encoding data into the header files while maintaining file integrity, we had to limit ourselves because we only have a total of 8 bytes of extra available memory in our header data to store information we needed, so some trade-offs had to be made to accommodate the lack of space. 
+
+    We tried to build a front end UI implementation to make accessing the program easier, but there were multiple pitfalls that prevented that from going forward and making the final implementation.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The fact that we can store 8K (possibly more but we limited it for ease of use) in an image, with no change to the actual image being detectable by the human eye.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Bitmap color fields are not as simple as they seem to understand. The human eye is not as good at detecting color changes as we thought. There could be secret messages lurking in any image you see online.
+                </p>
+                <h2>
+                    What's next for PlainSight
+                </h2>
+                <p>
+                    Extending the application to work with more common image formats, such as JPEG or PNG. Support for larger file sizes as well larger message sizes, handling of special characters instead of simply English letters.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ConnorMTU/wonderhack" rel="nofollow" target="_blank" title="https://github.com/ConnorMTU/wonderhack">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

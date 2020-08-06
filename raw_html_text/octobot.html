@@ -1,0 +1,244 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="536837" data-title="Question responses" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/536/837/datas/original.png">
+                            <img alt="FaqToBot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/536/837/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Question responses
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="537318" data-title="Enter a url" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/318/datas/original.png">
+                            <img alt="FaqToBot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/318/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Enter a url
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    FaqToBot
+                </h1>
+                <p>
+                    Leveraging AI to Generate Question-Answer Bots for Website FAQs
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    For RamHacks 2017,
+                    <a href="http://www.octoconsulting.com/" rel="nofollow">
+                        Octo
+                    </a>
+                    challenged hackers to take a website and generate a question-answer bot with a voice interface for that website's FAQ pages. Technical challenges arise in finding the FAQ pages, parsing the FAQ pages, and generating mappings from question intents to answers.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    On the
+                    <a href="https://github.com/juliandduque/OCTO-FAQUESTER" rel="nofollow">
+                        Android app interface
+                    </a>
+                    , the user enters a base url, for example,
+                    <a href="http://ramhacks.vcu.edu/" rel="nofollow">
+                        http://ramhacks.vcu.edu/
+                    </a>
+                    . The app then makes a call to an AWS Lambda function that scrapes the website for pages and returns pages likely to contain an FAQ. For each potential FAQ page, the app attempts to parse the FAQ pages into question-answer pairs. The user can ask a question, via type or via voice, and the app will find and display an answer,leveraging
+                    <a href="https://azure.microsoft.com/en-us/services/cognitive-services/?v=17.29" rel="nofollow">
+                        Microsoft Cognitive Services
+                    </a>
+                    to train a model.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The Android app interface was created in Android Studio and contains two activities. The first activity requires the user to input a base url which is run through the Lambda function. The function returns a list of potential FAQ pages under that base url domain. For each of these urls, the app attempts to scrape off question-answer pairs using Microsoft Cognitive Services. The Lambda function is described below.
+                </p>
+                <p>
+                    The
+                    <em>
+                        scraper.py
+                    </em>
+                    file contains the Lambda function handler. This scraper conducts breadth-first search through all internal-facing links in the anchor tags of each page. For each page visited, multiple features e.g. how many times FAQ appears in the page, are extracted from the html. The features compose an input vector for a basic neural network which generates a likelihood that the page is an FAQ page. If the probability exceeds 50%, the page is tagged as a potential FAQ page. The page crawling continues until there are no more unique pages to visit or the page visit limit (set by the initial Lambda function call) is exceeded. The final list of FAQ urls is concatenated into a newline-separated string and is returned to the origin of the Lambda function call.
+                </p>
+                <p>
+                    <em>
+                        ANN.py
+                    </em>
+                    contains the basic neural network. Data to train the neural network is found in
+                    <em>
+                        prepro_training.txt
+                    </em>
+                    and is processed by
+                    <em>
+                        DataGeneration.py
+                    </em>
+                    . For each url in the training set, the
+                    <em>
+                        HtmlFeatureExtractor.py
+                    </em>
+                    extracts a set of quantitative features from the page and outputs that feature data into
+                    <em>
+                        training.txt
+                    </em>
+                    . The
+                    <em>
+                        ANN.py
+                    </em>
+                    can then be trained on the numeric training data in
+                    <em>
+                        training.txt
+                    </em>
+                    . The weights are stored and restored via a pickle file.
+                </p>
+                <p>
+                    The second activity of the Android application contains an interface for the user to input a question. This question is evaluated for similarity to other questions and returns the appropriate, if present, scraped FAQ answer.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Originally, we wanted to interface with Amazon Alexa, but our code did not seem to plug in easily. We could have spent all of our time pushing through and figuring out how to use it, but we decided that would not have been an efficient use of our time. We opted to create an Android application with the same voice functionality as Alexa.
+                </p>
+                <p>
+                    Working with AWS also proved to be a difficult task. The neural network was written with the NumPy library, but AWS Lambda does not work well with local installed NumPy library. We had to use a Amazon EC2 micro instance to generate the Lambda function package.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were proud of our solution; we did not reinvent the wheel, we kept it functional yet sleek. Getting past our Alexa and AWS barriers were particularly good moments.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Some of us learned how to program Android apps. Some of us learned how to use Amazon Web Services. Some of us learned how to create an Android interface.
+                </p>
+                <h2>
+                    What's next for OctoBot
+                </h2>
+                <ul>
+                    <li>
+                        Implementation into Amazon Alexa, Google Home, etc.
+                    </li>
+                    <li>
+                        Better model for determining if page is FAQ
+                    </li>
+                    <li>
+                        More Android front-end work
+                    </li>
+                </ul>
+                <h2>
+                    Credits
+                </h2>
+                <ul>
+                    <li>
+                        Julian Duque - Link between application and Microsoft Cognitive Services
+                    </li>
+                    <li>
+                        Meredith Lee - Application-user interface
+                    </li>
+                    <li>
+                        Tony Wang - Amazon Alexa interface through AWS
+                    </li>
+                    <li>
+                        David Zhao - AWS Python backend
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-ec2">
+                                amazon-ec2
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-cognitive-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/davidbzhao/FaqToBot/" rel="nofollow" target="_blank" title="https://github.com/davidbzhao/FaqToBot/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/juliandduque/OCTOFAQ" rel="nofollow" target="_blank" title="https://github.com/juliandduque/OCTOFAQ">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

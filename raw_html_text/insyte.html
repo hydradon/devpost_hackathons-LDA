@@ -1,0 +1,105 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="591060" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/591/060/datas/original.jpeg">
+                            <img alt="SafetyNet &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/591/060/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration/What it does
+                </h2>
+                <p>
+                    Ad-blocking and antivirus extensions use lists of urls and hardcoded heuristics to block content. This approach is usually effective, but does not generalize well and can be fooled by anyone with knowledge of the ruleset. To solve this, we developed a Chrome/Firefox browser extension which sends links to a cloud-hosted RNN that has been trained to classify each as malicious or safe. The user is then warned with CSS updates about dangerous urls.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The SafetyNet browser extension is written in javascript and uses the WebExtensions API to communicate with a python script that runs in the background. This python script communicates via POST requests to a bottle server we have running on AWS, which returns inferences made by a recurrent neural network we have pretrained on an open-source url dataset found
+                    <img alt="here" data-canonical-url="https://www.kaggle.com/antonyj453/urldataset" src="https://res.cloudinary.com/devpost/image/fetch/s--NV04oSlB--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://www.kaggle.com/antonyj453/urldataset">
+                    . These results are used by the browser extension to conditionally highlight malicious links.
+                </p>
+                <p>
+                    The recurrent neural network uses LSTM units and is written in PyTorch. Pandas dataframes are used in data loading/preprocessing.
+                </p>
+                <h2>
+                    Challenges/Accomplishments
+                </h2>
+                <p>
+                    Getting the browser extension to finally sync up with the API. This was the first time any of us had created a browser extension, and using WebExtensions library to communicate with our python script was difficult. It was also our first time using real-world dataset that had not been heavily curated beforehand, so we learned a lot about data preprocessing and the data loading side of PyTorch.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    The number one takeaway has been that an ML model is only as good as the data fed into it. We were able to get higher than 95% accuracy on a held-out test set from our dataset, but issues with the data like example repetition, class imbalance, and a lack of "normal-looking" urls led to the model's accuracy on natural data being lower. In the future, we would spend more time looking for a well-curated dataset to use.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pytorch">
+                                pytorch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            webextensions
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/KellerJordan/SafetyNet" rel="nofollow" target="_blank" title="https://github.com/KellerJordan/SafetyNet">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

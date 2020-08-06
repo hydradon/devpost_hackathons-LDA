@@ -1,0 +1,198 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/6xbmBIN2qiY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="718873" data-title='results for "serverless" keyword' href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/718/873/datas/original.png">
+                            <img alt="Naive search &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/718/873/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                results for "serverless" keyword
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="718881" data-title="application architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/718/881/datas/original.png">
+                            <img alt="Naive search &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/718/881/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                application architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I wanted to practically test Aurora MySQL features, explore it's deployment by trying to use it in serverless application. I also wanted to explore options for doing a full-text search using a SQL database on a large dataset.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The project imports the Common Crawl public dataset available on AWS and makes it searchable. The Common Crawl is a very large dataset containing data about most websites on the internet.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I've spent several weeks building the application. I tried using AWS best practices I've learned to build as quickly as possible. First I've created a CI/CD pipeline for serverless application. Then I've implemented basic schema for the database and the data processing and import. This step included writing a custom tool in C++ for translation of WAR format to CSV and later direct SQL statements - the "warsql". After I got sample data in the database, I've built a simple front end for the application using serverless application framework.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Data import was the most significant challenge on this project. The dataset is very large and my goal from the beginning was to stream it into the database. This turned out to be a very complicated task and I hit several issues.
+                </p>
+                <p>
+                    1) MySQL tools and driver only allow streaming via file or pipe. This is not ideal. File access requires you to write ready-to-import data to the filesystem. The pipe approach seemed very heavy on the system.
+                </p>
+                <p>
+                    2) "LOAD DATA IN FILE" is not supported on the Aurora cluster endpoint. This command must be issued directly to the writer instance.
+                </p>
+                <p>
+                    3) Combination of 1) and 2) will run the writer instance out of memory and crash the MySQL database engine.
+                </p>
+                <p>
+                    I've spent about two weeks fighting this engineering problem. Since I was running out of time, I ended up making changes to my C++ tool "warsql" and return back to using just simple INSERT statements. This unfortunately introduced significant performance issues, but was stable enough.
+                </p>
+                <p>
+                    Another and much smaller issue I ran into is data encoding. My "warsql" tool seems to break the data on import, the UTF8 encoding seems to be ignored.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Despite problems I was able to complete the application and I learned a lot about importing a large dataset to Aurora. I've used latest AWS CI/CD tools and serverless application model to build a prototype in a very short time period.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I've learned that having very good CI/CD pipeline early in the project helps to make quick iterations. I've learned that writing a C++ application to handle complex logic is much better time investment than trying to improve bash scripts.
+                </p>
+                <h2>
+                    What's next for Naive search
+                </h2>
+                <ul>
+                    <li>
+                        Secure DB access
+                    </li>
+                    <li>
+                        Fix encoding issues
+                    </li>
+                    <li>
+                        Improve import speed
+                    </li>
+                    <li>
+                        Add ability restart import
+                    </li>
+                    <li>
+                        Optimize full-text search
+                    </li>
+                    <li>
+                        Multi-region deployment
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aurora
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            codebuild
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            codecommit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            codepipeline
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://vapb6teplh.execute-api.us-east-1.amazonaws.com/Prod/" rel="nofollow" target="_blank" title="https://vapb6teplh.execute-api.us-east-1.amazonaws.com/Prod/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                vapb6teplh.execute-api.us-east-1.amazonaws.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://vapb6teplh.execute-api.us-east-1.amazonaws.com/Prod/search?query=serverless" rel="nofollow" target="_blank" title="https://vapb6teplh.execute-api.us-east-1.amazonaws.com/Prod/search?query=serverless">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                vapb6teplh.execute-api.us-east-1.amazonaws.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

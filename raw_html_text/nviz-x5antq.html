@@ -1,0 +1,214 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="549189" data-title="Main Page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/189/datas/original.png">
+                            <img alt="nviz &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/189/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Main Page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="549190" data-title="Create neural network" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/190/datas/original.png">
+                            <img alt="nviz &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/190/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Create neural network
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="549242" data-title="Detailed View" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/242/datas/original.png">
+                            <img alt="nviz &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/549/242/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Detailed View
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Training neural networks can be a really painstaking process, involving a lot of trial and error and waiting time. One major part of that problem arises from how most neural networks, while being trained, output minimal data which is usually limited to the loss value. That means that you never quite know what the neural network is doing, only that it is supposedly getting "better" at it. At the end of the day after training is complete, it is very likely that the neural network is outputting something not even close to what we initially wanted. And just like that, hours of our time go to waste.
+                </p>
+                <p>
+                    The solution to that is pretty simple. We needed a real time visualization tool, capable of showing us statistics of how the neural network is doing along with the output at each stage, such that we can determine if the neural network is training down the right path at one glance. This simplifies the whole process and makes debugging a whole lot easier, along with making for a pretty cool demo.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    nviz stands for neural network visualization and it is a tool that enables developers to easily look at the real-time state of a neural network as it is training. This concept builds upon 3 fundamental features.
+                </p>
+                <ul>
+                    <li>
+                        Visualization of output
+                    </li>
+                    <li>
+                        Simplified management of training
+                    </li>
+                    <li>
+                        Testing environment
+                    </li>
+                </ul>
+                <p>
+                    nviz uses a web-based interface to allow developers to interact with their training neural networks remotely without having to go through any command line tools. The web interface is fully responsive under 144px and looks great on both desktop and mobile environments. It provides a slew of output data, listed below.
+                </p>
+                <ul>
+                    <li>
+                        Neural network output
+                    </li>
+                    <li>
+                        Loss value and graph
+                    </li>
+                    <li>
+                        Arguments
+                    </li>
+                    <li>
+                        Stats
+                    </li>
+                </ul>
+                <p>
+                    Additionally, it allows developers to start and stop training along with creating multiple instances of the neural network with different parameters such that multiple parameter options can be tested at the same time. The elegant user interface combined with the utility of the tool makes it a fun and easy to use service
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The project is divided into 3 parts, namely the python wrapper, back-end and front-end. Each of the sections is explained in detail below.
+                </p>
+                <h3>
+                    Python wrapper
+                </h3>
+                <p>
+                    We chose Python as the main language because many major neural network libraries such as TensorFlow and PyTorch, are primarily based off of Python. But, we wanted to make as little changes to existing python scripts in order to use nviz. Thus, we created a small wrapper that helps interface existing scripts to nviz. It is a simple script that interfaces to the REST API so that the end user can conveniently implement it into their existing neural network python code.
+                </p>
+                <h3>
+                    Go backend
+                </h3>
+                <p>
+                    The Go backend we wrote streams and stores the data coming out of the neural networks it manages. Neural networks wrapped in the wrapper will call the API when they start and add themselves to the dashboard. They will also publish data to the backend. The backend will then stream the data using server sent events to the browser. It also manages the Docker containers created from the dashboard through the Docker api, and these containers can run on any Docker host (can run on a different machine or be scheduled onto multiple machines using Docker swarm). This backend can also run on any platform (macOS , windows, linux) using a single 10MB binary.
+                </p>
+                <h3>
+                    Dashboard
+                </h3>
+                <p>
+                    The dashboard displays the state of the neural networks and allows you to get their data and stats. It has a interface to start Docker containers without going into the command line, making it really easy to spawn and manage multiple neural nets with different parameters that share the same code.
+                </p>
+                <p>
+                    It uses bootstrap as a base framework with Vue.js. It also employs the modern ES6, Fetch API, Server Sent Events web standards
+                </p>
+                <h2>
+                    What's next for nviz
+                </h2>
+                <p>
+                    The long term plan for nviz would be to create a service, similar to those provided by ThingSpeak for IoT. An online subscription based service for developers to manage, monitor and ensure that their training is successful would be an immensely useful tool for the developer community. We need to look into several more aspects to get to that point. Firstly, we need to work on the security, login interface and user management interface. The UI also has much room for improvement and this is very much a proof of concept. The Docker container interface can be also made much more customizable and extensible to add value to the service as a management platform.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chart-js">
+                                chart.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vue
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/serverwentdown/nviz" rel="nofollow" target="_blank" title="https://github.com/serverwentdown/nviz">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://138.75.171.72:8081/dashboard/" rel="nofollow" target="_blank" title="http://138.75.171.72:8081/dashboard/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                138.75.171.72
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

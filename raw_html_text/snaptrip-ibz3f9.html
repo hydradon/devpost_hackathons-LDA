@@ -1,0 +1,286 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/1vi6MVigu-4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="837904" data-title="Main screen of SnapTrip" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/837/904/datas/original.png">
+                            <img alt="SnapTrip &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/837/904/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Main screen of SnapTrip
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I love traveling. When I am not traveling, I like to spend time on inspirational travel picture websites or social media to find my next destination. Every time I see an amazing photo I want to know where it is and how much it will cost me to go there on holidays. Until now, I did not find any easy way to find the location of a picture and have an idea of how much it costs to travel there.
+                </p>
+                <p>
+                    What will be simpler than just taking a photo and instantaneously have a list of trip offers including flight tickets and hotel rooms from my current location to the desired one?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    With
+                    <strong>
+                        SnapTrip
+                    </strong>
+                    you can easily get different Trip offers (including flights and hotel rooms) from where you are to an amazing destination you saw on social media.
+                </p>
+                <p>
+                    <strong>
+                        SnapTrip
+                    </strong>
+                    is an Android application that allows you to take a photo of a famous place (monument or landmark) you saw on social media or any locations with destination pictures. The app will automatically locate your position, find where the destination picture is and build for you different trip packages to go there.
+                </p>
+                <p>
+                    Let's imagine you live in Madrid and you saw a photo of the Statue of Liberty on Facebook. You can start your mobile app SnapTrip, take a photo of the photo (yes yes), wait for a couple of seconds and see how much it will cost you to travel to New-York, stay at the hotel a couple of nights and come back!
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I decided to build the Android application using Kotlin (as I wanted to learn a new programing language).
+                </p>
+                <p>
+                    For image recognition, I used the
+                    <a href="https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision/" rel="nofollow">
+                        Vision Azure Cognitive Service API
+                    </a>
+                    . To make the integration easier with Android I used an open-source library named
+                    <a href="https://github.com/eddydn/EDMTDevCognitiveVision" rel="nofollow">
+                        EDMTDevCognitiveVision
+                    </a>
+                    .
+                </p>
+                <p>
+                    To find coordinates from a location name I used the
+                    <a href="https://docs.microsoft.com/en-us/bingmaps/rest-services/locations/find-a-location-by-query" rel="nofollow">
+                        Bing Maps API (Find a Location by Query)
+                    </a>
+                    .
+                </p>
+                <p>
+                    For all travel-related data, I used the
+                    <a href="https://developers.amadeus.com/" rel="nofollow">
+                        Amadeus for Developers Self-Service APIs
+                    </a>
+                    . I had to write a Kotlin wrapper of their Java SDK to manage asynchronous &amp; multi-threads calls in Android.
+                </p>
+                <p>
+                    The application has been developed using Android SDK version 28.
+                </p>
+                <h3>
+                    Details
+                </h3>
+                <p>
+                    Everything starts by taking a photo of a monument with
+                    <strong>
+                        SnapTrip
+                    </strong>
+                    . The app will find the coordinates of your current location (by localizing your phone). It will then use the Cognitive Vision API to find the name of the monument/landmark.
+                </p>
+                <p>
+                    The Cognitive Vision API does not return the coordinates of the place. For this I combined the response of the vision API with the
+                    <a href="https://docs.microsoft.com/en-us/bingmaps/rest-services/locations/find-a-location-by-query" rel="nofollow">
+                        Bing Maps API
+                    </a>
+                    to retrieve the coordinates based on the location name.
+                </p>
+                <p>
+                    When I have both geo-locations, I&rsquo;m using the
+                    <a href="https://developers.amadeus.com/self-service/category/air/api-doc/airport-nearest-relevant/api-reference" rel="nofollow">
+                        Nearest Relevant Airports
+                    </a>
+                    from Amadeus to retrieve the
+                    <a href="https://en.wikipedia.org/wiki/IATA_airport_code" rel="nofollow">
+                        IATA codes
+                    </a>
+                    of the closest airports (from the user thanks to the phone location and the monument's place thanks to the Microsoft APIs).
+                </p>
+                <p>
+                    Then comes a bit of internal logic, the Flight Search API works with airport IATA codes, but the Hotel Search API requires the city IATA codes (for example the city code of Paris is PAR but the airport codes are CDG (Charles De Gaulle) and ORY (Orly)). The Nearest Relevant Airports API only returns airport IATA codes. To get city codes I used the
+                    <a href="https://developers.amadeus.com/self-service/category/air/api-doc/airport-and-city-search/api-reference" rel="nofollow">
+                        Airport &amp; City Search API
+                    </a>
+                    .
+                </p>
+                <p>
+                    With the airports IATA codes, I search for flights at different dates to find the best offers from all available airlines. Out of the result, I sort to keep only the flights with a maximum of one stop (layover). Then, I search for the best hotel offers at the destination with rooms available during the dates matching the flights. By combining both, I build different trip packages that I will show to the user.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    As first: learning Kotlin. I have some experience with Java but I wanted to learn a new language and Kotlin was on top of my list. I cannot say that I know how to develop with Kotlin now, but I learned a lot!
+                </p>
+                <p>
+                    The integration of the Cognitive Vision API went smoothly thanks to the library, the main problem was to manage the parallel threads and the asynchronous calls required by Android (it was something new for me). Recognizing the picture's was only the first step, I needed then to get the coordinates of the place to find the closest airport. The Azure Cognitive Vision API does not return the coordinates. I had to use the Bing Maps API that returns coordinates based on a name of a location.
+                </p>
+                <p>
+                    Then for all travel data, I developed a Kotlin wrapper on top of the Java SDK of Amadeus for Developers (to manage asynchronous and multi-thread calls).
+                </p>
+                <p>
+                    Amadeus Self-Service APIs comes with limitations in the test environment (limitation of data, limitation on the API call parallelization you can do and limitation on the response time of the API) but it offers access to all their APIs free of charge, which is perfect for prototyping. I tried to optimize as much as I could the response time by parallelizing the flight and hotel searches, it can still be a bit slow (a few seconds). You can sometimes face a "network rate limit is exceeded" error, that seems to come from their API management platform, please try again if it is the case.
+                </p>
+                <p>
+                    The last step was to combine the data to build the trip package including hotels and flights. My knowledge of Android and UI development is quite limited, it was a challenge to build the list of trip packages with all the important information keeping a nice and user-friendly UI.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud to have an up and running Android app written in Kotlin. I am really happy to have learned more about image recognition and to have been able to combine many different technologies and libraries.
+                </p>
+                <p>
+                    And I am proud to now have an app that helps me to quickly and easily know how much it cost to travel to many different places. This will inspire me for my next trips!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        Kotlin programing language
+                    </li>
+                    <li>
+                        Azure Cognitive APIs - I am really impressed by how the AI API is able to recognize the locations!
+                    </li>
+                    <li>
+                        Bing Maps API
+                    </li>
+                    <li>
+                        Android framework
+                    </li>
+                </ul>
+                <h2>
+                    What's next for SnapTrip
+                </h2>
+                <p>
+                    I want to keep improving the app:
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            In the next version of SnapTrip, you will be able to select a trip package to get more details about the hotel and the flight suggested. I would like to include the sentiment analysis of hotels, so the user will know if the hotel suggested is the best of her/his interest.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            By using
+                            <a href="https://www.avuxi.com/" rel="nofollow">
+                                Avuxi
+                            </a>
+                            technology, I will be able to add information about points of interest to see what are the most interesting things to do at the destination.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            I would like to ingrate the content of the startup
+                            <a href="https://geosureglobal.com/" rel="nofollow">
+                                GeoSure
+                            </a>
+                            , that helps to better understand safety in different districts of a city. Thanks to this, I would be able to find better the best location for the hotel and ensure the safety of the traveler.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Amadeus just released an API to do flight booking, the next step will be to integrate it to be able to book the flights directly from the app. They plan to deliver the hotel booking by the end of the year: this will allow the users to book the full trip directly in SnapTrip!
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    SnapTrip will continue to evolve with time, this will give me a good opportunity to keep learning Kotlin and trying to integrate different other technologies! :)
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amadeus">
+                                amadeus
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            bingmaps
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            edmtdevcognitivevision
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kotlin
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            travel
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vision
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/anthonyroux/snaptrip-microsoft" rel="nofollow" target="_blank" title="https://github.com/anthonyroux/snaptrip-microsoft">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

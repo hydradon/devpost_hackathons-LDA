@@ -1,0 +1,135 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="689360" data-title="Too Many Requests" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/689/360/datas/original.png">
+                            <img alt="Read A Lot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/689/360/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Too Many Requests
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Many dapps rely on many many requrests to an infura node to get the ethereum state. eg for token balances, smart contract environment variables, user account information, etc. It's not unusual to issue 200+ requests to infura in the first 5 seconds of a dapp loading (!)
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    A user can specify what values she wants to see and what address they're located at, and all values specified will be fetched in one call to infura (or any node). The values need not conform to any rigid schema. The js interface looks a little something like:
+                </p>
+                <pre class="language-nolang"><code>const { blockNum, tokenBalance, vote } = await calls([
+        {
+        to: '0x0',
+        method: 'balanceOf(address)',
+        args: ['0x0'],
+        returns: [['tokenBalance', 'uint256']]
+  },
+  {
+  to: '0x0',
+  method: 'voteCast()',
+  returns: [['vote', 'bytes32']]
+  },
+  &hellip; // etc, many more values possible w/ this requiest
+]); // all these calls happen w/ one fetch
+</code></pre>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We wrote a solidity contract in assembly that parses a byte array into values it can use to call functions at specific addresses and stores their return values into another byte array that's returned in the main function. At the same time we wrote an accessible javascript library to create the byte array to pass in, and parse the result.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Finding a byte array schema that could give us the javascript api we wanted while still being easy to parse in assembly.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Getting a working implementation on mainnet with a javacript library that can be useful to dapp devs
+                    <strong>
+                        today
+                    </strong>
+                    !
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    The nitty gritty of calldata formatting and abi value encoding/ decoding
+                </p>
+                <h2>
+                    What's next for Read A Lot
+                </h2>
+                <p>
+                    Refine the javascript api, write a more thorough test suite, and get it in the hands of dev.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jparklev/read-a-lot" rel="nofollow" target="_blank" title="https://github.com/jparklev/read-a-lot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/levity/readalot" rel="nofollow" target="_blank" title="https://github.com/levity/readalot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

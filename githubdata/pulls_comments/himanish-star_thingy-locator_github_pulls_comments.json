@@ -1,0 +1,1482 @@
+[
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176399326",
+        "pull_request_review_id": 106092134,
+        "id": 176399326,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjM5OTMyNg==",
+        "diff_hunk": "@@ -1,92 +1,194 @@\n const Alexa = require('alexa-sdk');\n-const startSearch = require('searchingItem').startSearch;\n-const storeItem = require('storingItem').storeItem;\n+const awsSDK = require('aws-sdk');\n+const promisify = require('es6-promisify');\n+\n+const appId = 'REPLACE WITH SKILL APPLICATION ID';\n+const itemsTable = 'Items';\n+const docClient = new awsSDK.DynamoDB.DocumentClient();\n+\n+// convert callback style functions to promises\n+const dbScan = promisify(docClient.scan, docClient);\n+const dbGet = promisify(docClient.get, docClient);\n+const dbPut = promisify(docClient.put, docClient);\n+const dbDelete = promisify(docClient.delete, docClient);\n+\n+//TODO: Add more instructions as suited\n+const instructions = `Welcome to Stuff locator<break strength=\"medium\" />\n+                      The following commands are available: store item, find item... What\n+                      would you like to do?`;\n \n module.exports.handler = (event, context) => {\n   const alexa = Alexa.handler(event, context);\n-  // alexa.appId = APP_ID;\n-  // todo: fill this up when APP_ID is ready\n-  // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.\n+  alexa.APP_ID = appId;\n   alexa.registerHandlers(handlers);\n   alexa.execute();\n };\n \n const handlers = {\n-  'LaunchRequest': function () {\n-    //todo: greet the user if an existing one by checking sessions\n-    this.response.speak('Hello Sir, what would you like to do?').listen();\n-    this.emit(':responseReady');\n+  'LaunchRequest'() {\n+    this.emit(':ask', instructions);\n   },\n   //todo: utterances which fire this intent\n   //find my {Item}\n-  'FindItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    let findItemName = '',\n-      speechOutput = '',\n-      rePromptOutput = '';\n-    \n-    if(itemSlot && itemSlot.value){\n-      findItemName = itemSlot.value.toLowerCase();\n+  'FindItemIntent'() {\n+    const { slots } = this.event.request.intent;\n+\n+    // prompt for slot data if needed\n+    if (!slots.ItemName.value) {\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the name of the item?';\n+      const repromptSpeech = 'Please tell me the name of the item to be found';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    //call search function here that step by step searches for the item as we had decided at all cases\n-    let location = startSearch(findItemName);\n-    \n-    if (location) {\n-      speechOutput = findItemName + \" is kept at \" + location;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (findItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know where\" + findItemName + \" is stored. What else can I help with?\";\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know its location. What else can I help with?\";\n+\n+    const { userId } = this.event.session.user;\n+    const itemName = slots.ItemName.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: itemName,\n+        UserId: userId\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n-    }\n+    };\n+\n+    console.log('Attempting to read data');\n+\n+    // query DynamoDB\n+    dbGet(dynamoParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);\n+        }\n+        else {\n+          this.emit(':tell', `Item ${itemName} not found!`);\n+        }\n+      })\n+      .catch(err => console.error(err));\n   },\n   //todo: utterances which fire this intent\n   //place my {Item} inside {Place}\n   'StoreItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    const locationSlot = this.event.request.intent.slots.Place;\n-    let storeItemName = '',\n-      storeItemLocation = '';\n-  \n-    if(itemSlot && itemSlot.value && locationSlot && locationSlot.value){\n-      storeItemName = itemSlot.value.toLowerCase();\n-      storeItemLocation = locationSlot.value.toLowerCase();\n-      //call store function here that stores in ActiveList as well as MasterDb (we can implement concept of paging for updating masterDB)\n-      storeItem(storeItemName, storeItemLocation)\n+\n+    const { userId } = this.event.session.user;\n+    const { slots } = this.event.request.intent;\n+\n+    // ItemName\n+    if (!slots.ItemStored.value) {\n+      const slotToElicit = 'ItemStored';\n+      const speechOutput = 'What is the item to be stored?';\n+      const repromptSpeech = 'Please tell me the name of the item';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    let speechOutput = '',\n-      rePromptOutput = '';\n-  \n-    if (storeItemLocation && storeItemName) {\n-      \n-      //set speech according to what was not identified\n-      \n-      speechOutput = storeItemName + \" has been stored at \" + storeItemLocation;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (!storeItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know what to store\" ;\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know where to store. What else can I help with?\";\n+    else if (slots.ItemStored.confirmationStatus !== 'CONFIRMED') {\n+\n+      if (slots.ItemStored.confirmationStatus !== 'DENIED') {\n+        // slot status: unconfirmed\n+        const slotToConfirm = 'ItemName';\n+        const speechOutput = `The name of the item is ${slots.ItemName.value}, correct?`;\n+        const repromptSpeech = speechOutput;\n+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n+\n+      // slot status: denied -> reprompt for slot data\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the item you would like to store?';\n+      const repromptSpeech = 'Please tell me the name of the item';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n+\n+    // ItemLocation\n+    if (!slots.ItemLocation.value) {\n+      const slotToElicit = 'ItemLocation';\n+      const speechOutput = 'Where is the item stored?';\n+      const repromptSpeech = 'Please give me a location of the item.';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n+    }\n+    else if (slots.ItemLocation.confirmationStatus !== 'CONFIRMED') {\n+\n+      if (slots.ItemLocation.confirmationStatus !== 'DENIED') {\n+        // slot status: unconfirmed\n+        const slotToConfirm = 'ItemLocation';\n+        const speechOutput = `The item location is ${slots.ItemLocation.value}, correct?`;\n+        const repromptSpeech = speechOutput;\n+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);\n+      }\n+\n+      // slot status: denied -> reprompt for slot data\n+      const slotToElicit = 'ItemLocation';\n+      const speechOutput = 'Where can the item be found?';\n+      const repromptSpeech = 'Please give me a location where the item is stored.';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n+    }\n+\n+    // all slot values received and confirmed, now add the record to DynamoDB\n+    const name = slots.ItemName.value;\n+    const location = slots.ItemLocation.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Item: {\n+        Name: name,\n+        UserId: userId,\n+        Location: location\n+      }\n+    };\n+\n+    const checkIfItemExistsParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: name,\n+        UserId: userId\n+      }\n+    };\n+\n+    console.log('Attempting to add item', dynamoParams);\n+\n+    // query DynamoDB to see if the item exists first\n+    dbGet(checkIfItemExistsParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          const errorMsg = `Item ${name} already exists!`;\n+          this.emit(':tell', errorMsg);\n+          throw new Error(errorMsg);\n+        }\n+        else {\n+          // no match, add the item\n+          return dbPut(dynamoParams);\n+        }\n+      })\n+      .then(data => {\n+        console.log('Add item succeeded', data);\n+\n+        this.emit(':tell', `Item ${name} added!`);\n+      })\n+      .catch(err => {\n+        console.error(err);\n+      });\n+  },\n+\n+    'Unhandled'() {\n+    console.error('problem', this.event);\n+    this.emit(':ask', 'An unhandled problem occurred!');\n   },\n-  //todo: to be decided\n-  'StoreEventItem': function () {\n-    this.response.speak('Hello World!');\n-    this.emit(':responseReady');\n+\n+  'AMAZON.HelpIntent'() {\n+    const speechOutput = \"Start by \";\n+    const reprompt = instructions;\n+    this.emit(':ask', speechOutput, reprompt);\n+  },\n+\n+  'AMAZON.CancelIntent'() {\n+    this.emit(':tell', 'Goodbye!');\n   },\n-  //todo: to be decided\n-  'ListEventItem': function () {\n-    this.response.speak('Hello World!');\n-    this.emit(':responseReady');\n+\n+  'AMAZON.StopIntent'() {\n+    this.emit(':tell', 'Goodbye!');",
+        "path": "index.js",
+        "position": 259,
+        "original_position": 259,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "shikhar-scs",
+            "id": 25258877,
+            "node_id": "MDQ6VXNlcjI1MjU4ODc3",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/25258877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shikhar-scs",
+            "html_url": "https://github.com/shikhar-scs",
+            "followers_url": "https://api.github.com/users/shikhar-scs/followers",
+            "following_url": "https://api.github.com/users/shikhar-scs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shikhar-scs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shikhar-scs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shikhar-scs/subscriptions",
+            "organizations_url": "https://api.github.com/users/shikhar-scs/orgs",
+            "repos_url": "https://api.github.com/users/shikhar-scs/repos",
+            "events_url": "https://api.github.com/users/shikhar-scs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shikhar-scs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "A matter of concern here is that we have included all our stuff in a single file. Something better would be if we could distribute them in different files as before. The files do exist and all we need to do is to shift code here and there.",
+        "created_at": "2018-03-22T12:19:51Z",
+        "updated_at": "2018-03-22T12:19:51Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176399326",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176399326"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176399326"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176400326",
+        "pull_request_review_id": 106093364,
+        "id": 176400326,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQwMDMyNg==",
+        "diff_hunk": "@@ -1,92 +1,194 @@\n const Alexa = require('alexa-sdk');\n-const startSearch = require('searchingItem').startSearch;\n-const storeItem = require('storingItem').storeItem;\n+const awsSDK = require('aws-sdk');\n+const promisify = require('es6-promisify');\n+\n+const appId = 'REPLACE WITH SKILL APPLICATION ID';\n+const itemsTable = 'Items';\n+const docClient = new awsSDK.DynamoDB.DocumentClient();\n+\n+// convert callback style functions to promises\n+const dbScan = promisify(docClient.scan, docClient);\n+const dbGet = promisify(docClient.get, docClient);\n+const dbPut = promisify(docClient.put, docClient);\n+const dbDelete = promisify(docClient.delete, docClient);\n+\n+//TODO: Add more instructions as suited\n+const instructions = `Welcome to Stuff locator<break strength=\"medium\" />\n+                      The following commands are available: store item, find item... What\n+                      would you like to do?`;\n \n module.exports.handler = (event, context) => {\n   const alexa = Alexa.handler(event, context);\n-  // alexa.appId = APP_ID;\n-  // todo: fill this up when APP_ID is ready\n-  // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.\n+  alexa.APP_ID = appId;\n   alexa.registerHandlers(handlers);\n   alexa.execute();\n };\n \n const handlers = {\n-  'LaunchRequest': function () {\n-    //todo: greet the user if an existing one by checking sessions\n-    this.response.speak('Hello Sir, what would you like to do?').listen();\n-    this.emit(':responseReady');\n+  'LaunchRequest'() {\n+    this.emit(':ask', instructions);\n   },\n   //todo: utterances which fire this intent\n   //find my {Item}\n-  'FindItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    let findItemName = '',\n-      speechOutput = '',\n-      rePromptOutput = '';\n-    \n-    if(itemSlot && itemSlot.value){\n-      findItemName = itemSlot.value.toLowerCase();\n+  'FindItemIntent'() {\n+    const { slots } = this.event.request.intent;\n+\n+    // prompt for slot data if needed\n+    if (!slots.ItemName.value) {\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the name of the item?';\n+      const repromptSpeech = 'Please tell me the name of the item to be found';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    //call search function here that step by step searches for the item as we had decided at all cases\n-    let location = startSearch(findItemName);\n-    \n-    if (location) {\n-      speechOutput = findItemName + \" is kept at \" + location;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (findItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know where\" + findItemName + \" is stored. What else can I help with?\";\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know its location. What else can I help with?\";\n+\n+    const { userId } = this.event.session.user;\n+    const itemName = slots.ItemName.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: itemName,\n+        UserId: userId\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n-    }\n+    };\n+\n+    console.log('Attempting to read data');\n+\n+    // query DynamoDB\n+    dbGet(dynamoParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);\n+        }\n+        else {\n+          this.emit(':tell', `Item ${itemName} not found!`);\n+        }\n+      })\n+      .catch(err => console.error(err));\n   },\n   //todo: utterances which fire this intent\n   //place my {Item} inside {Place}\n   'StoreItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    const locationSlot = this.event.request.intent.slots.Place;\n-    let storeItemName = '',\n-      storeItemLocation = '';\n-  \n-    if(itemSlot && itemSlot.value && locationSlot && locationSlot.value){\n-      storeItemName = itemSlot.value.toLowerCase();\n-      storeItemLocation = locationSlot.value.toLowerCase();\n-      //call store function here that stores in ActiveList as well as MasterDb (we can implement concept of paging for updating masterDB)\n-      storeItem(storeItemName, storeItemLocation)\n+\n+    const { userId } = this.event.session.user;\n+    const { slots } = this.event.request.intent;\n+\n+    // ItemName\n+    if (!slots.ItemStored.value) {\n+      const slotToElicit = 'ItemStored';\n+      const speechOutput = 'What is the item to be stored?';\n+      const repromptSpeech = 'Please tell me the name of the item';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    let speechOutput = '',\n-      rePromptOutput = '';\n-  \n-    if (storeItemLocation && storeItemName) {\n-      \n-      //set speech according to what was not identified\n-      \n-      speechOutput = storeItemName + \" has been stored at \" + storeItemLocation;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (!storeItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know what to store\" ;\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know where to store. What else can I help with?\";\n+    else if (slots.ItemStored.confirmationStatus !== 'CONFIRMED') {\n+\n+      if (slots.ItemStored.confirmationStatus !== 'DENIED') {\n+        // slot status: unconfirmed\n+        const slotToConfirm = 'ItemName';\n+        const speechOutput = `The name of the item is ${slots.ItemName.value}, correct?`;\n+        const repromptSpeech = speechOutput;\n+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n+\n+      // slot status: denied -> reprompt for slot data\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the item you would like to store?';\n+      const repromptSpeech = 'Please tell me the name of the item';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n+\n+    // ItemLocation\n+    if (!slots.ItemLocation.value) {\n+      const slotToElicit = 'ItemLocation';\n+      const speechOutput = 'Where is the item stored?';\n+      const repromptSpeech = 'Please give me a location of the item.';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n+    }\n+    else if (slots.ItemLocation.confirmationStatus !== 'CONFIRMED') {\n+\n+      if (slots.ItemLocation.confirmationStatus !== 'DENIED') {\n+        // slot status: unconfirmed\n+        const slotToConfirm = 'ItemLocation';\n+        const speechOutput = `The item location is ${slots.ItemLocation.value}, correct?`;\n+        const repromptSpeech = speechOutput;\n+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);\n+      }\n+\n+      // slot status: denied -> reprompt for slot data\n+      const slotToElicit = 'ItemLocation';\n+      const speechOutput = 'Where can the item be found?';\n+      const repromptSpeech = 'Please give me a location where the item is stored.';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n+    }\n+\n+    // all slot values received and confirmed, now add the record to DynamoDB\n+    const name = slots.ItemName.value;\n+    const location = slots.ItemLocation.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Item: {\n+        Name: name,\n+        UserId: userId,\n+        Location: location\n+      }\n+    };\n+\n+    const checkIfItemExistsParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: name,\n+        UserId: userId\n+      }\n+    };\n+\n+    console.log('Attempting to add item', dynamoParams);\n+\n+    // query DynamoDB to see if the item exists first\n+    dbGet(checkIfItemExistsParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          const errorMsg = `Item ${name} already exists!`;\n+          this.emit(':tell', errorMsg);\n+          throw new Error(errorMsg);\n+        }\n+        else {\n+          // no match, add the item\n+          return dbPut(dynamoParams);\n+        }\n+      })\n+      .then(data => {\n+        console.log('Add item succeeded', data);\n+\n+        this.emit(':tell', `Item ${name} added!`);\n+      })\n+      .catch(err => {\n+        console.error(err);\n+      });\n+  },\n+\n+    'Unhandled'() {\n+    console.error('problem', this.event);\n+    this.emit(':ask', 'An unhandled problem occurred!');\n   },\n-  //todo: to be decided\n-  'StoreEventItem': function () {\n-    this.response.speak('Hello World!');\n-    this.emit(':responseReady');\n+\n+  'AMAZON.HelpIntent'() {\n+    const speechOutput = \"Start by \";\n+    const reprompt = instructions;\n+    this.emit(':ask', speechOutput, reprompt);\n+  },\n+\n+  'AMAZON.CancelIntent'() {\n+    this.emit(':tell', 'Goodbye!');\n   },\n-  //todo: to be decided\n-  'ListEventItem': function () {\n-    this.response.speak('Hello World!');\n-    this.emit(':responseReady');\n+\n+  'AMAZON.StopIntent'() {\n+    this.emit(':tell', 'Goodbye!');",
+        "path": "index.js",
+        "position": 259,
+        "original_position": 259,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "> Something better would be if we could distribute them in different files as before.\r\n\r\nI was just fixing my code up and believe me, it's better to work on the code as a single file. Because if it's a big file, then it doesn't support inline editing which is a menace",
+        "created_at": "2018-03-22T12:23:27Z",
+        "updated_at": "2018-03-22T12:23:27Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176400326",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176400326"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176400326"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        },
+        "in_reply_to_id": 176399326
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176402620",
+        "pull_request_review_id": 106096137,
+        "id": 176402620,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQwMjYyMA==",
+        "diff_hunk": "@@ -1,92 +1,194 @@\n const Alexa = require('alexa-sdk');\n-const startSearch = require('searchingItem').startSearch;\n-const storeItem = require('storingItem').storeItem;\n+const awsSDK = require('aws-sdk');\n+const promisify = require('es6-promisify');\n+\n+const appId = 'REPLACE WITH SKILL APPLICATION ID';\n+const itemsTable = 'Items';\n+const docClient = new awsSDK.DynamoDB.DocumentClient();\n+\n+// convert callback style functions to promises\n+const dbScan = promisify(docClient.scan, docClient);\n+const dbGet = promisify(docClient.get, docClient);\n+const dbPut = promisify(docClient.put, docClient);\n+const dbDelete = promisify(docClient.delete, docClient);\n+\n+//TODO: Add more instructions as suited\n+const instructions = `Welcome to Stuff locator<break strength=\"medium\" />\n+                      The following commands are available: store item, find item... What\n+                      would you like to do?`;\n \n module.exports.handler = (event, context) => {\n   const alexa = Alexa.handler(event, context);\n-  // alexa.appId = APP_ID;\n-  // todo: fill this up when APP_ID is ready\n-  // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.\n+  alexa.APP_ID = appId;\n   alexa.registerHandlers(handlers);\n   alexa.execute();\n };\n \n const handlers = {\n-  'LaunchRequest': function () {\n-    //todo: greet the user if an existing one by checking sessions\n-    this.response.speak('Hello Sir, what would you like to do?').listen();\n-    this.emit(':responseReady');\n+  'LaunchRequest'() {\n+    this.emit(':ask', instructions);\n   },\n   //todo: utterances which fire this intent\n   //find my {Item}\n-  'FindItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    let findItemName = '',\n-      speechOutput = '',\n-      rePromptOutput = '';\n-    \n-    if(itemSlot && itemSlot.value){\n-      findItemName = itemSlot.value.toLowerCase();\n+  'FindItemIntent'() {\n+    const { slots } = this.event.request.intent;\n+\n+    // prompt for slot data if needed\n+    if (!slots.ItemName.value) {\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the name of the item?';\n+      const repromptSpeech = 'Please tell me the name of the item to be found';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    //call search function here that step by step searches for the item as we had decided at all cases\n-    let location = startSearch(findItemName);\n-    \n-    if (location) {\n-      speechOutput = findItemName + \" is kept at \" + location;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (findItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know where\" + findItemName + \" is stored. What else can I help with?\";\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know its location. What else can I help with?\";\n+\n+    const { userId } = this.event.session.user;\n+    const itemName = slots.ItemName.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: itemName,\n+        UserId: userId\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n-    }\n+    };\n+\n+    console.log('Attempting to read data');\n+\n+    // query DynamoDB\n+    dbGet(dynamoParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);\n+        }\n+        else {\n+          this.emit(':tell', `Item ${itemName} not found!`);\n+        }\n+      })\n+      .catch(err => console.error(err));\n   },\n   //todo: utterances which fire this intent\n   //place my {Item} inside {Place}\n   'StoreItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    const locationSlot = this.event.request.intent.slots.Place;\n-    let storeItemName = '',\n-      storeItemLocation = '';\n-  \n-    if(itemSlot && itemSlot.value && locationSlot && locationSlot.value){\n-      storeItemName = itemSlot.value.toLowerCase();\n-      storeItemLocation = locationSlot.value.toLowerCase();\n-      //call store function here that stores in ActiveList as well as MasterDb (we can implement concept of paging for updating masterDB)\n-      storeItem(storeItemName, storeItemLocation)\n+\n+    const { userId } = this.event.session.user;\n+    const { slots } = this.event.request.intent;\n+\n+    // ItemName\n+    if (!slots.ItemStored.value) {\n+      const slotToElicit = 'ItemStored';\n+      const speechOutput = 'What is the item to be stored?';\n+      const repromptSpeech = 'Please tell me the name of the item';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    let speechOutput = '',\n-      rePromptOutput = '';\n-  \n-    if (storeItemLocation && storeItemName) {\n-      \n-      //set speech according to what was not identified\n-      \n-      speechOutput = storeItemName + \" has been stored at \" + storeItemLocation;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (!storeItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know what to store\" ;\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know where to store. What else can I help with?\";\n+    else if (slots.ItemStored.confirmationStatus !== 'CONFIRMED') {\n+\n+      if (slots.ItemStored.confirmationStatus !== 'DENIED') {\n+        // slot status: unconfirmed\n+        const slotToConfirm = 'ItemName';\n+        const speechOutput = `The name of the item is ${slots.ItemName.value}, correct?`;\n+        const repromptSpeech = speechOutput;\n+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n+\n+      // slot status: denied -> reprompt for slot data\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the item you would like to store?';\n+      const repromptSpeech = 'Please tell me the name of the item';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n+\n+    // ItemLocation\n+    if (!slots.ItemLocation.value) {\n+      const slotToElicit = 'ItemLocation';\n+      const speechOutput = 'Where is the item stored?';\n+      const repromptSpeech = 'Please give me a location of the item.';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n+    }\n+    else if (slots.ItemLocation.confirmationStatus !== 'CONFIRMED') {\n+\n+      if (slots.ItemLocation.confirmationStatus !== 'DENIED') {\n+        // slot status: unconfirmed\n+        const slotToConfirm = 'ItemLocation';\n+        const speechOutput = `The item location is ${slots.ItemLocation.value}, correct?`;\n+        const repromptSpeech = speechOutput;\n+        return this.emit(':confirmSlot', slotToConfirm, speechOutput, repromptSpeech);\n+      }\n+\n+      // slot status: denied -> reprompt for slot data\n+      const slotToElicit = 'ItemLocation';\n+      const speechOutput = 'Where can the item be found?';\n+      const repromptSpeech = 'Please give me a location where the item is stored.';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n+    }\n+\n+    // all slot values received and confirmed, now add the record to DynamoDB\n+    const name = slots.ItemName.value;\n+    const location = slots.ItemLocation.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Item: {\n+        Name: name,\n+        UserId: userId,\n+        Location: location\n+      }\n+    };\n+\n+    const checkIfItemExistsParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: name,\n+        UserId: userId\n+      }\n+    };\n+\n+    console.log('Attempting to add item', dynamoParams);\n+\n+    // query DynamoDB to see if the item exists first\n+    dbGet(checkIfItemExistsParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          const errorMsg = `Item ${name} already exists!`;\n+          this.emit(':tell', errorMsg);\n+          throw new Error(errorMsg);\n+        }\n+        else {\n+          // no match, add the item\n+          return dbPut(dynamoParams);\n+        }\n+      })\n+      .then(data => {\n+        console.log('Add item succeeded', data);\n+\n+        this.emit(':tell', `Item ${name} added!`);\n+      })\n+      .catch(err => {\n+        console.error(err);\n+      });\n+  },\n+\n+    'Unhandled'() {\n+    console.error('problem', this.event);\n+    this.emit(':ask', 'An unhandled problem occurred!');\n   },\n-  //todo: to be decided\n-  'StoreEventItem': function () {\n-    this.response.speak('Hello World!');\n-    this.emit(':responseReady');\n+\n+  'AMAZON.HelpIntent'() {\n+    const speechOutput = \"Start by \";\n+    const reprompt = instructions;\n+    this.emit(':ask', speechOutput, reprompt);\n+  },\n+\n+  'AMAZON.CancelIntent'() {\n+    this.emit(':tell', 'Goodbye!');\n   },\n-  //todo: to be decided\n-  'ListEventItem': function () {\n-    this.response.speak('Hello World!');\n-    this.emit(':responseReady');\n+\n+  'AMAZON.StopIntent'() {\n+    this.emit(':tell', 'Goodbye!');",
+        "path": "index.js",
+        "position": 259,
+        "original_position": 259,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "shikhar-scs",
+            "id": 25258877,
+            "node_id": "MDQ6VXNlcjI1MjU4ODc3",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/25258877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shikhar-scs",
+            "html_url": "https://github.com/shikhar-scs",
+            "followers_url": "https://api.github.com/users/shikhar-scs/followers",
+            "following_url": "https://api.github.com/users/shikhar-scs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shikhar-scs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shikhar-scs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shikhar-scs/subscriptions",
+            "organizations_url": "https://api.github.com/users/shikhar-scs/orgs",
+            "repos_url": "https://api.github.com/users/shikhar-scs/repos",
+            "events_url": "https://api.github.com/users/shikhar-scs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shikhar-scs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "> Because if it's a big file, then it doesn't support inline editing which is a menace\r\n\r\nMeans ?",
+        "created_at": "2018-03-22T12:31:17Z",
+        "updated_at": "2018-03-22T12:31:17Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176402620",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176402620"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176402620"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        },
+        "in_reply_to_id": 176399326
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176455803",
+        "pull_request_review_id": 106160907,
+        "id": 176455803,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQ1NTgwMw==",
+        "diff_hunk": "@@ -55,7 +56,7 @@\n     ],\n     \"types\": [\n       {\n-        \"name\": \"LIST_OF_ITEMS\",\n+        \"name\": \"ItemStored\",",
+        "path": "customBuild.json",
+        "position": 34,
+        "original_position": 34,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This should be `ItemName`",
+        "created_at": "2018-03-22T15:08:29Z",
+        "updated_at": "2018-03-22T15:16:41Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176455803",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176455803"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176455803"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176456620",
+        "pull_request_review_id": 106160907,
+        "id": 176456620,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQ1NjYyMA==",
+        "diff_hunk": "@@ -1,92 +1,194 @@\n const Alexa = require('alexa-sdk');\n-const startSearch = require('searchingItem').startSearch;\n-const storeItem = require('storingItem').storeItem;\n+const awsSDK = require('aws-sdk');\n+const promisify = require('es6-promisify');\n+\n+const appId = 'REPLACE WITH SKILL APPLICATION ID';\n+const itemsTable = 'Items';\n+const docClient = new awsSDK.DynamoDB.DocumentClient();",
+        "path": "index.js",
+        "position": 9,
+        "original_position": 9,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Cool :+1: ",
+        "created_at": "2018-03-22T15:10:22Z",
+        "updated_at": "2018-03-22T15:16:41Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176456620",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176456620"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176456620"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176458182",
+        "pull_request_review_id": 106160907,
+        "id": 176458182,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQ1ODE4Mg==",
+        "diff_hunk": "@@ -1,92 +1,194 @@\n const Alexa = require('alexa-sdk');\n-const startSearch = require('searchingItem').startSearch;\n-const storeItem = require('storingItem').storeItem;\n+const awsSDK = require('aws-sdk');\n+const promisify = require('es6-promisify');\n+\n+const appId = 'REPLACE WITH SKILL APPLICATION ID';\n+const itemsTable = 'Items';\n+const docClient = new awsSDK.DynamoDB.DocumentClient();\n+\n+// convert callback style functions to promises\n+const dbScan = promisify(docClient.scan, docClient);\n+const dbGet = promisify(docClient.get, docClient);\n+const dbPut = promisify(docClient.put, docClient);\n+const dbDelete = promisify(docClient.delete, docClient);\n+\n+//TODO: Add more instructions as suited\n+const instructions = `Welcome to Stuff locator<break strength=\"medium\" />\n+                      The following commands are available: store item, find item... What\n+                      would you like to do?`;\n \n module.exports.handler = (event, context) => {\n   const alexa = Alexa.handler(event, context);\n-  // alexa.appId = APP_ID;\n-  // todo: fill this up when APP_ID is ready\n-  // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.\n+  alexa.APP_ID = appId;\n   alexa.registerHandlers(handlers);\n   alexa.execute();\n };\n \n const handlers = {\n-  'LaunchRequest': function () {\n-    //todo: greet the user if an existing one by checking sessions\n-    this.response.speak('Hello Sir, what would you like to do?').listen();\n-    this.emit(':responseReady');\n+  'LaunchRequest'() {\n+    this.emit(':ask', instructions);\n   },\n   //todo: utterances which fire this intent\n   //find my {Item}\n-  'FindItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    let findItemName = '',\n-      speechOutput = '',\n-      rePromptOutput = '';\n-    \n-    if(itemSlot && itemSlot.value){\n-      findItemName = itemSlot.value.toLowerCase();\n+  'FindItemIntent'() {\n+    const { slots } = this.event.request.intent;\n+\n+    // prompt for slot data if needed\n+    if (!slots.ItemName.value) {\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the name of the item?';\n+      const repromptSpeech = 'Please tell me the name of the item to be found';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    //call search function here that step by step searches for the item as we had decided at all cases\n-    let location = startSearch(findItemName);\n-    \n-    if (location) {\n-      speechOutput = findItemName + \" is kept at \" + location;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (findItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know where\" + findItemName + \" is stored. What else can I help with?\";\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know its location. What else can I help with?\";\n+\n+    const { userId } = this.event.session.user;\n+    const itemName = slots.ItemName.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: itemName,\n+        UserId: userId\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n-    }\n+    };\n+\n+    console.log('Attempting to read data');\n+\n+    // query DynamoDB\n+    dbGet(dynamoParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);\n+        }\n+        else {\n+          this.emit(':tell', `Item ${itemName} not found!`);\n+        }\n+      })\n+      .catch(err => console.error(err));",
+        "path": "index.js",
+        "position": 102,
+        "original_position": 102,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Perfect:exclamation: ",
+        "created_at": "2018-03-22T15:14:23Z",
+        "updated_at": "2018-03-22T15:16:41Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176458182",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176458182"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176458182"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176456392",
+        "pull_request_review_id": 106160907,
+        "id": 176456392,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQ1NjM5Mg==",
+        "diff_hunk": "@@ -19,15 +19,16 @@\n         \"slots\": [\n           {\n             \"name\" : \"Item\",\n-            \"type\": \"LIST_OF_ITEMS\"\n+            \"type\": \"ItemName\"\n           },\n           {\n             \"name\" : \"Place\",\n-            \"type\": \"LIST_OF_PLACES\"\n+            \"type\": \"ItemLocation\"\n           }\n         ],\n         \"samples\": [\n-          \"place my {Item} inside {Place}\"\n+          \"Add an item\",\n+          \"Store an item\"",
+        "path": "customBuild.json",
+        "position": 25,
+        "original_position": 25,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Why aren't you using `{Item}` or `{Place}` anywhere in the samples. \r\nEDIT: I get it this is handled by dialog model",
+        "created_at": "2018-03-22T15:09:50Z",
+        "updated_at": "2018-03-22T15:17:23Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176456392",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176456392"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176456392"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176460067",
+        "pull_request_review_id": 106166047,
+        "id": 176460067,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQ2MDA2Nw==",
+        "diff_hunk": "@@ -19,15 +19,16 @@\n         \"slots\": [\n           {\n             \"name\" : \"Item\",\n-            \"type\": \"LIST_OF_ITEMS\"\n+            \"type\": \"ItemName\"\n           },\n           {\n             \"name\" : \"Place\",\n-            \"type\": \"LIST_OF_PLACES\"\n+            \"type\": \"ItemLocation\"\n           }\n         ],\n         \"samples\": [\n-          \"place my {Item} inside {Place}\"\n+          \"Add an item\",\n+          \"Store an item\"",
+        "path": "customBuild.json",
+        "position": 25,
+        "original_position": 25,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "We should also remove `find my {Item}` above then",
+        "created_at": "2018-03-22T15:18:59Z",
+        "updated_at": "2018-03-22T15:19:08Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176460067",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176460067"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176460067"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        },
+        "in_reply_to_id": 176456392
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176462028",
+        "pull_request_review_id": 106168547,
+        "id": 176462028,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjQ2MjAyOA==",
+        "diff_hunk": "@@ -1,92 +1,194 @@\n const Alexa = require('alexa-sdk');\n-const startSearch = require('searchingItem').startSearch;\n-const storeItem = require('storingItem').storeItem;\n+const awsSDK = require('aws-sdk');\n+const promisify = require('es6-promisify');\n+\n+const appId = 'REPLACE WITH SKILL APPLICATION ID';\n+const itemsTable = 'Items';\n+const docClient = new awsSDK.DynamoDB.DocumentClient();\n+\n+// convert callback style functions to promises\n+const dbScan = promisify(docClient.scan, docClient);\n+const dbGet = promisify(docClient.get, docClient);\n+const dbPut = promisify(docClient.put, docClient);\n+const dbDelete = promisify(docClient.delete, docClient);\n+\n+//TODO: Add more instructions as suited\n+const instructions = `Welcome to Stuff locator<break strength=\"medium\" />\n+                      The following commands are available: store item, find item... What\n+                      would you like to do?`;\n \n module.exports.handler = (event, context) => {\n   const alexa = Alexa.handler(event, context);\n-  // alexa.appId = APP_ID;\n-  // todo: fill this up when APP_ID is ready\n-  // APP_ID is your skill id which can be found in the Amazon developer console where you create the skill.\n+  alexa.APP_ID = appId;\n   alexa.registerHandlers(handlers);\n   alexa.execute();\n };\n \n const handlers = {\n-  'LaunchRequest': function () {\n-    //todo: greet the user if an existing one by checking sessions\n-    this.response.speak('Hello Sir, what would you like to do?').listen();\n-    this.emit(':responseReady');\n+  'LaunchRequest'() {\n+    this.emit(':ask', instructions);\n   },\n   //todo: utterances which fire this intent\n   //find my {Item}\n-  'FindItemIntent': function () {\n-    const itemSlot = this.event.request.intent.slots.Item;\n-    let findItemName = '',\n-      speechOutput = '',\n-      rePromptOutput = '';\n-    \n-    if(itemSlot && itemSlot.value){\n-      findItemName = itemSlot.value.toLowerCase();\n+  'FindItemIntent'() {\n+    const { slots } = this.event.request.intent;\n+\n+    // prompt for slot data if needed\n+    if (!slots.ItemName.value) {\n+      const slotToElicit = 'ItemName';\n+      const speechOutput = 'What is the name of the item?';\n+      const repromptSpeech = 'Please tell me the name of the item to be found';\n+      return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-    \n-    //call search function here that step by step searches for the item as we had decided at all cases\n-    let location = startSearch(findItemName);\n-    \n-    if (location) {\n-      speechOutput = findItemName + \" is kept at \" + location;\n-      this.emit(\":tell\", speechOutput);\n-    } else {\n-      if (findItemName) {\n-        speechOutput = \"I'm sorry, I currently do not know where\" + findItemName + \" is stored. What else can I help with?\";\n-      } else {\n-        speechOutput = \"I'm sorry, I currently do not know its location. What else can I help with?\";\n+\n+    const { userId } = this.event.session.user;\n+    const itemName = slots.ItemName.value;\n+    const dynamoParams = {\n+      TableName: itemsTable,\n+      Key: {\n+        Name: itemName,\n+        UserId: userId\n       }\n-      rePromptOutput = \"What else can I help with?\";\n-      this.emit(\":ask\", speechOutput, rePromptOutput)\n-    }\n+    };\n+\n+    console.log('Attempting to read data');\n+\n+    // query DynamoDB\n+    dbGet(dynamoParams)\n+      .then(data => {\n+        console.log('Get item succeeded', data);\n+\n+        const item = data.Item;\n+\n+        if (item) {\n+          this.emit(':tell', `Item ${itemName} is located in ${item.Location}`);\n+        }\n+        else {\n+          this.emit(':tell', `Item ${itemName} not found!`);\n+        }\n+      })\n+      .catch(err => console.error(err));",
+        "path": "index.js",
+        "position": 102,
+        "original_position": 102,
+        "commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "original_commit_id": "6f178d0575116437fe754f0bb0c19e1913c78b50",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "@shikhar-scs, waiting for your review\r\n",
+        "created_at": "2018-03-22T15:24:03Z",
+        "updated_at": "2018-03-22T15:24:03Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176462028",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176462028"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/2#discussion_r176462028"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/2"
+            }
+        },
+        "in_reply_to_id": 176458182
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176905942",
+        "pull_request_review_id": 106695449,
+        "id": 176905942,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjkwNTk0Mg==",
+        "diff_hunk": "@@ -11,7 +11,10 @@\n           }\n         ],\n         \"samples\": [\n-          \"find my {Item}\"\n+          \"find my {Item}\",\n+          \"help me find my {Item}\",\n+          \"where is my {Item}\",\n+          \"find an item\"",
+        "path": "customBuild.json",
+        "position": 8,
+        "original_position": 8,
+        "commit_id": "448215ca383eccac904b9fad9f712c3d3fa46723",
+        "original_commit_id": "7cd9c1ab868b2f598aeb823badc6d5559f82cc9a",
+        "user": {
+            "login": "shikhar-scs",
+            "id": 25258877,
+            "node_id": "MDQ6VXNlcjI1MjU4ODc3",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/25258877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shikhar-scs",
+            "html_url": "https://github.com/shikhar-scs",
+            "followers_url": "https://api.github.com/users/shikhar-scs/followers",
+            "following_url": "https://api.github.com/users/shikhar-scs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shikhar-scs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shikhar-scs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shikhar-scs/subscriptions",
+            "organizations_url": "https://api.github.com/users/shikhar-scs/orgs",
+            "repos_url": "https://api.github.com/users/shikhar-scs/repos",
+            "events_url": "https://api.github.com/users/shikhar-scs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shikhar-scs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Shouldn't this be {item} ?",
+        "created_at": "2018-03-24T10:45:47Z",
+        "updated_at": "2018-03-25T17:54:34Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176905942",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176905942"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176905942"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176905945",
+        "pull_request_review_id": 106695449,
+        "id": 176905945,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjkwNTk0NQ==",
+        "diff_hunk": "@@ -28,7 +31,8 @@\n         ],\n         \"samples\": [\n           \"add an item\",\n-          \"store an item\"\n+          \"store an item\",",
+        "path": "customBuild.json",
+        "position": 17,
+        "original_position": 17,
+        "commit_id": "448215ca383eccac904b9fad9f712c3d3fa46723",
+        "original_commit_id": "7cd9c1ab868b2f598aeb823badc6d5559f82cc9a",
+        "user": {
+            "login": "shikhar-scs",
+            "id": 25258877,
+            "node_id": "MDQ6VXNlcjI1MjU4ODc3",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/25258877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shikhar-scs",
+            "html_url": "https://github.com/shikhar-scs",
+            "followers_url": "https://api.github.com/users/shikhar-scs/followers",
+            "following_url": "https://api.github.com/users/shikhar-scs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shikhar-scs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shikhar-scs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shikhar-scs/subscriptions",
+            "organizations_url": "https://api.github.com/users/shikhar-scs/orgs",
+            "repos_url": "https://api.github.com/users/shikhar-scs/repos",
+            "events_url": "https://api.github.com/users/shikhar-scs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shikhar-scs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "same for this",
+        "created_at": "2018-03-24T10:45:57Z",
+        "updated_at": "2018-03-25T17:54:34Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176905945",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176905945"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176905945"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176905958",
+        "pull_request_review_id": 106695449,
+        "id": 176905958,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjkwNTk1OA==",
+        "diff_hunk": "@@ -0,0 +1,54 @@\n+<html>\n+<head>\n+  <script src=\"https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js\"></script>\n+  \n+  <script>\n+    AWS.config.update({\n+      region: \"us-west-2\",\n+      endpoint: 'http://localhost:8000',\n+      // accessKeyId default can be used while using the downloadable version of DynamoDB.\n+      // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.\n+      accessKeyId: \"fakeMyKeyId\",\n+      // secretAccessKey default can be used while using the downloadable version of DynamoDB.\n+      // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.\n+      secretAccessKey: \"fakeSecretAccessKey\"\n+    });\n+    \n+    var dynamodb = new AWS.DynamoDB();\n+    \n+    function createMovies() {\n+      var params = {\n+        TableName : \"Movies\",\n+        KeySchema: [\n+          { AttributeName: \"year\", KeyType: \"HASH\"},\n+          { AttributeName: \"title\", KeyType: \"RANGE\" }\n+        ],\n+        AttributeDefinitions: [\n+          { AttributeName: \"year\", AttributeType: \"N\" },\n+          { AttributeName: \"title\", AttributeType: \"S\" }\n+        ],\n+        ProvisionedThroughput: {\n+          ReadCapacityUnits: 5,\n+          WriteCapacityUnits: 5\n+        }\n+      };\n+      \n+      dynamodb.createTable(params, function(err, data) {\n+        if (err) {\n+          document.getElementById('textarea').innerHTML = \"Unable to create table: \" + \"\\n\" + JSON.stringify(err, undefined, 2);\n+        } else {\n+          document.getElementById('textarea').innerHTML = \"Created table: \" + \"\\n\" + JSON.stringify(data, undefined, 2);\n+        }\n+      });\n+    }\n+  \n+  </script>\n+</head>\n+\n+<body>\n+<input id=\"createTableButton\" type=\"button\" value=\"Create Table\" onclick=\"createMovies();\" />\n+<br><br>\n+<textarea readonly id= \"textarea\" style=\"width:400px; height:800px\"></textarea>\n+\n+</body>\n+</html>",
+        "path": "hello.html",
+        "position": null,
+        "original_position": 54,
+        "commit_id": "448215ca383eccac904b9fad9f712c3d3fa46723",
+        "original_commit_id": "7cd9c1ab868b2f598aeb823badc6d5559f82cc9a",
+        "user": {
+            "login": "shikhar-scs",
+            "id": 25258877,
+            "node_id": "MDQ6VXNlcjI1MjU4ODc3",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/25258877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shikhar-scs",
+            "html_url": "https://github.com/shikhar-scs",
+            "followers_url": "https://api.github.com/users/shikhar-scs/followers",
+            "following_url": "https://api.github.com/users/shikhar-scs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shikhar-scs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shikhar-scs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shikhar-scs/subscriptions",
+            "organizations_url": "https://api.github.com/users/shikhar-scs/orgs",
+            "repos_url": "https://api.github.com/users/shikhar-scs/repos",
+            "events_url": "https://api.github.com/users/shikhar-scs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shikhar-scs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "remove this file",
+        "created_at": "2018-03-24T10:46:47Z",
+        "updated_at": "2018-03-25T17:54:34Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176905958",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176905958"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176905958"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176906154",
+        "pull_request_review_id": 106695703,
+        "id": 176906154,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjkwNjE1NA==",
+        "diff_hunk": "@@ -11,7 +11,10 @@\n           }\n         ],\n         \"samples\": [\n-          \"find my {Item}\"\n+          \"find my {Item}\",\n+          \"help me find my {Item}\",\n+          \"where is my {Item}\",\n+          \"find an item\"",
+        "path": "customBuild.json",
+        "position": 8,
+        "original_position": 8,
+        "commit_id": "448215ca383eccac904b9fad9f712c3d3fa46723",
+        "original_commit_id": "7cd9c1ab868b2f598aeb823badc6d5559f82cc9a",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "nope. That's for dialog model to handle\r\nLike when you say `find an item` then as `slots.Item.value` is **not set** then the dialog model handles it when you say `find my {Item}` then `slots.Item.value` is **set** so the dialog model only asks for a confirmation",
+        "created_at": "2018-03-24T10:58:12Z",
+        "updated_at": "2018-03-25T17:54:34Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176906154",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176906154"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176906154"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7"
+            }
+        },
+        "in_reply_to_id": 176905942
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176906164",
+        "pull_request_review_id": 106695713,
+        "id": 176906164,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjkwNjE2NA==",
+        "diff_hunk": "@@ -28,7 +31,8 @@\n         ],\n         \"samples\": [\n           \"add an item\",\n-          \"store an item\"\n+          \"store an item\",",
+        "path": "customBuild.json",
+        "position": 17,
+        "original_position": 17,
+        "commit_id": "448215ca383eccac904b9fad9f712c3d3fa46723",
+        "original_commit_id": "7cd9c1ab868b2f598aeb823badc6d5559f82cc9a",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "check above comment",
+        "created_at": "2018-03-24T10:58:48Z",
+        "updated_at": "2018-03-25T17:54:34Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176906164",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176906164"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176906164"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7"
+            }
+        },
+        "in_reply_to_id": 176905945
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176906174",
+        "pull_request_review_id": 106695719,
+        "id": 176906174,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NjkwNjE3NA==",
+        "diff_hunk": "@@ -0,0 +1,54 @@\n+<html>\n+<head>\n+  <script src=\"https://sdk.amazonaws.com/js/aws-sdk-2.7.16.min.js\"></script>\n+  \n+  <script>\n+    AWS.config.update({\n+      region: \"us-west-2\",\n+      endpoint: 'http://localhost:8000',\n+      // accessKeyId default can be used while using the downloadable version of DynamoDB.\n+      // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.\n+      accessKeyId: \"fakeMyKeyId\",\n+      // secretAccessKey default can be used while using the downloadable version of DynamoDB.\n+      // For security reasons, do not store AWS Credentials in your files. Use Amazon Cognito instead.\n+      secretAccessKey: \"fakeSecretAccessKey\"\n+    });\n+    \n+    var dynamodb = new AWS.DynamoDB();\n+    \n+    function createMovies() {\n+      var params = {\n+        TableName : \"Movies\",\n+        KeySchema: [\n+          { AttributeName: \"year\", KeyType: \"HASH\"},\n+          { AttributeName: \"title\", KeyType: \"RANGE\" }\n+        ],\n+        AttributeDefinitions: [\n+          { AttributeName: \"year\", AttributeType: \"N\" },\n+          { AttributeName: \"title\", AttributeType: \"S\" }\n+        ],\n+        ProvisionedThroughput: {\n+          ReadCapacityUnits: 5,\n+          WriteCapacityUnits: 5\n+        }\n+      };\n+      \n+      dynamodb.createTable(params, function(err, data) {\n+        if (err) {\n+          document.getElementById('textarea').innerHTML = \"Unable to create table: \" + \"\\n\" + JSON.stringify(err, undefined, 2);\n+        } else {\n+          document.getElementById('textarea').innerHTML = \"Created table: \" + \"\\n\" + JSON.stringify(data, undefined, 2);\n+        }\n+      });\n+    }\n+  \n+  </script>\n+</head>\n+\n+<body>\n+<input id=\"createTableButton\" type=\"button\" value=\"Create Table\" onclick=\"createMovies();\" />\n+<br><br>\n+<textarea readonly id= \"textarea\" style=\"width:400px; height:800px\"></textarea>\n+\n+</body>\n+</html>",
+        "path": "hello.html",
+        "position": null,
+        "original_position": 54,
+        "commit_id": "448215ca383eccac904b9fad9f712c3d3fa46723",
+        "original_commit_id": "7cd9c1ab868b2f598aeb823badc6d5559f82cc9a",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "K cool. Btw it was your file :expressionless: ",
+        "created_at": "2018-03-24T10:59:27Z",
+        "updated_at": "2018-03-25T17:54:34Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176906174",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176906174"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/7#discussion_r176906174"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/7"
+            }
+        },
+        "in_reply_to_id": 176905958
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176899786",
+        "pull_request_review_id": 106689409,
+        "id": 176899786,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3Njg5OTc4Ng==",
+        "diff_hunk": "@@ -40,34 +41,103 @@ const handlers = {\n       const repromptSpeech = 'Please tell me the name of the item to be found';\n       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-\n+  \n+    //perform searches in active list then in the dynamoDB\n+    //step by step\n+    //1. Direct Match in Active List imported above\n+    //2. Searching of 5 synonyms in activeList\n+    //3. check Up if if itemName exists in masterDB -> give out probable places\n+    //4. check up if confirmed synonym exists in masterDB or not\n+    //5. Scope for recursive searches\n+    //6. Send a not found flag now",
+        "path": "index.js",
+        "position": null,
+        "original_position": 21,
+        "commit_id": "82efb215ec8487e9cdee4218c78929f315415a27",
+        "original_commit_id": "50e275b9e67b91487a164823f63a758f7a29ae8a",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "nice :+1:",
+        "created_at": "2018-03-24T04:30:39Z",
+        "updated_at": "2018-03-29T17:59:11Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r176899786",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176899786"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r176899786"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176899809",
+        "pull_request_review_id": 106689409,
+        "id": 176899809,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3Njg5OTgwOQ==",
+        "diff_hunk": "@@ -40,34 +41,103 @@ const handlers = {\n       const repromptSpeech = 'Please tell me the name of the item to be found';\n       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-\n+  \n+    //perform searches in active list then in the dynamoDB\n+    //step by step\n+    //1. Direct Match in Active List imported above\n+    //2. Searching of 5 synonyms in activeList\n+    //3. check Up if if itemName exists in masterDB -> give out probable places\n+    //4. check up if confirmed synonym exists in masterDB or not\n+    //5. Scope for recursive searches\n+    //6. Send a not found flag now\n+    \n     const { userId } = this.event.session.user;\n     const itemName = slots.ItemName.value;\n-    const dynamoParams = {\n-      TableName: itemsTable,\n-      Key: {\n-        Name: itemName,\n-        UserId: userId\n-      }\n-    };\n-\n-    console.log('Attempting to read data');\n-\n-    // query DynamoDB\n-    dbGet(dynamoParams)\n-      .then(data => {\n-        console.log('Get item succeeded', data);\n \n-        const item = data.Item;\n+    console.log('Attempting to read data in activeList');\n+  \n+    //search active list. (write code once SHM inplements it)\n+    // if(!found)\n+  \n+    console.log('Attempting to read data of synonyms in activeList');\n+  \n+    const synonyms = thesaurus.search(itemName).synonyms;\n+    const reqdSynonyms = [];",
+        "path": "index.js",
+        "position": null,
+        "original_position": 49,
+        "commit_id": "82efb215ec8487e9cdee4218c78929f315415a27",
+        "original_commit_id": "50e275b9e67b91487a164823f63a758f7a29ae8a",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "maybe `requiredSynonyms = [];`",
+        "created_at": "2018-03-24T04:32:02Z",
+        "updated_at": "2018-03-29T17:59:11Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r176899809",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176899809"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r176899809"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176899848",
+        "pull_request_review_id": 106689409,
+        "id": 176899848,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3Njg5OTg0OA==",
+        "diff_hunk": "@@ -40,34 +41,103 @@ const handlers = {\n       const repromptSpeech = 'Please tell me the name of the item to be found';\n       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n-\n+  \n+    //perform searches in active list then in the dynamoDB\n+    //step by step\n+    //1. Direct Match in Active List imported above\n+    //2. Searching of 5 synonyms in activeList\n+    //3. check Up if if itemName exists in masterDB -> give out probable places\n+    //4. check up if confirmed synonym exists in masterDB or not\n+    //5. Scope for recursive searches\n+    //6. Send a not found flag now\n+    \n     const { userId } = this.event.session.user;\n     const itemName = slots.ItemName.value;\n-    const dynamoParams = {\n-      TableName: itemsTable,\n-      Key: {\n-        Name: itemName,\n-        UserId: userId\n-      }\n-    };\n-\n-    console.log('Attempting to read data');\n-\n-    // query DynamoDB\n-    dbGet(dynamoParams)\n-      .then(data => {\n-        console.log('Get item succeeded', data);\n \n-        const item = data.Item;\n+    console.log('Attempting to read data in activeList');\n+  \n+    //search active list. (write code once SHM inplements it)\n+    // if(!found)\n+  \n+    console.log('Attempting to read data of synonyms in activeList');\n+  \n+    const synonyms = thesaurus.search(itemName).synonyms;\n+    const reqdSynonyms = [];\n+    synonyms.forEach(function (synonym) {\n+      \n+      //we need a way to filterOut unnecessary synonyms and keep only reqd.\n+      // We might for once filter by keeping only the ones existing in activeList.\n+      // But then there can be cases when an item exists in DB but not activeList.\n+      // Also, direct prompting could irritate the user\n+      \n+      if(activeList.includes(synonym)) {\n+        reqdSynonyms.push(synonym)\n+        // prompt user were u talking about this synonym\n+        // if yes, tell its location else continue()",
+        "path": "index.js",
+        "position": null,
+        "original_position": 60,
+        "commit_id": "82efb215ec8487e9cdee4218c78929f315415a27",
+        "original_commit_id": "50e275b9e67b91487a164823f63a758f7a29ae8a",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Sounds cool. Good thinking @shikhar-scs :tada: ",
+        "created_at": "2018-03-24T04:34:52Z",
+        "updated_at": "2018-03-29T17:59:11Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r176899848",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/176899848"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r176899848"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177975998",
+        "pull_request_review_id": 107951585,
+        "id": 177975998,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3Nzk3NTk5OA==",
+        "diff_hunk": "@@ -104,37 +249,44 @@ const handlers = {\n       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n     \n-    let params = {\n-      TableName: itemsTableName,\n-      Item:{\n-        \"itemName-userId\": slots.Item.value + \"-\" + userId,\n-        \"userId\": userId,\n-        \"itemName\": slots.Item.value,\n-        \"locationName\": slots.Place.value\n-      }\n-    };\n-    //todo: (SHM's task) => Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.\n-    //todo: (not required for now)Promisify to be used here(check how to use the new API)\n-    documentClient.put(params, function(err, data) {\n-      if (err) {\n-        console.error(\"Unable to add item. Error JSON:\", JSON.stringify(err, null, 2));\n-        emitCopy(':tell', \"oops! something went wrong\");\n-      } else {\n-        console.log(\"Added item:\", JSON.stringify(data, null, 2));\n-        emitCopy(':tell', `your ${slots.Item.value} has been stored at ${slots.Place.value}`);\n-      }\n+    activeList.push({\n+      itemName: slots.Item.value,\n+      locationName: slots.Place.value,\n+      whetherTransferred: 'false'",
+        "path": "index.js",
+        "position": null,
+        "original_position": 246,
+        "commit_id": "82efb215ec8487e9cdee4218c78929f315415a27",
+        "original_commit_id": "48e5304be998a9448955e5b9a978e4d30fbbcf4b",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "'false' should be changed to false ",
+        "created_at": "2018-03-29T07:47:24Z",
+        "updated_at": "2018-03-29T17:59:11Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r177975998",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177975998"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r177975998"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177976649",
+        "pull_request_review_id": 107951585,
+        "id": 177976649,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3Nzk3NjY0OQ==",
+        "diff_hunk": "@@ -104,37 +249,44 @@ const handlers = {\n       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n     \n-    let params = {\n-      TableName: itemsTableName,\n-      Item:{\n-        \"itemName-userId\": slots.Item.value + \"-\" + userId,\n-        \"userId\": userId,\n-        \"itemName\": slots.Item.value,\n-        \"locationName\": slots.Place.value\n-      }\n-    };\n-    //todo: (SHM's task) => Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.\n-    //todo: (not required for now)Promisify to be used here(check how to use the new API)\n-    documentClient.put(params, function(err, data) {\n-      if (err) {\n-        console.error(\"Unable to add item. Error JSON:\", JSON.stringify(err, null, 2));\n-        emitCopy(':tell', \"oops! something went wrong\");\n-      } else {\n-        console.log(\"Added item:\", JSON.stringify(data, null, 2));\n-        emitCopy(':tell', `your ${slots.Item.value} has been stored at ${slots.Place.value}`);\n-      }\n+    activeList.push({\n+      itemName: slots.Item.value,\n+      locationName: slots.Place.value,\n+      whetherTransferred: 'false'\n     });\n+  \n+    //checks if you need to copy stuff from AL -> DB. copies if needed.\n+    fetchExistingTimeStamp(userId);\n+  ",
+        "path": "index.js",
+        "position": null,
+        "original_position": 251,
+        "commit_id": "82efb215ec8487e9cdee4218c78929f315415a27",
+        "original_commit_id": "48e5304be998a9448955e5b9a978e4d30fbbcf4b",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "This should be implemented similarly as fetch active list. I. E.  Only in the beginning and the end ",
+        "created_at": "2018-03-29T07:50:08Z",
+        "updated_at": "2018-03-29T17:59:11Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r177976649",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177976649"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r177976649"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177982392",
+        "pull_request_review_id": 107951585,
+        "id": 177982392,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3Nzk4MjM5Mg==",
+        "diff_hunk": "@@ -104,37 +249,44 @@ const handlers = {\n       return this.emit(':elicitSlot', slotToElicit, speechOutput, repromptSpeech);\n     }\n     \n-    let params = {\n-      TableName: itemsTableName,\n-      Item:{\n-        \"itemName-userId\": slots.Item.value + \"-\" + userId,\n-        \"userId\": userId,\n-        \"itemName\": slots.Item.value,\n-        \"locationName\": slots.Place.value\n-      }\n-    };\n-    //todo: (SHM's task) => Prakriti's method of first searching and then storing. But this will be done once the database table design has been finalized.\n-    //todo: (not required for now)Promisify to be used here(check how to use the new API)\n-    documentClient.put(params, function(err, data) {\n-      if (err) {\n-        console.error(\"Unable to add item. Error JSON:\", JSON.stringify(err, null, 2));\n-        emitCopy(':tell', \"oops! something went wrong\");\n-      } else {\n-        console.log(\"Added item:\", JSON.stringify(data, null, 2));\n-        emitCopy(':tell', `your ${slots.Item.value} has been stored at ${slots.Place.value}`);\n-      }\n+    activeList.push({\n+      itemName: slots.Item.value,\n+      locationName: slots.Place.value,\n+      whetherTransferred: 'false'",
+        "path": "index.js",
+        "position": null,
+        "original_position": 246,
+        "commit_id": "82efb215ec8487e9cdee4218c78929f315415a27",
+        "original_commit_id": "48e5304be998a9448955e5b9a978e4d30fbbcf4b",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I have suggested other changes to @shikhar-scs over phone ",
+        "created_at": "2018-03-29T08:16:38Z",
+        "updated_at": "2018-03-29T17:59:11Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r177982392",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177982392"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/5#discussion_r177982392"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/5"
+            }
+        },
+        "in_reply_to_id": 177975998
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178326929",
+        "pull_request_review_id": 108375999,
+        "id": 178326929,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODMyNjkyOQ==",
+        "diff_hunk": "@@ -134,15 +136,15 @@ const handlers = {\n       // requiredSynonyms.forEach(function (synonym) {\n       synonyms.forEach(function (synonym) {\n         \n-        for (let activeMember in activeList) {\n-          if(activeMember[synonym]) {\n+        for (let activeMember of activeList) {\n+          if(activeMember.itemName === synonym) {\n             //todo: user has to confirm that this is what he requires, setup dialog model\n             requiredSynonyms.push(synonym);\n-            emitCopy(\":tell\", `your ${synonym} is located at ${activeMember[synonym]}`);\n+            emitCopy(\":tell\", `your ${synonym} is located at ${activeMember.locationName}`);\n             searchFlag = true;\n-            \n-            let index = activeList.indexOf(synonym);\n-            if (index > -1) activeList.splice(index, 1);\n+            const index = activeList.indexOf(activeMember);\n+            activeList.splice(index, 1);\n+            storeActiveList(userId);",
+        "path": "index.js",
+        "position": 44,
+        "original_position": 44,
+        "commit_id": "73830baa762b1054f6c6b2bd03f2f5d60f9318e3",
+        "original_commit_id": "73830baa762b1054f6c6b2bd03f2f5d60f9318e3",
+        "user": {
+            "login": "shikhar-scs",
+            "id": 25258877,
+            "node_id": "MDQ6VXNlcjI1MjU4ODc3",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/25258877?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/shikhar-scs",
+            "html_url": "https://github.com/shikhar-scs",
+            "followers_url": "https://api.github.com/users/shikhar-scs/followers",
+            "following_url": "https://api.github.com/users/shikhar-scs/following{/other_user}",
+            "gists_url": "https://api.github.com/users/shikhar-scs/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/shikhar-scs/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/shikhar-scs/subscriptions",
+            "organizations_url": "https://api.github.com/users/shikhar-scs/orgs",
+            "repos_url": "https://api.github.com/users/shikhar-scs/repos",
+            "events_url": "https://api.github.com/users/shikhar-scs/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/shikhar-scs/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "the condition `if (index > -1)` was put to ensure that we actually have an index value !== -1 . Does it get covered in line #140 ?",
+        "created_at": "2018-03-30T16:54:42Z",
+        "updated_at": "2018-03-30T16:54:42Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/11#discussion_r178326929",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/11",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178326929"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/11#discussion_r178326929"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/11"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178327796",
+        "pull_request_review_id": 108377042,
+        "id": 178327796,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODMyNzc5Ng==",
+        "diff_hunk": "@@ -134,15 +136,15 @@ const handlers = {\n       // requiredSynonyms.forEach(function (synonym) {\n       synonyms.forEach(function (synonym) {\n         \n-        for (let activeMember in activeList) {\n-          if(activeMember[synonym]) {\n+        for (let activeMember of activeList) {\n+          if(activeMember.itemName === synonym) {\n             //todo: user has to confirm that this is what he requires, setup dialog model\n             requiredSynonyms.push(synonym);\n-            emitCopy(\":tell\", `your ${synonym} is located at ${activeMember[synonym]}`);\n+            emitCopy(\":tell\", `your ${synonym} is located at ${activeMember.locationName}`);\n             searchFlag = true;\n-            \n-            let index = activeList.indexOf(synonym);\n-            if (index > -1) activeList.splice(index, 1);\n+            const index = activeList.indexOf(activeMember);\n+            activeList.splice(index, 1);\n+            storeActiveList(userId);",
+        "path": "index.js",
+        "position": 44,
+        "original_position": 44,
+        "commit_id": "73830baa762b1054f6c6b2bd03f2f5d60f9318e3",
+        "original_commit_id": "73830baa762b1054f6c6b2bd03f2f5d60f9318e3",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "you'll get index === -1 when activeMember is not found inside the activeList. But activeMember is a part of activeList. as we are already looping for activeMember of activeList",
+        "created_at": "2018-03-30T16:59:29Z",
+        "updated_at": "2018-03-30T16:59:29Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/11#discussion_r178327796",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/11",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178327796"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/11#discussion_r178327796"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/11"
+            }
+        },
+        "in_reply_to_id": 178326929
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177636740",
+        "pull_request_review_id": 107542381,
+        "id": 177636740,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NzYzNjc0MA==",
+        "diff_hunk": "@@ -0,0 +1,15 @@\n+# Stuffer\n+## Gotcha find \u2019em all !\n+\n+Stuffer helps users keep track of their belongings in an intelligent way. \n+Simply ask Alexa to make note of an item and when prompted later, it would inform the user of the same.\n+\n+Stuffer keeps track of all item's location stored in its database. When activated, \n+  - Stuffer asks the user what (item\u2019s name) and where (location\u2019s name) to store. \n+  - Users can also password protect their storage details. \n+  - A user can retrieve the location of a stored item at a later stage by prompting Stuffer for the same. \n+  - Stuffer by default considers the previous workspace (in terms of location) of the user as the current workspace. \n+  - A user can shift to another workspace, by specifying it explicitly to Stuffer. \n+  - With **Stuffer** it is also possible to maintain a checklist of items for a particular event (specify event\u2019s name). On the day of the event, the user can ask Stuffer to remind him of all the items he requires for a particular event along with their location.\n+\n+Multiple edge cases would occur in the implementation of such a Skill. However, all these cases have been taken care of",
+        "path": "README.md",
+        "position": null,
+        "original_position": 15,
+        "commit_id": "3bba48fd5b2729ebb45e5a442cc2b00072367e86",
+        "original_commit_id": "801b9fed6b4006fcf7d8dc16de4ee35e2f85908b",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Please rebase properly. This is actually not part of your PR. It is Shikhar's",
+        "created_at": "2018-03-28T04:33:48Z",
+        "updated_at": "2018-03-31T03:38:59Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/9#discussion_r177636740",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/9",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177636740"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/9#discussion_r177636740"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177637043",
+        "pull_request_review_id": 107542381,
+        "id": 177637043,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3NzYzNzA0Mw==",
+        "diff_hunk": "@@ -124,6 +125,160 @@ const handlers = {\n         emitCopy(':tell', `your ${slots.Item.value} has been stored at ${slots.Place.value}`);\n       }\n     });\n+  },\n+\n+  'StoreEventItemIntent': function () {",
+        "path": "index.js",
+        "position": null,
+        "original_position": 92,
+        "commit_id": "3bba48fd5b2729ebb45e5a442cc2b00072367e86",
+        "original_commit_id": "801b9fed6b4006fcf7d8dc16de4ee35e2f85908b",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "You have written `StoreEventItemIntent` twice, `FindEventItemIntent` is missing",
+        "created_at": "2018-03-28T04:37:53Z",
+        "updated_at": "2018-03-31T03:38:59Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/9#discussion_r177637043",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/9",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/177637043"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/9#discussion_r177637043"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/9"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178706402",
+        "pull_request_review_id": 108807113,
+        "id": 178706402,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODcwNjQwMg==",
+        "diff_hunk": "@@ -114,14 +126,14 @@\n           {\n             \"id\": \"\",\n             \"name\": {\n-              \"value\": \"Watch\",\n+              \"value\": \"stop\",\n               \"synonyms\": []\n             }\n           },\n           {\n             \"id\": \"\",\n             \"name\": {\n-              \"value\": \"Wallet\",\n+              \"value\": \"start\",",
+        "path": "customBuild.json",
+        "position": 52,
+        "original_position": 52,
+        "commit_id": "4d6ba873f1222ef369c15e020410cd2e21a836b4",
+        "original_commit_id": "4d6ba873f1222ef369c15e020410cd2e21a836b4",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "same as the above review",
+        "created_at": "2018-04-03T03:41:46Z",
+        "updated_at": "2018-04-03T03:43:44Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/15#discussion_r178706402",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/15",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178706402"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/15#discussion_r178706402"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/15"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178706541",
+        "pull_request_review_id": 108807113,
+        "id": 178706541,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODcwNjU0MQ==",
+        "diff_hunk": "@@ -197,12 +197,15 @@ const handlers = {\n   'StoreEventItemIntent': function () {\n     let emitOO = this.emit;\n     const { userId } = this.event.session.user;\n+    let event_key = this.event.request.intent.slots.Event_key.value;\n     let event_name = this.event.request.intent.slots.Event.value;\n+    let start = this.event.request.intent.slots.Start.value;\n     let itemName = this.event.request.intent.slots.Item.value;\n     let itemTwo = this.event.request.intent.slots.Itemtwo.value;\n     let itemThree = this.event.request.intent.slots.Itemthree.value;\n     let itemFour = this.event.request.intent.slots.Itemfour.value;\n     let itemFive = this.event.request.intent.slots.Itemfive.value;\n+    let stop = this.event.request.intent.slots.Stop.value;",
+        "path": "index.js",
+        "position": 12,
+        "original_position": 12,
+        "commit_id": "4d6ba873f1222ef369c15e020410cd2e21a836b4",
+        "original_commit_id": "4d6ba873f1222ef369c15e020410cd2e21a836b4",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "why would you need \r\n```Javascript\r\nlet event_key = this.event.request.intent.slots.Event_key.value;\r\nlet start = this.event.request.intent.slots.Start.value;\r\nlet stop = this.event.request.intent.slots.Stop.value;\r\n```",
+        "created_at": "2018-04-03T03:43:26Z",
+        "updated_at": "2018-04-03T03:43:44Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/15#discussion_r178706541",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/15",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178706541"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/15#discussion_r178706541"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/15"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178706379",
+        "pull_request_review_id": 108807113,
+        "id": 178706379,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODcwNjM3OQ==",
+        "diff_hunk": "@@ -114,14 +126,14 @@\n           {\n             \"id\": \"\",\n             \"name\": {\n-              \"value\": \"Watch\",\n+              \"value\": \"stop\",",
+        "path": "customBuild.json",
+        "position": 44,
+        "original_position": 44,
+        "commit_id": "4d6ba873f1222ef369c15e020410cd2e21a836b4",
+        "original_commit_id": "4d6ba873f1222ef369c15e020410cd2e21a836b4",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "But deleting this would create problems for the `FIndItemIntent` and `StoreItemIntent`. Could you make an addition instead of replacement",
+        "created_at": "2018-04-03T03:41:30Z",
+        "updated_at": "2018-04-03T03:44:10Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/15#discussion_r178706379",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/15",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178706379"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/15#discussion_r178706379"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/15"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178730269",
+        "pull_request_review_id": 108834243,
+        "id": 178730269,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODczMDI2OQ==",
+        "diff_hunk": "@@ -11,10 +11,13 @@\n           }\n         ],\n         \"samples\": [\n-          \"find my {Item}\",\n-          \"help me find my {Item}\",\n+          \"to find my {Item}\",",
+        "path": "customBuild.json",
+        "position": null,
+        "original_position": 6,
+        "commit_id": "9b3dbb298b0255dee4bbcea31f878810eb5c3e0d",
+        "original_commit_id": "6435b5696c4780fedcb5c02df03461d8e87fd85f",
+        "user": {
+            "login": "PikkaPikkachu",
+            "id": 25703976,
+            "node_id": "MDQ6VXNlcjI1NzAzOTc2",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/25703976?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/PikkaPikkachu",
+            "html_url": "https://github.com/PikkaPikkachu",
+            "followers_url": "https://api.github.com/users/PikkaPikkachu/followers",
+            "following_url": "https://api.github.com/users/PikkaPikkachu/following{/other_user}",
+            "gists_url": "https://api.github.com/users/PikkaPikkachu/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/PikkaPikkachu/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/PikkaPikkachu/subscriptions",
+            "organizations_url": "https://api.github.com/users/PikkaPikkachu/orgs",
+            "repos_url": "https://api.github.com/users/PikkaPikkachu/repos",
+            "events_url": "https://api.github.com/users/PikkaPikkachu/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/PikkaPikkachu/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "\"To\" is not required. ",
+        "created_at": "2018-04-03T07:03:26Z",
+        "updated_at": "2018-04-03T07:12:14Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/16#discussion_r178730269",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/16",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178730269"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/16#discussion_r178730269"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/16"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178730405",
+        "pull_request_review_id": 108834406,
+        "id": 178730405,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDE3ODczMDQwNQ==",
+        "diff_hunk": "@@ -11,10 +11,13 @@\n           }\n         ],\n         \"samples\": [\n-          \"find my {Item}\",\n-          \"help me find my {Item}\",\n+          \"to find my {Item}\",",
+        "path": "customBuild.json",
+        "position": null,
+        "original_position": 6,
+        "commit_id": "9b3dbb298b0255dee4bbcea31f878810eb5c3e0d",
+        "original_commit_id": "6435b5696c4780fedcb5c02df03461d8e87fd85f",
+        "user": {
+            "login": "himanish-star",
+            "id": 30361728,
+            "node_id": "MDQ6VXNlcjMwMzYxNzI4",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/30361728?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/himanish-star",
+            "html_url": "https://github.com/himanish-star",
+            "followers_url": "https://api.github.com/users/himanish-star/followers",
+            "following_url": "https://api.github.com/users/himanish-star/following{/other_user}",
+            "gists_url": "https://api.github.com/users/himanish-star/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/himanish-star/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/himanish-star/subscriptions",
+            "organizations_url": "https://api.github.com/users/himanish-star/orgs",
+            "repos_url": "https://api.github.com/users/himanish-star/repos",
+            "events_url": "https://api.github.com/users/himanish-star/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/himanish-star/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Yep, true\r\n",
+        "created_at": "2018-04-03T07:04:13Z",
+        "updated_at": "2018-04-03T07:12:14Z",
+        "html_url": "https://github.com/himanish-star/stuffer_alexa/pull/16#discussion_r178730405",
+        "pull_request_url": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/16",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/comments/178730405"
+            },
+            "html": {
+                "href": "https://github.com/himanish-star/stuffer_alexa/pull/16#discussion_r178730405"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/himanish-star/stuffer_alexa/pulls/16"
+            }
+        },
+        "in_reply_to_id": 178730269
+    }
+]

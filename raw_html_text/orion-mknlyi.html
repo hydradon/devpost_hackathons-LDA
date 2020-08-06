@@ -1,0 +1,198 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/265943962?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="636297" data-title="An example of using Orion's mobile gamepad." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/297/datas/original.png">
+                            <img alt="Orion &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/297/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                An example of using Orion's mobile gamepad.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="636295" data-title="The Orion interface being tested on a laptop screen." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/295/datas/original.png">
+                            <img alt="Orion &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/295/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The Orion interface being tested on a laptop screen.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="636296" data-title="An example of using Orion to load supplementary content off YouTube." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/296/datas/original.png">
+                            <img alt="Orion &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/296/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                An example of using Orion to load supplementary content off YouTube.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Home entertainment is a major part of our lives. Yet despite the numerous platforms that exist in this space, nearly all "modern" solutions are awkward and inefficient (think about clumsy typing interfaces on overpriced smart TVs). We created something more flexible, powerful, and entertaining - all with hardware everyone already owns.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Orion is a content consumption platform that was designed for the living room screen but that looks great on any device. It runs off of any computer, and transforms a connected mobile device into a dynamic remote. Additionally, the second screen adapts to display useful and interesting information related to what's being presented on the main screen. Any existing web-based or even local entertainment content is fully supported, so you can stream your favorite movies on the living room TV using your phone as a remote (and instantly unplug and take your entertainment with you, should you desire).
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The main platform was built with Electron.js and is compatible with any Windows, Mac, or Linux device. The mobile app (also cross-platform) was created using React Native and seamlessly interfaces with the primary client over wifi through socket.io. The custom UI on both the primary and secondary screens was meticulously designed by hand.
+                </p>
+                <h2>
+                    Implementation Details
+                </h2>
+                <p>
+                    The connection between the mobile and desktop clients is handled through a websocket created with socket.io. Because our desktop application runs locally, every socket message from the mobile device corresponds to an OS command to control mouse movement, volume, and key presses on the desktop side. Additionally, Orion also runs Chromium, which allows for the interaction of local state information (mouse, key, and click events) with web pages, creating a seamless user experience with mere millisecond delays. For example, consider a user clicking on the mobile touch area while hovering over content on the Orion desktop. This sends a socket.io event to our desktop application, which subsequently injects javascript into the web page. This javascript parses the URL and retrieves relevant information, such as search parameters and the video ID. All supplementary information - comments, reviews, and author information - is then sent back to the mobile device through another socket message.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Dynamically linking the states of the main screen and "remote" (for two-way content sharing and controller input) was a serious challenge. It took us a few caffeine-intensive weekends to sort through the bugs
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Aside from the buttery-smooth interface, one of our favorite features is the platform's ability to launch any existing PC game and transform up to four connected mobile devices into virtual gamepads.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Virtual input is a double-edged sword: you gain an expressive freedom inaccessible to dedicated hardware, but can easily lose a sense of coherence and simplicity if you're not careful. We learned to force ourselves to keep things intuitive in order to avoid feature-creep.
+                </p>
+                <h2>
+                    What's next for Orion
+                </h2>
+                <p>
+                    Though Orion can already support any web-based streaming service or content platform, we want to enrich the information that gets shared with the secondary device through available APIs.
+                </p>
+                <p>
+                    ***All content used with permissions through creative commons or API agreements.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            electron
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            electron-js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react-native">
+                                react-native
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            robot-js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            robotjs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/youtube">
+                                youtube
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/abelanger5/orion-desktop" rel="nofollow" target="_blank" title="https://github.com/abelanger5/orion-desktop">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

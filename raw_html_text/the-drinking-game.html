@@ -1,0 +1,157 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/ZlZquMPT2nc?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=36&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="888496" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/888/496/datas/original.png">
+                            <img alt="The Drinking Game &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/888/496/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As young professionals and recent graduates we often participated in situations such as nights out and icebreaking sessions where we had to get to know new people. In many of these situations we played various games meant to ease this task. However, we felt that the vast majority of them were quite limited. This is because they either relied on a pack of cards or were otherwise restricted in terms of the number of challenges or activities they would offer.
+                </p>
+                <p>
+                    As a better and more varied alternative, we decided to create a game that would facilitate social interactions, by getting all the participants involved with fun and interesting activities. We also thought that it would be more efficient to integrate it with an AI system like Alexa in order to act as a moderator, so all the participants can focus on the fun.
+                </p>
+                <p>
+                    Initially, we aimed to create a more complex skill, suitable for various events ranging from corporate or academic gatherings to nights out. However, we decided to start by creating a drinking game for now, in order to increase its popularity and get more experience with what Alexa has to offer.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The aim of this skill is to help the participants to get to know each other through fun and interesting activities. Unlike traditional games, where at least one of the participants had to act as some sort of moderator (either for reading the rules, reading the challenges or simply explaining the game) , this Alexa-powered drinking game enables everyone to focus solely on having fun and familiarise with the other players.
+                </p>
+                <p>
+                    The skill starts when one of the players asks Alexa to open The Drinking Game. Then, Alexa replies with an overview of the game and its rules. Afterwards, it asks the players to decide which game mode they want to play. There are two options available. The beginner mode, which is the free version of the game, contains 200 fun challenges. For those who are curios and willing to unlock additional challenges, the reckless mode is available through a one time in skill purchase. This offer even more activities, but it is not for the faint hearted. Once the participants have chosen the game mode, Alexa will ask for the number of players and the name of each player one at the time. A game is consisted of 10 rounds. Each round starts by Alexa giving either a general challenge or a player specific task followed by a musical break for the activity to be completed. In order to progress to the next round, someone needs to interrupt the musical break by saying "Alexa next". After 10 rounds, the game is over and the players have the option to either play again or close the skill.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The Alexa endpoint is a Node.js lambda function that makes use of the Ask SDK package. 
+When the game mode is being selected, lambda pulls 10 random challenges from a DynamoDB table and stores them as Session Attributes. The names of the players, that are also stored as Session Attributes, are used on every round to target the specific questions to random players from the list. As we are aware new people might want to join at later points we added an additional intent to change the number of players. The option of changing the game mode is also available.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The architecture of the skill changed a couple of times to fit the purpose of the project while being performance and time efficient. Initially we considered storing all the challenges in a javascript array but got to the conclusion that this approach might rise performance issues. As DynamoDb provides 1ms responses we realised that integrating this service would enhance the response time of Alexa. However, later on we realised that accessing DynamoDB each time we want to pull out a challenge for a round is not cost efficient. Consequently, we changed the skill to pull out all 10 challenges, randomly, as a batch at the beginning of the game.
+                </p>
+                <p>
+                    Another challenge we ran into was integrating in-skill Purchase for the first time in a skill. There were two aspects to this obstacle. Firstly, we needed to understand how to enable this feature from a coding perspective. Then, we had to figure out what premium content can we offer for an additional charge.We had to decide between enabling people to have more rounds per game, or unlocking new challenges. We choose the latter, as players have the option to play an unlimited number of games anyway.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The greatest accomplishment we have achieved is having people enjoying our work and repeatedly using the skill. As we set off with the idea of enchaining social interactions, this made us believe that our scope was at least partially accomplished.
+                </p>
+                <p>
+                    One other achievement that we are particularly happy with is how well we worked together as a team, and the way we distributed the workload. Ranging from coding the skill, to editing the YouTube video, we took advantage of everybody's strengths, and completed each other weaknesses.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We are very happy to have learned how session attributes work with Alexa. Furthermore, we learned how to integrate In Skill Purchase and AWS services such as DynamoDB.
+                </p>
+                <p>
+                    Another important lesson that we have learned is that flexibility and adaptability play key roles in the software development process. As showed in one of the paragraphs above, we have changed the skill's architecture a couple of times in order to optimize it , with the goal of enhancing the user experience.
+                </p>
+                <h2>
+                    What's next for The Drinking Game
+                </h2>
+                <p>
+                    The next thing we have in mind for the Drinking Game is to add more game modes, suitable for different social settings. Furthermore, we aim to add game modes similar to traditional drinking games , such as never have I ever and ring of fire.
+                </p>
+                <p>
+                    Furthermore, to enhance the Alexa User Experience, we will integrate Alexa Presentation Language (APL).
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.co.uk/MSIM-Consulting-The-Drinking-Game/dp/B07ZKTPQ3T/ref=sr_1_4?keywords=the+drinking+game&amp;qid=1573517701&amp;s=digital-skills&amp;sr=1-4" rel="nofollow" target="_blank" title="https://www.amazon.co.uk/MSIM-Consulting-The-Drinking-Game/dp/B07ZKTPQ3T/ref=sr_1_4?keywords=the+drinking+game&amp;qid=1573517701&amp;s=digital-skills&amp;sr=1-4">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.co.uk
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.com/MSIM-Consulting-The-Drinking-Game/dp/B07ZKTPQ3T/ref=sr_1_3?keywords=the+drinking+game+alexa+skill&amp;qid=1573517739&amp;sr=8-3" rel="nofollow" target="_blank" title="https://www.amazon.com/MSIM-Consulting-The-Drinking-Game/dp/B07ZKTPQ3T/ref=sr_1_3?keywords=the+drinking+game+alexa+skill&amp;qid=1573517739&amp;sr=8-3">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,103 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="807089" data-title="AutoCC on a movie trailer" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/089/datas/original.png">
+                            <img alt="AutoCC &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/807/089/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                AutoCC on a movie trailer
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We were inspired to make this to make automatic closed captioning more accessible to the hard of hearing. Although closed captioning exists on sites like YouTube, other popular tools like Discord or Skype don't offer closed captioning for the hearing impaired, so we wanted to create something that could help address that gap. There are many websites with video content
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It takes in all audio that is being output by the system, such as from conference calls, Google Hangouts, YouTube videos, Netflix, etc., and produces automatic closed captioning for the audio recorded. It then displays a black box with the text overlayed at the bottom of the screen.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used PyAudio and some sort of programming chicanery to record audio directly from the system (rather than from the microphone) and our textbox was made using PyGame. We managed to record and transcribe audio and minimize losses by recording audio in short segments via one thread, and in another thread running simultaneously, pushing the recorded audio onto a queue, where the oldest item on it would be transcribed to text using Google Cloud Speech-to-Text, and then pushed off the queue, into an input for the textbox. This method produces some lag between what the listener is reading and what's actually being said, but the immense upside of this as opposed to other methods is that very little of the audio is lost, so the user can get as much as possible.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The two main challenges we ran into were getting audio data from the system, and minimizing the lag between all the processes of retrieving the audio, converting it to text, and then displaying it for the user. Getting audio data was actually a lot harder than it seemed, because unlike microphone input, there were no good libraries or APIs for recognizing data coming from the system itself, and trying to find a way to record that audio ate up most of our time.
+                </p>
+                <p>
+                    To properly get audio input, we needed to run an input buffer on the audio that was output by the speaker. To do this, we had to route the output of the speakers through the computer's 'Stereo Mix' virtual device. After recording for a few seconds, the program saves the file and sends it to the Google Cloud speech recognition API for speech to text. When this is returned, the original audio file is destroyed and the text is saved.
+                </p>
+                <p>
+                    After we got that done, we had to figure out how to minimize display lag, or less the user would get disjointed messages.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Honestly, we're pretty proud of the fact that we didn't give up. Most of the day was spent trying to find a way to get system audio from the computer and displaying text onto the screen, and the hours spent failing to get past basically the first steps were pretty disheartening.
+                </p>
+                <p>
+                    We're also really proud of using learning new skills during the project, such as using PyGame to get display text onto the screen, and using multithreading to be able to run multiple processes at the same time to reduce lag.
+                </p>
+                <h2>
+                    What's next for AutoCC
+                </h2>
+                <p>
+                    Our next steps to improve our process would be to try to optimize our threading even further to remove as much of the lag as possible, as well as adding translation functionality.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/zarifmahmud/AutoCC" rel="nofollow" target="_blank" title="https://github.com/zarifmahmud/AutoCC">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

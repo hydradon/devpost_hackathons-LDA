@@ -1,0 +1,179 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="792853" data-title="Noshocracy Landing Page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/792/853/datas/original.png">
+                            <img alt="Noshocracy &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/792/853/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Noshocracy Landing Page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="792848" data-title="Free food tracker with data supplied from MySQL database." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/792/848/datas/original.png">
+                            <img alt="Noshocracy &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/792/848/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Free food tracker with data supplied from MySQL database.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Our team was inspired by the perpetual frustration that Dartmouth students face with high Dartmouth Dining Services (DDS) prices and overcrowding in popular campus eateries. Every spring term, the campus refills with an influx of upperclassmen who have finished their internships and study-abroad programs, only to result in 30+ minute lines at Collis to buy $10-questionably-edible pasta. And while standing in line, there isn't much to do beyond checking Facebook and surfing the web, perpetuating anti-social behavior that had ought to end as Hanover emerges from the frigid cold into a mild spring.
+                </p>
+                <p>
+                    We decided to develop Noshocracy as an alternative means for students to find meals on campus. In particular, Noshocracy, a portmanteau of nosh (a.k.a. food, snacks, etc.) and democracy, provides a platform for students to simultaneously find
+                    <strong>
+                        free
+                    </strong>
+                    food and engage with new activities and ideas, thereby _ liberating _ their wallets, their minds, and, not to mention, the free food they will consume. After all, what's not to love about a free meal and not having to stand idly in a line forever?
+                </p>
+                <p>
+                    Moreover, we are good friends with a number of students who receive substantial financial aid from the College. They have mentioned difficulty in finding funds to pay for meals toward the end of the term, as meal swipes and DBA are often not enough on their own to get through a full term. Thus, we hope that our platform will also greatly help the 51% of Dartmouth students who receive financial assistance.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Noshocracy is a simple web app that aggregates free food events shared to campus via the Dartmouth email listserv. The app even caters to the most-inert, as there is _ minimal _ end user interaction required. Noshocracy autonomously discovers free food events and posts them chronologically to its website, so users simply get to enjoy its offerings.
+                </p>
+                <p>
+                    All a user has to do is visit
+                    <a href="http://www.noshocracy.com/" rel="nofollow">
+                        the site
+                    </a>
+                    and pick an event they're interested in attending. If an RSVP or sign up is required, the user will be prompted to do so. Otherwise, the user can show up, get a free, catered meal, and make some new friends. We encourage our users to try new events -- watching the primary debate of an opposing political party or attending the speech of a guest lecturer -- as these experiences are oftentimes free only to a collegiate audience, and might provide a new means of thinking critically or capture a latent curiosity.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The web scraper and email processor are both built in Python. The scraper uses the BeautifulSoup library to extract HTML contents from a web version of Dartmouth's listserv in order to find links to listserv emails and the plaintext versions of those messages. The email message processor uses a series of natural language processing (NLP) techniques and libraries to determine if a given email corresponds to a free food event, and if it does, when and where the event will take place.
+                </p>
+                <p>
+                    The website is built with an HTML frontend and a PHP/MySQL backend. The Python scraper and processor upload parsed free food events to the MySQL database, which is then rendered by the frontend Noshocracy web app.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Extracting date and time information from listserv emails was extremely challenging. Even modern NLP libraries are not sophisticated enough to deal with context awareness for date and time information, especially since listserv messages tend not to follow traditional English grammar rules. Because the CAMPUS-EVENTS listserv is the only way for clubs to directly reach students online, the emails are designed to be fun-looking and vibrant, but therefore tend not to follow the structure of a typical email.
+                </p>
+                <p>
+                    As a result, we spent a great deal of time devising methods to overcome this problem. We started by tokenizing each plaintext email and removing stop words that seemed to hold little relevance to the content of the message. We then also determined noun phrases (combinations of two or more nouns), or sets of nouns that should be grouped together. We finished the pre-processing of data by removing extraneous numbers that could interfere with datetime extraction, by using a heuristic method of removing numbers if other numbers were not nearby in the sentence. We found this to be viable since numbers would normally be clumped together to represent a particular date or time, and a number on its own to represent a student's class year, for example, would be unlikely to appear near that specifying the day of the month.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are very proud that we were able to build a date and location parser with minimal NLP experience and still achieve upwards of 80% accuracy on the data we were able to extract -- all in under 24 hours!
+                </p>
+                <p>
+                    We feel that we can refine our email processing techniques and the frontend web app going forward to create a robust user experience.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    NLP requires a strong understanding of the data you are working with. In order for us to get the date and time accuracy that we did, we had to refine our algorithm extensively in order to extract and parse the data that truly mattered.
+                </p>
+                <p>
+                    It was also our first time working with PHP and MySQL in depth, so that provided some good experience! (... even if we spent about an hour trying to figure out how to adjust the chmod folder permissions to get the PHP script to load...)
+                </p>
+                <h2>
+                    What's next for Noshocracy
+                </h2>
+                <p>
+                    There's a lot more we hope to implement going forward.
+                </p>
+                <p>
+                    Jonathan has already started building a basic user login and authentication system so users can create unique profiles on the site. We hope this will allow users to also submit free food information they come across, like if someone has extra pizza to share at the Cube. Additionally, we would like to implement a reddit-like upvote/downvote system through which users can rate the quality of events so fellow users can make informed choices about what they would like to attend.
+                </p>
+                <p>
+                    We also plan to continue refining the scraping and NLP scripts to improve efficiency and accuracy, and ultimately configure the scripts to run on a server, such that new free food events can be added to the site every time a new listserv blast is distributed to students.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mysql">
+                                mysql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php5">
+                                php5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://www.noshocracy.com/" rel="nofollow" target="_blank" title="http://www.noshocracy.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.noshocracy.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Jaltaire/noshocracy-manager" rel="nofollow" target="_blank" title="https://github.com/Jaltaire/noshocracy-manager">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

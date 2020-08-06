@@ -1,0 +1,332 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    //Shane L. Mitchell - 9/21/19
+                </p>
+                <p>
+                    package FasTrackFood;
+                </p>
+                <p>
+                    //Import statements are listed below
+                </p>
+                <p>
+                    import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.scene.text.Text;
+import javafx.event.EventHandler;
+                </p>
+                <p>
+                    import java.io.*;
+import java.util.ArrayList;
+                </p>
+                <p>
+                    import javafx.geometry.Pos;
+                </p>
+                <p>
+                    public class FasTrackFood extends Application {
+    //Class variables are listed below
+    TextField IDField;
+    String userID;
+    TextField itemPurchase;
+    int itemPurchased;
+    File file = new File("E:\Java\Hackathon2019\ID Info.txt");
+    BufferedReader fr;
+    Button b1;
+    Button b2;
+    HBox h1;
+    HBox h3 = new HBox();
+    HBox h4;
+    HBox h5;
+    HBox h6;
+    HBox h7;
+    ArrayList idList = new ArrayList();
+    String currentID;
+    String text2Add = "STUDENTS: " + "\n";
+    String text4Add = "Hello, ";
+    int a = 0;
+    int c = 0;
+    int d;
+    Text text2 = new Text();
+    Text text3 = new Text("User does not exist.");
+    Text text4 = new Text();
+    ArrayList menu = new ArrayList();
+    Text menu2 = new Text();
+    String menu3 = "";
+                </p>
+                <pre class="language-nolang"><code>//Start method is listed below
+public void start(Stage primaryStage) throws Exception {
+//Sets the fileReader
+fr = new BufferedReader(new FileReader(file));
+
+//Imports the list of students
+while ((currentID = fr.readLine()) != null) {
+text2Add += (a + ". " + currentID + "\n");
+idList.add(a, currentID);
+a++;
+}
+text2.setText(text2Add);
+text2.setFont(Font.font("Apple Chancery", 24));
+
+//Formats the student list
+h3 = new HBox(text2);
+h3.setPadding(new Insets(25));
+h3.setAlignment(Pos.CENTER_LEFT);
+h3.setVisible(false);
+
+//Sets up the "Welcome User!" screen
+text4.setFont(Font.font("Apple Chancery", 48));
+h5 = new HBox(text4);
+h5.setPadding(new Insets(265));
+h5.setAlignment(Pos.BOTTOM_CENTER);
+h5.setVisible(false);
+
+//Creates and hides the "No User" error message
+text3.setFont(Font.font("Apple Chancery", 24));
+h4 = new HBox(text3);
+h4.setAlignment(Pos.BOTTOM_CENTER);
+h4.setPadding(new Insets(265));
+h4.setVisible(false);
+
+//Creates the logo for the top of the screen
+Image image = new Image(new FileInputStream("E:\\Java\\Hackathon2019\\FasTrackFoodLogo.png"));
+
+//Sets up the application
+StackPane root = new StackPane();
+primaryStage.setTitle("FasTrack Food");
+Scene scene = new Scene(root, 2000, 1000, Color.DARKGREY);
+
+//Creates and aligns our logo
+ImageView imageView = new ImageView(image);
+VBox v1 = new VBox(imageView);
+v1.setAlignment(Pos.TOP_CENTER);
+
+//Creates the hidden admin controls
+h3.setVisible(false);
+
+//Creates the ID Text Field
+Text text1 = new Text("User ID:");
+text1.setFont(Font.font("Apple Chancery", 28));
+IDField = new TextField();
+h1 = new HBox(5, text1, IDField);
+h1.setPadding(new Insets(300));
+h1.setAlignment(Pos.BOTTOM_CENTER);
+
+//Creates a submit button
+b1 = new Button("                    Submit                    ");
+b1.setOnAction(event);
+HBox h2 = new HBox(5, b1);
+h2.setPadding(new Insets(265));
+h2.setAlignment(Pos.BOTTOM_CENTER);
+
+//Creates a "buy item" button
+b2 = new Button("Buy Item");
+itemPurchase = new TextField();
+b2.setOnAction(event4);
+h6 = new HBox(itemPurchase, b2);
+h6.setAlignment(Pos.BOTTOM_RIGHT);
+h6.setPadding(new Insets(135));
+h6.setVisible(false);
+
+//SETS THE DEFAULT MENU
+//SETS THE DEFAULT MENU
+//SETS THE DEFAULT MENU
+menu.add(0, "Mac and Cheese_4.00");
+menu.add(1, "Pizza_2.00");
+menu.add(2, "Chips_1.00");
+menu.add(3, "Cookie_0.75");
+menu.add(4, "Ice Cream_1.25");
+
+//Adds all menu items to a piece of text
+for (int e = 0; e &lt; menu.size(); e++) {
+menu3 += ("Option " + (e + 1) + ": " + menu.get(e) + "\n");
+}
+menu2.setText(menu3);
+menu2.setFont(Font.font("Apple Chancery", 18));
+h7 = new HBox(menu2);
+h7.setAlignment(Pos.BOTTOM_RIGHT);
+h7.setPadding(new Insets(150));
+h7.setVisible(false);
+
+
+//Adds all of the parts created above
+root.getChildren().addAll(v1, h1, h2, h3, h4, h5, h7, h6);
+
+//Displays the scene
+primaryStage.setScene(scene);
+primaryStage.show();
+}
+
+//Creates the button event handler
+EventHandler&lt;ActionEvent&gt; event = new EventHandler&lt;ActionEvent&gt;() {
+public void handle(ActionEvent e) {
+userID = IDField.getText();
+b1.setVisible(false);
+h1.setVisible(false);
+h7.setVisible(true);
+
+//Checks to see if the user is an administrator
+if (userID.equalsIgnoreCase("72523")) {
+h7.setVisible(false);
+h3.setVisible(true);
+text4Add += ("Administrator" + "!");
+text4.setText(text4Add);
+h5.setVisible(true);
+} else {
+//Checks to see if the student exists
+for (int b = 0; b &lt; idList.size(); b++) {
+if (userID.equalsIgnoreCase(idList.get(b).substring(2, 7))) {
+c++;
+d = b;
+}
+}
+
+//Acts on if the student exists or not
+if (c == 0) {
+h4.setVisible(true);
+h7.setVisible(true);
+} else if (c == 1) {
+int underscorecounter = 0;
+int underscore1 = 0;
+int underscore2 = 0;
+
+//Extracts the name from the string
+for (int c = 0; c &lt; idList.get(d).length(); c++) {
+if (idList.get(d).charAt(c) == '_') {
+//Creates the necessary substrings
+if (underscorecounter == 0) {
+underscorecounter++;
+} else if (underscorecounter == 1) {
+underscore1 = c;
+underscorecounter++;
+} else if (underscorecounter == 2) {
+underscore2 = c;
+underscorecounter++;
+}
+}
+}
+//Sets the full name
+String fullName = idList.get(d).substring((underscore1 + 1), underscore2);
+
+//Extracts the first name
+int spaceAt = 0;
+for (int d = 0; d &lt; fullName.length(); d++) {
+if (fullName.charAt(d) == ' ') {
+spaceAt = d;
+d = fullName.length();
+}
+}
+
+//Sets the first name
+String firstName = fullName.substring(0, spaceAt);
+
+//Prints a welcome message
+text4Add += (firstName + "!");
+text4.setText(text4Add);
+h5.setVisible(true);
+
+//Displays the menu and the buy option
+h6.setVisible(true);
+}
+
+}
+}
+};
+
+//Creates the menu add option
+//EventHandler&lt;ActionEvent&gt; event2 = new EventHandler&lt;ActionEvent&gt;() {
+//public void handle(ActionEvent e) {
+
+//}
+//};
+
+//Creates the menu delete option
+//EventHandler&lt;ActionEvent&gt; event3 = new EventHandler&lt;ActionEvent&gt;() {
+//    public void handle(ActionEvent e) {
+
+//   }
+//};
+
+//Creates the item purchase option
+EventHandler&lt;ActionEvent&gt; event4 = new EventHandler&lt;ActionEvent&gt;() {
+public void handle(ActionEvent e) {
+try {
+double itemPrice = 0;
+if (Integer.parseInt(itemPurchase.getText()) - 1 &gt; 4) {
+itemPurchase.setText("Incorrect input.");
+} else {
+itemPurchased = Integer.parseInt(itemPurchase.getText()) - 1;
+itemPurchase.setText("Item Purchased!");
+
+int f;
+for (f = 0; f &lt; (menu.get(itemPurchased)).length(); f++) {
+if (menu.get(itemPurchased).charAt(f) == '_') {
+itemPrice = Double.parseDouble(menu.get(itemPurchased).substring(f + 1));
+f = (menu.get(itemPurchased)).length();
+}
+}
+}
+} catch (NumberFormatException error) {
+itemPurchase.setText("Incorrect input.");
+}
+
+}
+};
+
+//Main method is listed below
+public static void main(String[] args) {
+launch();
+}
+</code></pre>
+                <p>
+                    }
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/16Shane-code/FasTrackFood" rel="nofollow" target="_blank" title="https://github.com/16Shane-code/FasTrackFood">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,152 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    allows owners of simple phones to use internet search engines through voice
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    program gets the audio file (because I can speak Swahili) and uses wit API to turn it into text.
+Initially the idea was to get a Swahili language pack and train the language model for offline use, that approach would've been more appropriate, but in 24 hours it is next to impossible to put it together (at least for me, hope other teams did a better job)
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    It was build before, I just learned how to use it.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I  tried to make it work in offline mode, to train our own language model and use CMU Sphinx toolbox. It took me most of the night just get the Sphinx working (fairly complicated set-up process).
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was able to run the simple the following simple test on my machine.
+I didn't really solved their problem but it is a good start. 
+If time allows I'll look into that more.
+                </p>
+                <h2>
+                    link to important sites to further study
+                </h2>
+                <h2>
+                    [link]
+                    <a href="https://github.com/wit-ai/pywit" rel="nofollow">
+                        https://github.com/wit-ai/pywit
+                    </a>
+                </h2>
+                <h2>
+                    [link]
+                    <a href="https://github.com/Uberi/speech_recognition" rel="nofollow">
+                        https://github.com/Uberi/speech_recognition
+                    </a>
+                </h2>
+                <h2>
+                    [link]
+                    <a href="http://cmusphinx.sourceforge.net" rel="nofollow">
+                        http://cmusphinx.sourceforge.net
+                    </a>
+                </h2>
+                <h2>
+                    this is where I found out that wit understands Swahili
+                </h2>
+                <h2>
+                    [link]
+                    <a href="https://wit.ai/faq" rel="nofollow">
+                        https://wit.ai/faq
+                    </a>
+                </h2>
+                <pre><code>
+!/usr/bin/env python3
+###############################################
+#############SCRIPT START#########################
+##############################################
+
+import speech_recognition as sr
+
+###############################################
+# obtain path to "swahili_sample.wav" in the same folder as this script
+###############################################
+
+from os import path
+AUDIO_FILE = path.join(path.dirname(path.realpath(__file__)), "swahili_sample.wav")
+
+
+###############################################
+# use the audio file as the audio source
+###############################################
+
+r = sr.Recognizer()
+with sr.AudioFile(AUDIO_FILE) as source:
+audio = r.record(source)  # read the entire audio file
+
+
+###############################################
+# recognize speech using Wit.ai
+###############################################
+
+WIT_AI_KEY = "INSERT WIT.AI API KEY HERE"  
+# Wit.ai keys are 32-character uppercase alphanumeric strings
+try:
+print("Wit.ai thinks you said " + r.recognize_wit(audio, key=WIT_AI_KEY))
+except sr.UnknownValueError:
+print("Wit.ai could not understand audio")
+except sr.RequestError as e:
+print("Could not request results from Wit.ai service; {0}".format(e))
+ 
+###############################################
+###############END OF SCRIPT######################
+###############################################
+</code></pre>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Convolution neural networks does not work well for speech recognition.
+                </p>
+                <h2>
+                    What's next for Swahili voice-to-text
+                </h2>
+                <p>
+                    Dig dipper into CMU Sphinx toolbox get Swahili language pack to 
+build grammar and phonetic models.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            and-a-ton-of-extra-dependencies
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            https://github.com/uberi/speech-recognition
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

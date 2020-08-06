@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="799767" data-title="Controller and raspberry pi" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/799/767/datas/original.jpeg">
+                            <img alt="Huna for Everyone &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/799/767/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Controller and raspberry pi
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="799768" data-title="Controller and raspberry pi" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/799/768/datas/original.jpeg">
+                            <img alt="Huna for Everyone &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/799/768/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Controller and raspberry pi
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration: Immersive VR experience| VR for everyone
+                </h2>
+                <p>
+                    Our goal is to create a more realistic haptic experience in VR. Ultimately, we want to create a glove where you can touch, feel and interact with objects. As a first iteration, we wanted to test the feasibility of interacting with sensors and updating their values in real time. With the advent of 5G technology, we realized that streaming games would make the need for graphic processors irrelevant. Thus, VR that was formerly tethered to expensive mobile processors (or physically tethered to a pc, like the HTC Vive) could now be streamed to a phone that had limited graphical capability with similar results. This will expose a lot of new gamers to VR games who did not previously have the means to purchase these VR systems. All they would need is a phone + streaming service + google cardboard. We wanted to create a inexpensive sensor platform for new gamers entering the VR market; something that they could build themselves.
+                </p>
+                <h2>
+                    What it does:
+                </h2>
+                <p>
+                    Currently, the system can read rotation and position of N sensors and update these values in Unity's VR space. As a example of how these values might be used, we created a simple boxing game. The sensors are typically attached to two hands and one leg. The sensor leg allows the person to move along the floor while the hands control the boxing hands. However, these sensors can be placed anywhere. A person who is unable to move his or her hands would be able to use their feet and head to control the position and rotation. As an example of haptic feedback, we used a motor to generate vibration (as a generic placeholder for an actuator which would match the force in the VR simulation).
+                </p>
+                <h2>
+                    How I built it:
+                </h2>
+                <p>
+                    We used a raspberry pi as a platform for gathering information from sensors. This would allow us to scale the number of sensors. We used a 9 DoF IMU to collect absolute orientation. Position (which is not needed in the boxing game) is determined using an ultrasonic sensor OR IR sensor (either can be used). Acceleration is also measured using the IMU. However, I would like to point out that these sensors are scalable and there is room for more information to be collected by the pi.
+                </p>
+                <p>
+                    The raspberry pi is a client that updates the current values in the sensors on the server (a PC). We also set up a Raspberry Pi as a LAMP server so that the whole system can be entirely mobile. The system can be ran on a phone (iOS or Android) at any location without the need for other computers or processors.
+                </p>
+                <p>
+                    A passive vibrating motor is used for haptic feedback. We intend to replace this with an actuator when we have enough information to compute the forces and torque on the "hand" object in Unity's VR space (future). We will place these on the fingers of the hand when we build iteration 2.
+                </p>
+                <p>
+                    The VR game is built in Unity. The phone on which unity runs also acts like a client and requests updated information from the server. The boxing game detects collisions and updates its state to the server.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    We are engineers, not programmers, so our programming experience across the team ranges.
+                </p>
+                <p>
+                    We had a number of hardware issues that we had to solve specifically with the IMU. It has an ARM processor which gives the output of Kalman filters for the magnetometer, accelerometer, and gyroscope. However, the baud rate of the output was too slow for the raspberry pi and we had to basically under clock the processor read rate to allow it to read through I2C. The IMU can also give serial output that we can read on our serial input, but we were unable to read it on our serial port. Because we had to read through SCL/SDA instead of TX/RX and the I2C address was immutable we had to place one IMU per pi, which meant that we had to have 3 pis--one per IMU. That was unintentional and caused some problems.
+                </p>
+                <p>
+                    None of us had ever done low-level TCP networking before. We had to learn on the fly! We ended up running a synchronous client-server network because we didn't have time to implement a threaded application (and troubleshoot data collisions). We had to keep it simple!
+                </p>
+                <p>
+                    We also had to learn Unity... we started learning two weeks ago!! Our update function in Unity is a bit too slow to update the positions of objects. Either that or we need to update the rotation more often. We are not sure what the limiting factor is.
+                </p>
+                <p>
+                    We didn't have a 3D printer to make a nice glove and mount for the pi. So we "engineered" it with duct tape and electrical tape.
+                </p>
+                <p>
+                    We also forgot to bring our multimeter. That made figuring out what was going wrong with the hardware a little bit harder!
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of:
+                </h2>
+                <p>
+                    We learned low-level networking in a day! And Unity in two weeks!
+                </p>
+                <p>
+                    We got everything working! All of the sensors we wanted, the networking, and the unity all worked.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned how to make a Unity game. We learned how to ensure that our solutions were accessible to --almost-- everyone. We learned TCP networking.
+                </p>
+                <h2>
+                    What's next for Huna
+                </h2>
+                <p>
+                    Next, we have a 6 week project over the summer. This one will not be a DIY project, but more of a serious engineering challenge. We are going to scrap these IMU for a version which has either no ARM processor or better serial support so that we can stack more IMUs per pi. We are also going to add more sensors. We'd like to know the position and rotation of fingers for use in haptic feedback. (Note that we could also use neural networks to find this information, but since many actuators have built-in sensors for pid feedback control, we can use that data instead of heavy tensor computations--we're going to try out the google tensor flow dongle for RPi just to see if it does a better job). We are going to add some actuators--currently considering pneumatic linear actuators and rotational actuators. There is still some work to be done on our update loop for faster feedback. We are going to try to get a pointer finger to be able to touch and feel a surface in VR.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cardboard">
+                                google-cardboard
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            imu
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ios">
+                                ios
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pc
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            socket
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ultrasonic-sensor
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,151 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/qTltmTgN1Ws?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="510366" data-title="Amigo Fresco" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/510/366/datas/original.png">
+                            <img alt="amigo-chatbot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/510/366/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Amigo Fresco
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When user receives an event from Amazon Cloud Watch that a node has high CPU usage (beyond a certain thresold) then this event can be seen within Slack messenger via the AWS Cloud Watch bot. But in order to remedy the situation user can add another node or scale out the node. To do any of this user will need to either use AWS console or AWS CLI from a terminal and leave the Slack messenger for that. That is where Amigo chatbot comes in.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Amigo chatbot enables user to execute any command that is supported by aws-cli from within slack.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Amigo is designed to support multiple enterprise messengers and multiple cloud management. 
+Amigo chatbot is a set of microservices deployed on a docker swarm cluster hosted on AWS.
+Amigo is written primarily in Java and uses Dropwizard framework and Quartz scheduler to implement the microservices. Each service is dockerized Java application that can be run within a Docker Swarm mode cluster.
+Following are the essential services:
+                </p>
+                <ol>
+                    <li>
+                        user-service
+                    </li>
+                    <li>
+                        user-db
+                    </li>
+                    <li>
+                        slackbot-service
+                    </li>
+                    <li>
+                        chatbot-service
+                    </li>
+                    <li>
+                        command-processor-service
+                    </li>
+                    <li>
+                        command-db
+Apache Kafka is the message queue that is used to hold the user messages for asynchronous processing.
+MongoDB is used for both user-db and command-db mentioned above.
+                    </li>
+                </ol>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Debugging microservices when they run within a container orchestrator (like Docker Swarm) is painful.
+Docker logs will only show last all or N number of lines and don&rsquo;t tail live.
+Running dockerized applications in debug mode requires extra tooling support from IDE so it can connect to the debugger agent on a container within the Swarm cluster.
+                </p>
+                <p>
+                    We deployed the microservices running as separate processes on different ports on the local dev host to ease debugging.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Ability to execute all aws-cli commands from within Slack.
+Ability to easily upgrade the aws-cli docker image when a new version of aws-cli is available and that will automatically update all clients to support the new version of aws-cli without requiring any updates on the client or any change in code.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Integration with enterprise messengers like Slack
+Developing microservices to run as docker containers
+Deployed in Docker swarm mode clusters
+Developing Mobile app using React Native
+Developing Web application using React.js
+Hosted in AWS public cloud
+                </p>
+                <h2>
+                    What's next for amigo-chatbot
+                </h2>
+                <p>
+                    Add support for other cloud providers: docker-cloud, gcloud, azure-cli
+Use Amazon Lex to write a wrapper bot thus extending Amigo&rsquo;s features to several enterprise messengers.
+Add support for voice assistants like Amazon Alexa and Google Home.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/sjsucohort6/amigo-chatbot" rel="nofollow" target="_blank" title="https://github.com/sjsucohort6/amigo-chatbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

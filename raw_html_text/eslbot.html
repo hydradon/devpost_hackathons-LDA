@@ -1,0 +1,169 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/EslWx9CpNCw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719247" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/247/datas/original.png">
+                            <img alt="ESLBot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/247/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719248" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/248/datas/original.png">
+                            <img alt="ESLBot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/248/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This bot helps you to learn and pronounce new English words.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    With AWS Lex, Polly, API Gateway, S3, and Lambda. Resources created and deployed with CloudFormation and Serverless. Words search and user profiles stored in Azure SQL database. The bot is connected to Facebook Messenger Platform. Many thanks to skyeng.ru for providing public API and data.
+                </p>
+                <p>
+                    <img alt="Architecture" data-canonical-url="https://user-images.githubusercontent.com/1462574/28251667-60201698-6a82-11e7-8f72-12459e3d4ffd.png" src="https://res.cloudinary.com/devpost/image/fetch/s--luw1ulxF--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://user-images.githubusercontent.com/1462574/28251667-60201698-6a82-11e7-8f72-12459e3d4ffd.png">
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Many!
+                </p>
+                <p>
+                    AWS Lex provides Facebook integration out of the box, but in this case it's not enough. I need to receive voice, and send multiple messages with one bot reply, including audio, images, and quick replies. I solved it with another Lambda and API Gateway, which communicate with Facebook. Fortunately, it's fairly easy to set it up with Serverless framework. This gave me full control over what I sent.
+                </p>
+                <p>
+                    After I finally sent my first audio message to Lex, I realized that Lex wants another audio format! Facebook sends mp4 and Lex wants PCM. Can I transcode in Node? Probably not... Well,
+                    <code>
+                        ffmpeg
+                    </code>
+                    to the rescue! You can bundle a static x64 binary with lambda and call it with Node.js
+                    <code>
+                        child_process
+                    </code>
+                    . Feels like cgi-bin, but works :)
+                </p>
+                <p>
+                    Once Lex started accepting voice input from Facebook, I realized that it really tries to select one of slot examples. And this behavior is different from text input. Let me explain. Imagine, you have a custom slot with "cat" and "cow" example values. When you
+                    <em>
+                        write
+                    </em>
+                    "dog" - Lex accepts that. But if you
+                    <em>
+                        say
+                    </em>
+                    "dog" - it's confused and tries to go with "cat" as a best guess.
+Probably it has something to do with probability and confidence levels (????)
+This is not what I want! To solve this, I put words from training dictionary as example values. Now that the bot works I know that the limit is 10000 examples per slot :)
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It accepts voice from Facebook messenger and says something back. Well, speech-to-text and text-to-speech are out there since a while, but now this technologies are really easy to use.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    It was a deep dive into Serverless, Facebook API, Lex and Polly. Perhaps I also learned a couple of English words ;)
+                </p>
+                <h2>
+                    What's next for ESLBot
+                </h2>
+                <p>
+                    I'm wondering if I can now extend the bot to have more exercises, for example, mock dialogues. Voice capability is appealing and this is what falls behind when you learn language using apps.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/facebook">
+                                facebook
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            polly
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.facebook.com/WordsBot/" rel="nofollow" target="_blank" title="https://www.facebook.com/WordsBot/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.facebook.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/s12v/eslbot" rel="nofollow" target="_blank" title="https://github.com/s12v/eslbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

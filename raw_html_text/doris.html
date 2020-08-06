@@ -1,0 +1,137 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/jbdrVbGOSRM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    New York is full of so many different people of various classes, backgrounds, and ages.  Not all of them are gonna have smart phones, or strong understanding of how to use apps, web 2.0 pages, etc.  However, most of them know Facebook, or at least texting, and all of them know how to have a conversation.  That's where chatbots have the advantage over traditional forms and interfaces!  Chatbot's have become more and more prominent in the last couple years.  Since
+                    <a href="https://techcrunch.com/2016/04/12/agents-on-messenger/" rel="nofollow">
+                        Facebook announced it's platform last year
+                    </a>
+                    , major companies, including 1-800-FLOWERS, Uber, and CNN have created customer service experiences and interactions that require no staff members, and can interact with clients at all hours of the day.  In addition to not requiring new employees, they also don't necessarily require downloads, which Forbes believes ("could one day render apps obsolete")[
+                    <a href="http://www.forbes.com/sites/danielnewman/2016/06/28/how-chatbots-and-deep-learning-will-change-the-future-of-organizations/#77e0db006563" rel="nofollow">
+                        http://www.forbes.com/sites/danielnewman/2016/06/28/how-chatbots-and-deep-learning-will-change-the-future-of-organizations/#77e0db006563
+                    </a>
+                    ].  Using the Facebook Messenger API, we can create a bot that clients interact with through the Facebook app already installed on their phone.  This not only reduces friction getting people to try something new, but removes the risk they find the UI off-putting and never use it again, something that happens with
+                    <a href="https://techcrunch.com/2011/03/15/mobile-app-users-are-both-fickle-and-loyal-study/" rel="nofollow">
+                        up to 26% of apps
+                    </a>
+                    .
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    DORIS brings this technology to the NYC Department of Records and Information Services.  Instead of going to a URL or downloading an app, users can type DORIS into their Facebook Messenger and create a new request by have a conversation with her, just as they would a representative on the phone.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I've been wanting to build something using chatbots for a while, and this project started when I finally got an idea of how to represent an exchange loop in code.  Basically, every conversation with DORIS is broken into messages.  Each message contains a question, an opportunity to pass an answer, and a reply(which may change based on the answer).  When the user gives back the answer to the question, it is run through a filter to extract useful data, and then is passed to a separate function which can process it accordingly(save it, register a cron job, create a custom response, etc).  Based on how the data is processed, the answer function will return an integer value that represents the ID of the next message, allowing simple flowcharts to be mapped easily in code.  You can see/try/fork the library
+                    <a href="https://github.com/Joeento/conversational-js" rel="nofollow">
+                        here
+                    </a>
+                    , but it's still a WIP.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I haven't worked too much with JavaScript, making me a little unclear on how callbacks work in practice.  When I first put together the conversation code, I built it like it was Java, which meant just
+                    <strong>
+                        returning
+                    </strong>
+                    important data, such as the processed value of the response, or ID of the next message.  But the whole idea was that this data would be passed through other people's APIs, like a natural language processor for filtering out non-essential words, and database requests for saving data.  I knew the basics of asynchronous programming, but it wasn't til getting my hands dirty with this project, I understood how to use it in a loop, so that each callback could still call the next function, while being nested in another callback.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Most of conversation with DORIS is a straightforward adaption of the form at (
+                    <a href="https://a860-openrecords.nyc.gov/request/new" rel="nofollow">
+                        https://a860-openrecords.nyc.gov/request/new
+                    </a>
+                    ).  However, the
+                    <strong>
+                        Making a New Request
+                    </strong>
+                    challenge mentions that people usually use OpenRecords because they generally don't know what department they want to direct their request.  And that makes total sense!  The average person doesn't interact much different parts of the NYC government, so they figure out where to send an application.  So, I wanted to make that the focus of DORIS.  Instead of sorting through a dropdown like the current form, DORIS asks for a description of their problem, then uses NLP to find the keywords of that description and then offers it's best guess on which department would suit them, much like talking to an experienced NYC representative would.  Also, thanks to machine learning, we could create an algorithm that gets smarter over time, and only gets better at guessing.
+                </p>
+                <h2>
+                    What's next for DORIS
+                </h2>
+                <p>
+                    A prototype of the chat code is available at the link below, but there's still a lot of fleshing out to be done.  Ideally, I'd want to work with the team to better develop the questions DORIS asks(the fewer the better!) as well as connect her with the OpenRecords server, so that she can directly make requests on behalf of the people she talks to.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/facebook-chat">
+                                facebook-chat
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Joeento/doris" rel="nofollow" target="_blank" title="https://github.com/Joeento/doris">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Joeento/conversational-js" rel="nofollow" target="_blank" title="https://github.com/Joeento/conversational-js">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

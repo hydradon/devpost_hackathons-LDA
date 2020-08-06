@@ -1,0 +1,229 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/T0wGY10gK34?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="640876" data-title="SAT Test Dates Scraper" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/640/876/datas/original.png">
+                            <img alt="TestQuest &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/640/876/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                SAT Test Dates Scraper
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="640877" data-title="Next Test Intent" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/640/877/datas/original.png">
+                            <img alt="TestQuest &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/640/877/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Next Test Intent
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration for my project really comes from the topic of this challenge and Amazon's mission itself : making life easier for the customer. From the start, I knew that I wanted to make something that would serve people&mdash;especially students who are my age. I wanted to make a skill that I would use&mdash;not just because it serves my needs, but because if I am regularly using my skill, I can assess and continuously improve it based on the needs of my age group.
+                </p>
+                <p>
+                    I chose TestQuest because my friends and I are all currently going through the standardized test process. We know how tedious it is to keep track of dates of all these different tests and spend hours and hours trying to decide which test date to prepare for. Especially when we were freshmen and sophomores in high school, we were not aware of the standardized test process. Talking to the underclassmen at my school, I have realized that a number of them, including myself at one point, have missed a test deadline or been inadequately prepared for one of their exams. Students underestimate the importance of these tests, and many are not even aware of one of the most important aspects of their college application.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    TestQuest allows students and parents an easy way to access standardized test information. It features a variety of intents ranging from asking for a deadline for a specific test to asking for test date recommendations based on your goal score.
+                </p>
+                <p>
+                    <strong>
+                        Next Test
+                    </strong>
+                    <br>
+                    You can say "When is the next SAT?"
+This call will find the SAT test that is closest to today's date (and is in the future). If the registration deadline has passed, it will also find another SAT that the student is eligible to register for. It will then guide you through more information such as how many days the deadline is in.
+                </p>
+                <p>
+                    <strong>
+                        Test in Specific Month
+                    </strong>
+                    You can say "Is there an ACT in July?"
+If there is an ACT in July, the skill will guide you through the process, providing more details about the test and then proposing a study routine.
+                </p>
+                <p>
+                    <strong>
+                        Registration Deadline
+                    </strong>
+                    You can say "When is the registration deadline for the July ACT?"
+                </p>
+                <p>
+                    <strong>
+                        How to study
+                    </strong>
+                    You can say "How do I study for the SAT?"
+This intent provides recommendations on what test prep materials to use and basic prep strategies for the different tests. A couple other intents eventually get routed to this one to make the content more interactive (the users don't need to specifically ask for this, it may just come up in one of their other dialogues).
+                </p>
+                <p>
+                    <strong>
+                        Learn more
+                    </strong>
+                    You can say "Tell me about the ACT"
+This intent will provide basic information about each of the different tests. If the user would like to hear more, it is again routed to other methods that continue the conversation.
+                </p>
+                <p>
+                    <strong>
+                        Test Recommendations
+                    </strong>
+                    Test recommendations may be one of the most useful intents in TestQuest because choosing a test and knowing how much preparation time is required is one of the main challenges that I faced and am still facing in this process. This intent asks the user for their current score and goal score and based on that, recommends a certain number of hours of studying to attain their goal score. It makes a modified call to the nextTestIntent to recommend a testDate.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    <strong>
+                        Web Scraper + Dynamo DB
+                    </strong>
+                    The first aspect of the skill was actually gathering the test dates data. Instead of manually copying the dates, I wrote a web scraper and modified it to work with both the ACT and the SAT website. It scraped the test date and a corresponding registration and late registration deadline. I then split up the month day and year values to create a simple layout that I could reuse for any test. The script pushes the scraped data to DynamoDB which is where the Alexa skill gets the information. DynamoDB allows for modification of this data, addition of new data and even new test types without having to change the lambda code.
+                </p>
+                <p>
+                    <strong>
+                        Date Manipulation
+                    </strong>
+                    Date manipulation was simplified using the javascript Data class and moment.js. Using these, I was able to convert back and forth between numerical and String values for the dates and compare dates to see which comes first. These various comparisons are the basis of the nextTestDate algorithm, recommended test date algorithm, and essentially any code that requires searching for the dates.
+                </p>
+                <p>
+                    <strong>
+                        Test Recommendation
+                    </strong>
+                    The test recommendation works through three mandatory slots : a user's initial score, goal score and the type of test they are taking. Once these slots are filled, the student's goal score and initail score are compared with data for how long score improvements take and an estimate of the required hours is made. Then, the nextTestIntent is triggered except in this case, it does not simply return the nextTest but instead attempts to give the student ample time to prepare.
+                </p>
+                <p>
+                    <strong>
+                        Conversation Flow
+                    </strong>
+                    One goal for this skill was to make it intuitive and conversational, rather than a series of questions that the user needs to ask.
+                </p>
+                <p>
+                    For example, instead of this
+                    <strong>
+                        series of instructions
+                    </strong>
+                    :
+                </p>
+                <ol>
+                    <li>
+                        ask TestQuest when is the next SAT?
+                    </li>
+                    <li>
+                        ask TestQuest when is the registration deadline for the October SAT?
+                    </li>
+                    <li>
+                        ask TestQuest how do I study for the SAT?
+                        <br>
+                    </li>
+                </ol>
+                <p>
+                    There is a
+                    <strong>
+                        flowing conversation
+                    </strong>
+                    :
+                </p>
+                <p>
+                    user : ask TestQuest when is the next SAT?
+                    <br>
+                    <em>
+                        alexa
+                    </em>
+                    : the next sat is on ... would you like to know more?
+                    <br>
+                    user : sure
+                    <br>
+                    <em>
+                        alexa
+                    </em>
+                    : the registration deadline is on ... shall I guide you through a study routine?
+                    <br>
+                    user : yes
+                    <br>
+                    <em>
+                        alexa
+                    </em>
+                    : alexa guides through study routine
+                </p>
+                <p>
+                    I was able to make the skill more interactive by using state handlers which I had not worked with before. I went through various different states such as a knowMore state and a howToStudy state.
+                </p>
+                <h2>
+                    Challenges I ran into + What I learned
+                </h2>
+                <p>
+                    This project involved working with a lot of features I had not worked with before. I am accustomed to using firebase to store data, but decided to use dynamoDB for this project as it is more compatible with the Alexa. I learned how to scrape information from the internet which was initially challenging and took a lot of tweaking to get only the dates that I needed and in the order that I needed them. One big challenge was coming up with a way of storing the data so that it was easily readable, modifyable and applicable to any test rather than just one. I eventually came up with a model for dynamoDB, which is converted to arrays of date objects after pulling from the database in the lambda function. Finally, it was quite challenging to come up with an interaction model that would be user friendly and intuitive.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    As I mentioned in the previous sections, TestQuest is a lot more interactive and user friendly than many of my other skills. I believe that this level of interactiveness is what distinguishes the skills that have the best user experience. After all, isn't providing a great user experience that conveniences daily life the purpose of creating an Alexa Skill? 
+I am also proud that I created a skill that I personally use, despite being experienced in and almost done with the standardized test process. That alone gives me confidence that other students my age will also find TestQuest very helpful.
+                </p>
+                <h2>
+                    What's next for TestQuest
+                </h2>
+                <p>
+                    In the short term, I want to add support for more tests, which just means modifying my web scraper to get information for AP tests and subject tests. It can likely be done without modifying the skill and just modifying the database. In the long term, I want to implement a way for students to practice their skills for these tests. It is challenging because the actual tests are taken over paper so creating questions that work both on paper and on Alexa is difficult.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

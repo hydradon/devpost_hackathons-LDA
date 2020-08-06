@@ -1,0 +1,261 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="550136" data-title="Main Web-app" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/136/datas/original.png">
+                            <img alt="Recipe Revealer &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/136/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Main Web-app
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="550138" data-title="Recipe suggestions " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/138/datas/original.png">
+                            <img alt="Recipe Revealer &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/550/138/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Recipe suggestions
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Inspiration
+                </h1>
+                <p>
+                    <a href="https://en.wikipedia.org/wiki/Topic_model" rel="nofollow">
+                        Topic modeling
+                    </a>
+                    is an important approach to aid in understanding complex and diverse bodies of text. Today many topic modeling algorithms
+                    <a href="https://issuu.com/" rel="nofollow">
+                        have been deployed
+                    </a>
+                    to produce suggestions to users based on known their preferences. These models employ statistical methods that examine the frequency of words in a document in an attempt to extract the topics that compose the document.
+                </p>
+                <p>
+                    We saw that topic modeling could be applied to new areas beyond traditional long-form text documents in order to improve user interaction with the abundance of data available. In this project we decided to apply topic modeling to a dataset of recipes in order to produce recommendations based on users' established recipe preferences.
+                </p>
+                <p>
+                    Our approach is novel in that instead of using simple word frequency as input to our model, we developed a unique
+                    <em>
+                        "bag-of-ingredients model"
+                    </em>
+                    ( an adaptation of
+                    <a href="https://en.wikipedia.org/wiki/Bag-of-words_model" rel="nofollow">
+                        the bag-of-words model
+                    </a>
+                    ) that contains core ingredients for each respective recipe with the relative amounts of each ingredients called for in the recipe. This is used as input to train our model. We believe that with such an approach we can discover common patterns in recipes to recommend new recipes that would taste similar and be appealing to the user.
+                </p>
+                <h1>
+                    What it does
+                </h1>
+                <p>
+                    The front-end web-app provides the user with an interface to our custom built database of recipes and their interrelationships, as determined by our model. The user can search for an existing recipe in our database of over 20,000 recipes and find full recipes with instructions and ingredients. In addition to the recipe, each query displays eight of the most similar recipes in the database as classified by our model. Users can then traverse the database of diverse recipes, discovering recipes that are interrelated in a unique way.
+                </p>
+                <h1>
+                    How we built it
+                </h1>
+                <p>
+                    The web-app revolves around the central recipe database we built from the original recipe dataset (
+                    <a href="https://www.kaggle.com/hugodarwood/epirecipes" rel="nofollow">
+                        from kaggle
+                    </a>
+                    ). Using Python we first scrapped the relevant recipe ingredient information from the dataset, transformed it to be input into the
+                    <a href="https://en.wikipedia.org/wiki/Latent_Dirichlet_allocation" rel="nofollow">
+                        Latent Dirichlet allocation
+                    </a>
+                    (LDA) algorithm to identify topics in the dataset, and then finally wrapped the final JSON Firebase database with all of the original data and the generated predictions to be accessed by the front-end web app developed with flask, react, and bootstrap.
+                </p>
+                <h2>
+                    Data pre-processing
+                </h2>
+                <p>
+                    In order to train the LDA model and construct the
+                    <em>
+                        "bag-of-ingredients"
+                    </em>
+                    , a significant amount of pre-processing was performed on the dataset. All of the ~20,000 recipe's ingredients were parsed to extract their relative quantity within the recipe ( ex:
+                    <strong>
+                        2
+                    </strong>
+                    cups of .... ), as well as the 2,000 core ingredient names associated with these quantities that were manually classified from the entire corpus of recipes, in order to properly train the model. This processing included the use of several tools from the
+                    <a href="http://www.nltk.org/" rel="nofollow">
+                        NLTK
+                    </a>
+                    such as
+                    <a href="https://en.wikipedia.org/wiki/Stop_words" rel="nofollow">
+                        stop words
+                    </a>
+                    and
+                    <a href="https://en.wikipedia.org/wiki/Lemmatisation" rel="nofollow">
+                        lemmatization
+                    </a>
+                    .
+                </p>
+                <h2>
+                    LDA model training
+                </h2>
+                <p>
+                    With the
+                    <em>
+                        bag-of-ingredients
+                    </em>
+                    constructed and our associated dictionary of core ingredients, we used the LDA model provided in the NLTK Python library to train our model. We assume that each recipe contains a probability distribution of each topic. Recipes with similar probability distributions of ingredients, we then conclude are related and contain the same topics. After experimenting with the model hyperparameters to achieve what appeared to be sensible topics we transformed the model and applied it to our dataset using a
+                    <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm" rel="nofollow">
+                        <em>
+                            k
+                        </em>
+                        -nearest neighbors approach
+                    </a>
+                    to determine the 8 most topically similar recipes for each recipe.
+                </p>
+                <h2>
+                    Front-end and database construction
+                </h2>
+                <p>
+                    A number of different web technologies were incorporated to develop the front-end web-app. The web-app has the ability to search our database of recipes and return relevant images alongside the displaced recipes, using data collected from the Bing Image Search API via Microsoft Azure.
+                </p>
+                <h1>
+                    Challenges we ran into
+                </h1>
+                <p>
+                    The two largest challenges we faced were
+                </p>
+                <ol>
+                    <li>
+                        Processing the selected dataset to build coherent and well-structured input for training of the LDA model
+                    </li>
+                    <li>
+                        Creating a polished web-app that was both performant and visually appealing
+                    </li>
+                </ol>
+                <p>
+                    Due to the complexity of the dataset and the task of transforming the recipe data in our own
+                    <em>
+                        bag-of-ingredients model
+                    </em>
+                    , building the training dataset was one of the most time-consuming parts of the project. Extensive trial and error was required to determine the trade-off between performance and feasibility.
+                </p>
+                <p>
+                    Combining multiple web technologies and frameworks allowed the functionality we desired for the web-app, but it made the development process somewhat slow and cumbersome. Further optimization of the structure could allow for better performance.
+                </p>
+                <h1>
+                    Accomplishments that we're proud of
+                </h1>
+                <p>
+                    The novelty of our project lies in the development and successful deployment of the
+                    <em>
+                        bag-of-ingredients model
+                    </em>
+                    to generate unique recipe recommendations using our trained LDA model. We found that from the diverse recipes included in our database, the model is quite good at creating cohesive groupings of recipes that have a clear interrelation.
+                </p>
+                <h1>
+                    What we learned
+                </h1>
+                <p>
+                    We anticipated that the data pre-processing step would be somewhat time consuming, but this project certainly demonstrated the effort involved in developing a sound dataset for training a machine learning model. This project furthered our familiarity and understanding with a number of Python, web, and database tools.
+                </p>
+                <h1>
+                    What's next for Recipe Revealer
+                </h1>
+                <p>
+                    There are certainly improvements to be made on the front-end of the web-app to provide a better user experience. Even though our model seems to work fairly well there is still room for improvement. In order to improve the LDA model to produce better recipe predictions we need to gather a larger database of recipes to train the model and incorporate the associated recipes into our database. This will allow for more diversity in recipe choices and will strength the prediction model when recommending new recipes to users.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/firebase">
+                                firebase
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gensim
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nltk">
+                                nltk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/csheare/npcompete/" rel="nofollow" target="_blank" title="https://github.com/csheare/npcompete/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

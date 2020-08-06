@@ -1,0 +1,185 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The recent wildfires in California this past year have burned more than 1.2 million acres of land, destroyed 10,800 structures, and killed at least 46 people. We wanted to build a tool that would let wildfire firefighters run simulations on a data-based machine learning model to predict the potential destructive impact of a ongoing or hypothetical wildfire.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Given 12 attributes describing current weather conditions and indices taken from the Fire Weather Index, we can predict a potential wildfire's projected area. The 12 attributes are:
+                </p>
+                <ol>
+                    <li>
+                        X - x-axis spatial coordinate within the map: 1 to 9
+                    </li>
+                    <li>
+                        Y - y-axis spatial coordinate within the map: 2 to 9
+                    </li>
+                    <li>
+                        month - month of the year: 'jan' to 'dec'
+                    </li>
+                    <li>
+                        day - day of the week: 'mon' to 'sun'
+                    </li>
+                    <li>
+                        FFMC - Fine Fuel Moisture Code index from the Fire Weather Index system: 18.7 to 96.20
+                    </li>
+                    <li>
+                        DMC - Duff Moisture Code index from the Fire Weather Index system: 1.1 to 291.3
+                    </li>
+                    <li>
+                        DC - Drought Code index from the Fire Weather Index system: 7.9 to 860.6
+                    </li>
+                    <li>
+                        ISI - Initial Spread Index from the Fire Weather Index system: 0.0 to 56.10
+                    </li>
+                    <li>
+                        temp - temperature in Celsius degrees: 2.2 to 33.30
+                    </li>
+                    <li>
+                        RH - relative humidity in %: 15.0 to 100
+                    </li>
+                    <li>
+                        wind - wind speed in km/h: 0.40 to 9.40
+                    </li>
+                    <li>
+                        rain - outside rain in mm/m2 : 0.0 to 6.4
+                    </li>
+                </ol>
+                <p>
+                    The predicted area is expressed in hectares.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The data was pulled from UC Irvine's Machine Learning repository, available
+                    <a href="https://archive.ics.uci.edu/ml/datasets/forest+fires" rel="nofollow">
+                        here
+                    </a>
+                    . It contains a set of 517 wildfires recorded inside of a Portuguese national park along with their 12 attributes and affected area.
+                </p>
+                <p>
+                    The data was heavily skewed toward smaller fires, so to adjust for this, we transformed each fire's area 'a' using the function ln(a + 1) as recommended in the dataset's associated paper.
+                </p>
+                <p>
+                    We ran primary component analysis to decide which attributes were less relevant and could be removed to reduce the dimensionality of the data. It also helped us visualize the dataset itself.
+                </p>
+                <p>
+                    Then we used a label encoding to convert all string months and days into corresponding integers, and paired that with a one hot encoding to represent months and days as categories in order to train a successful model.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Visualizing the data was difficult, training an SVM took a while on my partner's Chromebook. We had to learn a lot of new libraries in a short amount of time to put this together in a weekend.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We learned a lot, we have a trained but as of yet untested SVM model which will allow users to plug in fire variables and receive an estimate of the fire's potential impact.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    PCA is something that both of us had only ever read about so it was neat to figure out how to write the code on our own and piece together the output into a neat scatter plot which reduced our 13 dimensional data into the 2 primary components.
+                </p>
+                <p>
+                    We also got to mess around with and train an SVM, we started training a neural network with pytorch but that model is still very much a work in progress.
+                </p>
+                <h2>
+                    What's next for wildfire_ml
+                </h2>
+                <p>
+                    Aside from the usual (testing, publishing the results of our experiments on the internet somewhere, finish training our neural network-based model), we want to create a new dataset for wildfires in the state of California by crossreferencing several government collected fire and weather datasets. Current fire datasets that we researched for the state of California are messy, some are in unintuitive formats, and contain lots of noise, so we want to clean all of this up and make this training data easily accessible. This could make it easier for other students or machine learning experts to train more accurate fire prediction models, resulting in better tools for firefighters to combat wildfires.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            matplot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nn
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pca
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            svm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            torch
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/elainew96/forestfires_ml" rel="nofollow" target="_blank" title="https://github.com/elainew96/forestfires_ml">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

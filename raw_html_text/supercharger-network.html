@@ -1,0 +1,202 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Ethereum has shown itself to be the ultimate platform for building token economies. Thousands of contracts have been created which support standards like ERC20 and ERC721.
+                </p>
+                <p>
+                    However, businesses using Ethereum have struggled adopting new users into the ecosystem due to the upfront costs of Gas to interact with these token contracts. Many newcomers do not understand why they need ETH to be able to interact with other tokens they actually are interested in.
+                </p>
+                <p>
+                    Businesses have shown that they would be more than happy to fund the usage of their users. Some have done this by providing a faucet or ETH drop to their users, while others may have implemented L2 solutions or have made compromises building centralized solutions.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Supercharger Network removes the pains and costs of blockchain transaction fees from end users, by offloading those costs onto the token owners and community contributors who want to support a token.
+                </p>
+                <p>
+                    Supercharger Network is a blockchain protocol, developed on top of the Substrate blockchain framework, which provides an alternative mechanism for transfer fees on tokens. Ultimately, each token built on the network is backed by a fund of the native blockchain currency. This fund is used to pay for the transfers of that token, on behalf of the user.
+                </p>
+                <p>
+                    First, we developed a protocol level ERC20 compatible token factory within our blockchain. This allows any user to easily create a new token which can be used on the blockchain, without any coding necessary. At the time of creation, the user creating the tokens is given the option to deposit funds into the account
+                </p>
+                <p>
+                    Next, we extended the ERC20 protocol, exposing a function called
+                    <code>
+                        try_free_transfer
+                    </code>
+                    , which allows a user to make free transfers of these tokens. The transfer fees are taken from the fund for that token, and users are limited on the number of times they can make a free transfer per time period.
+                </p>
+                <p>
+                    For example, the "Better Energy Foundation" issue a new token to be used as electricity credits. When they do this, they fund the token with an initial supply of the underlying blockchain currency 10,000 units, and specify that the users of their token have 10 free transactions every 1,000 blocks. They can sell their tokens and transfer them to the buyers just like a normal ICO. These buyers can then call the
+                    <code>
+                        try_free_transfer
+                    </code>
+                    function when trying to trade the token among their peers, and the fees are paid for using the fund. Anyone in the community can continue to add more funds, and allow the free transfers to continue.
+                </p>
+                <p>
+                    If a user does not have any more "free" transactions left, they can always make a transaction using the normal
+                    <code>
+                        transfer
+                    </code>
+                    function which will charge them like normal.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            First we had to set up and prepare all the people on the team to build on Substrate, including learning Rust!
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Then we initially ported the ERC20 standard using the Substrate framework through a Substrate runtime module.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We extended the protocol so that a single module can support the creation of multiple independent assets.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Then we built an additional set of functions which enable the mechanics around funding tokens and supporting free transfers.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Then we configured and tweaked the underlying blockchain logic to enable fee-less transfers. We also enabled hooks to start taking fees from the fund for a token.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    Sounds pretty straight forward in retrospect, but challenging for sure.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The first challenge we ran into was getting everyone to a point where they were able to start contributing to the project, which meant learning Rust and Substrate.
+                </p>
+                <p>
+                    At that point, we had to think critically about the best way to port the ERC20 protocol to Substrate, which was optimized for how Substrate is designed. But more than that, we extended the protocol to support the creation of any number of tokens, all through a single protocol. We think this is a powerful module which may be reused by other teams also interested building token factories on Substrate.
+                </p>
+                <p>
+                    Then we looked into how we can tweak the underlying fee structure around individual calls to the Substrate blockchain, which is a bleeding edge feature in Substrate, and one that we had to mostly discover on our own. This was obviously critical to make our idea work at all.
+                </p>
+                <p>
+                    We actually built functionality which enables a user to transfer a token by paying fees in the token they want to transfer. However, we found that the front-end libraries available for Substrate is not yet general enough to encode this kind of information in the transaction to be processed by the blockchain.
+                </p>
+                <p>
+                    Finally, we had to be clever in how we track the number of free transaction each user had for each token. As the system scales, it is not trivial to clean up this kind of data on the blockchain. What we decided was to put all the information in a tree, which we can ultimately destroy in a single action every time we reset the counter.
+                </p>
+                <p>
+                    We tried working on a custom front-end to show off our end to end scenario, but time proved to be the limiting factor here.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            It works!
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Learning to build on a new platform with a new language.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Module is written generically enough that it can easily be reused in other Substrate projects.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Taking a complicated problem and creating what feels like a simple solution.
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            Rust
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Substrate
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Alternative solutions in the space (EOS, Gas Station, Meta-Transactions, etc...)
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Supercharger Network
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            Modify the ERC20 token factory to be an ERC1155 token factory, supporting fungible and non-fungible tokens.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Alternative fee payment mechanisms for example mini-PoW which can allow a transfer to go through.
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            rust
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            substrate
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/shawntabrizi/substrate-feeless-token-factory" rel="nofollow" target="_blank" title="https://github.com/shawntabrizi/substrate-feeless-token-factory">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

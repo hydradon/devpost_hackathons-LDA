@@ -1,0 +1,231 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I help to run a
+                    <a href="http://stics.umd.edu/" rel="nofollow">
+                        student-initiated course
+                    </a>
+                    at the University of Maryland titled
+                    <a href="https://github.com/UMD-CS-STICs/389Rfall18" rel="nofollow">
+                        CMSC389R: Introduction to Ethical Hacking
+                    </a>
+                    . This is the 2nd semester that we're running the course, so we had some ideas for automating the submission and grading process. Introducing
+                    <code>
+                        git-grade
+                    </code>
+                    , an automatic grading framework for classes that deliver assignments through git.
+                </p>
+                <h2>
+                    Demo
+                </h2>
+                <p>
+                    You can check out the asciicast
+                    <a href="https://asciinema.org/a/ctJrV2PcwVKFymi2YQKHELKUd" rel="nofollow">
+                        here
+                    </a>
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <code>
+                        git-grade
+                    </code>
+                    has several features to assist in collecting and grading assignments:
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            init
+                        </code>
+                        : parses a list of GitHub usernames and clones their assignment repositories to a folder. We instructed our students to simply fork our course repository and keep the same name, so we can easily clone them.
+                    </li>
+                    <li>
+                        <code>
+                            verify
+                        </code>
+                        : parses a config JSON file that describes a folder/file structure against which each student's repository will be tested. This is to ensure that students include the necessary files, scripts, etc as a part of their submission.
+                    </li>
+                    <li>
+                        <code>
+                            fetch
+                        </code>
+                        : for a previously initialized set of repositories,
+                        <code>
+                            fetch
+                        </code>
+                        will simply update each student's repository to ensure their latest work is received.
+                    </li>
+                    <li>
+                        <code>
+                            deadline
+                        </code>
+                        : given a date and time string,
+                        <code>
+                            deadline
+                        </code>
+                        will log which repositories have commits that are beyond a deadline. These need manual intervention, or late-penalties applied accordingly.
+                    </li>
+                    <li>
+                        <code>
+                            test
+                        </code>
+                        : along with proper submission, homework and projects need to produce the correct results.
+                        <code>
+                            test
+                        </code>
+                        allows for each repository to be tested for code correctness and flexibility in how testing is performed.
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used Python, since it's a language that throws the fewest syntactical bugs for my style of programming. I picked the
+                    <code>
+                        GitPython
+                    </code>
+                    module versus half-baked
+                    <code>
+                        os.system()
+                    </code>
+                    calls to develop
+                    <code>
+                        git-grade
+                    </code>
+                    more as a framework, rather than a bespoke script. The
+                    <code>
+                        click
+                    </code>
+                    module allowed for slick and easy command-line argument parsing and documentation as well.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    <code>
+                        GitPython
+                    </code>
+                    and
+                    <code>
+                        click
+                    </code>
+                    were both libraries that I had only heard of, and had no familiarity. The toughest part was sitting down and reading enough documentation to figure out what methods and class types I needed. Once I understood the organization and philosophies of each module, it got easier to figure out what I needed to architect a feature. The only other difficulty was applying some of the algorithms and techniques I've learned onto new data structures and schemas.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I got to fully engineer a project from start to "finish," and got comfortable with two Python libraries I've been itching to learn!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        Documentation makes the world go round
+                    </li>
+                    <li>
+                        Learn how to read compiler/interpreter error messages, no matter how cryptic
+                    </li>
+                    <li>
+                        Python virtual environments are a godsend
+                    </li>
+                </ul>
+                <h2>
+                    What's next for git-grade
+                </h2>
+                <p>
+                    There were a few features that came to mind as I was developing for this:
+                </p>
+                <ul>
+                    <li>
+                        Support non-GitHub git repositories
+                        <ul>
+                            <li>
+                                Support various URL types other than HTTPS as well
+                            </li>
+                            <li>
+                                Prompt to add key to ssh-agent for cloning repositories via SSH
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Perform more robust error checking, and try and fail safely rather than simply crash from an uncaught exception
+                    </li>
+                    <li>
+                        Command suggestion for mistypes
+                    </li>
+                    <li>
+                        Manpage entry, if this project gains traction
+                    </li>
+                    <li>
+                        Test suite for
+                        <code>
+                            git-grade
+                        </code>
+                        itself to ensure correct behavior
+                    </li>
+                    <li>
+                        Flexible testing for non-programming assignments
+                        <ul>
+                            <li>
+                                Word count for blog-style assignments, as an initial classifier
+                            </li>
+                            <li>
+                                Data analysis/verification for experimental labs
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            click
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gitpython
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/UMD-CSEC/git-grade" rel="nofollow" target="_blank" title="https://github.com/UMD-CSEC/git-grade">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

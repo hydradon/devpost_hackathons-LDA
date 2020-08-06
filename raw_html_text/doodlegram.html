@@ -1,0 +1,137 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/312662359?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I am interested in creating voice tools, and when the APL (Alexa Presentation Language) came out, I immediately thought about using it to create voice controlled image creation/manipulation.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    You create pictures by saying things like, "make a green triangle", "move it left five times", "rotate it counter clockwise", etc.  Possible instructions include moving in one of the four directions, rotating, growing, shrinking, changing color, or move up or down layers since shapes can overlap.  You have the option to name your shapes and then refer to them by name (move Sam right), and show or hide names.
+                </p>
+                <p>
+                    I tried to make it more entertaining by throwing encouraging comments in if the picture or the work done is complex enough.  There are also interjections if Alexa has problems understanding what you want.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Coded in Python on AWS Lambda using DynamoDB for persistence.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I submitted for Amazon certification on Jan 14th, and they initially said they would have results by the 17th, but then gave me the message that, "It is taking more time than anticipated to review your skill. " and they expect to be done by the 28th.  It was actually done on the 31st, and they found problems with
+                    <code>
+                        CanFulfillIntent
+                    </code>
+                    <code>
+                        HelpIntent
+                    </code>
+                    when used on devices without a screen, and that I forgot to include the companion app sample phrases directly in my model (although they would work).  This feedback got me thinking about how to handle users without a screen (who wants to draw without a screen?), and I added a function to give a summary of what is on the screen.  I also fixed all the issues and resubmitted on Feb 11th.  They estimated Feb 25th, but gave me a fail on the 19th with one model problem from the phrase I added last time.  I fixed and resubmitted on the 21st and they estimated it would be done on Mar 7th (a few hours before context deadline).  I got the fail on Mar 1st.
+                </p>
+                <p>
+                    This time they found a corner case I missed.  If you raise the level of an object multiple times so it tries to go past the top, it would fail.  Trying to move past the bottom or using the 'move to the top' intent were fine.  Simple problem to fix and I resubmitted on Mar 1st.  They estimated Mar 14th, but fortunately they passed it on March 6th.  Yay!
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Fairly smooth interaction and handling of circumstances like, "move the circle up" when there are two circles.  If they differ in color, Alexa asks which color and if they differ in position, she asks, "the circle on the left or the right".
+                </p>
+                <p>
+                    I didn't want the "help" function to get in the way of verbal experimentation, so Alexa makes suggestions until you have entered a certain number of successful commands.  I list all the commands in help using a
+                    <code>
+                        ScrollView
+                    </code>
+                    and APL Speech Synchronization. That way, the automatic halt on speech that happens when touching a
+                    <code>
+                        ScrollView
+                    </code>
+                    becomes a feature.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    It isn't easy to cover all the cases of what people find intuitive in referring to situations.  Still more changes to make. Also, it is hard to make
+                    <code>
+                        undo
+                    </code>
+                    functions!
+                </p>
+                <p>
+                    I also learned about the challenge of giving auditory instructions for a long manual of possible commands. There are over 15 commands which you can list by saying help.  They are easy to see on the screen, but to help users (esp kids) get these in small chunks, the program gives a couple of available command suggestions at the end of each action when you start.  After a while, to avoid becoming boring, the skill stops that and just asks, "What next?". If you ever say anything she doesn't understand, you get a couple of suggestions again.  I don't know if this is effective, and would love feedback on it.
+                </p>
+                <h2>
+                    What's next for Doodlegram
+                </h2>
+                <p>
+                    See if people are interested.  I want to add the ability to group objects, but this may need to change the internal representation.  A "group" function could be used to email pictures to  me (as a kid's skill I can't email the pictures to users), and I could create a gallery so people could add groups.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/dp/B07PHSVS4M/" rel="nofollow" target="_blank" title="https://www.amazon.com/dp/B07PHSVS4M/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

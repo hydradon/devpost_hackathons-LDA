@@ -1,0 +1,216 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="340760" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/340/760/datas/original.jpg">
+                            <img alt="4G Earth Rover &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/340/760/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="341815" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/341/815/datas/original.jpg">
+                            <img alt="4G Earth Rover &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/341/815/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="341817" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/341/817/datas/original.jpg">
+                            <img alt="4G Earth Rover &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/341/817/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    I had an idea to build this a long time ago, but I put it off because it seemed too difficult.
+                </p>
+                <p>
+                    The theme of the hackathon inspired me to try to do it though, and I got it working! (mostly).
+                </p>
+                <p>
+                    So what is it? It's an RC buggy with a video camera that can be controlled over the cell network. The camera has a gimbal and can look around independently. The buggy is controlled from a PC using an xbox 360 controller. It has a little display that shows the battery voltage that you can look down at with the camera.
+                </p>
+                <p>
+                    <strong>
+                        Some cool things about it
+                    </strong>
+                </p>
+                <p>
+                    It works perfectly on wifi. There's no noticeable lag, and you can race around under tables and explore the building. When I got frustrated late at night working on the 4G, i'd switch to wifi and do some laps to get my motivation back :)
+                </p>
+                <p>
+                    It works via 4G, sort of.. It's not laggy, but the video quality is like youtube on dialup. After some tweaking, I was able to drive it remotely via 4g though so I think it was a success. Theoretically I could explore miles and miles away!
+                </p>
+                <p>
+                    Because the buggy's on a virtual lan, I can SSH and even remote desktop into it while it's out in the world! There's no 4g reception in the maker space, so I eventually brought the rover 2 blocks away to the top of a deserted parking garage, then left it running and ran back to the maker space. The video barely worked at first, but I was able to stop and start the video stream with different settings until it came in reliably. The remote tweaking was really fun, it felt like working on the mars rover.
+                </p>
+                <p>
+                    Here's how I laid out the system, the code for each of these parts is attached below:
+                </p>
+                <h2>
+                    PC Side Applications:
+                </h2>
+                <p>
+                    <strong>
+                        Zerotier service
+                    </strong>
+                    Zerotier is a free program that puts a group of computers onto a virtual private network (so they can talk to each other via IP addresses). It's like a regular VPN, but it tries to send packets directly to the destination using NAT traversal.
+                </p>
+                <p>
+                    <strong>
+                        Controller Reader
+                    </strong>
+                    This is a python script I wrote that reads position of the joysticks on the gamepad 30 times per second. After every read, it packs the values into a UDP packet and sends it to the rovers IP address. It also numbers each packet, so the rover knows if it's getting them out of order.
+                </p>
+                <p>
+                    <strong>
+                        G-Streamer Client
+                    </strong>
+                    G Streamer is a program that can read video streams and send them over IP (or other connections). There's a server on the buggy and a client on the PC. The configuration was pretty complicated, but there were a lot of examples on the net. After you figure out the right commands you just execute the scripts and it starts up easily.
+                </p>
+                <p>
+                    <strong>
+                        Ping Script
+                    </strong>
+                    The connections to the buggy were often flakey (especially on 4g) so I found it helpful to run a ping every 4 seconds continuously while connected to the buggy this gave me a real time indicator of the latency and packet losses.
+                </p>
+                <p>
+                    <strong>
+                        TightVNCClient
+                    </strong>
+                    Can be used to remote desktop into the PI, not strictly necessary but handy.
+                </p>
+                <h2>
+                    Buggy Applications:
+                </h2>
+                <p>
+                    <strong>
+                        Zerotier service
+                    </strong>
+                    On linux you have to set it up with the terminal instead of a GUI, but it works the same way once it's set up.
+                </p>
+                <p>
+                    <strong>
+                        Network Manager
+                    </strong>
+                    Basically a beefed up version of the network manager that comes with the PI. It supports talking to cell modems natively, so it eliminated that whole issue. With my modem I had to install "usb mode switch" to get the modem to appear on USB. After that it was smooth sailing though.
+                </p>
+                <p>
+                    <strong>
+                        Receive UDP Control
+                    </strong>
+                    This is a python script I wrote. It waits for UDP control packets from the PC. When it gets one, it decodes it and sends the commands to the servos that control the buggy. It also checks that the packets are in order, and kills the throttle if a packet is not received for 100ms. I added some code later to adjust the servo center points and ranges.
+                </p>
+                <p>
+                    <strong>
+                        G-Streamer Server
+                    </strong>
+                    Talks to the matching client on the PC.
+                </p>
+                <p>
+                    <strong>
+                        tightVNC Server
+                    </strong>
+                    Allows remote desktop access to the PI. I was able to use it tune the video stream parameters while the rover was outside of the building.
+                </p>
+                <h2>
+                    Hardware
+                </h2>
+                <p>
+                    Raspberry PI 2
+                </p>
+                <p>
+                    Adafruit I2C Servo Controller
+                </p>
+                <p>
+                    Adafruit Pan-Tilt Gimbal
+                </p>
+                <p>
+                    3x Adafruit 3a 5v Switching BECs (voltage regulators)
+                </p>
+                <p>
+                    Raspberry Pi Wifi Dongle
+                </p>
+                <p>
+                    Huwaai 3276-150 4G modem
+                </p>
+                <p>
+                    Adafruit Voltage Display 3-30v
+                </p>
+                <p>
+                    Gamestop xbox360 controller (I had it lying around)
+                </p>
+                <p>
+                    Raspberry Pi Nightvision Camera
+                </p>
+                <p>
+                    Hobbyking Rattler 4WD Buggy
+                </p>
+                <p>
+                    2s 6Ah Lipo Battery
+                </p>
+                <p>
+                    My code:
+                    <a href="http://www.wolfsprojectfiles.com/4g_earth_rover_files.zip" rel="nofollow">
+                        http://www.wolfsprojectfiles.com/4g_earth_rover_files.zip
+                    </a>
+                </p>
+                <p>
+                    (Note, you'll need to install some stuff to run these scripts. They're more for informational use.)
+                </p>
+                <p>
+                    Demo Video:
+                    <a href="https://www.youtube.com/watch?v=K8ZM0I_Svlk" rel="nofollow">
+                        https://www.youtube.com/watch?v=K8ZM0I_Svlk
+                    </a>
+                </p>
+                <p>
+                    My website:
+                    <a href="http://www.wolfsprojectfiles.com" rel="nofollow">
+                        www.wolfsprojectfiles.com
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

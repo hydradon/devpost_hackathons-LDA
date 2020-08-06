@@ -1,0 +1,112 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/ezK1gYTvBt4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    2048 took the internet by storm when it was released. After that, several algorithms has managed to play this game automatically.
+                    <a href="http://stackoverflow.com/questions/22342854/what-is-the-optimal-algorithm-for-the-game-2048" rel="nofollow">
+                        discussion on StackOverflow
+                    </a>
+                    However, most of those algorithm requires certain level of knowledge of the game. For example, arguably the best algorithm to solve this game is some variation of expectimax algorithm with heuristic builtin. We are interested in how we can attempt to develop a strategy with machine learning that does not require any knowledge of the game.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We built a wrapper on top of the game 2048 that allows our ml bot to control it. Then we applied the method NEAT(NeuroEvolution of Augmenting Topologies) developped by Ken Stanley. It use genetic algorithm to build a evolving neural network that starts simple but grow complex overtime.
+                </p>
+                <p>
+                    To train our neural network, we started with a neural network that has 16 input nodes each receiving the value of the tile on the game board, and 4 output nodes that represent four actions: up, down, left and right. We then created a large pool of random network that comes from our initial one. For each network, we trained it by feeding the game board to the input node, took the output and perform the right action, and repeated until it terminates. For each run, a fitness score based on how well the network did is assigned to the network. Then we
+                    <strong>
+                        mutate
+                    </strong>
+                    (adding new node to the network, creating new connections or deleting node) and
+                    <strong>
+                        cross breed
+                    </strong>
+                    (produce a new neural network that combine bits of two parents network) our pool of networks and evolve them over generation.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built a wrapper on top of 2048 that controls the game, a node.js server that server as the messenger between the game and client that wants to control the game. We built our custom game controller and custom fitness function on top of ANJI, an open source NEAT implementation.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    As many other machine learning methods, there is a myriad of parameters that fine tune how the algorithm works. We spent time reading the NEAT paper and adjust the parameters until we reach a comfortable configuration. Also we do not have enough time
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We had fun learning new machine learning methods and seeing it in action. We are proud that we can use cool algorithms to mess with game that other people built.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Machine learning is cool.
+                </p>
+                <h2>
+                    What's next for AI learns 2048
+                </h2>
+                <p>
+                    We will keep training it after the hackathon and see how long it will take to solve the problem.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

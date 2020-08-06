@@ -1,0 +1,244 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/uTCJuVvHzjA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="443824" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/443/824/datas/original.png">
+                            <img alt="EchoChamber &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/443/824/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    <strong>
+                        EchoChamber
+                    </strong>
+                    is a content recommendation algorithm that encourages diverse thought by suggesting content that deviates from the user's preferences.
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration for this project came from the recent election cycle. Many analysts attributed the divisiveness of the masses to the echo chamber effect. Essentially social media have honed their recommendation systems to an extent where a user's experience is entirely influenced by their preferences. This means that users end up seeing
+                    <em>
+                        what they want to see
+                    </em>
+                    . This leads to lesser cross communication between netizens and more vitriol.
+                </p>
+                <p>
+                    My aim with this project was to create a recommendation system where the user is encouraged to explore topics that are measurably different from user history. The hope is that users will be able to get a perspective on the content they consume online which will lead to better social/political discourse.
+                </p>
+                <p>
+                    Some sources:
+                </p>
+                <ul>
+                    <li>
+                        <a href="http://www.dailydot.com/via/internet-echo-chamber-2016-election/" rel="nofollow">
+                            Daily Dot
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.theguardian.com/technology/2016/nov/10/facebook-fake-news-election-conspiracy-theories" rel="nofollow">
+                            The Guardian
+                        </a>
+                    </li>
+                </ul>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <strong>
+                        EchoChamber
+                    </strong>
+                    is based on
+                    <a href="https://imgur.com" rel="nofollow">
+                        imgur's
+                    </a>
+                    API as a demonstration of the algorithm. First, it generates a space where imgur posts (or any textual content) can be represented with maximum distinction. Then it follows a user's browsing history across multiple posts and suggests topics that deviate from their past preferences. It proceeds as follows:
+                </p>
+                <ul>
+                    <li>
+                        Parse textual content (imgur post comments) for training (using the 'political' tag),
+                    </li>
+                    <li>
+                        Preprocess data (filter out common words etc.),
+                    </li>
+                    <li>
+                        Use Principal Component Analysis to reduce dimensionality of data points.
+                    </li>
+                    <li>
+                        Generate axes using Principal Components that best distinguish posts,
+                    </li>
+                    <li>
+                        Download/Parse/Preprocess random
+                        <em>
+                            imgur
+                        </em>
+                        content for testing,
+                    </li>
+                    <li>
+                        Project testing data/posts to axes previously calculated and obtain coordinates,
+                        <ul>
+                            <li>
+                                Generate a Markov chain where the next recommendation depends on maximizing a distance metric from previous choices (i.e. obtain contrasting content).
+                            </li>
+                            <li>
+                                For each choice, update Markov chain and provide recommendation.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    <strong>
+                        EchoChamber
+                    </strong>
+                    was built using python on top of
+                    <a href="https://github.com/hazrmard/imgurPCA" rel="nofollow">
+                        imgurpca
+                    </a>
+                    .
+                    <em>
+                        imgurpca
+                    </em>
+                    is a modular and extensible machine learning library for
+                    <em>
+                        imgur.com
+                    </em>
+                    that I am developing. For VandyHacks III, I forked the repository, made modifications to core libraries, and wrote
+                    <code>
+                        echochamber
+                    </code>
+                    and
+                    <code>
+                        get_axes
+                    </code>
+                    scripts.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I ran into multiple developmental and theoretical challenges:
+                </p>
+                <ul>
+                    <li>
+                        I had to upgrade
+                        <em>
+                            imgurpca
+                        </em>
+                        library from python2 to python3 which required significant rewriting of code.
+                    </li>
+                    <li>
+                        Initially I approached this problem using a Feed Forward Neural Network which I wrote in its entirety (link below). However given bandwidth restrictions from the imgur API, I did not have sufficient data to train the network. So I switched to unsupervised learning.
+                    </li>
+                    <li>
+                        I had several options on the operation of the Markov chain that provides recommendations.
+                        <strong>
+                            EchoChamber
+                        </strong>
+                        works with arbitrary dimensions in the data. My first distance metric was the Cartesian distance between the hyperplane defined by a user's previous choices/browsing history and the rest of the projected points. A hyperplane is a line in 2 dimensions and a plane in 3 dimensions with known formulae for distance. However it becomes computationally expensive in higher dimensions. My second choice was to get Cartesian distances of points from the centroid generated from weighted past choices of posts by the user.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Over the weekend I read up on neural networks and wrote my own network from scratch for the first time.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about the utility of various machine learning methods while approaching this problem. From a development standpoint I learned about the importance of keeping compatibility/performance in mind.
+                </p>
+                <h2>
+                    What's next for Echo Chamber
+                </h2>
+                <p>
+                    The algorithm can be further improved through natural language processing to get a better idea of the user's preferences. I am interested to see how it would perform if recommendations are based on classification methods (like logistic regression) for similar/different content. In addition it can be ported to other APIs besides imgur.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            matplotlib
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/hazrmard/imgurPCA/blob/dev/examples/echochamber.py" rel="nofollow" target="_blank" title="https://github.com/hazrmard/imgurPCA/blob/dev/examples/echochamber.py">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/hazrmard/imgurPCA/blob/dev/imgurpca/macros/gen_axes.py" rel="nofollow" target="_blank" title="https://github.com/hazrmard/imgurPCA/blob/dev/imgurpca/macros/gen_axes.py">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/hazrmard/imgurPCA/blob/dev/imgurpca/base/neural.py" rel="nofollow" target="_blank" title="https://github.com/hazrmard/imgurPCA/blob/dev/imgurpca/base/neural.py">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

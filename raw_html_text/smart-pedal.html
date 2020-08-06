@@ -1,0 +1,166 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="500941" data-title="The component which connects to the keyboard" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/500/941/datas/original.jpg">
+                            <img alt="Smart Pedal &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/500/941/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The component which connects to the keyboard
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As a pianist, I've always wanted to play the piano while walking, perhaps in a marching band. However, while there are plenty of ways to carry a piano while walking, they all sacrifice a key functionality of the piano: the sustain pedal. All sustain pedals are designed to stay in place, and wire up to a (supposedly) stationary keyboard. What's more, to make any of these portable, I'd would have to run wires up my legs, which was a huge limitation if I wasn't wearing something which covered them up.
+                </p>
+                <p>
+                    One night, I decided that I've had enough of this limitation, and decided to address this problem once and for all.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We've designed a sustain pedal which allows for wireless and portable control. The first part consists of two components: a sender and a receiver. The sender is small and lightweight, and can be attached to the bottom of a shoe, while the receiver is attached directly to the piano. The sender is designed to send an IR code whenever I take a step, and the receiver can then wirelessly decode the signal and simulate a MIDI sustain pedal when a signal is received.
+                </p>
+                <p>
+                    While this basic pair works perfectly as a wireless sustain pedal, it doesn't quite match the current trends towards the internet of things. As such, we've decided to integrate a Bluetooth receiver into the system, as well as a corresponding smartphone app to control the sender. Now, it becomes possible to control your sustain pedal from your smartphone!
+                </p>
+                <p>
+                    Unfortunately, while testing this, we found that it was difficult to use one hand for the smartphone app while still using both hands to play the piano. As such, we added one final part to the whole system: by taking a standard MIDI sustain pedal and using it as a switch for a servo, we can now use our other foot to control a robotic stylus that will use our app in our place! Overall a flawless system.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The full system uses four microcontrollers: one for the IR sender, one for the IR receiver, one for the Bluetooth receiver, and one for the servo controller. Each of the microcontrollers (an Arduino Nano) is programmed independently, and communicate with each other.
+                </p>
+                <p>
+                    The IR sender is programmed to send a series of pulses at 56 kHz every 30 ms, which we discovered to be the optimal signal length for our IR receiver to decode. The IR receiver then feeds into another Arduino, which controls en electromechanical relay that serves to simulate the sustain pedal. This Arduino also communicates with the Bluetooth receiver, which can also control the relay.
+                </p>
+                <p>
+                    Finally, the last Arduino controls a servo with a stylus attached, and uses a MIDI sustain pedal as a switch to activate the servo. This can be used to control the Android app, which in turn communicates with the Bluetooth receiver, which in turn communicates with the IR receiver, which then controls the relay which controls the pedal.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Reverse engineering our IR sensor to optimize the frequency response of our sender
+                    </li>
+                    <li>
+                        Powering all four circuits with only two power sources
+                    </li>
+                    <li>
+                        Streamlining the hardware design to be compact and lightweight
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Low latency and fast response time (excluding the servo part)
+                    </li>
+                    <li>
+                        The streamlined look of all the hardware
+                    </li>
+                    <li>
+                        Humor of the full-circle progression of components
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        How to arrange and solder together components
+                    </li>
+                    <li>
+                        How IR sensors filter and interpret IR codes from the ambient environment
+                    </li>
+                    <li>
+                        How to use Bluetooth in a low-level application
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Smart Pedal
+                </h2>
+                <ul>
+                    <li>
+                        Custom PCBs for further compactness
+                    </li>
+                    <li>
+                        Integration within the keyboard for minimum form factor
+                    </li>
+                    <li>
+                        Battery powering all components to further remove need for wires
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/midi-js">
+                                midi.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/servo">
+                                servo
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

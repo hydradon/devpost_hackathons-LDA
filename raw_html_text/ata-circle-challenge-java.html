@@ -1,0 +1,116 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    //
+                </p>
+                <p>
+                    /**
+                </p>
+                <ul>
+                    <li>
+                        @author Daniel Corr&ecirc;a Tucunduva (
+                        <a href="mailto:daniel.tucunduva@gmail.com" rel="nofollow">
+                            daniel.tucunduva@gmail.com
+                        </a>
+                        )
+                    </li>
+                    <li>
+                        date: 21/May/2016
+                    </li>
+                    <li>
+                        My answer to the A Thinking Ape Algorithm Challenge, part of the Vanhackathon
+*
+                    </li>
+                    <li>
+                        I came upon this solution by manually listing N and f(N) for N from 1 to 16 in Excel. A pattern became apparent,
+                    </li>
+                    <li>
+                        with a sequence of odd numbers that restarts every time it reaches a power of two.
+                    </li>
+                    <li>
+                        I then realized that the f(N) can be seen as 1 + twice the difference between N and the closest previous power of
+                    </li>
+                    <li>
+                        two (when the sequence of f(N) is reset). From there it was just a matter of expressing these realizations
+                    </li>
+                    <li>
+                        mathematically.
+*
+                    </li>
+                    <li>
+                        I would like to stress that I had never seen this problem before, and I devised this solution alone, without any aid.
+*
+                    </li>
+                    <li>
+                        The log2asInt function can be made faster using environment-specific, "tricky" logic.
+                    </li>
+                    <li>
+                        However, I opted for the mathematically sound and universally valid solution, since the main goal here
+                    </li>
+                    <li>
+                        is to display my reasoning.
+*/
+                    </li>
+                </ul>
+                <p>
+                    package vanhackathon;
+                </p>
+                <p>
+                    public class Vanhackathon {
+                </p>
+                <pre class="language-nolang"><code>/**
+    * Returns the base two logarithm of an integer as an integer (chops off decimal part using typecasting)
+ * @param n greater than zero
+ * @return the logarithm as an integer
+ * @throws IllegalArgumentException
+ */
+public static int log2asInt(int n){
+if(n &lt;= 0) throw new IllegalArgumentException();
+return (int)(Math.log(n)/Math.log(2));
+}
+
+
+/**
+ * Given a circle of N people and removing every second person until one person is left,
+ * returns the position of the person left 
+ * @param n greater than zero
+ * @return the position of the person left, from 1 to n
+ * @throws IllegalArgumentException
+ */
+public static int vanhackathonChallenge(int n){
+if (n &lt;= 0)
+throw new IllegalArgumentException();
+if (n == 1 || n == 2)
+return 1;
+int log2ofN = log2asInt(n);
+int closestPowerOf2equalOrSmallerThanN = (int)Math.pow(2, log2ofN);
+return 1 + 2 * (n - closestPowerOf2equalOrSmallerThanN);
+}     
+
+
+/**
+ * Prints a small test of the vanhackathonChallenge function
+ */
+public static void main(String[] args) {
+System.out.println(" author: Daniel Corr&ecirc;a Tucunduva (daniel.tucunduva@gmail.com)");
+System.out.println(" date: 21/May/2016 \n");
+System.out.println(" N, last person remaining:");
+for (int n = 1; n &lt; 129; n++){
+System.out.println(" " + n + " , " + vanhackathonChallenge(n));
+}    
+}
+</code></pre>
+                <p>
+                    }
+                </p>
+                <p>
+                    //
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

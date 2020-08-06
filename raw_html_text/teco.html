@@ -1,0 +1,211 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="759179" data-title="Teco: Text Based Crypto Payment" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/179/datas/original.jpg">
+                            <img alt="Teco &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/759/179/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Teco: Text Based Crypto Payment
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <h2>
+                    What it does
+                </h2>
+                <h2>
+                    How I built it
+                </h2>
+                <h1>
+                    Temiloluwa Adeniyi
+                </h1>
+                <h1>
+                    UGA Hacks 2019: Texcon
+                </h1>
+                <h1>
+                    02/08/ 2019 - 02/10/2019
+                </h1>
+                <h1>
+                    install.packages('devtools', dependencies=TRUE, repos='
+                    <a href="http://cran.rstudio.com/'" rel="nofollow">
+                        http://cran.rstudio.com/'
+                    </a>
+                    )
+                </h1>
+                <h1>
+                    library(devtools)
+                </h1>
+                <h1>
+                    devtools::install_github("Appsilon/shiny.collections", ref = "0.1.0")
+                </h1>
+                <h1>
+                    install.packages('shiny', dependencies=TRUE, repos='
+                    <a href="http://cran.rstudio.com/'" rel="nofollow">
+                        http://cran.rstudio.com/'
+                    </a>
+                    )
+                </h1>
+                <h1>
+                    library(shiny)
+                </h1>
+                <h1>
+                    install.packages('twilio', dependencies=TRUE, repos='
+                    <a href="http://cran.rstudio.com/'" rel="nofollow">
+                        http://cran.rstudio.com/'
+                    </a>
+                    )
+                </h1>
+                <h1>
+                    library(twilio)
+                </h1>
+                <h1>
+                    install.packages('dplyr', dependencies=TRUE, repos='
+                    <a href="http://cran.rstudio.com/'" rel="nofollow">
+                        http://cran.rstudio.com/'
+                    </a>
+                    )
+                </h1>
+                <h1>
+                    library(dplyr)
+                </h1>
+                <h1>
+                    Define UI for application that draws a histogram
+                </h1>
+                <p>
+                    ui &lt;- fluidPage(theme = shinytheme("superhero"),
+                </p>
+                <pre class="language-nolang"><code>            # Application title
+                                                titlePanel("Teco"),
+
+            # Sidebar with a slider input for number of bins 
+            sidebarLayout(
+            sidebarPanel(
+            textInput(inputId     = "sid",             label = "SID Verification")
+            , textInput(inputId     = "token",           label = "Token Verification")
+            , numericInput(inputId  = "from_number",     label = "Customer Cell Number", value = 15135709118)
+            , numericInput(inputId  = "to_number",       label = "Business Cell Number", value = 16787011761)
+            , textInput(inputId     = "bitcoin sender",           label = "Bitcoin Sender Address", value = 'yghkUP37nXnEm9ZJs46Sm0L2rScuCaw2S6Hvff5yuRXRXZheUKxe477v6pfo9zfADyBNnhxQ86Lbtc')
+            , textInput(inputId     = "bitcoin receiver",           label = "Bitcoin Receiver Address", value = 
+            '1JUiiLnG7KBgiSfop1DxcUc8iUGFUX2Dj')
+            , textAreaInput(inputId = "message",         label = "Transaction Details")
+            , actionButton(inputId  = "send_message",    label = "Send!")
+            ),
+
+            # Show a plot of the generated distribution
+            mainPanel(
+            dataTableOutput("messages"),
+            img(src = "woman_baby_wrapper.jpg", height = 656, width = 984)
+            )
+            )
+</code></pre>
+                <p>
+                    )
+                </p>
+                <h1>
+                    Define server logic required to draw a histogram
+                </h1>
+                <p>
+                    server &lt;- function(input, output) {
+                </p>
+                <p>
+                    messages &lt;- eventReactive(input$send_message,{
+    req(input$sid)
+    req(input$token)
+    req(input$from_number)
+    req(input$to_number)
+    req(input$message)
+                </p>
+                <pre class="language-nolang"><code>Sys.setenv(TWILIO_SID = input$sid)
+Sys.setenv(TWILIO_TOKEN = input$token)
+print(paste0("Message about to send ", input$message))
+tw_send_message(to = as.character(input$to_number), from = as.character(input$from_number), body = input$message)
+
+return(tw_get_messages_list())
+</code></pre>
+                <p>
+                    })
+                </p>
+                <p>
+                    output$messages &lt;- renderDataTable(messages())
+}
+                </p>
+                <h1>
+                    Run the application
+                </h1>
+                <p>
+                    shinyApp(ui = ui, server = server)
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <h2>
+                    What I learned
+                </h2>
+                <h2>
+                    What's next for Teco
+                </h2>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            bootstrap3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rcloud
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            shiny
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

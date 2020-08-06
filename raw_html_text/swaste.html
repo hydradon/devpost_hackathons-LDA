@@ -1,0 +1,301 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/gjUUCOl3adc?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="836634" data-title="iPad Home Page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/634/datas/original.PNG">
+                            <img alt="swaste &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/634/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                iPad Home Page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="836693" data-title="Swaste Computer Vision" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/693/datas/original.PNG">
+                            <img alt="swaste &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/693/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Swaste Computer Vision
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="836491" data-title="Swaste Points" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/491/datas/original.png">
+                            <img alt="swaste &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/491/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Swaste Points
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    U.S. recycling levels are currently 21.4% (recent EPA funded Yale University Study and recycling, as a whole, is collapsing in the U.S. due to public confusion about recycling. Swaste was built as an educational tool that aimed to solve this problem by not only helping educate users what bins everyday objects belong in but also incentivizing users to continue proper waste management protocol even when not using a Swaste bin.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Swaste makes waste disposal units smart: smart waste. From the user&rsquo;s perspective, after scanning an item they wish to dispose of, a swaste disposal unit will inform the user of whether the item should be considered recycle, trash, or compost. In this same moment, the Swaste disposal unit will present the user with the opportunity to dispose of their waste by opening the corresponding waste bin. After disposing of their waste, the user is presented the option to collect their &ldquo;Swaste reward points&rdquo; via a QR code. By collecting these points, Swaste rewards users will be subject to special deals with companies or individuals interested in partnering with eco-minded individuals.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Swaste can be broken into a few different sections.
+                </p>
+                <p>
+                    <strong>
+                        macApp
+                    </strong>
+                    (Swift, C for Arduino) The mac app is responsible for passing data to an arduino, which in turn powers the waste disposal servos. The mac app was necessary because of hardware limitations (Arduino did not come with a WiFi module). The mac app ties into the larger picture of the architecture in that it receives a websocket broadcasted by the iPad app (facilitated by the Node.js backend) specifying that a bin should be opened.
+                </p>
+                <p>
+                    <strong>
+                        iPadApp
+                    </strong>
+                    (Swift) The iPad app is the primary visual interface that a casual user of Swaste would experience.
+Of course, the primary tech that supports Swaste lives here: the computer vision. For computer vision, we are using CoreML and running analysis on the iPad. We trained the CoreML model with images that we scraped from the web using a python program. Once we had around 5,000 images, we manually combed through the entire data set to ensure a high quality model. It communicates with both the serviceless backend via API gateway to pass store user waste disposal data, and also communicates to the mac app and the user&rsquo;s phone via web sockets (QR code scanning is facilitated via web sockets).
+                </p>
+                <p>
+                    <strong>
+                        iOSApp
+                    </strong>
+                    (Swift) The iOS app offers Swaste users insights into their waste disposal history, and subsequently the possibility for rewards. It fetches user data from the serverless backend via API Gateway, and communicates with the iPad app via websocket to establish the QR code connection.
+                </p>
+                <p>
+                    <strong>
+                        Node.js Server
+                    </strong>
+                    The Node.js server is hosted on an EC2 instance and is backed with express. Primarily, it hosts a Socket.io server for use throughout the front-end. In addition, it hosts the Swaste website.
+                </p>
+                <p>
+                    <strong>
+                        AWS Serverless Stack (Dynamo, Lambda, API Gateway)
+                    </strong>
+                    The serverless stack has data stored in DynamoDB. The data is manipulated by Node.js Lambda functions. Data is passed to the lambda functions via API gateway which is called from our front end stack.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Establishing a way to determine who the user of the Swaste disposal unit was in order to deliver reward points. At first, we wanted to enable this functionality via bluetooth proximity detection; however, after shortcomings of the iOS API, and further hardware troubles with Raspberry Pi (no monitor to connect), we were forced to abandon the idea for QR codes.
+                    </li>
+                    <li>
+                        Training/garnering data for the CoreML model
+                    </li>
+                    <li>
+                        TLS securing our domain to comply with modern websocket security standards
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Fully functional Mac, iPad and iPhone applications
+                    </li>
+                    <li>
+                        Established sockets between iPad and iPhone and iPad and Mac
+                    </li>
+                    <li>
+                        Computer Vision using Core-ML
+                    </li>
+                    <li>
+                        AWS backend services (DynamoDB, Lambda, EC2, API-Gateway)
+                    </li>
+                    <li>
+                        Controlling servo motors using Arduino connected to Mac host
+                    </li>
+                    <li>
+                        Controlling Arduino functions through interactions on iPad application
+                    </li>
+                    <li>
+                        Webscrapping Computer Vision data with Python3 library
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Use of external hardware (Arduino, Raspberry PI 3B, Servo)
+                    </li>
+                    <li>
+                        3D Printing and Laser Cutting tools
+                    </li>
+                    <li>
+                        Webscrapping for images using Python3
+                    </li>
+                    <li>
+                        Integrating mulitple software ---- with hardware components in a coherent system
+                    </li>
+                    <li>
+                        Using Core-ML and Vision Kit to train a Convolutional Neural-Network based classification model
+                    </li>
+                    <li>
+                        Recycling concepts and proper waste etiqeutte
+                    </li>
+                </ul>
+                <h2>
+                    What's next for swaste
+                </h2>
+                <p>
+                    In the immediate future, Swaste plans to expand the data it trains its computer vision on in order to be able to cater to a larger variety of object classifications.
+                </p>
+                <p>
+                    Swaste has real world application in office and urban settings. Our goal is not to replace every garbage can with Swaste. The reality is, we will always be a minority, and we embrace this fact as a key motivating factor for our vision to place small batches of units across high populated areas, thus to maximize proper waste disposal education.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-ec2">
+                                amazon-ec2
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/cocoapods">
+                                cocoapods
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            core-ml
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nlb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ors-serial-ports
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/servo">
+                                servo
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/brianpoanlin/swaste" rel="nofollow" target="_blank" title="https://github.com/brianpoanlin/swaste">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

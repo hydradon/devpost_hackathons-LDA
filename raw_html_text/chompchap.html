@@ -1,0 +1,204 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="739996" data-title="Main page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/739/996/datas/original.png">
+                            <img alt="ChompChap &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/739/996/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Main page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="739997" data-title="Result" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/739/997/datas/original.png">
+                            <img alt="ChompChap &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/739/997/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Result
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="740223" data-title="Technologies used" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/740/223/datas/original.png">
+                            <img alt="ChompChap &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/740/223/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Technologies used
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    ChompChap
+                </h1>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In this age of millennial indecision, who could possibly decide on where eat? Many available applications offer too many choices: they are
+                    <em>
+                        user
+                    </em>
+                    driven services, so the weight and ultimate challenge of choosing a restaurant is still an issue. Motivated by algorithms like automated ad servers or shopping suggestions, we aimed to bring that same machine-learning-driven predictive and analytical power to the first-world&rsquo;s greatest plight.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    ChompChap embraces the university student&rsquo;s technology-driven, commitment-avoiding lifestyle by deciding where you actually want to eat, foregoing the user-driven nightmare of endlessly scrolling through Yelp or Google. It does this by first flashing a list of taste-related words on the screen. The user is immediately prompted to press the spacebar whenever they see a word that they find appealing in that moment. This saves the current word on the screen and prompts the words to flash by faster. Six words which theoretically describe the user&rsquo;s subconscious profile are selected in this way and are then considered by our algorithm which returns a restaurant that it thinks is suitable.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Using the Yelp business details and reviews datasets, we matched business attributes to user reviews. Each review was cleaned, tokenized, and converted into a fixed word count feature vector. These features were then used to predict which of 11 &ldquo;meta-categories&rdquo; (instead of 300+ unique categories) the business was associated with. We used a 10-dimensional embedding layer to convert lists of categories for each business (e.g., &ldquo;American (new)&rdquo;, &ldquo;Fast food&rdquo;, &ldquo;Breakfast&rdquo;) into vectors in order to utilize k-means clustering to come up with the 11 thematically-similar meta-categories. Using a Long Short Term Memory (LSTM) network, which was chosen to allow input data to have arbitrary length, user-influenced/selected words are turned into a list of matching meta-categories, ultimately used to find the best place to eat. The network was trained in about 20 minutes on a V100 GPU provided by Google Cloud Platform.
+                </p>
+                <p>
+                    ChompChap&rsquo;s Javascript-jQuery webpage is served by a Flask-Celery application on a Redis server. It is powered by a python backend deployed with Tensorflow and Keras Machine Learning models for prediction on user input.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Training machine learners is hard, but training a machine learner to make intelligent decisions is even harder. We ran into several challenges in classifying restaurants by taste-specific keywords. First, conflicting labels and categories for restaurants caused more overlap in the clustering. Most importantly, user-provided text reviews were filled with spelling errors, irrelevant information, and spam, which waas not fully mitigated even when cleaning common words and tokenizing the reviews.
+                </p>
+                <p>
+                    There were also complications in tying the backend with Flask. While this should be made easy by the continuity in language, Flask has some particular issues that made directly incorporating our algorithm&rsquo;s API difficult.
+                </p>
+                <p>
+                    Embedding Google maps was much more difficult than it should have been, simply due to the highly-cryptic nature of the errors we faced. Many errors gave little or absolutely no explanation of what was happening, and thus vastly extended the time necessary to fix the problem. This was exacerbated by the extensive amount of versions of Google Maps from over the years, such that when trying to find solutions we found that the majority of them were outdated.
+                </p>
+                <p>
+                    &hellip;Sleep deprivation.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Despite the complications with such an unruly dataset, we achieved a robust neural network model architecture while minimizing the latency for prediction, so that the user is provided with a snappy recommendation. We also implemented a clean, simple interface along with an efficient and organized Flask server that can handle many users.
+                </p>
+                <h2>
+                    What's next for ChompChap
+                </h2>
+                <p>
+                    During the development process, we considered several appealing features and improvements that could easily be implemented in the future. For the algorithm, we would look to acquire more relevant datasets. Specifically, we could flash images instead of text, which would require a different model altogether. We also have plans to make the website look more modern with some subtle animations as well as to add more information to the result modal.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/celery">
+                                celery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://www.chompchap.com" rel="nofollow" target="_blank" title="http://www.chompchap.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.chompchap.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/gluinos/" rel="nofollow" target="_blank" title="https://github.com/gluinos/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://59686144.ngrok.io/" rel="nofollow" target="_blank" title="https://59686144.ngrok.io/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                59686144.ngrok.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

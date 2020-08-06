@@ -1,0 +1,113 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As demonstrated by the recent Equifax breach and the subsequent stock market fallout, large changes in company stock prices are often accompanied by significant public discourse on the subject. We wanted to take advantage of this by building a tool that would visualize public sentiment in social media, enabling more informed trading decisions.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    SentiMarket queries Twitter for tweets mentioning a company of interest, and tracks the sentiment of such posts over time using multiple sentiment analysis engines. It then creates a time graph showing public sentiment vs. stock price, allowing users to see how and to what extent a particular company's stock price may be linked to public opinion.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built our application as a web service, with a backend powered by Python Flask running on Heroku. Upon receiving a company to query for, we multiple perform Twitter searches for tweets mentioning the company, with each search covering a one-week interval. We then group each week's tweets and send them to the Microsoft Cognitive Services text analysis API as well as the Vivekn sentiment API, allowing us to receive numeric scores corresponding to positivity or negativity. On the frontend, we use chart.js to visualize this data against stock prices retrived from AlphaVantage.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We originally intended to retrieve tweets using the Twitter's official search API, but unfortunately the API only provides access to the last seven days of tweets. Since we wanted to visualize sentiment over a longer period of time, we had to search for unofficial solutions. We found a project on Github (
+                    <a href="https://github.com/Jefferson-Henrique/GetOldTweets-python" rel="nofollow">
+                        https://github.com/Jefferson-Henrique/GetOldTweets-python
+                    </a>
+                    ) that did the job, albeit more slowly than we would have liked.
+                </p>
+                <p>
+                    We also ran into some issues getting Python development going - two of our team members were new to Python and there were problems getting the necessary Python packages in Windows. We ultimately resorted to creating cloud-hosted Linux VMs that could be used over SSH.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    After completing the project, we were surprised at how well trends in sentiment matched with stock price, providing confirmation of our hypothesis that public opinion and stock price is often correlated. After an overnight train ride followed by 24 hours of coding, it was extremely gratifying to see it in action.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Originally we used only Microsoft Cognitive Services, but we later noticed that utilizing multiple sentiment analysis engines produced better results than using just a single one as it can balance out the occasional incorrect interpretations of a single engine.
+                </p>
+                <h2>
+                    What's next for SentiMarket
+                </h2>
+                <p>
+                    Automatic buy/sell/hold recommendations, integration with Google Trends, and automatic alerts on sentiment changes.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alphavantage-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chart-js">
+                                chart.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-cognitive-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://sentimarket.herokuapp.com" rel="nofollow" target="_blank" title="http://sentimarket.herokuapp.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                sentimarket.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

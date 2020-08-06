@@ -1,0 +1,244 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    subsync
+                </h1>
+                <p>
+                    Automagically synchronize subtitles with video, aligning them to the correct starting point.
+                </p>
+                <p>
+                    <strong>
+                        <em>
+                            This is my submission for HackIllinois 2019.
+                        </em>
+                    </strong>
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Turn this:
+                            </th>
+                            <th>
+                                Into this:
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img alt="" data-canonical-url="https://raw.githubusercontent.com/smacke/subsync/master/tearing-me-apart-wrong.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--mI12fISf--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/smacke/subsync/master/tearing-me-apart-wrong.gif">
+                            </td>
+                            <td>
+                                <img alt="" data-canonical-url="https://raw.githubusercontent.com/smacke/subsync/master/tearing-me-apart-correct.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--c8zMAScf--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.githubusercontent.com/smacke/subsync/master/tearing-me-apart-correct.gif">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h1>
+                    Install
+                </h1>
+                <p>
+                    First, make sure ffmpeg is installed. On MacOS, this looks like:
+                </p>
+                <pre class="language-nolang"><code>brew install ffmpeg
+</code></pre>
+                <p>
+                    Next, grab the script. It should work with both Python2 and Python3:
+                </p>
+                <pre class="language-nolang"><code>pip install git+https://github.com/smacke/subsync
+</code></pre>
+                <h1>
+                    Usage
+                </h1>
+                <pre class="language-nolang"><code>subsync video.mp4 -i unsynchronized.srt &gt; synchronized.srt
+</code></pre>
+                <p>
+                    or
+                </p>
+                <pre class="language-nolang"><code>subsync video.mp4 -i unsynchronized.srt -o synchronized.srt
+</code></pre>
+                <p>
+                    Although it can usually work if all you have is the video file, it will be faster (and potentially more accurate) if you have a correctly synchronized "reference" srt file, in which case you can do the following:
+                </p>
+                <pre class="language-nolang"><code>subsync reference.srt -i unsynchronized.srt -o synchronized.srt
+</code></pre>
+                <p>
+                    Whether to perform voice activity detection on the audio or to directly extract speech from an srt file is determined from the file extension.
+                </p>
+                <h1>
+                    VLC Integration
+                </h1>
+                <p>
+                    To demonstrate how one might use subsync seamlessly with real video software,
+we developed a prototype integration into the popular
+                    <a href="https://www.videolan.org/vlc/index.html" rel="nofollow">
+                        VLC
+                    </a>
+                    media player, which was demoed during the Hackillinois 2019 project expo. The resulting patch
+can be found in the file
+                    <a href="https://github.com/smacke/subsync/raw/master/subsync-vlc.patch" rel="nofollow">
+                        subsync-vlc.patch
+                    </a>
+                    .
+Here are instructions for how to use it.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            First clone the 3.0 maintenance branch of VLC and checkout 3.0.6:
+                        </p>
+                        <pre class="language-nolang"><code>git clone git://git.videolan.org/vlc/vlc-3.0.git
+cd vlc-3.0
+git checkout 3.0.6
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Next, apply the patch:
+                        </p>
+                        <pre class="language-nolang"><code>wget https://github.com/smacke/subsync/raw/master/subsync-vlc.patch
+git apply subsync-vlc.patch
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Follow the normal instructions on the
+                            <a href="https://wiki.videolan.org/VLC_Developers_Corner/" rel="nofollow">
+                                VideoLAN wiki
+                            </a>
+                            for building VLC from source.
+                            <em>
+                                Warning: this is not easy.
+                            </em>
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    You should now be able to autosynchronize subtitles using the hotkey
+                    <code>
+                        Ctrl+Shift+S
+                    </code>
+                    (only enabled while subtitles are present).
+                </p>
+                <h1>
+                    Future Work
+                </h1>
+                <p>
+                    The prototype VLC patch is very experimental -- it was developed under pressure
+and just barely works. The clear next step for this project is a more robust
+integration with VLC, either directly in the VLC core, or as a plugin.
+                </p>
+                <h1>
+                    Credits
+                </h1>
+                <p>
+                    This project would not be possible without the following libraries:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.ffmpeg.org/" rel="nofollow">
+                            ffmpeg
+                        </a>
+                        and the
+                        <a href="https://github.com/kkroening/ffmpeg-python" rel="nofollow">
+                            ffmpeg-python
+                        </a>
+                        wrapper, for extracting raw audio from video
+                    </li>
+                    <li>
+                        VAD from
+                        <a href="https://webrtc.org/" rel="nofollow">
+                            webrtc
+                        </a>
+                        and the
+                        <a href="https://github.com/wiseman/py-webrtcvad" rel="nofollow">
+                            py-webrtcvad
+                        </a>
+                        wrapper, for speech detection
+                    </li>
+                    <li>
+                        <a href="https://pypi.org/project/auditok/" rel="nofollow">
+                            auditok
+                        </a>
+                        , for backup audio detection if webrtcvad misbehaves
+                    </li>
+                    <li>
+                        <a href="https://pypi.org/project/srt/" rel="nofollow">
+                            srt
+                        </a>
+                        for operating on
+                        <a href="https://en.wikipedia.org/wiki/SubRip#SubRip_text_file_format" rel="nofollow">
+                            SRT files
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://www.numpy.org/" rel="nofollow">
+                            numpy
+                        </a>
+                        and, indirectly,
+                        <a href="https://www.netlib.org/fftpack/" rel="nofollow">
+                            FFTPACK
+                        </a>
+                        , which powers the FFT-based algorithm for fast scoring of alignments between subtitles (or subtitles and video).
+                    </li>
+                    <li>
+                        Other excellent Python libraries like
+                        <a href="https://docs.python.org/3/library/argparse.html" rel="nofollow">
+                            argparse
+                        </a>
+                        and
+                        <a href="https://tqdm.github.io/" rel="nofollow">
+                            tqdm
+                        </a>
+                        , not related to the core functionality, but which enable much better experiences for developers and users.
+                    </li>
+                </ul>
+                <h1>
+                    License
+                </h1>
+                <p>
+                    Code in this project is
+                    <a href="https://opensource.org/licenses/MIT" rel="nofollow">
+                        MIT Licensed
+                    </a>
+                    .
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/smacke/subsync" rel="nofollow" target="_blank" title="https://github.com/smacke/subsync">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

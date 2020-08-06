@@ -1,0 +1,248 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="794228" data-title="Top half of our portal where patients will input their information. As patients add their medications, the sentence underneath populates" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/794/228/datas/original.png">
+                            <img alt="HER2her &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/794/228/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Top half of our portal where patients will input their information. As patients add their medications, the sentence underneath populates
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="794229" data-title="After the magic happens, the results show which medicines match well with the patient's profile and health." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/794/229/datas/original.png">
+                            <img alt="HER2her &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/794/229/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                After the magic happens, the results show which medicines match well with the patient's profile and health.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In the United States, more than one in nine women are likely to be diagnosed with Breast Cancer at some point in their lives. According to the National Assessment of Adult Literacy, " nearly nine out of ten adults may lack the skills needed to manage their health and prevent disease". On a global scale, many people feel helpless when it comes to making decisions regarding their own health. We aim to bring confidence and direction to the fingertips of the Breast Cancer community.
+                </p>
+                <h2>
+                    Uploading Data
+                </h2>
+                <p>
+                    Launch the web version of HER2Her. Upload either a csv of the patient&rsquo;s sequences for the five specified genes (BRCA1, BRCA2, TP53, PTEN, and CHEK2). Or, upload csv file with 2 columns: one with the gene name, and the other with &ldquo;1&rdquo; for mutated and &ldquo;0&rdquo; for normal.
+                </p>
+                <h2>
+                    Clinical Data
+                </h2>
+                <p>
+                    All drug efficacy data is given by (
+                    <a href="https://www.cancerrxgene.org/" rel="nofollow">
+                        https://www.cancerrxgene.org/
+                    </a>
+                    ), who collected, verified, and published cancer drug sensitivity data from dozens of clinical trials and academic research projects. We tested our application with patient data collected from (
+                    <a href="https://www.cbioportal.org/datasets" rel="nofollow">
+                        https://www.cbioportal.org/datasets
+                    </a>
+                    ), specifically the May 2016 Nature paper(
+                    <a href="https://www.ncbi.nlm.nih.gov/pubmed/27161491" rel="nofollow">
+                        https://www.ncbi.nlm.nih.gov/pubmed/27161491
+                    </a>
+                    ). Mutated and normal genes were retrieved via API get request to Ensembl.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    With increased integration of healthcare and technology, patients and researchers look forward to the implementation of personalized healthcare. Her2her aims to bring predictive medicine to the hands of women suffering from Breast Cancer. Named after one of the most common biological factors present in Breast Cancer, Her2, our platform allows patients (or clinicians) to upload genomic information (sequence data or mutation list). Data science gives the unique opportunity to visualize the rapid growth in patient information.
+                </p>
+                <p>
+                    Currently, patients will input their status (mutated or normal) of 5 of the most commonly mutated oncogenes. Alternatively, a patient can upload raw genetic data from their doctor or DNA test. The 5 oncogenes, when mutated, lead to changes in how the body metabolizes and interacts with medicines. Our platform then uses clinical data from Massachusetts General Hospital, the Wellcome Sanger Institute (UK), and the Center for Molecular Therapeutics to determine breast cancer drugs, and make a recommendation based on clinical efficacy data.
+                </p>
+                <p>
+                    To personalize the platform further, the user will input any current medications they are using. Our platform will access DrugBank to ensure our potential medicine don't interact with current patient therapies. This assures the patient won't have hypersensitivity caused by drug-drug interactions.
+                </p>
+                <p>
+                    Lastly, our platform provides the closest oncology centers around the patient in order to provide some possible next steps. We don't want our women to feel alone, and suggesting Cancer Doctors on our site would allow patients to feel more in touch with their health. By personalizing medical choices, our platform empowers Breast Cancer patients to become more knowledgeable about their health.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We utilized Python &amp; the Flask-Dash microframeworks to develop a dashboard hosted locally on our system. Built on top of React, Plotly.js, and Flask, Dash provided a full-stack development environment. We began by identifying mutated and normal DNA sequences for 5 genes that are most commonly found to be mutated when breast cancer is clinically indicated via a API function to the Ensembl genomic database. Then, we generated randomized sample data that used a weighted random sequence selector to produce more than 1000 phenotypes with varying frequencies of mutated sequences.
+By utilizing Pandas, we created a dataframe that consolidated our data and flagged any genes that were found to be mutated; this was visualized on the Flask dashboard as a paginated, clearly formatted data table.
+                </p>
+                <p>
+                    We also developed a function for clinicians to upload data from their patients-- text &amp; CSV files were parsed &amp; any abnormal sequences that are suspicious for breast cancer were automatically flagged.
+                </p>
+                <p>
+                    A drop down menu was also developed in Flask to introduce further directions for HER2her-- in the future, it would be prudent to compare current therapies between the different genetic breast cancer profiles.
+                </p>
+                <p>
+                    We also included a text-based diagnostic summary for the user. This includes a personalized title based on the profile of the patient, as well as the specific gene mutations that were detected in their profile. We also included a dynamic search-based Google Maps API using an iframe object within the Flask framework. We automatically highlighted oncologists within Southern California to best fit the needs of our users.
+                </p>
+                <p>
+                    We have considered 5 mutations for the current scope of the problem. Average effectiveness for a particular drug (a drug may be suggested with different effectiveness by different centres based on their patient history) on a mutation was computed. As a patient can have multiple mutations at the same time and we would want the cumulative effect of a drug due to these mutations, we computed the cumulative effect of all the drugs suggested for a patient.
+                </p>
+                <p>
+                    Take a patient with mutation M and N. Given previous data, drugs A, B, and C have previously been prescribed to patients with mutation M. Similarly, N-mutated patients have previously used drugs B, D, E. We then would compute the cumulation of the effectiveness scores for the patient's particular genetic makeup: A (from Mutation M) , B (cumulation of the effectiveness for mutation M and Mutation N), C (from Mutation M), D (from Mutation N), E (from Mutation N).
+                </p>
+                <p>
+                    From the resultant drug data, we selected the top 20 most effective drugs based on efficacy scores. The patient then provides us with the current list of the drugs that they are already taking.
+                </p>
+                <p>
+                    By webscraping the URLlib and XML.etree of the drug interaction effects, we generated an XML with the necessary information. This was then used to compute the lists of drugs which might react with the current drug intake of patient. Those drugs were then removed from the top 20 drugs, and only the top 5 which won&rsquo;t react with the current patient intake were suggested.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We faced challenges in data accessibility due to patient confidentiality reasons. The most reputable healthcare &amp; research facilities around the world are HIPAA compliant, which means that patients reserve the right to keep their medical information confidential. This is absolutely understandable, but it did require creative sequence discovery &amp; mutation analysis within the Ensembl genetic database. Furthermore, we wanted our platform to meet unmet medical needs within the community, while remaining accessible for patients of all backgrounds. As such, we had some difficulty determining the scope of the project within the confines of 24 hours!
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    While many research centers are beginning to look into ML and personalized medicine, our platform provides a much more patient-centric, and comprehensive perspective into individualized medicine. Large clinics like MayoClinic only offer one gene, one drug tests, which only test a patient's genetic makeup for response to a single drug. We decided to look at
+                    <strong>
+                        all
+                    </strong>
+                    the drugs that interact with more than one genetic marker in our patient. This allows for a more personalized result. If we can improve the quality of life for even one patient, we are proud of what we've accomplished (and we do test it on 60 patient samples!)
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    It is
+                    <em>
+                        hard
+                    </em>
+                    to find a good dataset that does what you'd like. Many of us come from biology backgrounds, and we had a plethora of ideas for the different biological markers we wanted to look at. We scoured the interwebs for stress response, drug response, categorical markers, patient gene expression, EEGs, their favorite foods, but we couldn't quite find a dataset that would allow us to fulfill our desires. We strongly believe that as data science grows as a field, so will the drive to produce comprehensive and well-reputable datasets.
+                </p>
+                <h2>
+                    What's next for HER2her
+                </h2>
+                <p>
+                    We will further look to expand our platform to consider all genetic mutations as well as make it all inclusive to other types of cancer patients. We also will predict possible drug responses or hypersensitivities, such as allergic reactions. This way, we would need to utilize patient history that can be disclosed by the patient themselves. Drug therapy is not the only treatment available to the Breast Cancer patients. Further improvements on our platform will consider recommending hormonal, biological, and radiation treatments.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/dash">
+                                dash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ensembl">
+                                ensembl
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pandas">
+                                pandas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            restful-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/the-cancer-genome-atlas">
+                                the-cancer-genome-atlas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            urllib
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            xml.etree
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/hmsflynn/Her2_ToHer" rel="nofollow" target="_blank" title="https://github.com/hmsflynn/Her2_ToHer">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

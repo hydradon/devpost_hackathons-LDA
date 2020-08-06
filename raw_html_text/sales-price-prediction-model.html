@@ -1,0 +1,137 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Sales price prediction challenge by Colgate. We are a bunch of Data Science Master's students always seeking data to play with. What's better than Colgate's data challenge for us to practice our skills and provide value to Colgate by estimating the price of a product based on location, brand, and ingredients of the product.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It estimates product sales prices based on location, brand, and ingredient of the product.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Step 1: Data Preprocessing:
+We started by creating a vocab of ingredients. Then count vectorized the ingredient vocab.
+                </p>
+                <p>
+                    Step 2: Exploratory Data Analysis:
+We performed a univariate analysis of all features. Based on this we binned brand (into 7 bins) and location (into 3) features. For the ingredient list, we limited the count of ingredients to 30 based on no of ingredient distribution for each product, as 90 percentile of the data contains less than 30 ingredients. Next, we created 30 columns for ingredients and filled it with a count of ingredient using count vectorized lookup table. Finally, we looked at the target feature price per unit whose value is below 10 for 90 percentile of the data, so we remove the outliers from the table.
+                </p>
+                <p>
+                    The reason behind binning countries into continents was because of the reason that some same ingredients were called by different names in countries like India and China which can cause the model to consider them as two different ingredients.
+                </p>
+                <p>
+                    Step 3: Data Visualization
+Performed visualization of data using Tableau. Dominating companies in each country, dominating countries for each company, average prices in each continent, all these were visualized in tableau using heatmaps.
+                </p>
+                <p>
+                    Step 4: Model Training
+Using the above-generated feature set, we training the XGBoost model. We performed hyperparameter tuning to improve the algorithm's evaluation criteria ie MAE.
+                </p>
+                <p>
+                    Step 5: Model Evaluation
+We used Mean Absolute Error as our evaluation criteria as its a regression problem. We brought the MAE of our model down to 1.38 using Cross-Validation for k=5 folds.
+                </p>
+                <p>
+                    Step 6: Model Deployment
+We used Google's collab notebooks to work on this problem set. And we have used the same for future predictions.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Feature space for ingredients is ~9000 words which translate into +9000 column if we take the one-hot encoded brute force approach. We faced resource constraints while training this model on the collab, so we used lasso regression to bring down the feature set and then use this feature set for further modeling using XGBoost Regressor. Still, we got far superior performance in terms of MAE and computation time using the approach mentioned above in step 2 which only has &lt;50 features to work with.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Our model performance, using only 50 features gave MAE = 1.38.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    It was a great challenge to work on. We learned a lot, especially how to work with 9000+ feature space.
+                </p>
+                <h2>
+                    What's next for Sales Price Prediction Model
+                </h2>
+                <p>
+                    Using multilingual word2vec models for ingredients.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            matplotlib
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/tableau">
+                                tableau
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            xgboost
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/parihardeepanshu/hackru-f19" rel="nofollow" target="_blank" title="https://github.com/parihardeepanshu/hackru-f19">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

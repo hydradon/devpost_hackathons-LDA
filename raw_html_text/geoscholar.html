@@ -1,0 +1,146 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="657232" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/657/232/datas/original.png">
+                            <img alt="GeoScholar &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/657/232/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As students and researchers, all of us have faced long hours in the library meticulously reading abstract after abstract in search of gaps in the literature and in search of research-supporting articles. We realized that many people face these problems, and we decided to build a web application to solve them. Additionally, we wanted to provide a way for researchers to publish articles about topics and places that have not been researched before.
+                </p>
+                <h2>
+                    What It Does
+                </h2>
+                <p>
+                    Our web application, GeoScholar, aids researchers in identifying neglected research areas and cuts down the time it takes to find articles. We give our users geographical control over their literature search by visualizes research articles as points on a map, allowing people to understand the "where" in their research. We believe that understanding the geographical location of studies prevents users from divorcing research from their geographic contexts and misapplying research conclusions to new studies. GeoScholar lets a user type in a study topic into a search bar and returns points on a map. These points represent the study areas of the most influential research articles for the user-defined topic and the institutions these articles were published from. The map returned by our application highlights neglected research study areas and topics. It also helps users choose new study locations and publish research on them, increasing our knowledge by broadening our perspectives.
+                </p>
+                <h2>
+                    How We Build It
+                </h2>
+                <p>
+                    <strong>
+                        Libraries
+                    </strong>
+                    <strong>
+                        Scohlarly:
+                    </strong>
+                    <a href="https://github.com/OrganicIrradiation/scholarly" rel="nofollow">
+                        https://github.com/OrganicIrradiation/scholarly
+                    </a>
+                </p>
+                <p>
+                    <strong>
+                        Google Language Cloud:
+                    </strong>
+                    <a href="https://cloud.google.com/natural-language/" rel="nofollow">
+                        https://cloud.google.com/natural-language/
+                    </a>
+                </p>
+                <p>
+                    <strong>
+                        Getting data to create the Author Feature Layer:
+                    </strong>
+                    The first step is processing the search query. To get the information we need for the Author feature layer we first must use the scholarly API to create a generator object for the publications. From there we parse the publication to get the data we need to geocode. Parsing the publication was simple as it was a Json formatted object. The difficulty in this part is processing the authors string in order to put it in a format that will increase the accuracy for the google cloud language API. First we had to use regex matching in order to strip the string of white spaces. This preserves the names in a "LastName,FirstName" format seperated by the word "and." We then had to split the string so that we now have a list of "LastName,Firstname." Now we parse through the list and split the name by comma so that we can individually get Last Name and First Name. We then check if the name is a length of one. The reason for doing so is because if it is a length of one then that means there is also a middle initial or name. We then reconstruct the name into "FirstName MI LastName" and then join the list into a singular strings of names separated by the word "and." In doing this process there was a significant accuracy increase when using Google language cloud. This increased the salience of each term by 25%. Once Google language cloud is finished analyzing we parse the entities and return a list of entities that are classified as a Person or Organization.
+                </p>
+                <p>
+                    Now that the we have a list of authors we are able to more accurately find author information such as their institution and the numbers of times they have been cited. After parsing through the list of authors we gain all the information we need about the authors and the publication. From here we input the data into a pandas data frame, query for a list of institution names then batch geocode them and append the X and Y coordinates of the institution to the pandas data frame. Finally the data is output as a csv to later be used to create and upload the feature layer through the ArcGIS python API.
+                </p>
+                <p>
+                    <strong>
+                        Getting data to create the Publication Feature Layer:
+                    </strong>
+                    The majority of the data is obtained during the creation of the Author table. However, we used similar techniques to find the study location in the abstract of the publication. First we pass the abstract into the Google language cloud API. We then parse the results and return the result with the highest salience. From there we add the study location information to a publication pandas table and then query it for all study locations. We then batch geocode the study location and append the X and Y coordinates to the table and output the data as a csv.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    Challenges included using machine learning to process author names, host institutions, and study locations; geocoding the institution names and study locations into feature layers; and troubleshooting ArcGIS Enterprise; finding a workaround for a geoprocessing service bug.
+                </p>
+                <h2>
+                    Accomplishments
+                </h2>
+                <p>
+                    Anna designed the web application and logo. Justin created a script that increased the accuracy of Google Language Analysis on Scholarly data output format and batch geocoded the results to produce data that can be used to create feature layers. Molly ran Enterprise Builder, set up a federated ArcGIS Server, and wrote a Python script for a geoprocessing service. Thao managed the project and organized the presentation. Mudit wrote a Python Script and set up the geoprocessing services.
+                </p>
+                <h2>
+                    What We learned
+                </h2>
+                <p>
+                    We learned about APIs, user interface design, back-end development, how to work together as a team, and how to best leverage each other's strengths.
+                </p>
+                <h2>
+                    What's Next
+                </h2>
+                <p>
+                    The next implementation for GeoScholar would include a language translator. A translator would allows GeoScholar to translate the user&rsquo;s search term into other languages and return search results in other languages. Thus, the point layer would contain more articles and give researchers a better idea of where research on their topic has been done and what institutions have published related articles. We would also like to consult researchers who use our applications and ask them about geoprocessing services they would like to see in the next update. We would sort through their ideas and program the most useful tools. Finally, we would like to include more citation-based analysis that identifies locations of institutions that have cited the article and the study areas of these articles.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Jhuynh760/GeoScholar" rel="nofollow" target="_blank" title="https://github.com/Jhuynh760/GeoScholar">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://intern-hackathon.maps.arcgis.com/home/item.html?id=d9ec60eb36c246c7ba0046d1e0fa6bea" rel="nofollow" target="_blank" title="https://intern-hackathon.maps.arcgis.com/home/item.html?id=d9ec60eb36c246c7ba0046d1e0fa6bea">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                intern-hackathon.maps.arcgis.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

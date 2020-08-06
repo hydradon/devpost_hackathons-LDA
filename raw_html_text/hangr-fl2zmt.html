@@ -1,0 +1,218 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="776232" data-title="Final Carousel Prototype - Front" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/776/232/datas/original.jpg">
+                            <img alt="Hangr &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/776/232/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Final Carousel Prototype - Front
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="776233" data-title="Final Carousel Prototype - Back" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/776/233/datas/original.jpg">
+                            <img alt="Hangr &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/776/233/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Final Carousel Prototype - Back
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="773804" data-title="Clothing List Page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/773/804/datas/original.png">
+                            <img alt="Hangr &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/773/804/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Clothing List Page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="773806" data-title="Recommendation Page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/773/806/datas/original.png">
+                            <img alt="Hangr &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/773/806/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Recommendation Page
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've always found trouble picking out what to wear in the morning and will often just throw on whatever outfit is on top of the pile. I figured that I could do better, and I wanted an app that would keep track of all of that for me, would make sure I'm dressed properly for the weather and diversify my choices.  So out of that need, Hangr was born.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Hangr is an application that allows you to catalog all of the clothes you own and have them be intelligently recommended to you based on the weather, the time since it was last worn, and how often it is combined with other articles of clothing.  After you confirm your selected outfit it then activates a mechanical carousel which presents you with that very outfit.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Hangr was built in three different parts all working together.
+                </p>
+                <p>
+                    1)
+                    <strong>
+                        Backend
+                    </strong>
+                    The backend was written in TypeScript on a Node.js server.  Each API endpoint was hosted as a separate Azure serverless function with some shared libraries to support each of the functions.  For data storage, we used an Azure Postgresql instance and for blob image storage we used Firebase storage.  Furthermore, we used the machine learning ClarifAi API in order to determine the type of clothing it was from just the picture.  This allowed us to know what kind of weather that piece of clothing would be best for.  We would then combine that as well as our other recommendation methods into one compatibility score that helped us choose what items to recommend.
+                </p>
+                <p>
+                    2)
+                    <strong>
+                        Mobile App
+                    </strong>
+                    Our mobile app was built on React-Native and the Ignite toolkit. The app is capable of running on both iOS and Android, we primary built for the Android platform. It makes use of the phones built-in camera to photograph and catalog images before sending them off to the server for processing.
+                </p>
+                <p>
+                    3)
+                    <strong>
+                        Embedded Hardware
+                    </strong>
+                    The mechanical carousel is powered by a  Raspberry Pi, which uses the Requests library to send a get request to the backend for the index of the desired clothing item. The item is indexed and presented using a combination of a continuous servo and light sensor. We initially create a mechanical rotary encoder for indexing, but the pressure placed on the servo caused it to stall, so we created an electronic-based rotary encoder with a brushing mechanism. However, due to limited resources, this attempt was made with a combination of aluminum foil, hot glue, and cardboard and was ultimately unsuccessful. However, with the addition of a light sensor hooked up to an Arduino Mega, we decided to determine indices programmatically.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Some of the biggest challenges we faced were with setting up blob storage to store a lot of images in the cloud as well as deploying and connecting to a Postgres database on Azure.  We also faced a lot of issues setting up the layout for the mobile application in order to create an enjoyable user experience.
+                </p>
+                <h2>
+                    Accomplishments that we are proud of
+                </h2>
+                <p>
+                    We are super proud of being able to create a machine out of just cardboard, tinfoil, and wires to create a mostly functional prototype.  Furthermore, we are proud that we were able to successfully create a database and blob storage system in the cloud.  Finally, we are very happy with the solution we discovered to allow the serverless backend to send data to our Raspberry Pi.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about working with a serverless architecture and using Azure functions with HttpTriggers in order to replicate the function of a whole web server in much less code and far easier deployment.  We also learned a lot about helping embedded hardware communicate with services on the internet and then using that information to move mechanisms in the real world.
+                </p>
+                <h2>
+                    What's next for Hangr
+                </h2>
+                <p>
+                    There are so many improvements that could be made to the project such as adding complementary color recognition to our recommendation engine, creating a full-size mechanical model to use with real clothes, and further improving the accuracy of our recommendations.  We would love to continue working on it to further polish the user experience and application value as a whole.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cardboard
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            functions
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            raspbian
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react-native">
+                                react-native
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/typescript">
+                                typescript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/evanrupert/hangr" rel="nofollow" target="_blank" title="https://github.com/evanrupert/hangr">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

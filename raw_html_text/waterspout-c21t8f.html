@@ -1,0 +1,147 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="879002" data-title="A detail of the elevation model near Poestenkill falls." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/002/datas/original.PNG">
+                            <img alt="Waterspout &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/002/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A detail of the elevation model near Poestenkill falls.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="879069" data-title="Contributing area for 15th and Peoples Ave. intersection." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/069/datas/original.PNG">
+                            <img alt="Waterspout &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/069/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Contributing area for 15th and Peoples Ave. intersection.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The hill RPI sits on is geologically unique. Bedrock is very close to the surface, which means that when it rains, water stays close to the surface and can cause flooding. In fact, this exact thing happened right before classes started this year and tore out plenty of infrastructure on campus.
+                </p>
+                <p>
+                    <img alt="Flood-2" data-canonical-url="https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/69574858_2442637009346580_92520613532401664_o.jpg?_nc_cat=108&amp;_nc_oc=AQl0DG21HQeXYDHVUxNiH3eQVwhxDO0eah01uAvRdcP3qCr0CP9AR1Gz4TNUpcPxzTc&amp;_nc_ht=scontent-lga3-1.xx&amp;oh=38a9768a25e8f9632e39590fcdca258b&amp;oe=5E5C74CD" src="https://res.cloudinary.com/devpost/image/fetch/s--6iv9LlZo--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://scontent-lga3-1.xx.fbcdn.net/v/t1.0-9/69574858_2442637009346580_92520613532401664_o.jpg%3F_nc_cat%3D108%26_nc_oc%3DAQl0DG21HQeXYDHVUxNiH3eQVwhxDO0eah01uAvRdcP3qCr0CP9AR1Gz4TNUpcPxzTc%26_nc_ht%3Dscontent-lga3-1.xx%26oh%3D38a9768a25e8f9632e39590fcdca258b%26oe%3D5E5C74CD">
+                </p>
+                <p>
+                    I wanted to find a way to programmatically identify places on campus where flooding would be an issue during other precipitation events. This will become an even greater issue in the future as climate change results in stronger storms.
+                </p>
+                <p>
+                    Also, fun fact, the rocks exposed on the hill near DCC are over 100 million years old!!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Typically, a homeowner has to pay their local municipality or insurance adjuster to determine if their home is in a hazardous flood area. Waterspout calculates upslope contributing area, an important dataset for calculating flood risk, using public elevation models and open-source GIS utilities. After clicking on their home in a Google Maps window, homeowners can quickly see how much precipitation will flow to their home during a precipitation event.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Waterspout uses a 1-meter resolution digital elevation model (DEM) from the
+                    <a href="https://gis.ny.gov/elevation/" rel="nofollow">
+                        New York state GIS Clearinghouse
+                    </a>
+                    centered on Troy, NY. A mosaic of several DEMs was stitched together and preprocessed with the sink-filling algorithm of Wang and Liu. A pour point is identified from a form in the application, and a contributing area raster is generated using Freeman's distributed flow algorithm. This raster is passed to a classifier that identifies all cells which contribute a meaningful amount of their flow to produce a raster of contributing/noncontributing cells. A polygon is delineated from contributing points, simplified, and then reprojected from the NY stateplane coordiante system into latitude/longitude for display in the Maps window.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    My initial plan was to represent contributing area as an image. However, dynamically hosting an image every time the API was called proved difficult. This led me to represent contributing area as a polygon.
+                </p>
+                <p>
+                    Another issue was building an interface for Python to communicate with SAGA GIS. SAGA is built in C and is a nearly 20 year-old piece of software. Calling specific modules on the command line was often temperamental and required a lot of digging through SAGA's documentation. There were many moments where I thought I wouldn't finish because a certain DLL wasn't installed right or my Python environment was out of wack.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm really proud of completing this project entirely on my own. I had never used JS or the Maps API before this hackathon and I'm very happy with the result. Being able to make a project about RPI that combines my passion for conservation and CS is also very rewarding!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned how GIS utilities can do more than just local analysis and that mapping APIs make for useful visualizations. I also learned how JS, Python, and HTML can get along together in a Flask environment. On the hydrology side of things, I have a much better understanding of how flow algorithms work after trying out several for this project.
+                </p>
+                <h2>
+                    What's next for Waterspout
+                </h2>
+                <p>
+                    Upslope contributing area is a strong first step for determining flood risk, but there's a lot more analysis that can be done. Weighting contributing area by elevation above the pour point is a good measure of flow energy, local slope is positively correlated with flow power, etc. For refining the initial DEM, there's a lot more that can be done with permability and drainage features datasets.
+                </p>
+                <p>
+                    <a href="https://all-free-download.com/free-vector/download/faucet-clip-art_18872.html" rel="nofollow">
+                        Faucet image source
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            saga-gis
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/s-kganz/waterspout" rel="nofollow" target="_blank" title="https://github.com/s-kganz/waterspout">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

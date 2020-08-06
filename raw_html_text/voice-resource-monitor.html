@@ -1,0 +1,142 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/QC5cHgdKbpo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    If you want to monitor the CPU and RAM usage of a server running on Amazon EC2, the official way to do it is
+                    <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/mon-scripts.html" rel="nofollow">
+                        pretty complicated
+                    </a>
+                    and it locks you into using CloudWatch.
+                </p>
+                <p>
+                    Voice Resource Monitor can be installed with a single console command and a single voice command.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <ul>
+                    <li>
+                        Connect to your EC2 instances and run this script:
+                    </li>
+                </ul>
+                <pre class="language-nolang"><code>wget -O - https://gitlab.com/mac-chaffee/voice-resource-monitor/raw/master/server/install.sh | bash
+</code></pre>
+                <ul>
+                    <li>
+                        <p>
+                            This will install a super efficient Golang server I made (takes less than 1 MB of RAM).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Say "Alexa, ask VRM to monitor 34.227.15.5 on port 8000" for each server.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Now you can say "Alexa, ask VRM how my servers are doing" and she will tell you the RAM and CPU usage of each of your servers.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Alexa can also add, remove, and list which servers she's monitoring for you.
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    <img alt="Infrastructure diagram" data-canonical-url="https://gitlab.com/mac-chaffee/voice-resource-monitor/raw/master/infrastructure.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--Qg4TJN2W--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://gitlab.com/mac-chaffee/voice-resource-monitor/raw/master/infrastructure.jpg">
+                </p>
+                <p>
+                    The two main components are 1) the Alexa Skill written in Python that runs on Lambda, and 2) the Golang server that runs on all your EC2 instances. This was my first experience with Go. The Alexa skill uses boto3 to save your server IP addresses and port numbers in DynamoDB (since Alexa has not persistent state). It also makes the API call to the Golang server.
+                </p>
+                <p>
+                    The Golang server listens for connections on a port of your choosing and when called, will serve up a bit of JSON containing the current CPU and RAM (calculated directly from sysinfo(2) and /proc/stat)
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Alexa does not support reading URLs, so I had to use IP addresses. Sometimes that means it takes more than one try to get her to recognize a long string of numbers. If I had more time, I would make a web frontend that would update DynamoDB after you fill in a simple form.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dynamodb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ec2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://gitlab.com/mac-chaffee/voice-resource-monitor" rel="nofollow" target="_blank" title="https://gitlab.com/mac-chaffee/voice-resource-monitor">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                gitlab.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,129 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    An overwhelming 90% of the world can access text messaging services (SMS), yet a third of the world lacks access to 3G or 4G mobile internet, according to mobile carrier industry alliance GSMA and a report by the Consumer Technology Association. The majority of these uncovered populations live in the rural regions of Asia and Sub-Saharan Africa. But recent Pew Research Center numbers show that cell phones are as common in Nigeria and South Africa as they are in the United States, with about 90 percent of adults owning mobile phones. Moreover, Pew found that even out of the average 17 percent of people in Sub-Saharan Africa who do not own a cell phone, more than half have access to one sometimes. The Connectivity Declaration, signed by Bill Gates of the Bill &amp; Melinda Gates Foundation alongside countless other influential leaders and presented before the United Nations, states: "Internet access is essential for achieving humanity's global goals. When people have access to the tools and knowledge of the internet, they have access to opportunities that make life better for all of us... The internet belongs to everyone. It should be accessible by everyone."
+                </p>
+                <p>
+                    Even beyond the humanitarian side of the issue, our dependency upon expensive and ever-limiting data plans creates a slew of everyday problems. In rural areas of developed nations, reliable mobile internet - even under carrier plans that claim to have "nationwide coverage" - often ceases to exist. Google is launching stratospheric balloons, and SpaceX is firing satellites into the sky - all to bring us closer towards the age of global connectivity.
+                </p>
+                <p>
+                    But we couldn't help but ask ourselves: Might there be a simpler solution?
+                </p>
+                <h2>
+                    Enter Netxt
+                </h2>
+                <p>
+                    Netxt (pronounced NET-EXT) is SMS-based internet access for all. The name, a portmanteau of "Net" and the ".txt" text file extension, is a precise reflection of our product's identity and function: An integrated system that uses only a phone's SMS (Short Messaging Service) plan to display fully traversable webpages.
+                </p>
+                <p>
+                    It all starts with the Netxt mobile app, where users input a URL. This URL is sent through Twilio and caught by a web hook on our Flask server. From here, we activate a Python program that runs a Node.JS script which accesses the URL and retrieves:
+                </p>
+                <pre class="language-nolang"><code>1. A screenshot of the entire webpage, which is converted into base-64 text data.
+2. Every link on the webpage, as plaintext.
+3. The bounding boxes for each link on the webpage (four coordinates).
+</code></pre>
+                <p>
+                    All this data is then placed into a Redis database, where it is then compressed and sorted into a Python dictionary. From here, the data is broken up into 1500-bit-sized segments. Each of these segments are sent through the Twilio API as SMS text messages back to the client. Finally, the client decodes the messages and displays the image on the app and maps all the link data and bounding boxes (for the purposes of interactivity) to their respective coordinates.
+                </p>
+                <h2>
+                    Accomplishments that we are proud of
+                </h2>
+                <p>
+                    Our goal while creating this first iteration of Netxt was to make an functional implementation of a highly ambitious concept for a more global internet. To that end, we were ultimately successful in our endeavors. Our application is able to do everything that we intended it to do in its original conception.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    Our team overcame a multitude of technical issues throughout Netxt's 24-hour development cycle. The greatest issue that we faced was a lack of familiarity with using Android Studio for the purpose of creating the client application. Because we lacked a phone running the Android operating system and were unable to procure one for testing, we had to rely on emulation, which was unexpectedly challenging.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/stevenshan/hackru-s19" rel="nofollow" target="_blank" title="https://github.com/stevenshan/hackru-s19">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

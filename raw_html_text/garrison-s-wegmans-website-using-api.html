@@ -1,0 +1,149 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/KhpwOOsN9U4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I wanted to see what I could do with the Wegmans API... see what information I can pull, see what I can do to display it in a nice way for the user. Basically, it was an investigation into what it creates to make an online store.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The website allows you to search for items in the Wegmans API using a simple string search (e.g. how you would use a searchbar). It sends a request to the API, and displays results in a table. A user can click on a result to see information about the product (manufacturer, a more descriptive name, price), and can opt to add a quantity to add it to their "Shopping Cart".
+                </p>
+                <p>
+                    Once items are added to the shopping cart, we send a request to the API for each item's price + qty, and display the cost in the table seen (both individual price and total price).
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I built the WebApp using Node.js on the backend, and AngularJS on the front end. I created a mix of Angular controllers and components to handle different parts of the page (e.g. the shopping cart was a component where I simply pass it a list of selected items).
+                </p>
+                <p>
+                    To build the AngularJS code, I used webpack to compile all of the libraries into a single bundle that I imported in my base template. My angular templates were built in HTML, but my base templates used by the pages were built in Jade, which is a kind of weird templating language... I don't really think I like it.
+                </p>
+                <p>
+                    The majority of my RESTful routes all pointed to a common file that handled
+                    <code>
+                        /api/*
+                    </code>
+                    . I received requests there, and called
+                    <code>
+                        api_service.js
+                    </code>
+                    to handle formatting + handling requests.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I attempted to send requests to the API for getting the total cart cost, so there wouldn't be any "off-by-one" errors, but I was unable to get good responses back then sending POST requests of type "application/json". I'm not totally sure why, because I was still getting a 200 back from the API, but I couldn't extract any of the information. I was able to successfully send requests in PostMan, which makes it a little confusing as to why I couldn't in Node... maybe I had to get the response back differently.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I hadn't really stood up a Node.js webapp before, so I was pretty proud of doing that. Also, I'm proud of the amount of hits on the API I was able to accomplish successfully. I fully expected more issues like I ran into when trying to hit
+                    <code>
+                        /pricepublic/cart/total
+                    </code>
+                    .
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a decent bit about how to send requests to APIs, though I sort've hacked it in that I kiiiinda copy pasted the same request promise and made individual modifications for each function. I think I could do better next time by figuring out a generic way to send a request to the API, and pass a function pointer to handle the response.
+                </p>
+                <p>
+                    I also ended up figuring out how to successfully save a bearer token, and automatically refresh it if it was expired. This was kinda nice, because I wasted some time building a UI to manually refresh it, and then I'd go and copy paste it, which was a little slow... maybe not an optimization I needed though.
+                </p>
+                <h2>
+                    What's next for Garrison's Wegmans Website using API
+                </h2>
+                <p>
+                    A couple things I'd like to attempt next is to attach cart items to the session's cookie, that way users can refresh the page w/o issue.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/angular-js">
+                                angular.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            webpack
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/gar-stauffer/Brickhack4" rel="nofollow" target="_blank" title="https://github.com/gar-stauffer/Brickhack4">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

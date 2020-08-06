@@ -1,0 +1,117 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As busy students, we take lots of photos. Of friends and food, mountains and beaches, but also of class notes and whiteboards. Come finals season, we desperately look for all the notes we can study and get jealous at the photos other people are posting on social media. To find that one handout we were sure we took a picture of or that one picture of spring break taken by the friend who can actually take good pictures, we've scrolled through years of photos on our phones.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Photo Ally does three main things:
+                </p>
+                <ul>
+                    <li>
+                        Decides whether the photo you took (in our app) was a class note and puts them in a different album.
+                    </li>
+                    <li>
+                        Helps you tag the photo right after taking the photo
+                    </li>
+                    <li>
+                        Provides a search function for finding tagged photos
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    _ Building the Machine Learning Model _
+We built a machine learning model using fastai. Starting with a pretrained, Resnet-18 model, we trained it to recognize the difference between handwritten notes and normal images. Then, we converted the model into an Onnx model, which is a middleman model to help put the original model into production faster. Finally, we converted the Onnx model into a CoreML model, which we exported for use in our iOS application.
+                </p>
+                <p>
+                    _ Building the iOS Application _
+We started by building a basic camera, then instead of saving the photo immediately, we pass it through our ML model. If it is recognized as a note, we save it into a separate album. Otherwise, it is saved as usual. Then, we built in two more screens for the tagging and the search results, along with all the gestures and UI to make the process seamless for the user.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        For our machine learning model, we started with Resnet-34, which is much more popular. However, that overfitted our data and new pictures of notes could not be recognized as notes. We switched to a smaller model, Resnet-18, to solve this challenge.
+                    </li>
+                    <li>
+                        Unbelievably, writing
+                        <code>
+                            myCoreMLModel.predict(image)
+                        </code>
+                        doesn't always work (or we couldn't figure out how to use it properly). We used VNCoreMLModel and a more complicated process to properly predict photos, a process which was used in Apple's online example.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of and what we learned
+                </h2>
+                <ul>
+                    <li>
+                        This was our first time building a full, iOS application. While some of us had studied a little Swift and used xCode beforehand, searching the solution to do every little thing was challenging and rewarding. We've learned a lot.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Photo Ally
+                </h2>
+                <p>
+                    We have several ideas for features that can be expanded upon:
+                </p>
+                <ul>
+                    <li>
+                        Separate the notes by class, using time the photo was taken and what is written on the notes as data
+                    </li>
+                    <li>
+                        Creating automatic tags using machine learning
+                    </li>
+                    <li>
+                        A more flexible search algorithm, i.e. recognizing images with tags that have similar meanings to the search
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            fastai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-compute-engine">
+                                google-compute-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/xcode">
+                                xcode
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

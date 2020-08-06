@@ -1,0 +1,180 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/7FoiyoV_-bk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Eva is a virtual travel assistant for your Slack team. She hooks you up with travel.cloud, our team-based travel booking tool that sets out to challenge the traditional approach to corporate travel management.
+                </p>
+                <p>
+                    Only launched 3 months ago, travel.cloud is AWS to the very core, and as its fundamental ethos is &ldquo;travel, but for teams&rdquo; it seems like a perfect match-up with Slack! So we already had "build a Slackbot" somewhere a way down our roadmap when we spotted the contest.
+                </p>
+                <p>
+                    Organising business travel is a pain in the neck. Getting everyone&rsquo;s requirements together, scouring the internet for hotels, getting everyone&rsquo;s passport details for flights, then distributing all the travel confirmations back out; it's a complete time sink. To paraphrase a common quote: &ldquo;your organization is not in the business of arranging travel, yet a significant amount of time and money is spent doing just that!&rdquo; Well, travel.cloud fixes all that, and Eva is going to fix it even better.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    By connecting you up to the power of travel.cloud, Eva helps you find flights, hotels and trains from a wide range of suppliers and gets them booked for you and your teammates. Making her home in Slack she increases the power and usability of travel.cloud: you can ask her to find a hotel or a train in a public channel, and then everyone can look at the pictures or discuss the departure times. Once everyone is agreed, she&rsquo;ll make sure it&rsquo;s all included in one checkout and travel.cloud will take care of distributing confirmations and accounting for the costs.
+                </p>
+                <p>
+                    She already has some other nifty add-ons, allowing you to get your travel.cloud notifications directly in Slack and helping you when you arrive at a hotel, airport or train station by having your check-in details to hand.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Eva leverages multiple parts of the AWS infrastructure to allow us deliver a truly serverless slack bot. Deployed using cloud formation, the first step was to build some simple functions that would allow us to verify our application with the Slack event service so that we started to receive messages on a push basis, the first iteration of Eva simply echoed your chats back to you.
+                </p>
+                <p>
+                    Once basic communication was tackled we had to authenticate with our own services, leveraging AWS KMS we could trigger an OAuth process with our own services joining slack users to their travel.cloud profiles and storing state in DynamoDB fully encrypted by the KMS service. Beyond that its simple text analysis allowing Eva to respond to various queries by integrating with the travel.cloud API.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Lost track of how many hours we spent trying to get Eva to appear active in Slack - we never did solve this and have logged the issue with Slack.
+                </p>
+                <p>
+                    It also took us some deep thought to get the authentication piece right with our own travel.cloud microservices - Eva is only our second client application for travel.cloud!
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    First things first, getting her done! We decided on this last minute, and just packed 7 engineers into a house in the country for a week. With no experience of Slack bots (but luckily, growing experience of AWS Lambda) we're very happy to have an Eva that, right now, today, could really help Slack teams with their travel planning.
+                </p>
+                <p>
+                    The other thing we love is this proof that the microservice APIs we've built for travel.cloud are versatile and fit for use by other client applications, like our Slack bot.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that NLP is very hard, especially in a hurry. We got it integrated, but then found that it was trampling over our existing interactions and making way too many assumptions about what the user was trying to say. Perhaps it was the library we chose, but it just seemed way too confident in its interpretations.
+                </p>
+                <p>
+                    We also quickly learned that in order to be engaging and feel like a proper assistant, Eva needs to have a lot more interactions at her fingertips than just the travel.cloud commands we really wanted to enable.
+                </p>
+                <h2>
+                    What's next for Eva
+                </h2>
+                <p>
+                    We haven&rsquo;t gone beyond some experimentation into NLP - we want her to be really helpful first, nearly human second. But travel is a complicated business, so Eva&rsquo;s ability to try and answer any question fired at her is really going to help make her an invaluable assistant, so we&rsquo;ll have to crack it soon.
+                </p>
+                <p>
+                    Functionally, we're working on one-click booking in travel.cloud which will allow Eva to book things for you without the "final step" of having to go into travel.cloud and complete the checkout yourself. We also want to work on her teamworking aspects more: so if you want to book a flight for your colleagues, she can run around asking them to provide any missing passport details needed to complete the booking.
+                </p>
+                <p>
+                    That's short term. Long term? She can spot when you've got a flight coming up, and offer to call you a cab. Let you know about the weather where you're going, and how soon you should leave to make that train. In the team space she can make sure everyone is sitting next to each other on their flight, or let you know where in the world your whole team are currently. Basically take all the sweat out of organising travel for an entire team.
+                </p>
+                <h2>
+                    Installing Eva
+                </h2>
+                <p>
+                    Eva is a slack bot user and will need to be installed into your team as a slack app before she can be used to aid you in your travel needs. This installation can be started by navigating to
+                    <a href="http://travel.cloud/eva.html" rel="nofollow">
+                        http://travel.cloud/eva.html
+                    </a>
+                    in your browser and clicking on the &lsquo;Add to slack&rsquo; button under the icon of lovely Eva. This will lead you to the application authorization page where you will be asked to grant access to travel.cloud which in turn will add a bot user who represents Eva. Clicking the &lsquo;Authorize&rsquo; button here will complete the installation. Eva is now available for use in Slack!
+                </p>
+                <h2>
+                    Using Eva
+                </h2>
+                <p>
+                    Once in Slack you can talk to Eva like any other user. She responds to direct messages and can be invited to your current public and private channels. In these channels she will only listen to posts beginning "@eva". All of Eva&rsquo;s common commands can be found by asking her to help you, but she likes to chat too so don&rsquo;t be scared to ask her a few random questions and see if she is knowledgeable in that area.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-kms
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-sns">
+                                amazon-sns
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/travel-cloud/eva" rel="nofollow" target="_blank" title="https://github.com/travel-cloud/eva">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://travel.cloud/eva.html" rel="nofollow" target="_blank" title="http://travel.cloud/eva.html">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                travel.cloud
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

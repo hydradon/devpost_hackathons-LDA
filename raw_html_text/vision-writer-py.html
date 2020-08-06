@@ -1,0 +1,189 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    vision-writer-py
+                </h2>
+                <p>
+                    <img alt="Oberon" data-canonical-url="https://avatars0.githubusercontent.com/u/45834871?s=400&amp;u=44d9c2a8ef57254d90a4127fd0b1fdb6f705be9b&amp;v=4" src="https://res.cloudinary.com/devpost/image/fetch/s--cvEbDJpj--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://avatars0.githubusercontent.com/u/45834871%3Fs%3D400%26u%3D44d9c2a8ef57254d90a4127fd0b1fdb6f705be9b%26v%3D4">
+                </p>
+                <p>
+                    Made with love from Oberon Studios
+                </p>
+                <h3>
+                    About
+                </h3>
+                <p>
+                    Vision Writer is a PDF to Txt converter, build using Google Cloud Vision API. It is implemented in Python, using Flask framework to bootstrap api.
+                </p>
+                <h3>
+                    Architecture and app flow
+                </h3>
+                <p>
+                    <img alt="Diagram" data-canonical-url="https://yuml.me/diagram/scruffy/class/%5Bnote:%20Vision%20Writer%7Bbg:cornsilk%7D%5D,%5Buser%5D-%3E%5BPy%20Server%5D,%5BPy%20Server%5D-%3E%5BVision%20API%5D,%5BVision%20API%5D-%3E%5BPy%20Server%5D,%5BPy%20Server%5D-%3E%5BUser%5D" src="https://res.cloudinary.com/devpost/image/fetch/s--zEM1wHig--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://yuml.me/diagram/scruffy/class/%255Bnote:%2520Vision%2520Writer%257Bbg:cornsilk%257D%255D%2C%255Buser%255D-%253E%255BPy%2520Server%255D%2C%255BPy%2520Server%255D-%253E%255BVision%2520API%255D%2C%255BVision%2520API%255D-%253E%255BPy%2520Server%255D%2C%255BPy%2520Server%255D-%253E%255BUser%255D">
+                </p>
+                <p>
+                    First, user submits post request to Flask server with pdf as a payload. Server converts pdf to jpg(multiple pages), and sends converted pictures to Google Cloud Vision API, page by page. On return, server extracts text data, and writes it to a text file, appedning page after page. Name of the txt file, is SHA1 hash of current timestamp. Finally, server responsd with txt file as attachment.
+                </p>
+                <hr>
+                <h3>
+                    Build with:
+                </h3>
+                <ul>
+                    <li>
+                        Flask (Python)
+                    </li>
+                    <li>
+                        Google Cloud Vision API
+                    </li>
+                </ul>
+                <hr>
+                <h2>
+                    Documentation
+                </h2>
+                <h3>
+                    Prereqs
+                </h3>
+                <ul>
+                    <li>
+                        Python 3.5.x or newer
+                    </li>
+                    <li>
+                        Google Cloud account with Cloud Vision API enabled
+                        <a href="https://cloud.google.com/vision/" rel="nofollow">
+                            Read more
+                        </a>
+                    </li>
+                </ul>
+                <h3>
+                    Installation
+                </h3>
+                <p>
+                    First, follow
+                    <a href="https://cloud.google.com/vision/docs/quickstart-client-libraries" rel="nofollow">
+                        this
+                    </a>
+                    guide to get your Google credentials, and save them in root directory as config.json
+                </p>
+                <p>
+                    Configure virtual environment (In this example, I am using
+                    <a href="https://virtualenv.pypa.io/en/stable/" rel="nofollow">
+                        Virtualenv
+                    </a>
+                    , but you are free to do it your own way)
+                </p>
+                <p>
+                    First, check Python version installed
+                </p>
+                <p>
+                    On Linux, one of the possible ways is to enter
+                    <code>
+                        $ /usr/bin/python
+                    </code>
+                    in your terminal and hit
+                    <code>
+                        Tab
+                    </code>
+                    key twice
+                </p>
+                <p>
+                    This would show all the available vesrsions
+                </p>
+                <pre class="language-nolang"><code>python             python3            python3.6m         python3m
+python2            python3.6          python3.6m-config  python3m-config
+python2.7          python3.6-config   python3-config     
+</code></pre>
+                <p>
+                    Now, create environment with desired version of Python specified, as
+                    <code>
+                        --python=PY_VERSION
+                    </code>
+                    (Note: Django 2.x.. requres Python 3.x.. version!)
+                </p>
+                <pre class="language-nolang"><code>$ virtualenv MY_ENV --python=python3.6
+</code></pre>
+                <p>
+                    Activate your environment, and install dependencies
+                </p>
+                <p>
+                    Note: If your environment name differs from
+                    <code>
+                        MY_ENV
+                    </code>
+                    , you would have to use
+                    <code>
+                        source YOUR_ENV_NAME/bin/activate
+                    </code>
+                    as first command
+                </p>
+                <pre class="language-nolang"><code>$ source activate &amp;&amp;  pip install -r requirements_dev.txt
+</code></pre>
+                <h3>
+                    Run
+                </h3>
+                <p>
+                    Set flask server file, and google config file locations as env variables
+                </p>
+                <pre class="language-nolang"><code>export FLASK_APP=server.py
+export GOOGLE_APPLICATION_CREDENTIALS="&lt;path&gt;/config.json"
+</code></pre>
+                <p>
+                    For permanent affect, make sure to add this two lines to your ~/.bash_profile
+                </p>
+                <p>
+                    Finally, you are ready to launch your app (-p 3000 option is for custom port number)
+                </p>
+                <pre class="language-nolang"><code>flask run -h localhost -p 3000
+</code></pre>
+                <hr>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://aakatev.me/" rel="nofollow" target="_blank" title="https://aakatev.me/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                aakatev.me
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

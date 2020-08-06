@@ -1,0 +1,204 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/181626197?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Next Generation Sequencing (NGS) technology is fast, low-cost and high-throughput, which brings great opportunities for new discoveries in disease diagnosis and personalized medicine. The raw DNA data produced by NGS platforms need to be processed by a series of complex genomic analysis tools to turn into meaningful data for genomic research, which is referred as to NGS data analysis. However, due to the large size of used datasets, it would take long time to perform NGS data analysis, even using high-performance systems or big clusters. Acceleration of genetic analysis tools is needed to render them more efficient.
+                </p>
+                <p>
+                    PairHMMs (pair hidden Markov models) are used to calculate the overall alignment probability of two sequences, making it a common algorithm in many genetic analysis tools, such as GATK HaplotypeCaller. However, it consumes a large portion of the overall execution time of the GATK HaplotypeCaller.
+                </p>
+                <p>
+                    In this project we attempt to increase the computational throughput of the algorithm using different methods. One method is to scale up the performance by using accelerators. Because the algorithm exhibits a large amount of parallelism at the input, another method is to scale out using multiple nodes.
+                </p>
+                <p>
+                    We attempt to combine these two methods in this project.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The PairHMM algorithm that is used in such NGS tools is a kind of dynamic programming algorithm, which performs calculations on cells in a matrix in a specific way. It involves a lot of floating-point calculations and has specific internal dependencies.
+                </p>
+                <p>
+                    To scale up the performance with GPU, we use a warp-based implementation to avoid synchronization overhead.
+                </p>
+                <p>
+                    To scale up the performance with FPGA, we implemented a very efficient systolic array architecture with a high utilization of the computational resources.
+                </p>
+                <p>
+                    To scale out the application, we have implemented a framework called SparkJNI, which provides JNI wrappers, and allows generation of native code that is able to access objects contained in Spark RDDs. The framework could also be used in other applications, but we use the current application as a use-case to develop the framework around.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The GPU implementation is written in CUDA and tested on a NVIDIA Tesla K40.
+                </p>
+                <p>
+                    The FPGA implementation is written in VHDL and is tested on a AlphaData ADM-PCIE7v3 card containing a Xilinx Virtex 7.
+                </p>
+                <p>
+                    SparkJNI is written in Java and generates C++ file templates and is integrated with Spark.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Some challenges that still exist right now are
+                </p>
+                <ul>
+                    <li>
+                        It's very challenging to find timing closure for the FPGA design using the Power Service Layer that handles communication with the CAPI. A lot of effort and time needs to be spent in optimizing and analyzing the placed &amp; routed design.
+                    </li>
+                    <li>
+                        It was challenging to find the best GPU implementation. We had to play around with GPU optimization techniques such as coalesced memory access, intrinsic instructions, shuffle instructions, and different synchronization techniques.
+                    </li>
+                    <li>
+                        For the SparkJNI framework some challenges include the memory management and to reduce the overhead as much as possible, to allow the accelerators to be fully utilized.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud of the fact that we have accelerator implementations for both types generic accelerators, that perform already better than some state-of-the-art implementations, while there is still a lot of room for improvement.
+                </p>
+                <p>
+                    Some nice numbers that we have is the throughput of the algorithm expressed in cell updates per second and the power efficiency.
+Our GPU achieves 9.6 GCUP/s, the FPGA achieves 5.31 GCUP/s and we estimate that when both implementations are completely optimized we can achieve about 28 GCUP/s with the GPU and 18 GCUP/s with the FPGA. An optimized implementation on CPU can only achieve around 1 GCUP/s only.
+                </p>
+                <p>
+                    Furthermore we think it's really nice that we have been able to integrate the accelerators with Spark, because difference in level of abstraction is really large. We are proud that SparkJNI helps us to ease the otherwise cumbersome journey from top (Spark) to bottom (GPU/FPGA).
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        How to work with a POWER8 platform
+                    </li>
+                    <li>
+                        How the CAPI/PSL interface works for FPGA (and that CAPI is really fast!)
+                    </li>
+                    <li>
+                        How the JAVA JNI works
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Scaling up and out a bioinformatics algorithm
+                </h2>
+                <ul>
+                    <li>
+                        FPGA implementation: currently the design only uses about one third of the resources. We wish to implement an internally parallelized version of our design to fill up the FPGA.
+                    </li>
+                    <li>
+                        GPU implementation: one bottleneck in the implementation is the data transfer latency, which we hope to improve very soon.
+                    </li>
+                    <li>
+                        SparkJNI: we wish to integrate more advanced code generation techniques. Because we only tested with multiple nodes without accelerators, we would also like to measure the performance and overhead of SparkJNI when we run it on multiple accelerated nodes.
+                    </li>
+                </ul>
+                <p>
+                    We hope you like our submission and we are looking forward to discuss it with you in the comments!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            adm-pcie-7v3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            capi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cuda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/particle">
+                                particle
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            power8
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tesla-k40
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vhdl
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/tudorv91/SparkJNI" rel="nofollow" target="_blank" title="https://github.com/tudorv91/SparkJNI">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

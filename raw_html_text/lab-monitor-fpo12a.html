@@ -1,0 +1,401 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/GeaS4W9TZcA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719354" data-title="Activity Analysis" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/354/datas/original.png">
+                            <img alt="Lab monitor &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/354/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Activity Analysis
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719428" data-title="Demo Scene" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/428/datas/original.png">
+                            <img alt="Lab monitor &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/428/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Demo Scene
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Our institution - Hong Kong Institute of Vocational Education provides IT training to large number of students. While within a classroom, a common problem about IT related lab activity is that, students usually focus on something that is not related to course (Browsing website, playing games or watching youTube videos). As lab exercise solution are being submitted in softcopy. Teaching staff is having a big headache on challenging students' plagiarism, as generally there is only one version of solution.
+                </p>
+                <p>
+                    That's why we have built an opensource project &ldquo;Lab Monitor&rdquo; which uses AWS AI Services, serverless architecture, Amazon AR/VR services to enhance the learning experience and also gather data to understand what students/trainees are doing during lab/eTraining, and we want the project can be widely used not mainly for educational purpose but also applicable to all companies on eTraining session.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    "Lab Monitor" can be applied from classrooms of institution to training rooms of company. It is providing 3 main features :
+                    <br>
+                </p>
+                <pre class="language-nolang"><code>- A lab monitor agent
+- A lab monitor collector
+- An AR lab assistant
+</code></pre>
+                <ol>
+                    <li>
+                        <p>
+                            <strong>
+                                Lab monitor agent
+                            </strong>
+                            <br>
+                            A Python application that runs locally on a student&rsquo;s computer. To achieve sending required information AWS periodically. Since we need to identify students and prevent the API gateway being abused, an unique API key with a usage limit apply to each single student. Including the functions:
+                            <br>
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>
+                                    <em>
+                                        Capturing all keyboard and mouse cursor events
+                                    </em>
+                                </strong>
+                                &ndash; Ensure students are really working on the exercise as it is NOT possible to complete a coding task without using keyboard and pointer!
+                                <br>
+                                <br>
+                            </li>
+                            <li>
+                                <strong>
+                                    <em>
+                                        Monitoring and Controlling PC processes
+                                    </em>
+                                </strong>
+                                &ndash; Stop students from running programs that are NOT relevant to the lab. We can kill all browsers tabs and communication software, when computer test is taking place.
+                                <br>
+                                <br>
+                            </li>
+                            <li>
+                                <strong>
+                                    <em>
+                                        Capturing Screens
+                                    </em>
+                                </strong>
+                                - Detect videos or content that are NOT appropriate by
+                                <a href="https://aws.amazon.com/rekognition/" rel="nofollow">
+                                    Amazon Rekognition
+                                </a>
+                                . The extracted text content is able to trigger an
+                                <a href="https://aws.amazon.com/sumerian/" rel="nofollow">
+                                    Amazon Sumerian
+                                </a>
+                                host to talk to a student automatically if certain circumstances match. But It is NOT possible for a teacher to monitor all students' screen (a 30 person class)! That's why we will use a presigned URL with S3 Transfer Acceleration, in order to speed up the image screenshots upload.
+                                <br>
+                                <br>
+                            </li>
+                            <li>
+                                <strong>
+                                    <em>
+                                        Uploading source code to AWS when students save their code
+                                    </em>
+                                </strong>
+                                &ndash; Review the whole class performance and give support to students who are NOT follow the class tempo!
+                                <br>
+                                <br>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                Lab monitor collector
+                            </strong>
+                            <br>
+                            An
+                            <a href="https://github.com/awslabs/serverless-application-model" rel="nofollow">
+                                AWS Serverless Application Model
+                            </a>
+                            that collects data and provides an API to AR Lab Assistant. Optionally, a teacher can give marks to students immediately every time they save code by running the unit test inside AWS Lambda. Also it saves the time for marking.
+                            <br>
+                            <br>
+                            All data will be constantly saved into an Amazon S3 data lake and Amazon Athena can be used for analysing data.
+                            <br>
+                            <br>
+                            For the sake of saving costs, a scheduled Lambda function being setup for checking the teacher&rsquo;s class calendar every 15 minutes. So when there is an upcoming class, it will automatically create a Kinesis stream and Kinesis data analytics application. Then Teachers can have a nearly REAL-TIME view of all student activity to better manage the whole class.
+                            <img alt="activity" data-canonical-url="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/354/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--vJa1TU0x--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/354/datas/gallery.jpg">
+                            <br>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong>
+                                AR lab assistant
+                            </strong>
+                            <br>
+                            A
+                            <a href="https://aws.amazon.com/sumerian/" rel="nofollow">
+                                Amazon Sumerian
+                            </a>
+                            application that can alert students to work on their lab exercise. It sends a camera image to
+                            <a href="https://aws.amazon.com/rekognition/" rel="nofollow">
+                                Amazon Rekognition
+                            </a>
+                            and gets back a student ID (A live camera showing on the top left of the screen).
+                            <br>
+                            <br>
+                            A Sumerian host, Christine, uses
+                            <a href="https://aws.amazon.com/polly/" rel="nofollow">
+                                Amazon Polly
+                            </a>
+                            to speak to students when following situation happens:
+                            <br>
+                        </p>
+                        <ul>
+                            <li>
+                                Students
+                                <strong>
+                                    <em>
+                                        Passed a unit test
+                                    </em>
+                                </strong>
+                                , Christine says congratulations.
+                                <br>
+                            </li>
+                            <li>
+                                Students
+                                <strong>
+                                    <em>
+                                        Watched any movie
+                                    </em>
+                                </strong>
+                                , Christine scolds them with the movie actor&rsquo;s name, such as Tom Cruise.
+                                <br>
+                            </li>
+                            <li>
+                                Students
+                                <strong>
+                                    <em>
+                                        Watched any inappropriate content
+                                    </em>
+                                </strong>
+                                , Christine scolds them.
+                                <br>
+                            </li>
+                            <li>
+                                Students
+                                <strong>
+                                    <em>
+                                        Did something wrong
+                                    </em>
+                                </strong>
+                                such as forgetting to set up the Python interpreter, Christine reminds them to set it
+                                <br>
+                                <br>
+                                Students can also ask questions to Christine, for example, to check their overall class/training progress. The Amazon Sumerian host is able to connect to a
+                                <a href="https://aws.amazon.com/lex/" rel="nofollow">
+                                    Amazon Lex
+                                </a>
+                                chatbot. Then the conversations with students will then be saved in DynamoDB with the Sentiment Analysis result by Amazon Comprehend.
+                                <br>
+                                <br>
+                                As you see, a student's screen is just like a projector showing inside the Sumerian application.
+                                <img alt="Demo Scene" data-canonical-url="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/428/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--Svuhze0a--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/428/datas/gallery.jpg">
+                                <br>
+                                Christine: &ldquo;Stop, watching dirty thing during Lab! Tom Cruise should not be able to help you writing Python code!&rdquo;
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The following shows a Simplified Architectural Diagrams:
+                    <img alt="Simplified Architectural Diagrams" data-canonical-url="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/341/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--B4B9VdK0--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/341/datas/gallery.jpg">
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            To capture the following user behaviours by:
+                        </p>
+                        <ul>
+                            <li>
+                                Capturing all keyboard and mouse events
+                            </li>
+                            <li>
+                                Monitoring and Controlling PC processes
+                            </li>
+                            <li>
+                                Capturing screens
+In order to get nearly real-time view of all student&rsquo;s activity and analysis.
+                                <br>
+                                <br>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            To project students's screen into Sumerian.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            To make the interaction between users with VR Chatbot natural, and do Sentiment Analysis for all student&rsquo;s conversation and transformed to text based. Text will then be easily being extracted and analysed
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    By combining the power of each AWS Services, students will be encouraged to concentrate on their lab exercise and stop the dream of copying answer from others! Also, that will be much fun for them to work with Christine.
+                </p>
+                <p>
+                    The initial version without AR lab assistant is already being applied to real lab lessons in Hong Kong Institute of Vocational Education (Lee Wai Lee), and improved the learning and marking efficiency.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            The integration with multiple AWS AI Services.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The integration of Lambda, S3, Athena, Glue and Kinesis for real time data stream analysis
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    What's next for Lab monitor
+                </h2>
+                <p>
+                    More than 4 months' effort has been paid off for this project and the development is still in progress. The current version aims for data collection and in future we plan to build machine learning model to predict users/students&rsquo; final grade against their class behaviour.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-comprehend
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-rekognition
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-sumerian
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            athena
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            codecommit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cognito
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dynamodb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            glue
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kinesis-data-analytics
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kinesis-stream
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://a7a178a0f9c64de29a090d7b6634445b.us-east-1.sumerian.aws/?" rel="nofollow" target="_blank" title="https://a7a178a0f9c64de29a090d7b6634445b.us-east-1.sumerian.aws/?">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                a7a178a0f9c64de29a090d7b6634445b.us-east-1.sumerian.aws
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

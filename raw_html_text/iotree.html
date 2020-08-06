@@ -1,0 +1,600 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Welcome, curious and creative people!
+                </h2>
+                <p>
+                    This site is meant to give you an overview of how you can design, build and run your very own ioTree garden monitor. This project is doable for even an absolute beginner, which is what I was when I began this project.
+                </p>
+                <h2>
+                    What is ioTree?
+                </h2>
+                <p>
+                    The ioTree is an internet-enabled garden monitoring system that is an ideal project for a beginner learning about electronics and coding. The ioTree uses low-cost sensors and a tiny computer that receives information from the sensors and uploads it to a web interface. The system collects data about how much water and sunlight the plant is getting, and what the temperature and humidity is in the area. The system uploads this sensor data to an online interface that you can monitor from anywhere via your AdafruitIO account. This project is designed to be accessible to people who have limited experience with the Internet of Things and coding, and fun for people who want to customize it.
+                </p>
+                <h2>
+                    Components
+                </h2>
+                <p>
+                    The first step in constructing your own ioTree monitor is finding all the right components. Here is a list of the things you&rsquo;ll need:
+                </p>
+                <ul>
+                    <li>
+                        Microcontroller
+                    </li>
+                    <li>
+                        Moisture Sensor
+                    </li>
+                    <li>
+                        Luminosity Sensor
+                    </li>
+                    <li>
+                        Humidity Sensor
+                    </li>
+                    <li>
+                        Temperature Sensor
+                    </li>
+                    <li>
+                        Breadboard
+                    </li>
+                    <li>
+                        Jumper Cables
+                    </li>
+                    <li>
+                        Power source
+                    </li>
+                    <li>
+                        Wifi connection
+                    </li>
+                    <li>
+                        Computer
+                    </li>
+                    <li>
+                        Micro USB Cable
+                    </li>
+                </ul>
+                <p>
+                    We constructed our ioTree prototypes with components from several different manufacturers. Below I will list the components, sometimes the exact products, that we used in our builds.
+                </p>
+                <p>
+                    The components needed for this project can be sourced a number of different ways. The most reliable components with the best help documents are manufactured by Adafruit and Sparkfun. These components can, however, be expensive. Adafruit and Sparkfun products can be ordered via Amazon.ca, and purchased in-store at shops like Sayal Electronics, Creatron, and some Home Hardware locations like the one at 290 College Street in Toronto. A very cheap, but sometimes more challenging, option is to order inexpensive generic sensors. They are often made in and shipped from China, and can be purchased through sites like Amazon and Ali Express. Delivery can take many weeks, and the pin arrangement (aka. the pinout) of these sensors may differ from the sensors described here. Whatever you decide, there are sensors out there that will allow you to build an ioTree monitor of your own.
+                </p>
+                <p>
+                    Microcontroller - We used both the Adafruit Feather HUZZAH with ESP8266 and the NodeMCU ESP8266 Lua WiFi Internet Development Board
+                </p>
+                <p>
+                    Moisture Sensor - YL-69 or SEN-13322
+                </p>
+                <p>
+                    Luminosity Sensor - TSL2561
+                </p>
+                <p>
+                    Humidity and Temperature Sensor - SI70
+                </p>
+                <p>
+                    Breadboard - Any prototyping breadboard will do
+                </p>
+                <p>
+                    Jumper Cables - Generic jumper cables from an electronics store will do the trick
+                </p>
+                <p>
+                    Power source - You can use a battery, a wall plug (voltage?), or simply your computer&rsquo;s USB port
+                </p>
+                <p>
+                    Wi-fi connection - Any reliable wi-fi network will do. If your phone is capable of wi-fi tethering, you can operate your monitor from just about anywhere
+                </p>
+                <p>
+                    Computer - Just needs a USB port and the ability to run the Arduino programming environment!
+                </p>
+                <p>
+                    Micro USB Cable - Be sure it is a data cable, not just a charge cable. If you cannot detect the microcontroller when it is plugged in, your cable may be for charging only.
+                </p>
+                <h2>
+                    Wiring
+                </h2>
+                <p>
+                    Once you have your components ready to go, the next step is wiring the sensors to the microcontroller.
+                </p>
+                <p>
+                    The first thing you&rsquo;ll want to do is plug your sensors into the breadboard - orientation does matter. The rows of pins on your sensors need to be parallel to the + and - rails running up the sides of the breadboard. The breadboard connects the pins on your sensor to a metal rail which runs horizontally across half of the breadboard. This metal rail connects every pin placed on top of it. Note that your moisture sensor doesn&rsquo;t plug directly into the breadboard - set it aside for now.
+                </p>
+                <p>
+                    For an intro to breadboards see
+                    <a href="https://learn.sparkfun.com/tutorials/how-to-use-a-breadboard" rel="nofollow">
+                        https://learn.sparkfun.com/tutorials/how-to-use-a-breadboard
+                    </a>
+                </p>
+                <p>
+                    Plug your sensors into the breadboard, leaving at least two rows of holes accessible with which you can connect jumper cables to the sensor.
+                </p>
+                <p>
+                    Next, use a jumper cable to connect the
+                    <strong>
+                        3v3 (aka. 3.3 volts, VCC, VIN, or voltage in. This voltage powers your microcontroller)
+                    </strong>
+                    pin on your microcontroller to the + rail running up one side of your breadboard. Then use a jumper cable to connect the
+                    <strong>
+                        GND (ground)
+                    </strong>
+                    pin to the - rail on your breadboard. Now you can access power and ground by plugging in a cable anywhere along those rails.
+                </p>
+                <p>
+                    Next you&rsquo;ll connect your sensors to the microcontroller. You can begin with either the light or humidity/temperature sensor. Note that both these sensors are
+                    <strong>
+                        digital sensors
+                    </strong>
+                    . On the NodeMCU ESP8266 microcontroller we used, the
+                    <strong>
+                        SCL pin
+                    </strong>
+                    on the sensors should be connected to pin D1 (digital pin 1) and the
+                    <strong>
+                        SDA pin
+                    </strong>
+                    on the sensors should be connected to D2. On the Adafruit Feather HUZZAH, the SCL pin on the sensors should be connected to pin D5 and the SDA pin on the sensors should be connected to D4.
+                </p>
+                <p>
+                    For more information about digital inputs, see
+                    <a href="https://learn.adafruit.com/adafruit-io-basics-digital-input?view=all" rel="nofollow">
+                        https://learn.adafruit.com/adafruit-io-basics-digital-input?view=all
+                    </a>
+                </p>
+                <p>
+                    Note that both the light and temperature/humidity sensors need to be connected to the same pin. I would recommend using jumper cables to connect the microcontroller pins to the breadboard rails connected to the input pins on one sensor, then plug another set of cables directly beside the now-connected sensor, and connect those to your second sensor.
+                </p>
+                <p>
+                    You can then connect the VIN pins on your sensors to power on the + rail on your breadboard, and the GND pins on your sensors to ground on the - rail of your breadboard.
+                </p>
+                <p>
+                    You&rsquo;ll want to review these sensor overview pages and make sure you have downloaded all the necessary libraries
+                </p>
+                <p>
+                    Light Sensor -
+                    <a href="https://learn.adafruit.com/tsl2561/arduino-code" rel="nofollow">
+                        https://learn.adafruit.com/tsl2561/arduino-code
+                    </a>
+                </p>
+                <p>
+                    Temperature/humidity sensor -
+                    <a href="https://learn.adafruit.com/adafruit-si7021-temperature-plus-humidity-sensor/arduino-code" rel="nofollow">
+                        https://learn.adafruit.com/adafruit-si7021-temperature-plus-humidity-sensor/arduino-code
+                    </a>
+                </p>
+                <p>
+                    Lastly, grab your moisture sensor and connect it to your microcontroller. This sensor, unlike the previous two, is an
+                    <strong>
+                        analog sensor
+                    </strong>
+                    . Connect the
+                    <strong>
+                        A0 (analog pin 0)
+                    </strong>
+                    pin of your microcontroller to the A0 pin of your moisture sensor. Connect the GND pin of your sensor to ground via the - rail of your breadboard.
+                    <strong>
+                        Connect the VCC pin of your sensor to pin D3. NOTE that this is not intuitive - VCC would usually connect to power.
+                    </strong>
+                    In our case, we wrote a piece of code that powers the moisture sensor intermittently through a digital pin. When the moisture sensor is on constantly, it becomes corroded and wears out more quickly. This trick keeps the moisture sensor in better condition for longer.
+                </p>
+                <h2>
+                    Further Tutorials and AdafruitIO
+                </h2>
+                <p>
+                    For more information about analog inputs, and an overview of how to set up your Adafruit IO interface, see
+                    <a href="https://learn.adafruit.com/adafruit-io-basics-analog-input" rel="nofollow">
+                        https://learn.adafruit.com/adafruit-io-basics-analog-input
+                    </a>
+                </p>
+                <p>
+                    Head over to
+                    <a href="https://io.adafruit.com/" rel="nofollow">
+                        https://io.adafruit.com/
+                    </a>
+                    to set up your account, and get familiar with how to add feeds and manipulate your dashboard. You will use these skills in conjunction with the code provided to display the data from your ioTree monitor.
+                </p>
+                <p>
+                    You'll also need to download the Arduino IDE (integrated developer environment), which is the interface you will use to program your microcontroller.
+                </p>
+                <p>
+                    Your build is complete! Now you can plug your new garden monitor into your computer with a micro USB and begin learning about how the ioTree is coded!
+                </p>
+                <h2>
+                    Coding
+                </h2>
+                <p>
+                    <strong>
+                        Part One - Garden Monitor Code
+                    </strong>
+                </p>
+                <p>
+                    Copy and paste this first section of code into the Arduino IDE. Below there is a second section of code that you will copy and paste into another tab of the same Arduino sketch. The second section of code is where you enter your Adafruit IO credentials and the wifi network and password you'll use to upload your sensor data.
+                </p>
+                <pre><code>
+#include "Wire.h"
+#include "Adafruit_Sensor.h"
+#include "Adafruit_TSL2561_U.h"
+#include "Adafruit_Si7021.h"
+
+// ioTree - an IOT garden monitoring system that you can build yourself
+// The following code was written and/or curated by Jacqueline Weber
+// The ioTree Garden Monitor Project is a collaboration through Ryerson University
+// The ioTree Team is Kyra Savolainen, Jacqueline Weber and Husain Nizami
+
+// Adafruit IO Analog In Example incorporated in this code
+// Tutorial Link: https://learn.adafruit.com/adafruit-io-basics-analog-input
+// Written by Todd Treece for Adafruit Industries
+// Copyright (c) 2016 Adafruit Industries
+// Licensed under the MIT license.
+// All text above must be included in any redistribution.
+
+/************************** Internet Configuration **************************/
+
+// edit the config.h tab and enter your Adafruit IO credentials
+// and any additional configuration needed for WiFi, cellular,
+// or ethernet clients.
+#include "config.h"
+
+
+/************************** Sensor Code Begins **************************/
+
+// Global variable for light sensor
+Adafruit_TSL2561_Unified tsl = Adafruit_TSL2561_Unified(TSL2561_ADDR_FLOAT, 12345);
+
+// Global variable for humidity/temperature Sensor
+Adafruit_Si7021 sensor = Adafruit_Si7021();
+
+// Light sensor state
+// We must initiate the variable before calling it in our program
+// Sets a value for light_current and light_last, to be overwritten on the first run of the code with sensor data
+int light_current = 0;
+int light_last = -1;
+
+// Set up light feed
+AdafruitIO_Feed *light = io.feed("light");
+
+// Set up light instruction text
+String light_low="Low light, ideal light is 800-1400 lux";
+String light_right="Light level is just right";
+String light_high="High light, ideal light is 800-1400 lux";
+
+//Set up light instructions feed
+AdafruitIO_Feed *light_instructions = io.feed("light_instructions");
+
+// Define moisture sensor input pin
+#define MOISTURE_PIN A0
+
+// Define moisture sensor power pin
+// The moisture sensor is only powered intermittently. This is to slow the corrosion of the sensor
+#define MOISTURE_ON 0
+
+// Moisture sensor state
+int moisture_current = 0;
+int moisture_last = -1;
+int moisture_saturation = 0;
+
+// Set up moisture feed
+AdafruitIO_Feed *moisture = io.feed("moisture");
+
+//Set up moisture instruction text
+String soil_dry="Soil is too dry, needs water";
+String soil_wet="Soil is too wet, let dry";
+String soil_right="Soil moisture is just right";
+
+//Set up moisture instructions feed
+AdafruitIO_Feed *moisture_instructions = io.feed("moisture_instructions");
+
+// Humudity sensor state
+int humidity_current = 0;
+int humidity_last = -1;
+
+// Temperature sensor state
+// For greater sensitivity in your Adafruit IO feed, use double instead of int
+int temperature_current = 0;
+int temperature_last = -1;
+
+// Set up humidity and temperature feeds
+AdafruitIO_Feed *humidity = io.feed("humidity");
+AdafruitIO_Feed *temperature = io.feed("temperature");
+
+
+void setup() {
+
+// Start the serial connection
+Serial.begin(115200);
+
+// Wait for serial monitor to open
+while(! Serial);
+
+// Connect to io.adafruit.com
+Serial.print("Connecting to Adafruit IO");
+io.connect();
+
+// Wait for a connection
+while(io.status() &lt; AIO_CONNECTED) {
+Serial.print(".");
+delay(500);
+ 
+// Configure light sensor
+configureSensor();
+  
+}
+
+// We are connected
+Serial.println();
+Serial.println(io.statusText());
+
+// Set up moisture sensor
+pinMode(MOISTURE_ON, OUTPUT);
+
+// Set up humidity sensor.
+Serial.println("Si7021 test!");
+  
+if (!sensor.begin()) {
+Serial.println("Did not find Si7021 sensor!");
+while (true);
+}
+
+}//end setup
+
+
+// Now begins the main part of our code. 
+// This whole section will run in a loop to collect our sensor data and upload it to the Adafruit IO site
+// You need not necessarily use the Adafruit IO to display your data. Use a screen, or your own interface, your choice!
+
+void loop() {
+
+// io.run(); is required for all sketches.
+// it should always be present at the top of your loop
+// function. it keeps the client connected to
+// io.adafruit.com, and processes any incoming data.
+io.run();
+
+// Light sensor section
+// Get a new sensor event 
+sensors_event_t event;
+tsl.getEvent(&amp;event);
+
+// Light sensor value upload - grab the current light state
+light_current = event.light;
+
+//Ensure that the light sensor value has changed before uploading new value
+if(light_current != light_last){
+  
+// Save the current state to the feed
+Serial.print("sending -&gt; ");
+Serial.print(light_current);
+Serial.println(" lux");
+light-&gt;save(light_current);
+
+ // Text Block for Light Instructions
+ // You can change the values here to suit your plant. The conditions we used are good for most tropical plants.
+// We considered less than 800 lux low light, between 800 and 1400 lux good light conditions, and over 1400 lux high light
+// Note that when the sun has set or is covered by clouds, you'll be instructed that light is low. 
+// Some variation in light is fine, so long as the average daytime light level is high enough. 
+if(light_current != light_last){
+if (light_current&lt;800){
+Serial.print("sending -&gt; ");
+Serial.println("Low light");
+light_instructions-&gt;save(light_low);
+}
+else if (light_current&lt;1400){
+Serial.print("sending -&gt; ");
+Serial.println("Light just right");
+light_instructions-&gt;save(light_right);
+}
+else {
+Serial.print("sending -&gt; ");
+Serial.println("High light");
+light_instructions-&gt;save(light_high);
+}
+}
+
+// Store the last light state
+light_last = light_current;
+
+}
+
+// Moisture sensor value upload 
+// Turn on the digital pin that is powering the moisture sensor
+// Then grab the current state of the moisture
+digitalWrite(0, HIGH);
+delay(100);
+moisture_current = analogRead(MOISTURE_PIN); 
+digitalWrite(0, LOW);
+
+// Ensure that moisture sensor value has changed before uploading new value
+if(moisture_current != moisture_last){
+
+// Save the current state to the analog feed
+// This next line scales the value read by the moisture sensor to a value between 0 and 100
+moisture_saturation = map(moisture_current, 1024, 0, 0, 100);
+Serial.print("sending -&gt; ");
+Serial.print(moisture_saturation);
+Serial.println(" percent soil moisture");
+moisture-&gt;save(moisture_saturation);
+
+// Text Block for Moisture Instructions
+// You can change the values here to suit your plant. The conditions we used are good for most tropical plants.
+// We considered 0-25% moisture dry, 25-70% moisture just right, and over 70% moisture to be wet. 
+if(moisture_last != moisture_current){
+if (moisture_saturation&lt;25){
+Serial.print("sending -&gt; ");
+Serial.println("Soil too dry");
+moisture_instructions-&gt;save(soil_dry);
+}
+else if (moisture_saturation&lt;70){
+Serial.print("sending -&gt; ");
+Serial.println("Soil just right");
+moisture_instructions-&gt;save(soil_right);
+}
+else {
+Serial.print("sending -&gt; ");
+Serial.println("Soil too wet");
+moisture_instructions-&gt;save(soil_wet);
+}
+}
+
+// Store last moisture state
+moisture_last = moisture_current;
+  
+}
+
+// Running the Humidity/Temperature Sensor
+// Grab the current state of the humidity sensor
+humidity_current = sensor.readHumidity();
+
+// Ensure that sensor value has changed before uploading new value
+if(humidity_current != humidity_last){
+
+// Save the current state to the feed
+Serial.print("sending -&gt; "); 
+Serial.print(sensor.readHumidity(), 0);
+Serial.println(" percent humidity");
+humidity-&gt;save(humidity_current);
+
+// Store last humidity state
+humidity_last = humidity_current;
+  
+}
+
+// Grab the current state of the temperature sensor
+temperature_current = sensor.readTemperature();
+
+// Ensure that sensor value has changed before uploading new value
+if(temperature_current != temperature_last){
+
+// Save the current state to the feed
+Serial.print("sending -&gt; "); 
+Serial.print(sensor.readTemperature(), 1);
+Serial.println(" degrees");
+temperature-&gt;save(temperature_current);
+
+// Store last temperature state
+temperature_last = temperature_current;
+}
+  
+delay(4000);
+  
+}// end loop
+
+// Light sensor code from Adafruit site - see TSL2561 guide
+
+void displaySensorDetails(void)
+{
+sensor_t sensor;
+tsl.getSensor(&amp;sensor);
+Serial.println("------------------------------------");
+Serial.print  ("Sensor:       "); Serial.println(sensor.name);
+Serial.print  ("Driver Ver:   "); Serial.println(sensor.version);
+Serial.print  ("Unique ID:    "); Serial.println(sensor.sensor_id);
+Serial.print  ("Max Value:    "); Serial.print(sensor.max_value); Serial.println(" lux");
+Serial.print  ("Min Value:    "); Serial.print(sensor.min_value); Serial.println(" lux");
+Serial.print  ("Resolution:   "); Serial.print(sensor.resolution); Serial.println(" lux");  
+Serial.println("------------------------------------");
+Serial.println("");
+delay(500);
+}
+
+
+void configureSensor(void)
+{
+
+// This code from Adafruit.com, helps configure sensor responses.
+// You can manually set the gain or enable auto-gain support 
+// tsl.setGain(TSL2561_GAIN_1X);      /* No gain ... use in bright light to avoid sensor saturation 
+// tsl.setGain(TSL2561_GAIN_16X);     /* 16x gain ... use in low light to boost sensitivity 
+//  tsl.enableAutoRange(true);            /* Auto-gain ... switches automatically between 1x and 16x 
+  
+// Changing the integration time gives you better sensor resolution (402ms = 16-bit data) 
+// tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_13MS);         fast but low resolution 
+// tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_101MS);     medium resolution and speed   
+// tsl.setIntegrationTime(TSL2561_INTEGRATIONTIME_402MS);     16-bit data but slowest conversions 
+
+// Update these values depending on what you've set above! //
+Serial.println("------------------------------------");
+Serial.print  ("Gain:         "); Serial.println("Auto");
+Serial.print  ("Timing:       "); Serial.println("13 ms");
+Serial.println("------------------------------------");
+}</code></pre>
+                <p>
+                    <strong>
+                        Part Two - Adafruit IO and Wi-fi Setup
+                    </strong>
+                </p>
+                <p>
+                    Open a new tab in your Arduino sketch (see the button in the top right corner of the Arduino IDE window) and name it "config.h" - this tab name must not change, as the previous code calls this file when it runs. Copy and paste the following code into the config.h tab. Then enter your Adafruit IO and wi-fi credentials.
+                </p>
+                <pre><code>
+/************************ Adafruit IO Config *******************************/
+
+// visit io.adafruit.com if you need to create an account,
+// or if you need your Adafruit IO key.
+#define IO_USERNAME    "USERNAME HERE"
+#define IO_KEY         "IO KEY HERE"
+
+/******************************* WIFI **************************************/
+
+// the AdafruitIO_WiFi client will work with the following boards:
+//   - HUZZAH ESP8266 Breakout -&gt; https://www.adafruit.com/products/2471
+//   - Feather HUZZAH ESP8266 -&gt; https://www.adafruit.com/products/2821
+//   - Feather M0 WiFi -&gt; https://www.adafruit.com/products/3010
+//   - Feather WICED -&gt; https://www.adafruit.com/products/3056
+
+#define WIFI_SSID       "WIFI SSID HERE"
+#define WIFI_PASS       "WIFI PASSWORD HERE"
+
+// comment out the following two lines if you are using fona or ethernet
+#include "AdafruitIO_WiFi.h"
+AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS);
+
+
+/******************************* FONA **************************************/
+
+// the AdafruitIO_FONA client will work with the following boards:
+//   - Feather 32u4 FONA -&gt; https://www.adafruit.com/product/3027
+
+// uncomment the following two lines for 32u4 FONA,
+// and comment out the AdafruitIO_WiFi client in the WIFI section
+// #include "AdafruitIO_FONA.h"
+// AdafruitIO_FONA io(IO_USERNAME, IO_KEY);
+
+
+/**************************** ETHERNET ************************************/
+
+// the AdafruitIO_Ethernet client will work with the following boards:
+//   - Ethernet FeatherWing -&gt; https://www.adafruit.com/products/3201
+
+// uncomment the following two lines for ethernet,
+// and comment out the AdafruitIO_WiFi client in the WIFI section
+// #include "AdafruitIO_Ethernet.h"
+// AdafruitIO_Ethernet io(IO_USERNAME, IO_KEY);</code></pre>
+                <h2>
+                    What next?
+                </h2>
+                <p>
+                    Now that you know how to build your own ioTree, we challenge you to customize it and improve upon it! Maybe you'd like your ioTree to send you an email or text message when your plants need to be watered. Maybe you'd like the ioTree to automatically water your plant when the soil moisture falls too low. The possibilities are endless! We hope you enjoy learning from and building onto our project.
+                </p>
+                <p>
+                    Please send us a message and let us know what you do with your own ioTree monitor!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/adafruit">
+                                adafruit
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,192 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/dTXbIzhq_po?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602806" data-title="Dee being tested by my three-year-old son" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/806/datas/original.jpg">
+                            <img alt="Dee - the DeepLens Educating Entertainer &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/806/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Dee being tested by my three-year-old son
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602807" data-title="Dee - DeepLens, speaker, and eight picture cards" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/807/datas/original.jpg">
+                            <img alt="Dee - the DeepLens Educating Entertainer &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/807/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Dee - DeepLens, speaker, and eight picture cards
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Young children, and some older ones with special learning needs, can struggle to interact with electronic devices. They may not be able to read a tablet screen, or use a computer keyboard, or speak clearly enough for voice recognition. But with
+                    <em>
+                        video
+                    </em>
+                    recognition, this can change. Technology can now understand the child's world, and discover when they do something, such as pick up an object or perform an action. And that leads to whole new ways of interaction.
+                </p>
+                <p>
+                    DeepLens is particularly appealing for children's interactions because it can run its deep learning models offline. Which means the device can work anywhere, with no additional costs, and no privacy concerns over children's data.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Dee (the DeepLens Educating Entertainer) asks questions, by speaking. Her questions ask the participant to show something. The questions (in a JSON file and easily extended) have answers that are one of four animals (bird, cow, horse and sheep) or four forms of transport (aeroplane, bicycle, bus and motorbike). Some questions have just one right answer (e.g. "What says moo?") and some can have several (e.g. "What has wheels?"). Right answers are praised and wrong ones are given not-very-subtle hints to get it right. (This is about interaction and positive reinforcement, rather than being a challenging quiz.)
+                </p>
+                <p>
+                    The participant answers the questions by showing Dee a picture of the relevant object. The GitHub repo includes a PDF of pictures that can be printed out for this.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The predefined DeepLens model
+                    <code>
+                        deeplens-object-detection
+                    </code>
+                    worked well for this, and so creating a new one was not required. This meant that more time could be focussed on the logic in the Labmda.
+                </p>
+                <p>
+                    A Lambda function, running on the DeepLens device (via GreenGrass, of course) handles interaction. It picks a question at random, speaks it, and then analyses the model response to see how the user answered. Plenty of messages such as "Let's do more!" and "Good choice!" help the participant feel positive and engaged about the experience.
+                </p>
+                <p>
+                    Dee is designed to not require WiFi access (to ensure there are no connection, cost, or privacy concerns). This was tricky when it came to speech, as Amazon Polly is used. To overcome this, a script was made to capture all required phrases and store them locally. Which means the Lambda includes 69 MP3 files.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    My initial hope was that, rather than pictures, the child could show toys to Dee. Picking up, for example, a toy plane or cuddly sheep, would be more exciting than a piece of paper. But in testing, the object detection model did not see toys as being the same as their real counterparts. A toy plane is just too different from a real plane, it seems. Training a model to work on toys would fix this, of course, but I was unable to find a good and large enough training data set. This is something to work on.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm impressed with how this form of interaction really works. As you'll see from the YouTube video, we tried Dee with my three-year-old son, and he loved it. He's asking to play with it again. This may be a prototype but it's good enough for him to use.
+                </p>
+                <p>
+                    I'm also excited with how the positive reinforcement aspects can help children with autism or Asperger's.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    This project has brought me up to speed with deep learning concepts, and AWS's approach to managing and running them (through SageMaker and GreenGrass).
+                </p>
+                <p>
+                    Away from the tech, I've also learned the potential of technology increasingly understanding the human world. Intelligent video recognition allows all kinds of new ways to play games and learn new things.
+                </p>
+                <h2>
+                    What's next for Dee - the DeepLens Educating Entertainer
+                </h2>
+                <p>
+                    The potential for Dee is huge. If she could recognise a wider range of things, a much more varied set of questions could be asked. Consider:
+                </p>
+                <ul>
+                    <li>
+                        "Can you hold up three fingers?"
+                        <em>
+                            (to test counting skills)
+                        </em>
+                    </li>
+                    <li>
+                        "Show me your biggest smile!"
+                    </li>
+                    <li>
+                        "Can you do a star jump?"
+                    </li>
+                    <li>
+                        "Which one is the letter A?"
+                    </li>
+                    <li>
+                        "Can you show me your favourite toy?"
+                    </li>
+                </ul>
+                <p>
+                    Of course, training new models will be a key part of this. And with services such as SageMaker making training more straightforward, the possibility emerges for end-users being able to train their own models. A teacher could, for example, train Dee to recognise certain objects in the classroom. Or a carer could train Dee to respond to specific objects that are important to someone with autism.
+                </p>
+                <p>
+                    Finally, there's plenty more improvements in the logic that could be done too. Could Dee track your progress over time, and report on how well you're learning, say, the alphabet? Could it recognise different people and set them different challenges? The possibilities are endless.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            deeplens
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            greengrass
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/matthew1000/dee" rel="nofollow" target="_blank" title="https://github.com/matthew1000/dee">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

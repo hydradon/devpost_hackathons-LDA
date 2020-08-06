@@ -1,0 +1,201 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="579585" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/579/585/datas/original.JPG">
+                            <img alt="Sight &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/579/585/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="579586" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/579/586/datas/original.PNG">
+                            <img alt="Sight &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/579/586/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="579584" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/579/584/datas/original.PNG">
+                            <img alt="Sight &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/579/584/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Imagine a world where your best friend is standing in front of you, but you can't see them. Or you go to read a menu, but you are not able to because the restaurant does not have specialized brail menus. For millions of visually impaired people around the world, those are not hypotheticals, they are facts of life.
+                </p>
+                <p>
+                    Hollywood has largely solved this problem in entertainment. Audio descriptions allow the blind or visually impaired to follow the plot of movies easily. With Sight, we are trying to bring the power of audio description to everyday life.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Sight is an app that allows the visually impaired to recognize their friends, get an idea of their surroundings, and have written text read aloud. The app also uses voice recognition to listen for speech commands to identify objects, people or to read text.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The front-end is a native iOS app written in Swift and Objective-C with XCode. We use Apple's native vision and speech API's to give the user intuitive control over the app.
+                </p>
+                <hr>
+                <p>
+                    The back-end service is written in Go and is served with NGrok.
+                </p>
+                <hr>
+                <p>
+                    We repurposed the Facebook tagging algorithm to recognize a user's friends. When the Sight app sees a face, it is automatically uploaded to the back-end service. The back-end then "posts" the picture to the user's Facebook privately. If any faces show up in the photo, Facebook's tagging algorithm suggests possibilities for who out of the user's friend group they might be. We scrape this data from Facebook to match names with faces in the original picture. If and when Sight recognizes a person as one of the user's friends, that friend's name is read aloud.
+                </p>
+                <hr>
+                <p>
+                    We make use of the Google Vision API in three ways:
+                </p>
+                <ul>
+                    <li>
+                        To run sentiment analysis on people's faces, to get an idea of whether they are happy, sad, surprised etc.
+                    </li>
+                    <li>
+                        To run Optical Character Recognition on text in the real world which is then read aloud to the user.
+                    </li>
+                    <li>
+                        For label detection, to indentify objects and surroundings in the real world which the user can then query about.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    There were a plethora of challenges we experienced over the course of the hackathon.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Each member of the team wrote their portion of the back-end service a language they were comfortable in. However when we came together, we decided that combining services written in different languages would be overly complicated, so we decided to rewrite the entire back-end in Go.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            When we rewrote portions of the back-end in Go, this gave us a massive performance boost. However, this turned out to be both a curse and a blessing. Because of the limitation of how quickly we are able to upload images to Facebook, we had to add a workaround to ensure that we do not check for tag suggestions before the photo has been uploaded.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            When the Optical Character Recognition service was prototyped in Python on Google App Engine, it became mysteriously rate-limited by the Google Vision API. Re-generating API keys proved to no avail, and ultimately we overcame this by rewriting the service in Go.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Each member of the team came to this hackathon with a very disjoint set of skills and ideas, so we are really glad about how well we were able to build an elegant and put together app.
+                </p>
+                <p>
+                    Facebook does not have an official algorithm for letting apps use their facial recognition service, so we are proud of the workaround we figured out that allowed us to use Facebook's powerful facial recognition software.
+                </p>
+                <p>
+                    We are also proud of how fast the Go back-end runs, but more than anything, we are proud of building a really awesome app.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Najm taught himself Go over the course of the weekend, which he had no experience with before coming to YHack.
+                </p>
+                <p>
+                    Nathaniel and Liang learned about the Google Vision API, and how to use it for OCR, facial detection, and facial emotion analysis.
+                </p>
+                <p>
+                    Zak learned about building a native iOS app that communicates with a data-rich APIs.
+                </p>
+                <p>
+                    We also learned about making clever use of Facebook's API to make use of their powerful facial recognition service.
+                </p>
+                <p>
+                    Over the course of the weekend, we encountered more problems and bugs than we'd probably like to admit. Most of all we learned a ton of valuable problem-solving skills while we worked together to overcome these challenges.
+                </p>
+                <h2>
+                    What's next for Sight
+                </h2>
+                <p>
+                    If Facebook ever decides to add an API that allows facial recognition, we think that would allow for even more powerful friend recognition functionality in our app.
+                </p>
+                <p>
+                    Ultimately, we plan to host the back-end on Google App Engine.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-compute-engine">
+                                google-compute-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-vision
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ricek/sight" rel="nofollow" target="_blank" title="https://github.com/ricek/sight">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

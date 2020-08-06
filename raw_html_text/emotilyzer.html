@@ -1,0 +1,302 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="886672" data-title="The extension rates the emotion of web pages from 0-100." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/886/672/datas/original.png">
+                            <img alt="Emotilyze &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/886/672/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The extension rates the emotion of web pages from 0-100.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="886806" data-title="The extension highlights text that is used in emotional context." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/886/806/datas/original.png">
+                            <img alt="Emotilyze &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/886/806/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The extension highlights text that is used in emotional context.
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="887333" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/887/333/datas/original.png">
+                            <img alt="Emotilyze &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/887/333/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Today's media is increasingly becoming opinionated, emotional, and unreliable, as opposed to being backed by facts, data, and sources. Although we may not realize it, our thoughts are often being manipulated by appeals to emotion, rather than logic or credibility. We wanted to build something that offers readers a way to step back and see how much of an article is based on emotion, rather than facts.
+                </p>
+                <h2>
+                    Installation
+                </h2>
+                <p>
+                    <a href="https://github.com/danbeneventano/hack-utd-vi" rel="nofollow">
+                        Installation instructions are in README.md
+                    </a>
+                    . Our Chrome Web Store submission is under review.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Emotilyze is a browser extension, soon to be available on the Chrome Web Store. When activated, the extension scans the contents of any web page or article and displays a "Emotion Score,' a percentage indicating how much of the page is based on emotion, shows a description of the overall emotional content of the page, and highlights words in the page that are used in a strong emotional context.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The extension was built using JavaScript, the Chrome extension API, and Vue.js/Vuetify.js for the popup's UI. The extension extracts the primary text from the web page and makes a request to our server using
+                    <code>
+                        axios
+                    </code>
+                    , which returns information about the emotional contents of the text.
+                </p>
+                <p>
+                    Our server was written using Node.js and Express.js. We used the Google Cloud Natural Language API to analyze the text. Before sending the data back to the extension, the server analyzes the data from Google Cloud and computes an overall "Emotion Score" for the site, as well as descriptions for emotional content within the article. We are hosting the server using Google App Engine.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <h3>
+                    Extracting Article Content
+                </h3>
+                <p>
+                    Our first challenge was figuring out how to distinguish the important text in web pages from headers, links, ads, and other irrelevant contents.
+                </p>
+                <p>
+                    Our first approach to this problem was to have the user highlight the text that should be analyzed with their cursor, then activate the extension through an option in the right-click menu. This worked, but we decided it was too inconvenient. We wanted a way to extract the article's contents without the help of the user.
+                </p>
+                <p>
+                    We then decided to try and find an open-source library that could parse the web page for us. We tried a number of libraries, including
+                    <code>
+                        boilerpipe
+                    </code>
+                    and
+                    <code>
+                        article-parser
+                    </code>
+                    , but they did not work properly on many websites. We then found
+                    <code>
+                        html-article-extractor
+                    </code>
+                    , which seemed to work perfectly on nearly any site. We could simply feed the library the HTML contents of the page and it would return the article's text, ready to be analyzed by Google Cloud.
+                </p>
+                <h3>
+                    Highlighting text within web pages
+                </h3>
+                <p>
+                    One of the key features of our extension is to highlight words on a page that are used in a heavily emotional context. At first, this seemed like some fairly simple HTML manipulation. However, we quickly ran into issues. Our logic was the following: loop through the relevant HTML elements on the page, and replace the emotional words with a
+                    <code>
+                        &lt;span&gt;
+                    </code>
+                    that highlights it. However, this logic led to infinite loops, since the
+                    <code>
+                        &lt;span&gt;
+                    </code>
+                    contained the text that needs to be replaced. This led to nested
+                    <code>
+                        &lt;span&gt;
+                    </code>
+                    s, causing hundreds of tooltips to pop up when the user hovers over the highlighted text.
+                </p>
+                <p>
+                    We tried to fix this by starting each loop at the end of the span that was previously inserted. However, this did not work because text on a web page can be spread throughout hundreds of different HTML elements. With a bit of creativity and the help of Stack Overflow, we were able to solve this using a
+                    <code>
+                        Map
+                    </code>
+                    and regular expressions.
+                </p>
+                <h3>
+                    Calibrating Google's Sentiment Analysis
+                </h3>
+                <p>
+                    Google's Natural Language API returns data in a somewhat convoluted format. The most relevant data for us is
+                    <code>
+                        score
+                    </code>
+                    and
+                    <code>
+                        magnitude
+                    </code>
+                    . In essence,
+                    <code>
+                        score
+                    </code>
+                    is a value from -1 to 1 that represents the strength of the negativity or positivity in the text, while
+                    <code>
+                        magnitude
+                    </code>
+                    is a value from 0 to infinity that represents how much emotional content the text contains. This data would be too confusing to show to the user, so we needed to figure out how to turn these numbers into a more friendly format.
+                </p>
+                <p>
+                    In our server code, we decided to compute three indicators that would be shown to the user. Our first indicator is the "emotion score," a percentage designed to represent how emotional the text is. The second indicator is a description summarizing the emotional content of the page. Lastly, we generate descriptions for each highlighted text explaining why it is highlighted.
+                </p>
+                <p>
+                    While the code for generating these indicators is fairly trivial, figuring out how to interpret Google's values posed a challenge. Interpreting
+                    <code>
+                        score
+                    </code>
+                    was not too bad, since it is always between -1 and 1. However,
+                    <code>
+                        magnitude
+                    </code>
+                    can be anywhere from 0 to infinity, and depends on how long the text is. We struggled to figure out a formula that would give us an accurate "emotion score." We settled on
+                    <code>
+                        magnitude / 0.35 * length
+                    </code>
+                    , but this is subject to change as we are still not totally satisfied with the "emotion scores." We combined the "emotion scores" with Google's
+                    <code>
+                        score
+                    </code>
+                    s to generate our descriptions (example:
+                    <code>
+                        "The text contains clearly positive emotion"
+                    </code>
+                    ). However, we believe there are many improvements that can be made to our calculations.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud to have successfully built a working program within 24 hours, while using technology we were not familiar with (Google Cloud). We are also proud to have made something that tackles an issue in our society that we care about.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how to use Google Natural Language API and Google App Engine. We also learned about backend development and coding browser extensions.
+                </p>
+                <h2>
+                    What's next for Emotilyze
+                </h2>
+                <p>
+                    We hope to further improve Emotilyze's analysis of web pages, yielding more accurate results. We may look into AWS natural language processing or other platforms. We also hope to fix any bugs we may have missed while testing at HackUTD.
+                </p>
+                <p>
+                    There a numerous server-side optimizations that could be done to improve Emotilyze's performance and reduce costs, such as storing results in a database so articles only need to be analyzed once.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            axios
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chrome">
+                                chrome
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-app-engine">
+                                google-app-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-natural-language
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vue
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vuetify
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/danbeneventano/hack-utd-vi" rel="nofollow" target="_blank" title="https://github.com/danbeneventano/hack-utd-vi">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,361 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Universal CCD
+                </h1>
+                <h3>
+                    disthealth_eHealthWallet
+                </h3>
+                <p>
+                    Our blockchain entry into the #disthealth #hackathon
+                </p>
+                <h1>
+                    Links
+                </h1>
+                <ul>
+                    <li>
+                        <a href="https://docs.google.com/presentation/d/16kK7OJzINItUhMO_3toGFg3vpAs3yIDP1l5XXYZWGZQ/edit?usp=sharing" rel="nofollow">
+                            Our Presentation on our proposed solution
+                        </a>
+                    </li>
+                </ul>
+                <h1>
+                    Design Considerations
+                </h1>
+                <ul>
+                    <li>
+                        IPFS is used for Public Distributed Storage
+                        <ul>
+                            <li>
+                                IPFS files never go away
+                            </li>
+                            <li>
+                                Due to this current limitation, this solution would use the Private Swarms and Private Gateways currently being developed
+                            </li>
+                            <li>
+                                We cannot trust IPFS, so we use a non-repudiation system like Tierion
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        A Patient establishes a smart contract with their Payer (Insurance Company), who acts as their
+                        <strong>
+                            Custodian
+                        </strong>
+                        <ul>
+                            <li>
+                                This is akin to an Insurance Card you get today from your Insurance Company
+                            </li>
+                            <li>
+                                The Custodian creates an empty
+                                <strong>
+                                    Ledger
+                                </strong>
+                                in IPFS for the Patient
+                            </li>
+                            <li>
+                                The hash from that Ledger file added to IPFS provides the original value in the User's digital eHealth wallet
+                                <ul>
+                                    <li>
+                                        The Patient's wallet also contains the Public Key of the Custodian
+                                    </li>
+                                    <li>
+                                        The Custodian retains the Patient's Public Key
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        A Patient establishes a relationship with a Service Provider (Hospital)
+                        <ul>
+                            <li>
+                                This is akin to giving them their Insurance Card
+                                <ul>
+                                    <li>
+                                        This includes the Patient's Public Key
+                                    </li>
+                                    <li>
+                                        This includes the hash (Filename) for the Patient's Consolidated CCD Ledger file in IPFS
+                                    </li>
+                                    <li>
+                                        This includes the Custodian's Public Key
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                The Service Provider (SP) provides the Patient with the SP's Public Key that is added to the Patient's wallet
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        A SP (Hospital, Clinic, Doctor, etc) contributes new CCD information for a Patient by adding the CCD into IPFS
+                        <ul>
+                            <li>
+                                The hash from the new file is added to the user's Ledger in IPFS
+                            </li>
+                            <li>
+                                This is tracked as a Business transactions with the Custodian for the CCD addition added to IPFS using Ethereum
+                            </li>
+                            <li>
+                                Values returned from the interactions with IPFS and Ethereum are used in a transaction with Tierion (which creates a verifiable record of any data or business process on the blockchain)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        The same process as above, is used when Custodian's (most likely in a Case Management Situation) create additional data for a new CCD file.
+                    </li>
+                </ul>
+                <h1>
+                    Smart Contract
+                </h1>
+                <p>
+                    Our smart contract between the User (Patient) and their Payer (Insurance Company), who acts as their Custodian, has the following features.
+                </p>
+                <ul>
+                    <li>
+                        Automatic Exchange Policies
+                    </li>
+                    <li>
+                        Digital Signatures
+                    </li>
+                    <li>
+                        Enforce Encryption Algorithms
+                    </li>
+                    <li>
+                        Enforce Key Size
+                    </li>
+                    <li>
+                        Key Exchange
+                    </li>
+                    <li>
+                        Licenses
+                        <ul>
+                            <li>
+                                Ability to submit data for research purposes that is stripped of PHI (anonymized)
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Protocols for Consolidated CCD
+                    </li>
+                    <li>
+                        Selective Sharing
+                    </li>
+                    <li>
+                        Version Information for Supported C-CDA format.
+                    </li>
+                </ul>
+                <h1>
+                    Technologies Used
+                </h1>
+                <ul>
+                    <li>
+                        <a href="http://52.20.128.239:3000/" rel="nofollow">
+                            HealthLX CCD viewer (Patient Insight)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://ivmartel.github.io/dwv/demo/stable/viewers/static/index.html" rel="nofollow">
+                            DICOM viewer
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.ethereum.org/" rel="nofollow">
+                            Ethereum (blockchain)
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://tierion.com/" rel="nofollow">
+                            Tierion (non-repudiation system  - uses blockchain)
+                        </a>
+                        <ul>
+                            <li>
+                                <a href="https://tierion.com/proof" rel="nofollow">
+                                    https://tierion.com/proof
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="https://ipfs.io/" rel="nofollow">
+                            IPFS (distributed storage)
+                        </a>
+                        . Other alternatives:
+                        <ul>
+                            <li>
+                                <a href="http://enigma.media.mit.edu/" rel="nofollow">
+                                    MIT Enigma
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://blockstack.org/" rel="nofollow">
+                                    Blockstack
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h1>
+                    FAQ
+                </h1>
+                <h2>
+                    What does Tierion do?
+                </h2>
+                <p>
+                    Tierion is based on
+                    <strong>
+                        Proof of Existence
+                    </strong>
+                </p>
+                <p>
+                    Use our service to anonymously and securely store an online distributed proof of existence for any document. Your documents are NOT stored in our database or in the bitcoin blockchain, so you don't have to worry about your data being accessed by others.
+                </p>
+                <p>
+                    All we store is a cryptographic digest of the file, linked to the time in which you submitted the document. In this way, you can later certify that the data existed at that time. This is the first online service allowing you to publicly prove that you have certain information without revealing the data or yourself, with a decentralized certification based on the bitcoin network.
+                </p>
+                <p>
+                    The key advantages are anonymity, privacy, and getting a decentralized proof which can't be erased or modified by anyone (third parties or governments). Your document's existence is permanently validated by the blockchain even if this site is compromised or down, so you don't depend or need to trust any central authority. All previous data timestamping solutions lack this freedom.
+                </p>
+                <h1>
+                    Log
+                </h1>
+                <h3>
+                    Generate certs for hospitals
+                </h3>
+                <ul>
+                    <li>
+                        setup DNS for hospitals (mayoclinic.apifocal.org, nashvillecentral.apifocal.org)
+                    </li>
+                    <li>
+                        install certbot
+                    </li>
+                    <li>
+                        install &amp; configure apache2 (80/443)
+                    </li>
+                    <li>
+                        setup vhost for hospital
+                        <ul>
+                            <li>
+                                http to https redirect:
+                                <a href="http://mayoclinic.apifocal.org" rel="nofollow">
+                                    http://mayoclinic.apifocal.org
+                                </a>
+                                -&gt;
+                                <a href="https://mayoclinic.apifocal.org" rel="nofollow">
+                                    https://mayoclinic.apifocal.org
+                                </a>
+                            </li>
+                            <li>
+                                http to https redirect:
+                                <a href="http://nashvillegeneral.apifocal.org" rel="nofollow">
+                                    http://nashvillegeneral.apifocal.org
+                                </a>
+                                -&gt;
+                                <a href="https://nashvillegeneral.apifocal.org" rel="nofollow">
+                                    https://nashvillegeneral.apifocal.org
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        generate certs using letsencrypt
+                    </li>
+                </ul>
+                <pre class="language-ssh"><code>sudo ./certbot-auto certonly --webroot -w /var/www/html -d nashvillegeneral.apifocal.org --email alex@apifocal.com
+sudo ./certbot-auto certonly --webroot -w /var/www/html -d mayoclinic.apifocal.org --email alex@apifocal.com
+</code></pre>
+                <h3>
+                    Setup a private Ethereum Blockchain
+                </h3>
+                <h3>
+                    Create a Smart Contract
+                </h3>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/blockchain">
+                                blockchain
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            etherium
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-sheets
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/powerpoint">
+                                powerpoint
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tierion
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/healthlx/disthealth_eHealthWallet" rel="nofollow" target="_blank" title="https://github.com/healthlx/disthealth_eHealthWallet">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

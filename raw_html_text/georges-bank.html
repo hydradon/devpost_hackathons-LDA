@@ -1,0 +1,681 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    *** Dataset from
+                    <a href="https://ecologicaldata.org/wiki/georges-bank-plankton" rel="nofollow">
+                        https://ecologicaldata.org/wiki/georges-bank-plankton
+                    </a>
+                    ***
+                </p>
+                <p>
+                    pyspark --packages com.databricks:spark-csv_2.10:1.4.0
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df = sqlCtx.load(
+source = "com.databricks.spark.csv",
+header = 'true',
+inferSchema = 'true',
+path = 'file:///home/cloudera/HackForTheSeaDatasets/GeorgesBank-Plankton.csv')
+                            </p>
+                            <p>
+                                gbp_df.printSchema()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    root
+ |-- FID: string (nullable = true)
+ |-- id: integer (nullable = true)
+ |-- resource_id: integer (nullable = true)
+ |-- resource_citation: string (nullable = true)
+ |-- resname: string (nullable = true)
+ |-- lifestage: string (nullable = true)
+ |-- basisofrecord: string (nullable = true)
+ |-- latitude: double (nullable = true)
+ |-- longitude: double (nullable = true)
+ |-- coordinateprecision: string (nullable = true)
+ |-- datelastcached: string (nullable = true)
+ |-- datecollected: string (nullable = true)
+ |-- dateprecision: string (nullable = true)
+ |-- datelastmodified: string (nullable = true)
+ |-- yearcollected: integer (nullable = true)
+ |-- monthcollected: integer (nullable = true)
+ |-- daycollected: integer (nullable = true)
+ |-- valid_id: integer (nullable = true)
+ |-- valid_aphia_id: integer (nullable = true)
+ |-- sname: string (nullable = true)
+ |-- sauthor: string (nullable = true)
+ |-- tname: string (nullable = true)
+ |-- tauthor: string (nullable = true)
+ |-- storedpath: string (nullable = true)
+ |-- geom: string (nullable = true)
+ |-- cs6m: string (nullable = true)
+ |-- eez_id: integer (nullable = true)
+ |-- lme_id: integer (nullable = true)
+ |-- meow_id: integer (nullable = true)
+ |-- iho_id: integer (nullable = true)
+ |-- fao_id: integer (nullable = true)
+ |-- mwhs_id: string (nullable = true)
+ |-- depth: double (nullable = true)
+ |-- depthprecision: double (nullable = true)
+ |-- bottomdepth: integer (nullable = true)
+ |-- display: integer (nullable = true)
+ |-- woa_depth: integer (nullable = true)
+ |-- temperature: double (nullable = true)
+ |-- salinity: double (nullable = true)
+ |-- nitrate: double (nullable = true)
+ |-- oxygen: double (nullable = true)
+ |-- phosphate: double (nullable = true)
+ |-- silicate: double (nullable = true)
+ |-- recordlastcached: string (nullable = true)
+ |-- sourceofrecord: string (nullable = true)
+ |-- recordcitation: string (nullable = true)
+ |-- recordurl: string (nullable = true)
+ |-- institutioncode: string (nullable = true)
+ |-- collectioncode: string (nullable = true)
+ |-- catalognumber: string (nullable = true)
+ |-- collector: string (nullable = true)
+ |-- startyearcollected: string (nullable = true)
+ |-- endyearcollected: string (nullable = true)
+ |-- startmonthcollected: string (nullable = true)
+ |-- endmonthcollected: string (nullable = true)
+ |-- startdaycollected: string (nullable = true)
+ |-- enddaycollected: string (nullable = true)
+ |-- starttimecollected: string (nullable = true)
+ |-- endtimecollected: string (nullable = true)
+ |-- julianday: string (nullable = true)
+ |-- startjulianday: string (nullable = true)
+ |-- endjulianday: string (nullable = true)
+ |-- timeofday: string (nullable = true)
+ |-- starttimeofday: double (nullable = true)
+ |-- endtimeofday: double (nullable = true)
+ |-- timezone: string (nullable = true)
+ |-- locality: string (nullable = true)
+ |-- ocean: string (nullable = true)
+ |-- country: string (nullable = true)
+ |-- state: string (nullable = true)
+ |-- county: string (nullable = true)
+ |-- cscode: string (nullable = true)
+ |-- slatitude: string (nullable = true)
+ |-- elatitude: string (nullable = true)
+ |-- slongitude: string (nullable = true)
+ |-- elongitude: string (nullable = true)
+ |-- seprecision: string (nullable = true)
+ |-- minimumdepth: integer (nullable = true)
+ |-- maximumdepth: integer (nullable = true)
+ |-- depthrange: string (nullable = true)
+ |-- identifiedby: string (nullable = true)
+ |-- yearidentified: string (nullable = true)
+ |-- monthidentified: string (nullable = true)
+ |-- dayidentified: string (nullable = true)
+ |-- typestatus: string (nullable = true)
+ |-- collectornumber: string (nullable = true)
+ |-- fieldnumber: integer (nullable = true)
+ |-- sex: string (nullable = true)
+ |-- preparationtype: string (nullable = true)
+ |-- individualcount: string (nullable = true)              // no data and it's a string!
+ |-- observedindividualcount: string (nullable = true)
+ |-- observedweight: string (nullable = true)
+ |-- samplesize: string (nullable = true)
+ |-- previouscatalognumber: string (nullable = true)
+ |-- relationshiptype: string (nullable = true)
+ |-- relatedcatalogitem: string (nullable = true)
+ |-- notes: string (nullable = true)
+ |-- concatenated: string (nullable = true)
+ |-- scientificnameid: string (nullable = true)
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.count()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    15305L
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").count().show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected count
+1995          2582 
+1996          2419 
+1997          2767 
+1998          3836 
+1999          3701
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("depth").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(depth#32)
+1995          248.5
+                    <br>
+                    1996          347.0
+                    <br>
+                    1997          301.0
+                    <br>
+                    1998          351.5
+                    <br>
+                    1999          350.0
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("depth").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(depth#32)
+1995          6.5
+                    <br>
+                    1996          5.5
+                    <br>
+                    1997          0.5
+                    <br>
+                    1998          7.0
+                    <br>
+                    1999          7.0
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("depth").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(depth#32)
+                    <br>
+                    1995          48.074167312161116
+1996          52.39561802397685 
+1997          52.907842428623056
+1998          50.01629301355579 
+1999          51.749797352067006
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("temperature").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(temperature#37)
+1995          14.86800003
+                    <br>
+                    1996          14.86800003
+                    <br>
+                    1997          14.86800003
+                    <br>
+                    1998          14.86800003
+                    <br>
+                    1999          14.86800003
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("temperature").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(temperature#37)
+1995          8.75399971
+                    <br>
+                    1996          8.33600044
+                    <br>
+                    1997          7.14799976
+                    <br>
+                    1998          8.33600044
+                    <br>
+                    1999          8.33600044
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("temperature").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(temperature#37)
+1995          11.727328003847381 
+1996          11.187256990699158 
+1997          11.435583872458974 
+1998          11.469532915705418 
+1999          11.22900756048172
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("salinity").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(salinity#38)
+1995          34.0929985
+                    <br>
+                    1996          34.0929985
+                    <br>
+                    1997          34.0929985
+                    <br>
+                    1998          34.0929985
+                    <br>
+                    1999          34.0929985
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("salinity").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(salinity#38)
+1995          32.29700089
+                    <br>
+                    1996          32.29700089
+                    <br>
+                    1997          32.29700089
+                    <br>
+                    1998          32.29700089
+                    <br>
+                    1999          32.29700089
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("salinity").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(salinity#38)
+                    <br>
+                    1995          33.203984438603925
+1996          33.0961503668455
+                    <br>
+                    1997          33.14560471813368 
+1998          33.14066764916729 
+1999          33.06387653692713
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("nitrate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(nitrate#39)
+1995          5.76800013
+                    <br>
+                    1996          6.25400019
+                    <br>
+                    1997          6.4460001
+                    <br>
+                    1998          6.25400019
+                    <br>
+                    1999          6.25400019
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("nitrate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(nitrate#39)
+1995          2.00999999
+                    <br>
+                    1996          2.00999999
+                    <br>
+                    1997          2.00999999
+                    <br>
+                    1998          2.00999999
+                    <br>
+                    1999          2.00999999
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("nitrate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(nitrate#39)
+                    <br>
+                    1995          2.6463798011526176
+1996          2.9115007408130253
+1997          2.798561096658278 
+1998          2.767145424312006 
+1999          2.7492793750535376
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("oxygen").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(oxygen#40)
+1995          6.85200024
+                    <br>
+                    1996          6.85200024
+                    <br>
+                    1997          6.85200024
+                    <br>
+                    1998          6.85200024
+                    <br>
+                    1999          6.85200024
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("oxygen").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(oxygen#40)
+1995          5.99399996
+                    <br>
+                    1996          5.99399996
+                    <br>
+                    1997          5.99399996
+                    <br>
+                    1998          5.99399996
+                    <br>
+                    1999          5.99399996
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("oxygen").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(oxygen#40)
+                    <br>
+                    1995          6.417204503051942 
+1996          6.4640080554796615
+1997          6.442346750403555 
+1998          6.446340021253326 
+1999          6.483504245481837
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("phosphate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(phosphate#41)
+1995          0.64499998
+                    <br>
+                    1996          0.69400001
+                    <br>
+                    1997          0.74199998
+                    <br>
+                    1998          0.69400001
+                    <br>
+                    1999          0.69400001
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("phosphate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(phosphate#41)
+1995          0.333
+                    <br>
+                    1996          0.333
+                    <br>
+                    1997          0.333
+                    <br>
+                    1998          0.333
+                    <br>
+                    1999          0.333
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("phosphate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(phosphate#41)
+                    <br>
+                    1995          0.4401639585876598 
+1996          0.4669837356422753 
+1997          0.45645649176544795
+1998          0.45527870073619864
+1999          0.45688757658458357
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").max("silicate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MAX(silicate#42)
+1995          4.12300014
+                    <br>
+                    1996          4.4380002
+                    <br>
+                    1997          4.59700012
+                    <br>
+                    1998          4.4380002
+                    <br>
+                    1999          4.4380002
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").min("silicate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected MIN(silicate#42)
+1995          2.03299999
+                    <br>
+                    1996          2.03299999
+                    <br>
+                    1997          2.03299999
+                    <br>
+                    1998          2.03299999
+                    <br>
+                    1999          2.03299999
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.groupBy("yearcollected").avg("silicate").show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    yearcollected AVG(silicate#42)
+                    <br>
+                    1995          2.475397710633123 
+1996          2.6313642255121956
+1997          2.571669603039107 
+1998          2.5586932499386843
+1999          2.5577366064025964
+                </p>
+                <p>
+                    *** Dataset from
+                    <a href="httP://pubs.usgs.gov/of/2003/og03-001/data/seddata/wigley61/" rel="nofollow">
+                        httP://pubs.usgs.gov/of/2003/og03-001/data/seddata/wigley61/
+                    </a>
+                    ***
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbbs_df = sqlCtx.load(
+source = "com.databricks.spark.csv",
+header = 'true',
+inferSchema = 'true',
+path = 'file:///home/cloudera/HackForTheSeaDatasets/GeorgesBank-BottomSediments.csv')
+                            </p>
+                            <p>
+                                gbbs_df.printSchema()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    root
+ |-- PROJECT_ID: string (nullable = true)
+ |-- VESSEL: string (nullable = true)
+ |-- DATE: string (nullable = true)
+ |-- STATION_ID: integer (nullable = true)
+ |-- DEVICE: string (nullable = true)
+ |-- LATITUDE: double (nullable = true)
+ |-- LONGITUDE: double (nullable = true)
+ |-- TEXTURE: string (nullable = true)
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbbs_df.count()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    223L
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                gbp_df.registerTempTable("plankton")
+gbbs_df.registerTempTable("sediment")
+                            </p>
+                            <p>
+                                combined_df = sqlCtx.sql("SELECT AVG(temperature), AVG(salinity), AVG(nitrate), AVG(oxygen), AVG(phosphate), AVG(silicate), sediment.TEXTURE FROM plankton INNER JOIN sediment ON plankton.latitude = sediment.LATITUDE AND plankton.longitude = sediment.LONGITUDE GROUP BY sediment.TEXTURE")
+combined_df.printSchema()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    root
+ |-- _c0: double (nullable = true)
+ |-- _c1: double (nullable = true)
+ |-- _c2: double (nullable = true)
+ |-- _c3: double (nullable = true)
+ |-- _c4: double (nullable = true)
+ |-- _c5: double (nullable = true)
+ |-- TEXTURE: string (nullable = true)
+                </p>
+                <blockquote>
+                    <blockquote>
+                        <blockquote>
+                            <p>
+                                combined_df.show()
+                            </p>
+                        </blockquote>
+                    </blockquote>
+                </blockquote>
+                <p>
+                    _c0 _c1 _c2 _c3 _c4 _c5 TEXTURE // no matches
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            apache-spark
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

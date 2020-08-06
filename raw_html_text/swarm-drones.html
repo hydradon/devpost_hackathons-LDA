@@ -1,0 +1,222 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/QwEuML28rRY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="415437" data-title="Our Badass Drone" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/437/datas/original.jpg">
+                            <img alt="Dro.net &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/437/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Our Badass Drone
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    There are so many scenarios where the use of drones would revolutionize the way humans interact with their environment, businesses branch out and better serve their customers, or natural disasters are cleaned up.  Drones are known to eliminate the potential for human casualty or injury in dangerous situations.  These hazard possibilities were our main inspiration for this project.  We began to brainstorm how we can take the capabilities of drone technology and elevate it to better serve the community and be applied across all business and event areas.  One area of engineering that has peaked our team's interest in the past is the idea of SWARM robotics.  We used this interest to our benefit and started researching ways to apply SWARM techniques to drones and robots sharing their data on the same server.
+                </p>
+                <p>
+                    Using SWARM techniques could allow drones to perform higher-level tasks, create wider search areas, and act more efficiently.  Our example shows how this technology could be applied to natural disasters.  Natural disasters destroy communities, wreck homes, tear families apart, and kill wildlife and natural environments.  Having grown up in an era with so many of these disasters happening around the world, we watched the wreckage of national and international communities alike on TV.  In 2014, a natural disaster hit a bit closer to home for one of our team members when Hurricane Sandy stomped through the Northeast.  This didn't compare to disasters such as Hurricane Katrina in New Orleans, but she experienced the terrifying high winds, heavy rain, strong lightning strikes.  She got to witness large trees falling on her friends homes, tide surges sweeping homes into the ocean, and mass power outages.  In larger and more devastating disasters, there are times when people get stuck in their homes, no one knows where they are so no one can come save them, and the wrecked environment is too dangerous to actively search for survivors via pure human power.  With the use of surveillance drones and terrain robotics, people could be saved from these disasters in shorter time and more efficiently without putting rescue teams directly at risk.
+                </p>
+                <p>
+                    Our hack also allows for tracking vehicles with image recognition.  Our image processing software can detect stopped vehicles on the sides of the road and send location data to local towing companies to increase efficiency and reduce traffic time.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We wanted to elevate this idea with SWARM techniques so that we could create a large IoT System combining AR Parrot Elite Drones and robotics that could collaborate to accomplish tasks in places where people can't safely go.  Although this technology could be be applied across many unique scenarios, we focused on using it for rescue in natural disasters.
+                </p>
+                <p>
+                    Two drones and a terrain-based robot are connected through a server and assigned tasks based on gesture controls given by a user through Kinect v2 sensors.  The user can control the series of mobile devices from a safe location with hand/finger based movements that are recognized by our finger tracking system.  The user can tell the drones to start hovering and then direct them through certain paths by moving his hands in specified directions.  Using image recognition and body detection through OpenCV, the drones are able to locate survivors in need of rescue.
+                </p>
+                <p>
+                    This is where SWARM concepts are used to expand the capabilities of our technology.  With drones flying synchronously together over specific environments, once they detect someone on their surveillance systems, one of the drones could break off from the rest of the swarm and use beacons to emit their current location for a ground team to come and find the located survivor.  This can be performed autonomously by terrain based rovers or by personnel based rescue teams.  This way, they aren't actively searching for survivors and risking their lives in dangerous areas not even knowing if there is anyone to save, they will be able to go to specific locations right away, retrieve the survivor in a more efficient time, and get everyone back to safety.  Meanwhile, the rest of the drone swarm continues surveillance of the area continuing to locate survivors and perform the same instructions once body detection is confirmed.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The drones are programmed using a Python based API that assigns controls, directions, and turn angles to specific functions.  This backend was then used to assign gesture controls to directions of the collaborative drone system.  Gesture control system is operated using the Microsoft v2 Kinect Sensor for Windows.  Through the integration of a Finger Tracking API with the Microsoft Kinect for Windows v2 SDK, we can detect finger specific and hand specific gestures that are used to provide the drone instructions.
+                </p>
+                <p>
+                    Once the drone is airborne, the gesture control system continues to provide directional commands to the swarm until the image recognition and body detection software running through OpenCV detects a human figure in the surveillance area below.  At this point, a positive body detection output will cause the drone to follow the object with of positive detection.  The rest of the drone swarm will continue to perform surveillance in the same manner.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Our original idea depended on the integration of Myo technology to recognize hand motion and other gestures.  Once we got to HackGT, we found out the Myo wasn't available through the supplied hardware lab, so we had to brainstorm different ways to track hand gestures.  We decided on Microsoft Kinect sensors for body detection and then we were able to find finger tracking APIs to integrate with the Kinect SDKs, but this was technology that we hadn't used before, so there was more of a learning curve than expected.
+                </p>
+                <p>
+                    Our biggest challenge was networking between a Microsoft Kinect for PC, a Dell XPS, a Macbook Air, and a Parrot Drone.  In order to send the drone commands, the Mac had to be connected to the Drone's wifi as well as a different wifi network that could be used to receive the gesture commands from the PC.  The network was unable to do this, so after much collaboration and brainstorming, we connected the two laptops with USB to Ethernet cables.
+                </p>
+                <h2>
+                    What's next for SWARM Drones
+                </h2>
+                <p>
+                    SWARM Drones can truly be applied in so many different and unique scenarios.  This technology could not only be applied in natural disasters, but it could be use to provide surveillance over car crashes, find missing or lost people in wildlife reserves, track broken down cars on highways and emit locations to nearby towing and auto repair companies, or help research hard to reach terrains.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/adobe-illustrator">
+                                adobe-illustrator
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            all-things-microsoft&lt;3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/caffeine">
+                                caffeine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            finger-tracking-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jetbrains">
+                                jetbrains
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-kinect
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mlh-prime-usb-adapters
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/namecheap">
+                                namecheap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/photoshop">
+                                photoshop
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ps-drone-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pubnub">
+                                pubnub
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pycharm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            python-2.7
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/visual-studio">
+                                visual-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            windows-movie-maker
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/caelooney/HackGTSWARMDrone" rel="nofollow" target="_blank" title="https://github.com/caelooney/HackGTSWARMDrone">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

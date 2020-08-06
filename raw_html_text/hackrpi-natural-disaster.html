@@ -1,0 +1,161 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="879967" data-title="Landing page and main interface for FloodZone Nav" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/967/datas/original.png">
+                            <img alt="FloodZone Nav &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/967/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Landing page and main interface for FloodZone Nav
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    HackRPI Natural Disaster Application
+                </h1>
+                <h2>
+                    The Problem
+                </h2>
+                <p>
+                    What if there was a way we could provide realtime information about route availability to people after a storm, and show them what areas to avoid if there are floodwaters and downed trees blocking roads?
+                </p>
+                <h2>
+                    Our Solution
+                </h2>
+                <p>
+                    We initially started out by thinking we would use realtime satellite imaging from NOAA, who provides before and after satellite imaging of storm damage. The core of the app would use IBM Watson Cloud's Visual Recognition tool to build a model and train it on images of flooded and non flooded areas, and then distinguish which routes are the most accessible. However, at the moment, capturing real time up close storm damage imaging is very difficult, so we scaled back the scope of the project drastically.
+                </p>
+                <p>
+                    We decided to try approaching the app differently. We still wanted to use IBM Watson Cloud's Vision Recognition tool so the core of our application still has machine learning involved. However, we figured it would be best to train the model on drone captured footage. The user would then go to our application, and drop pins on a MapBox map. The user would upload an image to our Python Flask webserver, and based on the outcome of the comparison to our ML model, the pin would turn red, indicating road damage, or green, indicating the area is clear of debris.
+                </p>
+                <p>
+                    The final component of the application would be to use a pathfinding algorithm to determine which path is most accessible.
+                </p>
+                <h2>
+                    Feature List
+                </h2>
+                <p>
+                    Backend:
+[x] IBM Watson Cloud's Vision Recognition ML Model
+[x] Python Flask web application that lets users upload images via POST request on the front end, then processes the image via the Vision Recognition training API
+[_] Pathfinding algorithm to discover shortest path between two dropped pins
+                </p>
+                <p>
+                    Front end:
+[x] A front-end built in Javascript that displays the MapBox instance
+[x] Pin dropping functionality on MapBox
+[_] Changing color of pin based on output from uploaded image
+                </p>
+                <p>
+                    Turns out MapBox is hard to work with. Most of our progress was stagnated by MapBox's finicky API. A lot of issues stem from the Layering in MapBox, and our goal was to get a popup modal to appear when the pin is placed on the map. The user would then upload the image via the popup modal.
+                </p>
+                <p>
+                    We scrapped that idea and then went with the following logic: The user clicks a location on the map. The user is then prompted to select an image and submit it. The image is sent to the backend for processing and modeling, and a pin is dropped on the map. This worked fine up until we tried to upload the image, and the server kept receiving an "Undefined" file from Javascript's XMLHttpRequests.
+                </p>
+                <p>
+                    Our last, and now most recent hotfix is to reimplement the form button/upload Dan wrote, so the user uploads the image first, and then when the user clicks a location on the map, the marker is either green or red based on the result from the output image.
+                </p>
+                <p>
+                    At the moment, the file uploading is complete, but we have yet to implement the changing of the dropped marker color. After this is implemented, the only missing feature would be the pathfinder.
+                </p>
+                <h2>
+                    Future Features
+                </h2>
+                <p>
+                    Obviously a full-time dedicated team working on making this application come to fruition would be great - we'd be able to realize many of our original goals such as analyzing realtime satellite data, and using Maps APIs to provide actual directions instead of pathfinding on our own based on dropped pins and coordinates. It's a step in the right direction, and with the proper tools and guidance, we feel we can make this into a viable product.
+                </p>
+                <h2>
+                    Who Did What
+                </h2>
+                <p>
+                    Daniel
+                </p>
+                <ul>
+                    <li>
+                        Machine Learning model creation with IBM Watson Cloud's Vision Recognition ML Model
+                    </li>
+                    <li>
+                        Python web server that can accept an image uploaded from a form on the front end
+                    </li>
+                </ul>
+                <p>
+                    Stefan
+                </p>
+                <ul>
+                    <li>
+                        MapBox GL JS interface
+                    </li>
+                    <li>
+                        Clickable map interactions for dropping pins
+                    </li>
+                    <li>
+                        Front end interface to upload the files from
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/stefanlawr/HackRPI-Natural-Disaster" rel="nofollow" target="_blank" title="https://github.com/stefanlawr/HackRPI-Natural-Disaster">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

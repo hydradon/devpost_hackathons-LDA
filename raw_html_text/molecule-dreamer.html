@@ -1,0 +1,119 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Motivation
+                </h2>
+                <p>
+                    Lead optimization is a significant challenge in the design of new pharmaceuticals. Even once a compound or class of compounds is discovered that has activity against a desired biological target, there are still a vast number of possible permutations of local features of the molecule that might affect its activity. The possibilities are too numerous to test by brute force, even using computational screening methods. It is therefore desirable to develop heuristics based on machine learning that can be used to identify the features of molecules that determine its activity against a specific target and using those features to construct new molecules that maximize predicted bioactivity.
+                </p>
+                <h2>
+                    Major Questions
+                </h2>
+                <p>
+                    How do we group bonds and atoms into
+                    <strong>
+                        local chemical features
+                    </strong>
+                    ?
+                </p>
+                <p>
+                    How do we group local features into higher-order features that determine
+                    <strong>
+                        bioactivity
+                    </strong>
+                    ?
+                </p>
+                <p>
+                    How do we generate
+                    <strong>
+                        new candidate molecules
+                    </strong>
+                    based on these features?
+                </p>
+                <h2>
+                    Strategy
+                </h2>
+                <p>
+                    <strong>
+                        Restricted Boltzmann machines (RBMs)
+                    </strong>
+                    are a class of stochastic neural network that can be trained to represent generative models of a dataset. They can be trained using an algorithm closely related to the sleep-wake algorithm in which the system is alternately exposed to training data (the "waking" phase) and allowed to spontaneously generate states (the "sleep" phase) and the connection weights of nodes are adjusted to minimize the difference between the probability distribution of the training data states and that of the states the network spontaneously "dreams" of.
+                </p>
+                <p>
+                    The hidden nodes of an RBM each represent a "feature" that occurs frequently in the dataset to which it has been exposed. Beginning with a list of strings in SMILES notation representing chemical compounds with a shared bioactivity, I first trained a small RBM to recognize local features of the molecules. I then used the output from this layer as the training input for a second layer, where the hidden nodes would represent higher-order features shared by the class of training examples.
+                </p>
+                <p>
+                    There are two ways for the network to "dream" in order to produce new candidate molecules:
+                </p>
+                <p>
+                    The first is for the network to "day dream" and fluctuate about its equilibrium distribution without any external input. Samples drawn from its "dreamed" states will approximate the probability distribution from which the training data are drawn. If the model is trained effectively, these samples will also be probable neuraminidase inhibitors.
+                </p>
+                <p>
+                    The second is for the network to produce a "fantasy" of an optimal molecule that possesses all the features that are common to the training set of bioactive molecules (or as many as possible). This is achieved by turning the nodes that represent the features thought to contribute to bioactivity permanently on and inferring the most probable allowed SMILES string under this condition.
+                </p>
+                <p>
+                    As a proof of concept, I chose to train the network on a set of SMILES strings representing molecules that inhibit neuraminidase, an enzyme found on the surface of the influenza virus that is required for its proliferation.
+                </p>
+                <h2>
+                    Construction
+                </h2>
+                <p>
+                    Existing Python libraries can run Boltzmann machines but are not suitable for implementing the "dreaming" procedure required for the network to design new molecules. I therefore wrote my own implementation of a training algorithm for DBMs using Python base libraries and Numpy.
+                </p>
+                <h2>
+                    Results
+                </h2>
+                <p>
+                    I am still working on obtaining good convergence from the algorithm and tuning the learning parameters. I am also still improving my set of rules for ensuring that the output string is a valid SMILES string. However, the network can be run and produces a mostly correct SMILES string as output, though currently it does not generally resemble the input structures in the way it should.
+                </p>
+                <h2>
+                    Further Development
+                </h2>
+                <p>
+                    Training RBMs separately and then stacking them to form a DBM is an imperfect procedure, and the resulting stacked network can be further optimized by backpropagation. The approach I took in this project might be complemented well by genetic algorithms for feature selection, or a set of manually-designed features. If the network does eventually yield promising candidates, these could be further investigated by molecular dynamics simulations to determine whether they effectively bind neuraminidase.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.dropbox.com/sh/8wf3nxt3we4l0ru/AADnh1viA8lrtFtt3jaAxW6Fa?dl=0" rel="nofollow" target="_blank" title="https://www.dropbox.com/sh/8wf3nxt3we4l0ru/AADnh1viA8lrtFtt3jaAxW6Fa?dl=0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.dropbox.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

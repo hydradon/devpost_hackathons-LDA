@@ -1,0 +1,216 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/HVMZfygiuI4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="569094" data-title="Communication flow diagram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/094/datas/original.jpg">
+                            <img alt="IoT smart plug controlled by AWS IoT button &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/094/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Communication flow diagram
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration and motivation for this project was the fact that although you can typically control home IoT devices from a mobile app, or from a device such as Amazon Alexa, it is not always convenient. Having to get out your phone and log into the app just to switch the lights on or off is not ideal. It is much more convenient to use a device such as the AWS IoT button for such purpose! This goal of this project was therefore to get the AWS IoT button to control an IoT smart plug, in this case a TP-Link HS110, using the AWS IoT service into which the button seamlessly integrates.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This project demonstrates how to use the
+                    <strong>
+                        AWS IoT button
+                    </strong>
+                    to control an
+                    <strong>
+                        IoT smart plug
+                    </strong>
+                    , in this case a
+                    <strong>
+                        TP-Link HS110
+                    </strong>
+                    , using the
+                    <strong>
+                        AWS IoT service
+                    </strong>
+                    . It allows to switch the smart plug ON by pressing the IoT button once, and OFF by pressing it twice.
+                </p>
+                <p>
+                    There may be a few ways of achieving this. However, in case of TP-Link smart home devices, TP-Link provides a RESTful web API which can be called directly to control your devices, and which is used in this project.
+                </p>
+                <p>
+                    As part of the project setup the AWS IoT button is configured to connect to the AWS IoT service and the HS110 smart plug is registered in the TP-Link IoT cloud service. When pressed, the AWS IoT button it invokes an AWS lambda function, passing in arguments including the button serial number and type of press (short, double or long). The lambda function, provided as part of this project, interprets the data passed from the AWS IoT button and invokes the TP-Link API to change the relay state of the registered IoT smart plug.
+                </p>
+                <p>
+                    Note that there is no demo that you can just run without setting everything up for yourself - this is because you need to use your own IoT button and own smart plug to control, and they need to be paired by providing your own credentials. You therefore need to follow detailed setup instructions in the README file in the linked GitHub repository to get it working.
+                </p>
+                <h2>
+                    How I built it and how it works
+                </h2>
+                <p>
+                    As a prerequisite, you need to set up an AWS account (
+                    <a href="https://console.aws.amazon.com/" rel="nofollow">
+                        https://console.aws.amazon.com/
+                    </a>
+                    ). You then need to configure your AWS IoT button to work with AWS - most of the AWS related setup is done automatically when you use the AWS IoT button wizard (
+                    <a href="https://aws.amazon.com/iotbutton/getting-started/" rel="nofollow">
+                        https://aws.amazon.com/iotbutton/getting-started/
+                    </a>
+                    ), although you can do it manually if you wish to - it is however not in scope of this project to go through details of manual AWS IoT configuration.
+                </p>
+                <p>
+                    As part of the AWS IoT button setup, an AWS Lambda function is created, which receives data from the AWS IoT button (when pressed) and by default sends a notification email to the user. The code of this function should be overwritten by one provided as part of this project (written in Python 2.7), or another Lambda function can be created and registered in the AWS IoT rules engine as an action to be triggered when the AWS IoT button posts a message to the AWS IoT message broker.
+                </p>
+                <p>
+                    All key actions performed from when you press the AWS IoT button to when the IoT smart plug changes state are shown in the diagram below.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            When the button is pressed it wakes up, connects to the WiFi network on which it is configured to work, establishes a secure connection with the AWS IoT service platform and sends a message to it with information (as JSON) such as the button's serial number, and the press type - short, double or long.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The message is then passed to the AWS IoT platform which checks whether the button can access certain AWS IoT resources and processes the message, checking if it matches any of the processing rules configured.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Following one of the configured rules, the AWS IoT platform then executes the Lambda function registered as an action to perform when a message from the AWS IoT button with a matching topic (iotbutton/&lt;serial nr of the button&gt;) is received.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The code for this AWS Lambda function is the centerpiece of the project. When run, having received data from the AWS IoT button (as JSON), the Lambda function invokes the TP-Link web API to control the HS110 smart plug. It uses your TP-Link cloud credentials, which you have to provide in the Lambda function, to log into the TP-Link web service, get a list of your registered devices, and ask the service to change the relay state of the smart plug.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The TP-Link cloud communicates with the smart plug back through the WiFi Access Point (6) and instructs it to change relay status accordingly.
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    <img alt="Communication flow diagram" data-canonical-url="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/094/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--k55SG9kZ--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/569/094/datas/gallery.jpg" title="Communication flow diagram">
+                </p>
+                <p>
+                    The code is in Python and I used Visual Studio 2015 Community Edition to write and test it, however you just need any Python environment to edit it and experiment with it. Please refer to detailed instructions in the README file in the GitHub repository.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One of the main challenges was that the TP-Link web API is not really documented, and it takes some research and experimenting to work it out. There is also a risk that if TP-Link decides to change the API in a non-backwards compatible way (however unlikely that might be), the solution will need to be modified accordingly.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I did it! It's great to use the button and see it work flawlessly end-to-end over multiple servers and APIs.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned that the AWS IoT framework allows you to set up, use and control IoT devices easily, especially using the AWS IoT button setup wizard provided. Having even rudimentary knowledge of AWS, the IoT framework, and services such as Lambda allows to put together a software framework controlling your IoT devices in little time - security and communication is taken care of for you and you have to focus mainly on implementing the necessary logic in the control function.
+                </p>
+                <p>
+                    I also learned that although IoT devices are often designed for long life and ubiquitous access, there is a price to pay for that which you need to understand designing an IoT based solution. One factor is the time required to set up communication between the devices, as it may require waking them up from "deep sleep" and establishing secure connections via sometimes multiple relays. It takes up to a few seconds between the AWS IoT button is pressed and the smart plug reacts. While it is acceptable in this case, there might be other applications where the connection setup time might have to be well considered in the design.
+                </p>
+                <p>
+                    One last thing to reflect on is security. The more we depend on IoT, the more risk there is that an intruder being able to get access to control those devices could cause serious disruption or even damage. There may be several systems and servers involved in communication, as in this project, and a weakness in one of the links can break the whole chain. While AWS provides strong security by default, software architects and developers have to take care of other security aspects such as e.g. credentials stored explicitly in lambda functions.
+                </p>
+                <h2>
+                    What's next?
+                </h2>
+                <p>
+                    The currently implemented Lambda function controls just a single device. In the next step it can however be extended to control several IoT devices, potentially controlling the entire smart home. This can be done by matching the serial number of the AWS IoT button used, which is passed in the IoT message sent by the button and as an argument into the lambda function, with the ID and name of the TP-Link IoT device to control. It can also be extended to control IoT devices from other manufacturers, or interact with services such as IFTTT.
+                </p>
+                <p>
+                    Additionally, as mentioned in the section above, some security aspects of the solution may need improvement - in particular a better way of storing TP-Link access credentials can be considered than putting them as plaintext in the Lambda function.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-iot-button
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tp-link-hs110-smart-plug
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/pawelmat/AWS-IoT-button-HS110-control" rel="nofollow" target="_blank" title="https://github.com/pawelmat/AWS-IoT-button-HS110-control">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

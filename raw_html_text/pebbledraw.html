@@ -1,0 +1,196 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/j4VAQDmN24A?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="470248" data-title="Title Drawing" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/470/248/datas/original.jpg">
+                            <img alt="PebbleDraw &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/470/248/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Title Drawing
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We thought about synchronized swimmers needing to sync their movement. But then we realized we couldn't test it with synchronized swimmers. And that it sounded dumb. So we decided to use that accelerometer to draw stuff.
+                </p>
+                <p>
+                    There's a lot of drawing apps online, and at best you can use your phone as some sort of remote drawing pad, but there's nothing that lets you draw using the motion of a smart watch.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Hold the Pebble watch like a controller and move it around to control the movement of the cursor. Use the Pebble up and down buttons to cycle through the colors, push the select (middle) button to toggle the drawing mode, and the back button to move the cursor back to the middle at the current position. Also hit or shake the watch with reasonable force to clear the canvas. It draws Bezier-curve connected points based on the Pebble's accelerometer data.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The project consists of 3 components: the web page that shows the drawing canvas, the Go server that relays and processes the incoming and outgoing WebSocket data, and the Pebble smart watch app.
+                </p>
+                <p>
+                    The whole thing starts with the Pebble, which uses a JavaScript app to read the accelerometer and button states, form a JSON packet, and shoot it off to the Go server over a WebSocket.
+                </p>
+                <p>
+                    Next, the Go server receives that connection and reads the
+                    <code>
+                        token
+                    </code>
+                    value passed in the URL to create a session under that name. The web page also connects over WebSocket to the Go server, also passing in that same
+                    <code>
+                        token
+                    </code>
+                    to identify the session to connect to.
+                </p>
+                <p>
+                    About 5 times a second, the watch gets the input and sends it through the server to the web page. The web page handles that watch input to generate the colored lines and curves on the HTML5 canvas.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Getting the accelerometer data from the Pebble was the hardest to find any sort of documentation for.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Getting the Bezier-curves to show nicely to create a sketchy look and getting the watch to work as a remote were pretty neat.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Figuring out how to actually code with a Pebble was quite an experience, and drawing on a canvas and using JavaScript in general (because in general, it's unusable) was another one.
+                </p>
+                <h2>
+                    What's next for PebbleDraw
+                </h2>
+                <p>
+                    Making multiple devices work together on the same page is probably possible right now, but the other Pebble seems to be working incorrectly and refusing to connect through the WebSocket :|
+                </p>
+                <p>
+                    More controls could be added to control the size of the strokes and a lower latency would be possible with a peer-to-peer connection, which would take a significant amount of addition coding, especially since both clients would be using JavaScript.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/accelerometer">
+                                accelerometer
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/digitalocean">
+                                digitalocean
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pebble">
+                                pebble
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/websockets">
+                                websockets
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/bionicrm/profhacks2017" rel="nofollow" target="_blank" title="https://github.com/bionicrm/profhacks2017">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://mazeika.me:8080" rel="nofollow" target="_blank" title="http://mazeika.me:8080">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                mazeika.me
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/JamesGallicchio/PebbleDraw" rel="nofollow" target="_blank" title="https://github.com/JamesGallicchio/PebbleDraw">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

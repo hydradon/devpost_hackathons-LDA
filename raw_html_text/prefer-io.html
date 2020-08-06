@@ -1,0 +1,207 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="781323" data-title="Splash Page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/323/datas/original.PNG">
+                            <img alt="prefer.io &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/323/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Splash Page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="781324" data-title="Employee Preference Input" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/324/datas/original.PNG">
+                            <img alt="prefer.io &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/324/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Employee Preference Input
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="781326" data-title="Recommended Timetable" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/326/datas/original.PNG">
+                            <img alt="prefer.io &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/326/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Recommended Timetable
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="781325" data-title="Heatmap of employee preferences" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/325/datas/original.PNG">
+                            <img alt="prefer.io &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/781/325/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Heatmap of employee preferences
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    The Problem
+                </h2>
+                <p>
+                    Shift workers prefer to work certain days over others, but can't express this with their timetable. Managers hate having to manually adjust schedules to everyone's preferences each week.
+                </p>
+                <h2>
+                    Our Solution
+                </h2>
+                <p>
+                    prefer.io is a gamified system where each employee receives credits to allocate to shifts depending on how much they want that shift. Placing a lot of credits on one shift is a tradeoff as you have less to allocate to other shifts you may want.
+                </p>
+                <p>
+                    Managers can press a single button and our algorithm calculates the optimal roster. Managers can also see a heatmap of popular and unpopular times, allowing them to hire new employees that can work the unpopular shifts.
+                </p>
+                <h3>
+                    Inspiration
+                </h3>
+                <p>
+                    A common economics problem is the gap between a scarce resource and the demand for it. By giving employees fake credits, we essentially created a "free market" solution to solve the scarcity of shifts. The employee that want the shift the most will allocate the most credits.
+                </p>
+                <h3>
+                    How we built it
+                </h3>
+                <p>
+                    We used HTML and JavaScript to develop a web app, with the help of Google's MDL to help with interfacing.
+                </p>
+                <p>
+                    In order to solve the preference allocation problem, we created a matrix of preferences, where each row was a worker in need of a shift, and each column was a shift. We converted this into a square matrix by duplicating rows when a worker would like to work more than one shift in order to use previously solved problems in graph theory.
+                </p>
+                <p>
+                    i.e. Row
+                    <em>
+                        i
+                    </em>
+                    , column
+                    <em>
+                        j
+                    </em>
+                    of this matrix tells you the amount of credits worker
+                    <em>
+                        i
+                    </em>
+                    allocated for shift
+                    <em>
+                        j
+                    </em>
+                    .
+                </p>
+                <p>
+                    This essentially boils down to a maximum-weight minimal edge cover problem, which can be obtained by adapting the Hungarian algorithm developed in 1995.
+                </p>
+                <h3>
+                    Accomplishments that we're proud of
+                </h3>
+                <ul>
+                    <li>
+                        Creating and mapping a general purpose algorithm to allocate finite resources (shifts in this case) to some amount of people. This can be used in bidding for scarce resources or other timetabling applications.
+                    </li>
+                    <li>
+                        Creating a elegant and fast web app for employees and management alike.
+                    </li>
+                    <li>
+                        Incorporating Google API sign-ups to save user data.
+                    </li>
+                    <li>
+                        Using Firebase API for the database.
+                    </li>
+                    <li>
+                        Visually representing the results with a heat-map and a recommended timetable.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google--2">
+                                google
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mdl
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://collinsmathews.github.io/" rel="nofollow" target="_blank" title="https://collinsmathews.github.io/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                collinsmathews.github.io
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/CollinsMathews/CollinsMathews.github.io" rel="nofollow" target="_blank" title="https://github.com/CollinsMathews/CollinsMathews.github.io">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

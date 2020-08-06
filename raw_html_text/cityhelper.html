@@ -1,0 +1,102 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I saw Twitter's challenge about building smart cities using their API, and went from there, seeing how I could use their API in order to accomplish that goal. I also thought about using the Embers sensor data in conjunction with some kind of machine learning, but decided I wouldn't have time.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It was intended to capture tweets from a given geographic area based on a location that the user input, and from that find tweets that expressed an opinion on that area, or areas WITHIN that area, generating a report on the fly as more tweets stream in. However, due to various technical and time issues, I  adapted it so that it printed noun phrases from tweets that merely had a location present within them.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used Tweepy in order to handle interactions with the Twitter API, which let me easily get the Twitter stream and filter it to the geographic location that was determined by running the user-inputted location through a geolocation service. I began using NLTK in order to perform basic NLP on the captured tweets, running a text chunker in order to find noun phrases, and further reducing those down by something I'll describe in the next section..,
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    My Chromebook didn't have the power necessary to run more complex NLP operations such as dependency parsing, which forced me to try and use external systems like AWS. However, this did not end up working out. Due to this, I was reduced to only using text chunking in order to find a location. To do that, I hacked together some code that would take a noun phrase (if found in the sentence it was looking at), and run each word through the geolocation API I was using. If they did not return None, the noun phrase containing them was added to the report (as they could be assumed to be a location of some kind). This is buggy as hell and not my original goal, but it was just about as close as I could get in order to be able to demo SOMETHING.
+                </p>
+                <p>
+                    I also dealt with some lack of documentation on Tweepy's end, most notably the order of latitude and longitude points for the bounding box not being specified. That took me a little while to figure out.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Being able to get a stream from any user-inputted location was pretty cool. I won't say I'm proud of the hacked-together location finder though, that'd just be wrong...
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned more about how to interact with Twitter, as well as learning more about NLP techniques from the reading of the NLTK book about the processes.
+                </p>
+                <h2>
+                    What's next for CityHelper
+                </h2>
+                <p>
+                    Try and get the natural language side of the program sorted, so it can run as it was intended to with dependency parsing in order to obtain the location more accurately. The rest of the code would more or less fall into place, with perhaps an additional opinion extractor layer to get specific details. You don't realize how much you miss having a decently powerful desktop until you only have a Chromebook...
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            geopy
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nltk">
+                                nltk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tweepy
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/dantdj/CityHelper" rel="nofollow" target="_blank" title="https://github.com/dantdj/CityHelper">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

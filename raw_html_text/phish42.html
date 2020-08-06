@@ -1,0 +1,103 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Some friends of mine had told me that they thought they had become the targets of some spear phishing. It then occured to me that a large number of the students at our school had no technical background and lacked security awareness.
+                    <br>
+                    I remembered that the CTO of my mother's old company had ran a phishing awareness campaign that was largely successful. After a quick chat with the staff at my school, I got permissions to run my own campaign.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In my case, it downloads a list of all users in my school and generates a list of emails for them. It then uses sendgrid to send targeted emails to all of them. These emails contain a link to a phishing awareness site.
+                    <br>
+                    It keeps track of all the analytics, pumps them into keen.io, and visualizes all of the information.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I had existing scripts to download all of the users from my school, as well as a Django server running. I'm using python to generate emails and sending them through sendgrid's API. Each email contains a customized url for my server that helps assist in tracking clicks.
+                    <br>
+                    After accessing my phishing site, users are prompted to login. If they attempt to login, their name is logged and they are sent to a short education page that I wrote.
+                    <br>
+                    These datapoints (if they clicked the email, if they clicked a link on the site, and how long they were on the site) are sent to Keen IO to be visualized.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The first real challenge was that I needed to actually launch the campaign midday on Saturday. It was crucial to run at a time when I'd be able to hit the most people, while still having time to process the data and refine the process.
+                    <br>
+                    Similarly, I had to decide which data was actually important. I'd considered tracking mouse position as well, but decided to simply track page hits, as well as time on the landing page.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I managed to turn this from an idea into a successful campaign launch within 48 hours. I had the original idea on Thursday before the hackathon and got permission for it from my school. At the start of the hackathon, I knew which frameworks and tools I'd use, and I was able to get a rough copy running within 2 hours.
+                    <br>
+                    On top of how little time it took to create, I had a very successful launch. Within 3 hours of sending the initial emails, I had 44% of the school open the email. 17% clicked the link in the email, and 13% followed a link within the webpage.
+                    <br>
+                    This means that around 80% of the users that clicked on the first link continued onwards. This number is really good for a first assessment, meaning that I was able to make a convincing, but not impossible to detect site.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Mass-mailing emails is difficult. After sending 100 of the 400 emails, sendgrid stopped delivering emails. There was a legitimate chance that I'd been flagged for phishing. In the future, I'm going to need to work with sendgrid to ensure that they are aware of what I am doing to prevent any real complications.
+                </p>
+                <h2>
+                    What's next for Phish42
+                </h2>
+                <p>
+                    In order for this to be an actual campaign, I'll need to run more assessments in the future. Before then, there need to be some structural changes. First, I'm moving away from storing user's name in the logs, they'll be hashed instead in order to ensure privacy. Once this is in place, I'll improve the abstraction to allow for open sourcing the project as an incredibly streamlined way to run internal assessments.
+                    <br>
+                    Past just phishing awareness comes full security and ownership of one's identity. Children are especially vulnerable to phishing, as they are put into an expansive world with frequently little supervision. By instilling proper security practices in children as they grow up, we can help them fight off security threats with good instincts.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/keen-io">
+                                keen.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sendgrid">
+                                sendgrid
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

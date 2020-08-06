@@ -1,0 +1,124 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    This is an application that I have wanted to build for a long time and it was inspired by personal experience. Very often when I'm wanting to watch a TV show or a movie in my dorm room with my roommate nearby I want to keep the volume down as to not disturb him, however shows like Game of Thrones have scenes where characters are talking and you need to turn the volume way up, and then all of the sudden it cuts to a battle scene and it gets very loud and you have to reach for the remote and turn the volume down. I wanted a way to solve this problem and saw this Hackathon as a great venue to work on this project.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The Smart Volume Assistant listens to incoming sounds through the device's microphone and compares it against the set volume level of the Bose speaker that the sound is outputting to. If the actual media volume is deemed too loud, the speaker volume is decreased and if the media volume is deemed too quiet, it raises the speaker volume. This eliminates the need for the viewer to manually toggle the sound the entire time they're watching something. The assistant is a web app which means it can be used cross-platform which makes it useful for watching on a TV, phone, or even an Xbox or PS4. As an added feature, if the user has multiple Bose speakers connected via the WIFI that's playing the audio in tandem, our service will adjust the volume levels on all devices, making for a perfect surround sound viewing experience.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    We built the web app with Python using Flask. We used the library Sound Device to pick up the microphone sound levels and normalized the value using a Machine Learning technique called single value decomposition. The Bose Sound Touch API was used to control the speaker volume and see the current volume level of the speaker.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    We faced many challenges but managed to overcome many of them.
+                </p>
+                <ul>
+                    <li>
+                        The sound that the microphone recorded was a very raw value that we needed to scale to a value between 0 and 100 to match the scale of the Bose speaker settings. We did this using an ML technique called single value decomposition along with another technique that involved finding the maximum and minimum volume values and by calculating the standard deviation of the recordings, we came up with a formula to scale the recordings.
+                    </li>
+                    <li>
+                        We tried to provide the users with a live graph of the volume level changes but since we spawn a new process to do the audio leveling as to not halt the UI, it proved too time-consuming to pipe the data from the child process to the parent.
+                    </li>
+                    <li>
+                        It was difficult for us to figure out how to stop the web app from running since when we closed the window it continued to change the speaker volume. We solved this by applying the knowledge we learned in Systems Programming and spawned a child process to do the audio leveling. When the user clicks stop we kill the child process.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We've come to HackRU before, but we're proud to have completed our first project from start to finish. This is a project that I have wanted to work on for a long time so it's really nice to finally get a prototype working. This is a very useful project for Rutgers students or any college students for that matter who love to watch TV/movies with their roommates in the room, so it is nice to come up with something that people might actually use.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned how to use the Bose API along with Flask and some Python libraries we've never worked with before.
+                </p>
+                <h2>
+                    What's next for Smart Volume Assistant
+                </h2>
+                <p>
+                    We will continue improving the incoming sound scaling and adjusting the sound more smoothly. We also plan to deploy the web app on AWS or some other service so this can be available for everyone to use, so stay tuned.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            blood-sweat-and-tears
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            bose-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/modnova/AudioLeveler" rel="nofollow" target="_blank" title="https://github.com/modnova/AudioLeveler">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

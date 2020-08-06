@@ -1,0 +1,170 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="350370" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/350/370/datas/original.png">
+                            <img alt="CROPTIMIZE &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/350/370/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="350118" data-title="Satellite view sample" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/350/118/datas/original.png">
+                            <img alt="CROPTIMIZE &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/350/118/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Satellite view sample
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="350117" data-title="Map view sample" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/350/117/datas/original.png">
+                            <img alt="CROPTIMIZE &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/350/117/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Map view sample
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Motivation
+                </h2>
+                <p>
+                    A single human cannot consider every possible variable when predicting the best solution or decision, but a computer can. We believe that there is a better, data-driven approach to agricultural business models that results in successful farms, reduced waste and a better market for farmers and consumers (ie: everyone).
+                </p>
+                <p>
+                    If the market price of a fish increases, the fisherman will aim to get as much fish as possible, even though it results in overfishing. All fishermen would be better off taking less fish as a whole to allow the species to repopulate, giving more profits for everyone the next year. However, this is not the case in real life. Economist Charles Wheelan (author of "Naked Economics") described the fishing industry this way, and journalist Michael Pollan (author of "The Omnivore's Dilemma") painted a similar picture with the agricultural industry. There is an epidemic of overproduction for crops like corn, leading to selling prices below the cost of production and soil depleted of nutrients.
+                </p>
+                <p>
+                    Providing farmers with simple, intuitive analytics suites and visualizations can aid in the process of planning crops while exposing potentially hidden variables based on market prices, resources, environmental impact, and soil health. This could potentially reduce chemical waste, water usage, and prices on produce, which affects the nutrition and health of all people.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Zoom anywhere on the map in satellite mode until you can see outlines of fields. Click on which crop distribution you would like to see for that view, and the map will be drawn! Each distribution considers profit and resources used, but they are biased towards different factors like water, chemicals, or diversification. The icons correspond to one of twelve sample crops (alfalfa, barley, corn, canola, grass, soy, millet, lentils, edible beans, navy beans, mustard and flax); some farms would have fewer options (eg: corn and soy only) while others may have more.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    <strong>
+                        Data Gathering and Cleaning
+                    </strong>
+                    Our two core datasets came from John Deere's API for field operations and measurements and Climate's API for field GeoJSON data. The John Deere dataset was used to calculate the average water used per unit area per crop, the average amount of chemical used per unit area per crop, and the average yield loss given the initial seed count. Some variables were estimated based on data from the University of Iowa, like the average yield in bushels per 100,000 soybean seeds and other conversion factors. For crop types that lacked statistically significant data, we generated some random points within a reasonable tolerance to fill the gaps for the sake of a more robust visualization. The GeoJSON data was already formatted for the Google Maps API and ready to go.
+                </p>
+                <p>
+                    <strong>
+                        Data Analytics
+                    </strong>
+                    We then constructed a cost-utility mapping algorithm where each crop was assigned to a field. While we aren't agricultural scientists, we made reasonable guesses when constructing our cost function: having higher than expected yields on average gives a negative cost (ie: positive utility) and requiring more chemicals or more water gives a positive cost. These utilities decay (and the costs increase) as more of the same crop type is assigned to a field. This decay can be turned off since many farmers may grow one type at a time; however, it is important for those who want to consider diversification, and second, for the sake of demonstration, it shows how the algorithm groups crops in contiguous regions. With even more, accurate data on market prices and specific field measurements, the algorithm could be even more detailed and precise with its recommendations.
+                </p>
+                <p>
+                    <strong>
+                        Data Visualization
+                    </strong>
+                    Using a Flask framework and our algorithm powering the back-end, we created the web application with the Google Maps API as a tool to draw the CLU (common land units) dataset from Climate from nearly any map view in the United States. The interface is simple, clutter-free, and easy to use.
+                </p>
+                <h2>
+                    The Big Picture/Impact
+                </h2>
+                <p>
+                    There is power in data analytics and design in the agricultural industry. Optimizing costs and waste makes the environment cleaner and more sustainable, while allowing farmers to thrive, and consumers to have access to cheaper, higher quality, and healthier food.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            climate
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/john-deere">
+                                john-deere
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/RevanthRameshkumar/HackIllinois2016" rel="nofollow" target="_blank" title="https://github.com/RevanthRameshkumar/HackIllinois2016">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

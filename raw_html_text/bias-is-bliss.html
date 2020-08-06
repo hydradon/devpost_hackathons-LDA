@@ -1,0 +1,234 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="636150" data-title="Our logo" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/150/datas/original.png">
+                            <img alt="Bias is Bliss &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/150/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Our logo
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="636149" data-title="Example console code" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/149/datas/original.jpg">
+                            <img alt="Bias is Bliss &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/149/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Example console code
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="636151" data-title="Landing page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/151/datas/original.png">
+                            <img alt="Bias is Bliss &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/636/151/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Landing page
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    In today's political climate, biased and untrustworthy news articles are everywhere. One news site may claim the Democrats are trying to monitor the enitre American populace with Big Government, while another says that the Republicans are busy trying to deport everyone who doesn't agree with their tax agenda. The result is division that prevents bipartisan progress.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    While it is obvious to most people that neither of these two examples are true, it becomes more difficult to distinguish the role of bias in more subtle articles. Most people don't have the time, or sometimes the training to sift through dense political articles to determine what is actually true and what is a product of a manipulative news site. Our app simplifies this problem by doing the work for you.
+                </p>
+                <h2>
+                    A Quick Demo
+                </h2>
+                <p>
+                    <img alt="Demo .gif" data-canonical-url="https://giphy.com/embed/KCvIO9ifraVo20fmdy" src="https://res.cloudinary.com/devpost/image/fetch/s--hX-E_mid--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://giphy.com/embed/KCvIO9ifraVo20fmdy">
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Step 1:
+First, we extract named entities. By this we mean the names of organizations and polititians, for example, Hillary Clinton, Donald Trump, or the NRA. For a more specific demonstration, we will use the headline of this article:
+                </p>
+                <p>
+                    <a href="http://www.breitbart.com/milo/2016/07/05/solution-online-harassment-simple-women-log-off" rel="nofollow">
+                        "The Solution To Online Harassment Is Simple: Women Should Log Off"
+                    </a>
+                </p>
+                <p>
+                    First, the algorithm breaks down the headline into the entity and adjective phrases. In this case the subject is "women" and the phrase is "should log off".
+                </p>
+                <p>
+                    Step 2:
+It then uses sentiment analysis to determine if there is a positive or negative feeling about the entity. In this case, the phrase "should log off" is a negative phrase. It conducts Sentiment Analysis for each sentence that an entity appears in and captures its polarity score from [-1,1] as approving or disapproving. Then it applies the polarity score to the entity and calculates the bias metric using scaled sums per named entity in order to see in which ideological direction, Conservative (R) or Liberal (L) the article's bias tends to lean.
+                </p>
+                <p>
+                    Step 3:
+We use a Support Vector Machine (SVM) with a radial kernel and a "Bag of Words" vectorization of the unstructured article text to boost our algorithm.
+                </p>
+                <p>
+                    <img alt="Example of radial kernel svm" data-canonical-url="http://condor.depaul.edu/ntomuro/courses/578/notes/figs/rbf-boundary.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--DdV6Ugd7--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://condor.depaul.edu/ntomuro/courses/578/notes/figs/rbf-boundary.gif">
+                </p>
+                <p>
+                    Thus it concludes that there is a negative sentiment to this statement, and outputs the following:
+                </p>
+                <p>
+                    ["R"]
+[.996]
+                </p>
+                <p>
+                    The R denotes that the headline is biased towards the Right/Conservative side, while the 0.99 denotes the degree of bias. In this case it is ~99% percent conservatively leaning.
+                </p>
+                <p>
+                    Can you guess who might have published this article?
+                </p>
+                <p>
+                    The answer is: Breitbart News. Breitbart is a well known conservative news outlet, and our program's analysis aligns with the their historically demonstrated ideological bias, heavily right leaning.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One of the more challenging parts of the algorithm, was building a substantial database for the machine learning algorithm to learn from. Each news outlet has their own methods for formatting the articles meaning we had to scrape a variety of webpages and devise a javascript program flexible enough to accommodate all formats. In addition, the limited time meant we only had a small corpus to train our classifier with.
+                </p>
+                <p>
+                    We built our website and server out of javascript and developed our algorithm in python, and ran into problems getting our front end, back end, and algorithm to connect and communicate smoothly and quickly.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Despite this challenge, as we continued to grow our corpus our accuracy continued to improve until we achieved 65% accuracy classifying unstructured text at the time of submission.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    None of us had ever built an api in python before, nor an application that runs on runs multiple platforms. Three of our five team members were hackathon rookies and learned how to code in a stack, divide responsibilities, and combine each individual's pieces of code together into a working prototype.
+                </p>
+                <h2>
+                    What's next for Bias is Bliss
+                </h2>
+                <p>
+                    To advance Bias is Bliss we want to develop a more captivating front end that will draw users and present the findings in a more engaging way, and to grow our corpus for our algorithm to learn from to improve our accuracy.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/caffeine">
+                                caffeine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/digitalocean">
+                                digitalocean
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nltk">
+                                nltk
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            semantic-ui
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://345ec140.ngrok.io" rel="nofollow" target="_blank" title="http://345ec140.ngrok.io">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                345ec140.ngrok.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

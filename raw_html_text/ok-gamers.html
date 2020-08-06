@@ -1,0 +1,233 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/c6-qqjVlHV8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="854205" data-title="Our brand logo. Inspired by TwitchCon 2019's brandbook" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/854/205/datas/original.png">
+                            <img alt="OK Gamers &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/854/205/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Our brand logo. Inspired by TwitchCon 2019's brandbook
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="854093" data-title="Explanation of a user's critical path, with an old logo" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/854/093/datas/original.png">
+                            <img alt="OK Gamers &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/854/093/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Explanation of a user's critical path, with an old logo
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="854215" data-title="Concept for an old logo" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/854/215/datas/original.png">
+                            <img alt="OK Gamers &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/854/215/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Concept for an old logo
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to address
+                    <strong>
+                        Data_Dave
+                    </strong>
+                    's challenge to allow community input to affect the content of the stream.
+                </p>
+                <p>
+                    A Twitch stream's chat is the primary means for a streamer to interact with their community, so we decided to focus on improving this interaction.
+                </p>
+                <p>
+                    As viewers, we are familiar with scenarios where streamers ask their viewers what they should do next - whether they're playing a horror game and asking which way to go (left or right?), or playing an RPG and letting viewers influence their play-through.
+                </p>
+                <p>
+                    Most commonly, when streamers ask these questions they just watch chat and try to decide what seems more popular - although this makes for an entertaining chat, many viewers voices aren't heard as chats are so large.
+                </p>
+                <p>
+                    Inspired by this common interaction between streamer and viewer, we created Ok Gamers!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Ok Gamers is a Twitch Extension which adds a visual element for streamers to actually __ see __ what their viewers want (rather than guessing off a fast-moving chat).
+                </p>
+                <p>
+                    Using speech recognition, Ok Gamers automagically detects when a streamer asks their viewers a question - all they have to say is "Ok gamers, "
+                </p>
+                <p>
+                    Ok Gamers then reads chat, tallies viewers responses, and shows them in a real-time pie chart through our extension!
+                </p>
+                <p>
+                    This enables streamers to get the full picture of what their viewers want, while making viewers feel like their voice really counts - even in bigger streams.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The backend is in two parts, both written in Python:
+                </p>
+                <ol>
+                    <li>
+                        Speech Recognition:
+                        <ul>
+                            <li>
+                                Continuously running Python script using Azure to obtain input from mic -&gt; text
+                            </li>
+                            <li>
+                                Using regex parses questions to extract options
+                            </li>
+                            <li>
+                                Sends parsed question to our REST API via POST request
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        REST API:
+                        <ul>
+                            <li>
+                                Flask-based
+                            </li>
+                            <li>
+                                Runs a Twitch Chatbot to read chat and tally votes
+                            </li>
+                            <li>
+                                Poll endpoint for extension to get data
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>
+                    The frontend was designed with Figma, built with Parcel and Sass.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Getting speech-to-text to play nicely in a way that we could build in 24 hours was particularly challenging. We elected to create a terminal based
+                    </li>
+                    <li>
+                        Connecting the Twitch Extension to our backend
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        It works!
+                    </li>
+                    <li>
+                        It really works!
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        How to build Twitch extensions (and chat bots)!
+                    </li>
+                    <li>
+                        Using Speech-to-Text software to implement a keyword recognition service (on Azure)
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Ok Gamers
+                </h2>
+                <ul>
+                    <li>
+                        Adding OCR integration to natively support RPG games (e.g. "Ok gamers, what do you think?" -&gt; image taken of screen -&gt; poll automatically created)
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            figma
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            parcel
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sass">
+                                sass
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/twitchcon/ok-gamers" rel="nofollow" target="_blank" title="https://github.com/twitchcon/ok-gamers">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

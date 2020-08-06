@@ -1,0 +1,283 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/yeVQeZJCqFw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As users we often know which movie we want to watch, but we can't figure out which online service is streaming the movie.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Flic let's you search for a movie, and then it tells you where it is available. Flic shows you subscription services, like Netflix and HBO, streaming services, like Vudo, Amazon, YouTube, iTunes and also movie theaters and where to get a physical copy.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built Flic in two phases. During phase 1, we directly integrated AWS Lex with Facebook Messenger as a Channel. All the backend code was in AWS Lambda. However, this did not give us enough control over the message formats in Messenger. In Phase 2, we added Botkit, which sits between Facebook and Lex.
+                </p>
+                <ul>
+                    <li>
+                        Messaging Platform: Facebook Messenger
+                    </li>
+                    <li>
+                        Transport Layer:
+                        <a href="https://github.com/howdyai/botkit" rel="nofollow">
+                            Botkit
+                        </a>
+                        ** Language: node.js
+** Platform: AWS Elastic Beanstalk
+                    </li>
+                    <li>
+                        Natural Language Processor (NLP): Lex
+                    </li>
+                    <li>
+                        Business Logic: Lambda
+** Application Framework:
+                        <a href="" rel="nofollow">
+                            Serverless
+                        </a>
+                        ** Language: node.js
+                    </li>
+                    <li>
+                        Movie Data:
+                        <a href="https://gowatchit.com/" rel="nofollow">
+                            GoWatchIt
+                        </a>
+                        API
+                    </li>
+                    <li>
+                        Bot Analytics:
+                        <a href="http://dashbot.io" rel="nofollow">
+                            Dashbot
+                        </a>
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We had two sets of challenges working on Flic - UX and Lex. The User Experience (UX) challenges were due to the amount of information we had to show and the limitations of message types in Facebook Messenger. Lex challenged us with the best place to store content and how to send custom message types to FB Messenger.
+                </p>
+                <h3>
+                    UX Challenges
+                </h3>
+                <p>
+                    Since Flic is on Facebook Messenger and movies have LOTS of data, we wanted to take advantage of Messenger's various message types, e.g., Generic Templates, List Templates and Quick Replies. However, there was still too much information for Messenger templates, so we experimented with a variety of ways to show the information.
+                </p>
+                <p>
+                    As an example, once a user picks a movie, we would have ideally shown them a List Template with all the viewing options. But a List Template is limited to 4 items, so we had to try a different approach.
+                </p>
+                <h3>
+                    Lex Content Management Challenge
+                </h3>
+                <p>
+                    The first challenge with Lex was how to handle static content. We typically populate our bots with general information, since users will ask:
+                </p>
+                <ul>
+                    <li>
+                        "What is SmallTalk?"
+                    </li>
+                    <li>
+                        "Help"
+                    </li>
+                    <li>
+                        "Tell me about you"
+                    </li>
+                </ul>
+                <p>
+                    For these types of intents, we just need a static reply. Lex, unlike api.ai and wit.ai, does not provide a way to set a text message in the Fulfillment. Note: It is interesting that Lex does have a way to set a text message for a Slot Prompt
+                </p>
+                <p>
+                    We finally addressed the static content issue by making a ContentService in Lambda to handle all of these types of "static" Intents. Currently the response messages are hard coded, but his could be updated to store content in S3 or a DB.
+                </p>
+                <h3>
+                    Lex Message Types Challenge
+                </h3>
+                <p>
+                    As mentioned, UX is very important to us, and we needed to use Messenger List Templates and Quick Replies. However, Lex does not support these message types. Lex only supports text messages and Generic Templates, using ResponseCards.
+                </p>
+                <p>
+                    To overcome this in Phase 2, we:
+                </p>
+                <ul>
+                    <li>
+                        Removed Lex &amp; Facebook Messenger integration
+                    </li>
+                    <li>
+                        Added a Botkit server in AWS Elastic Beanstalk
+                    </li>
+                    <li>
+                        Connected Botkit as a Webhook for Facebook Messenger
+                    </li>
+                    <li>
+                        Passed user messages from Botkit to Lex through PostText using aws-sdk
+                    </li>
+                    <li>
+                        Formed Facebook formatted response messages in Lambda
+                    </li>
+                </ul>
+                <p>
+                    This left one big issue ... where to put the Facebook messages in the Lex response back to Botkit. We tried:
+                </p>
+                <ul>
+                    <li>
+                        adding a new property
+                    </li>
+                    <li>
+                        changing the ResponseCard data
+                    </li>
+                </ul>
+                <p>
+                    But the JSON in the response is strongly typed, so that did not work. In the end, we added the FB messages as a JSON string to the sessionAttributes in Lambda. In Botkit, the JSON is parsed and the messages are sent to FB Messenger.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are thrilled that we were able to use all the Facebook message types and still use Lex. We did not want to sacrifice UX due to technical limitations.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about Lex and Lambda. This was our first project using either, so it was great to jump in an get a working knowledge.
+                </p>
+                <p>
+                    Using Lambda was a lot easier than we anticipated. And using Serverless made it a snap. We will definatley find new ways to use Lambda moving forward.
+                </p>
+                <p>
+                    With Lex, we finishe with a list of features we love, but also a list of must have features for the roadmap. Much of our views are based on experiences with other NLPs.
+                </p>
+                <ul>
+                    <li>
+                        Lex - Strengths
+** Security - set access level by user or group
+** Versioning - saves versions
+** Deployments - can deploy to different Alias
+                    </li>
+                    <li>
+                        Lex - Wishlist
+** Tet Responses in Fulfillment - great feature for Intents without backend logic
+** Custom Responses - all platform specific responses
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Flic
+                </h2>
+                <p>
+                    There are three main areas in which we want to enhance Flic: adding additional intents, providing easier management and adding Flic on more platforms - specifically voice.
+                </p>
+                <p>
+                    Currently Flic can show you where to wach movies. We want to add additional Intents such as:
+                </p>
+                <ul>
+                    <li>
+                        TV Shows - "Where can I watch Seinfeld"
+                    </li>
+                    <li>
+                        Actors - "List Clint Eastwood movies"
+                    </li>
+                    <li>
+                        Movie/Provider - "Is Good Bad and Ugly on NetFlix?"
+                    </li>
+                    <li>
+                        Genre/Provider - "What westerns are on Hulu?"
+                    </li>
+                    <li>
+                        Actor/Provider - "Are any Clint Eastwood movies showing on HBO?"
+                    </li>
+                </ul>
+                <p>
+                    For our team, we want to make it easier to update Flic's content, so we will look into updating the ContentService. First step would be moving content to a S3 bucket, so non-technical team members can make updates to Lex for Sample Utterances and S3 for Flic's responses.
+                </p>
+                <p>
+                    Finally, we want to add Flic to additional message platforms. Some possible platforms would be an Alexa Skill, SMS and Slack.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            botkit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dashbot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gowatchit-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.messenger.com/t/flic.movie.guide" rel="nofollow" target="_blank" title="https://www.messenger.com/t/flic.movie.guide">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.messenger.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,191 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/fn9lql5kFMU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="801575" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/801/575/datas/original.jpg">
+                            <img alt="Will-o-the-Wisp &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/801/575/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When moving 400+ CryptoKitties and 200+ ENS names from one account to another, it can be a huge inconvenience. The original motivation for this project was to create an Asset Store contract, which would own the tokens (and such), so the they could still be managed, but were bucketed together, allowing easy transfer of all items at once.
+                </p>
+                <p>
+                    The
+                    <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-1014.md" rel="nofollow">
+                        CREATE2 opcode
+                    </a>
+                    is a new and interesting feature to Ethereum that we've wanted to try out, and see if this idea was possible.
+                </p>
+                <p>
+                    This also allows arbitrary code to be used with the assets, since often, as an asset's contract may be updated over time, new features are enabled or new contracts that can interact with them are released.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The CREATE2 call uses the byte code of a contract to determine its address, and we were curious if we could get around this restriction, which would allow either:
+                </p>
+                <ul>
+                    <li>
+                        An address to be "allocated" in advance, without knowledge of the byte code that would ultimately be placed there
+                    </li>
+                    <li>
+                        Re-create multiple different contracts at the same address (after a self-destruct) with wildly different byte code
+                    </li>
+                </ul>
+                <p>
+                    By using a custom bootstrap (see the ./scripts/deploy-springboard for the assembly), the initCode used by the CREATE2 call, which in turn loads the bytecode from another source (the caller) and installs it at an address.
+                </p>
+                <p>
+                    There are 2 modes it can work from:
+                </p>
+                <ul>
+                    <li>
+                        Any EOA (Externally Owned Account), in which case the address has complete control over the contents of the Wisp
+                    </li>
+                    <li>
+                        Any ENS Name, in which case the resolved address of the ENS name has complete control over the Wisp, and by changing the "addr" associated with an ENS name, the controlling address of a Wisp can be modified. Basically, it uses ENS as permission control.
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built it using
+                    <a href="https://github.com/ethers-io/ethers.js/" rel="nofollow">
+                        ethers.js
+                    </a>
+                    , and with a lot of experimentation with custom byte code, trial and error (more emphasis on the errors).
+                </p>
+                <p>
+                    The UI currently is a Command-Line Interface, but the library and contract is generic, so it could easily be migrated to any other form.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    <strong>
+                        Challenge #1:
+                    </strong>
+                    Just getting the STATICCALL and byte code to copy properly from the caller. It required a lot of very tiny little steps to figure out where things went wrong, since when they did, everything just failed. Hand-crafting EVM machine code is quite error-prone; when you can't use a compiler, you really realize how wonderful they are.
+                </p>
+                <p>
+                    <strong>
+                        Challenge #2:
+                    </strong>
+                    Sending ether to a contract that is about to self-destruct completely obliterates it, as it evaporates from existence. We did not plan on that. So we had to fall back onto storing ether in the EOA of the Wisp owner.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    <strong>
+                        It works!!
+                    </strong>
+                    We are able to create and re-create arbitrary code and the same address repeatedly, and control assets at that address, emit events, send and receive ether and call external functions on any other contract as the Wisp.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    A lot more about initCode and how the Solidity compiler prepares and writes out the EVM code for constructors.
+                </p>
+                <h2>
+                    What's next for Will-o-the-Wisp
+                </h2>
+                <p>
+                    Optimizations; the existing bootstrap is very much a proof-of-concept. There are certain errors it should attempt to detect (and throw) and with a little effort the small amount of boiler-plate code required in a Wisp can be entirely eliminated.
+                </p>
+                <p>
+                    We also need to wrap it up in a nicer UI, and will likely include it as part of the Firefly Multi-Sig.
+                </p>
+                <p>
+                    There is also a few other techniques we would like to experiment with for managing ether, rather than moving it back to the controlling EOA, one idea is to "leap-frog" it or "pay-it-forward". The idea is at the end of execution, all ether is moved back into the Springboard; however at the beginning of each user interaction, that user pays the gas for the previous user, to move their ether back into their Wisp. The Wisp can safely hold ether, it just cannot receive it before its self-destruct.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/blockchain">
+                                blockchain
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            create2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ethereum
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ethers
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ricmoo/will-o-the-wisp" rel="nofollow" target="_blank" title="https://github.com/ricmoo/will-o-the-wisp">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

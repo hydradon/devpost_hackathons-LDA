@@ -1,0 +1,200 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/TmF0YyZVdWw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="688253" data-title="Execution Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/688/253/datas/original.png">
+                            <img alt="Serverless Facial Censor &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/688/253/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Execution Architecture
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="688249" data-title="S3 Execution Diagram Source: https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/688/249/datas/original.png">
+                            <img alt="Serverless Facial Censor &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/688/249/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                S3 Execution Diagram Source: https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="689141" data-title="Out image" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/689/141/datas/original.png">
+                            <img alt="Serverless Facial Censor &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/689/141/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Out image
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="689142" data-title="In image" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/689/142/datas/original.png">
+                            <img alt="Serverless Facial Censor &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/689/142/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                In image
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My main motivation for working on this was to help low-budget charity organizations comply with regulations such as GDPR and
+                    <a href="https://www.youtube.com/watch?v=VYH87V6EHrk" rel="nofollow">
+                        French Privacy law
+                    </a>
+                    to protect the privacy of those they have pictures of. It could also be used by organizations fighting human trafficking to protect the identities of victims.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    When a user uploads an image to an S3 bucket, it triggers an AWS Lambda function that passes the image to AWS Rekognition to identify faces. It then takes in the facial bounding boxes and censors them with solid fill. It then saves the final image to an S3 bucket with the same key it was uploaded with.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used the AWS Lambda Python execution environment and the Pillow Python library to run the code in the Lambda function. I used the Serverless Application Model to define and package the model for the Serverless Application Repo. I also added the output and input buckets to be separate so that it could be integrated into a longer image processing pipeline.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I had some trouble working with the SAM templates at first. I was originally basing my design off of some of the examples in the repo, but as it turned out, those were flawed. I also ended up needing a new policy template which I submitted
+                    <a href="https://github.com/awslabs/serverless-application-model/pull/571" rel="nofollow">
+                        as a pull request
+                    </a>
+                    to the SAM Repository.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm particularly proud of submitting code to the SAM Template project and making a useful application for the SAR that's universal enough for many people to use.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about writing and debugging serverless applications. I also learned a bit about working on large open source projects like the SAM Template repository.
+                </p>
+                <h2>
+                    What's next for Serverless Facial Censor
+                </h2>
+                <p>
+                    I am considering creating a version of the SAR app with OpenCV instead of AWS Rekognition to see if it reduces the resources used by the application. However I also wanted to enter the AWS AI hackathon so I probably won't do that until it's done as well.
+                </p>
+                <p>
+                    I could also potentially add to the SAM template to only trigger the function when images are uploaded to the bucket or under a certain key in the bucket. I didn't do that for this hackathon in order to limit complexity, but it could be a desirable feature.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-rekognition
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pillow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sam
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:932998628582:applications~blur-faces-rekognition" rel="nofollow" target="_blank" title="https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:932998628582:applications~blur-faces-rekognition">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                serverlessrepo.aws.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/RobRoseKnows/serverless-repo/tree/master/blurFaces" rel="nofollow" target="_blank" title="https://github.com/RobRoseKnows/serverless-repo/tree/master/blurFaces">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

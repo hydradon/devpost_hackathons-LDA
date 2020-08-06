@@ -1,0 +1,104 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/S9wC1SyAvpY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We are working on Realtime Analytics for Essence which has a event framework which allows us to read realtime data. We wanted to enable Realtime Analytics for another banking product Equation which is hosted on AS/400 or i-series machine.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This project allows us to generate events based on database updates done by Equation
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I have used
+                    <a href="https://docs.confluent.io/current/connect/kafka-connect-jdbc/source-connector/index.html" rel="nofollow">
+                        Kafka Connect jdbc source connect
+                    </a>
+                    framework to connect to AS/400 database. Then I configured it to connect to one of the table and generate avro messages from the table and publish it to Kafka.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Kafka connect works on Linux machine. So I had to setup docker on my windows and configure it work with hyperv. I had to figure out the right drivers and an AS/400 environment that would connect.  We also had to get the right jars in place and this
+                    <a href="https://github.com/confluentinc/kafka-connect-jdbc/issues/493" rel="nofollow">
+                        link
+                    </a>
+                    was helpful. Most of our AS/400 environments are Manila based and most of the time we got timeout. For the demo purpose, we also tested it out against Essence Oracle DB which would connect seamlessly.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was able to generate events out of Equation using multiple mode (bulk, incremental).
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about confluent's kafka connect architecture and how it can be easily used to generate events without touching any of the Equation or Essence source code.
+                </p>
+                <h2>
+                    What's next for Kaf-Equa
+                </h2>
+                <p>
+                    I will publish the approach document to the Finastra team and see if we can implement it any area where realtime usecases are required.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            avro
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kafka
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kafka-connect
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            zookeeper
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,248 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/TWA7zNuef7Q?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    VanHackathon
+                </h1>
+                <h2>
+                    Axiom Zen - Mastermind API
+                </h2>
+                <p>
+                    A Rest API to play Mastermind
+                </p>
+                <h3>
+                    Introduction
+                </h3>
+                <p>
+                    In this challenge we were asked to develop a server side API to play Mastermind (
+                    <a href="https://en.wikipedia.org/wiki/Mastermind_(board_game)" rel="nofollow">
+                        https://en.wikipedia.org/wiki/Mastermind_(board_game)
+                    </a>
+                    ) against.
+                </p>
+                <p>
+                    I decided to design and develop a robust, well tested and scalable solution, and in order to achieve those features with productivity, I have chosen to use Java and Spring-Boot.
+                </p>
+                <h3>
+                    The API
+                </h3>
+                <p>
+                    The API is a simple REST API, with two resources: Game and Guess.
+With the first resource it is possible to post a new Game, informing user and number of players, and to post a new User into a Game, when it is a multiplayer game.
+With the Guess resource it is possible to post a new Guess.
+All operations return a Game Status object, with the game key, which identifies the game.
+                </p>
+                <h3>
+                    Resources
+                </h3>
+                <h4>
+                    Game
+                </h4>
+                <p>
+                    To create a new game:
+                </p>
+                <p>
+                    POST http://{server}/game
+                </p>
+                <p>
+                    json: {
+                    <br>
+                    "user": "Lucas",
+                    <br>
+                    "players": "1"
+                    <br>
+                    }
+                </p>
+                <p>
+                    To join a existing multi player game:
+                </p>
+                <p>
+                    POST http://{server}/game/{gameKey}/user/{username}
+                </p>
+                <h4>
+                    Guess
+                </h4>
+                <p>
+                    To post a guess:
+                </p>
+                <p>
+                    POST http://{server}/guess
+                    <br>
+                    json: {
+                    <br>
+                    "gameKey": "8b99b93c-09c4-4715-8813-f143ed43f92e",
+                    <br>
+                    "code":  "CYOOOOOB",
+                    <br>
+                    "user": "Lucas"
+                    <br>
+                    }
+                </p>
+                <h4>
+                    Game Status
+                </h4>
+                <p>
+                    Example of a Game Status object:
+                </p>
+                <p>
+                    {
+                    <br>
+                    "colors": [
+                    <br>
+                    "R",
+                    <br>
+                    "B",
+                    <br>
+                    "G",
+                    <br>
+                    "Y",
+                    <br>
+                    "O",
+                    <br>
+                    "P",
+                    <br>
+                    "C",
+                    <br>
+                    "M"
+                    <br>
+                    ],
+                    <br>
+                    "codeLength": 8,
+                    <br>
+                    "gameKey": "591b09be-bd5d-47b8-87e2-80ef7446bf56",
+                    <br>
+                    "numGuesses": 3,
+                    <br>
+                    "message": "Nice try!",
+                    <br>
+                    "solved": false,
+                    <br>
+                    "user": "Lucas",
+                    <br>
+                    "pastResults": [
+                    <br>
+                    {
+                    <br>
+                    "exact": 0,
+                    <br>
+                    "near": 3,
+                    <br>
+                    "guess": "CYOOOOOB",
+                    <br>
+                    "user": "Lucas"
+                    <br>
+                    },
+                    <br>
+                    {
+                    <br>
+                    "exact": 1,
+                    <br>
+                    "near": 2,
+                    <br>
+                    "guess": "CYBBOOOB",
+                    <br>
+                    "user": "Lucas"
+                    <br>
+                    }
+                    <br>
+                    ],
+                    <br>
+                    "result": {
+                    <br>
+                    "exact": 1,
+                    <br>
+                    "near": 2,
+                    <br>
+                    "guess": "CYBBOOOB",
+                    <br>
+                    "user": "Lucas"
+                    <br>
+                    }
+                    <br>
+                    }
+                </p>
+                <h3>
+                    Instructions
+                </h3>
+                <p>
+                    The API was developed as a self contained application that can be deployed to a container or executed locally.
+The Maven build will create a Jar file. To run the application just use java -jar command on mastermind-api-0.0.1-SNAPSHOT.jar.
+                </p>
+                <h3>
+                    Final Considerations
+                </h3>
+                <p>
+                    1 - What was the hardest part?
+                </p>
+                <p>
+                    The hardest part for me was to manage the time to finish everything I had planed. I wanted my solution to be professional and truly functional, in the sense that you can really play.
+                </p>
+                <p>
+                    2 - If you could go back and give yourself advice at the beginning of the project, what would it be?
+                </p>
+                <p>
+                    Try to find a team way before the event date and start planning really early.
+                </p>
+                <p>
+                    3 - If you could change something about this challenge, what would it be?
+                </p>
+                <p>
+                    I think the multiplayer game play could be a little bit better explained.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            hibernate
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            spring-boot
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/lucasslf/vanhackathon.git" rel="nofollow" target="_blank" title="https://github.com/lucasslf/vanhackathon.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

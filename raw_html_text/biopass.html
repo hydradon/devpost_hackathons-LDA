@@ -1,0 +1,199 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    BioPass
+                </h1>
+                <p>
+                    Login into any website using only your fingeprint. Biometrics are not a field of only the goverment and academics anymore. In recent years, advancements of technology have enable mass use of powerful sensors such as synaptics fingerprint sensor. Now we need to exploit this power by creating the next generation of services. Our product's security relies in industry standard encryption algorithms and best practices. Our fingerprint matching technology is built on top of open source code developed by the United States Goverments Federal Agency. Although we do not own the intellectual property of many of those algorithms - since they are widely academically known -, our integration with advanced web technologies can lead a potential standard..
+                </p>
+                <h1>
+                    Inspiration
+                </h1>
+                <p>
+                    Jesus Castaneda always wanted to use fingerprint sensors. During a hackathon at Pasadena some sensors were available and this project was born. Although this project was done in a rush we hope to improve the security of the system, by streaming the data directly from the device to the network without physical storage in between, by using better encryption techniques, and by providing an API for websites to integrate (instead of our current hijacking methods).
+                </p>
+                <h1>
+                    Mechanism
+                </h1>
+                <p>
+                    The system consists of three components.
+                </p>
+                <ol>
+                    <li>
+                        <em>
+                            Google Chrome extension
+                        </em>
+                        .
+                        <br>
+                    </li>
+                    <li>
+                        <em>
+                            Python daemon on the client
+                        </em>
+                        .
+                        <br>
+                    </li>
+                    <li>
+                        <em>
+                            Web Server with matching technology
+                        </em>
+                        .
+                        <br>
+                    </li>
+                </ol>
+                <hr>
+                <p>
+                    <strong>
+                        The Google Chrome extension:
+                    </strong>
+                    <br>
+                    It lies on the client's browser looking for possible login opportunities by looking at the HTML.
+                    <br>
+                    If such a login opportunity exists it compares the current domain against a database to see if there is information already saved for this website. There are two possible possibilities now:
+                </p>
+                <ol>
+                    <li>
+                        There is no information saved: This leads to a checkbox next to the login form that indicates whether you desire to store those credentials for use with your fingerprint.
+                        <br>
+                    </li>
+                    <li>
+                        There is information saved: In this case the extension would communicate this to the server and wait for a fingeprint signal sent from the server.
+                        <br>
+                    </li>
+                </ol>
+                <p>
+                    <strong>
+                        The Sever:
+                    </strong>
+                    <br>
+                    The server consists of a couple python scripts that glue together several components:
+                </p>
+                <ol>
+                    <li>
+                        First it listens for upcoming connections.
+                        <br>
+                    </li>
+                    <li>
+                        It cleans up raw fingerprints received.
+                        <br>
+                    </li>
+                    <li>
+                        Then it applies transformations to the bmp file in order to obtain the feature rich file used by the matching algorithm
+                        <br>
+                    </li>
+                    <li>
+                        It feeds the processed images to a c library for matching.
+                        <br>
+                    </li>
+                    <li>
+                        Keeps track of users, credentials, and domains.
+                        <br>
+                    </li>
+                </ol>
+                <p>
+                    <strong>
+                        Python daemon:
+                    </strong>
+                    <br>
+                    It lies in the client machine listening for images outputted from the fingerprint sensor into the filesystem.
+Once a new image appears it sends it over the network (TODO: encrypt it before sending)
+                </p>
+                <p>
+                    <strong>
+                        What We Learned
+                    </strong>
+                    Even the most simply sounding projects can turn out to be complete monsters.
+                    <br>
+                    We learned a lot about encryption and image processing. We failed at manually building a capable neural network for fingerprint detection (although we did hit a 60% success, better than random chance).
+                    <br>
+                    For both of us this was the first time we ran into memory issues with distributed systems without even knowing which was a huge learning - and frustrating - experience.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bash">
+                                bash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bottle">
+                                bottle
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/digitalocean">
+                                digitalocean
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nginx">
+                                nginx
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://castaneda.tech" rel="nofollow" target="_blank" title="http://castaneda.tech">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                castaneda.tech
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/jesuscast/hacktech-server" rel="nofollow" target="_blank" title="https://github.com/jesuscast/hacktech-server">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

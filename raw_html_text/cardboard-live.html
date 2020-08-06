@@ -1,0 +1,232 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/bB-CYxTplEk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="771371" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/771/371/datas/original.png">
+                            <img alt="Image recognition &amp; card analysis for tabletop games &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/771/371/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="771372" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/771/372/datas/original.png">
+                            <img alt="Image recognition &amp; card analysis for tabletop games &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/771/372/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="771376" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/771/376/datas/original.png">
+                            <img alt="Image recognition &amp; card analysis for tabletop games &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/771/376/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We are gamers who love streaming and watching high-level "Magic: The Gathering" gameplay on Twitch. One of the challenging things about streaming a game like Magic is having to explain a ton to get viewers to follow along. What are the actual cards being played on the table? What decks are the players playing? Even for regular fans of the game, it can be hard to understand what&rsquo;s happening.
+                </p>
+                <p>
+                    From a content creator perspective, we believe there are ways to empower ALL Magic streamers to make their channels more interactive and fun to watch. We also want to give them dynamic tools to develop solid streamer-viewer relationships that don&rsquo;t feel forced, and is organic to what&rsquo;s happening on-stream.
+                </p>
+                <p>
+                    We know that new streamers can use some help to monetize their stream in ways that feel genuine. As a first step, we want to give viewers more interesting content to watch -- and eventually tie card purchases ON Twitch to what's happening, without viewers leaving the stream.
+                </p>
+                <p>
+                    Bottom line &ndash; streamers can tell a better Magic story, and viewers can watch a better story!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our Twitch extension uses a basic service for Magic cards object detection and identification, such that viewers can click on the physical outlines of cards on-stream to see what the cards do.
+                </p>
+                <p>
+                    We have also built a Magic decklist upload option, so that content creators can display the hidden contents of a deck uniquely designed for a tournament.
+                </p>
+                <p>
+                    To demonstrate all of this, we've recorded a Magic demo video on constant loop in our Twitch channel, so that the judges can view it 24/7. While the video runs, our image detection service will make detected cards &ldquo;clickable.&rdquo; There are also pop-ups on both sides of the screen to expose the players&rsquo; decklists.
+                </p>
+                <p>
+                    We're more than happy to demo everything "live" with a physical Magic stream setup, if need be.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Project consists of few layers:
+                </p>
+                <ul>
+                    <li>
+                        Extension Backend Service (&ldquo;EBS&rdquo;) - this is the main backend for the extension. It keeps information about the decklists presented on-stream. It is responsible for card parsing from the text, and providing card image details. We wrote this in node.js and use Redis as a store. Hosted on AWS EC2.
+                    </li>
+                    <li>
+                        EBS Pub/Sub service - passes information about the cards detected by image recognition service to all the viewers. Written in node.js.
+                    </li>
+                    <li>
+                        Twitch extension - frontend application written in Preact (javascript). It presents information about the detected cards and decklists to all the viewers across the Internet.
+                    </li>
+                    <li>
+                        Image recognition service (&ldquo;IRS&rdquo;) - this is the backend app responsible for detecting cards on-stream. We wrote the IRS in Python with ffmpeg and OpenCV. Hosted on highly efficient EC2 machines (c5n.large).
+                    </li>
+                </ul>
+                <p>
+                    During the stream, the IRS constantly analyses the video stream in order to find videos. Algorithm consists of 3 steps:
+                </p>
+                <ol>
+                    <li>
+                        Preprocessing of video frame - noise removal, contrast enhancement, and more.
+                    </li>
+                    <li>
+                        Detecting possible cards positioning.
+                    </li>
+                    <li>
+                        Matching detected cards against Magic cards database.
+                    </li>
+                </ol>
+                <p>
+                    Results over processing are send via EBS Pub/Sub to the extension, for all the viewers.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Starting with OpenCV/Python for basic implementation and then converting it to read from the video stream, taking into account the delays in reading from stream. The last part was very tricky because Twitch is a global service, and video delays differ for each user. We had a breakthrough when we discovered that Twitch provides information to the extension in the form of the &lsquo;hlsLatencyBroadcaster&rsquo; parameter -- allowed us to properly account for delays.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    We&rsquo;re super proud of the fact that we put several components together in limited time. We&rsquo;ve learned to integrate with Twitch in several ways -- visual overlays, image recognition for a running stream, and so forth.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned a lot about how generally image processing and image recognition works.
+                </p>
+                <p>
+                    We also learned about, from the ground up, how to work with the Twitch extensions ecosystem: requirements, limitations, dev tools, working with Twitch API, the extensions review process.
+                </p>
+                <h2>
+                    What's next for Image recognition &amp; card analysis for tabletop games
+                </h2>
+                <p>
+                    The next steps are to refine image recognition to be more accurate for a broader pool of cards, since we've only trained a small subset of cards for the demo. We need to refine the overall object detection to be stronger at recognizing the contours/shapes of cards, and this problem is magnified with playmats, dice, notepads, and other common objects on the stream.
+                </p>
+                <p>
+                    As Twitch extensions support richer integrated purchasing capabilities (i.e. without leaving the Twitch channel), we would be looking to take advantage of new features. Building a shopping cart and checkout system within the extension would be super cool. This will help streamers monetize their streams in a way that feels genuine and not forced like ads.
+                </p>
+                <p>
+                    We definitely want to "branch out" and provide image recognition and eventually integrated sales for other collectible trading card games, such as Keyforge, Yugioh, and Pokemon.
+                </p>
+                <p>
+                    We want this product to be used for as many tabletop games as possible, so it&rsquo;s also conceivable we could branch out into board games like &ldquo;Settlers of Cataan&rdquo; and use card detection for game pieces detection.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            preact
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twitch">
+                                twitch
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.twitch.tv/ext/nds4ds9prsjr4tuav2vit6cnnuh7c4-0.0.1" rel="nofollow" target="_blank" title="https://www.twitch.tv/ext/nds4ds9prsjr4tuav2vit6cnnuh7c4-0.0.1">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.twitch.tv
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,141 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/IgWu9QnCe3Q?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    For quite a few companies I no longer bother to keep their numbers in my phonebook, when I need to call them I just goto their webpage find the number from there and dial, this can sometimes be a bit fiddly as I have to scan around the page to find the number, then transpose it into my phone. The idea of this hack was to build a javascript bookmarklet that could live in my browser and would find the numbers on that page then present them to me in an easy to call manner, as a stretch goal I added some code to make a call via the Nexmo voice API to setup the call between my mobile and the destination number from the page.
+Also sometimes businesses format their numbers using strange spacing formats which differ from the UK norm and I find it harder to read those numbers.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    The bookmarklet uses some javascript to iterate over the elements on the page and find any strings of numbers that look like they may be phone numbers, eg a string of digits between 8 and 15 in length, also taking out things like + and () which are often used to display numbers.
+I then send those strings of numbers to my server which combined with a GeoIP lookup on the client to determine their location sends those as queries to the Nexmo Number API, the ones that come back as validated numbers are then displayed on  a small popup window as clickable links. 
+When the user clicks on a number I send another request to my server to call my mobile number (which is entered at the time of creating the bookmark) and then connect the call to some VoiceXML on the server which contains the destination business number in international format as returned by the number API in the original search.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The number API has a lot of errors for UK numbers, for example 123456 is not a valid UK number! neither is 0112 xxx xxxx although its in a correct style there is no area code 0112 only 011[3-8]
+Also the Voice API seems to be a bit erratic about connecting the calls, sometimes nothing comes through despite having a successful response and call id
+                </p>
+                <p>
+                    Also there is no security or account management on this hack so anyone can create a bookmarklet and make calls using my credit! I'll probably take it down soon and maybe add that in but I ran out of time this week.
+                </p>
+                <p>
+                    You'll also need to allow popups in your browser.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The javascript for finding the numbers on the page is quite neat :)
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Some nice API's for GeoIP, plenty on what you can just about get away with when creating javascript popups and how much is blocked!
+                </p>
+                <h2>
+                    What's next for Find &amp; Call
+                </h2>
+                <p>
+                    Needs a lot more work to make it viable, things like accounts, billing and some sort of deisgn, although I like the minimalist look ;)
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nexmo">
+                                nexmo
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pytho
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/tornado">
+                                tornado
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            voicexml
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://webdial.sammachin.com/" rel="nofollow" target="_blank" title="http://webdial.sammachin.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                webdial.sammachin.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

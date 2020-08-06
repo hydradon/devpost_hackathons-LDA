@@ -1,0 +1,90 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Hackers usually locate vulnerable devices on the internet via "port scanning". When ports are open and have no firewall protections, they are basically advertising their existence to malicious attackers. However, some of these ports need to be exposed for remote access. Open and closing ports from a remote location is not an easy task as it requires editing the server firewall rules. In the past, some users have relied on "port knocking", sending a secret combination of pings to user specified ports, indicating to the server that it should open/close a specific port. This "port knocking" program is not easy for beginners and non-IT people to set up.
+Not only does a remote user need to worry about open ports, they may also be subject to a Dynamic IP address. IP addresses such as these can change at the whim of your ISP provider, and keeping track of your current IP address requires subscribing to a DynamicDNS service, which typically charge monthly fees.
+Off the shelf wifi routers &amp; switches are getting more powerful every year. Their embedded linux operating systems are capable of running most Raspberry Pi style projects. Not only can these routers run a strong firewalls, they can also run blockchain software. The blockchain acts as a peer to peer messaging system, transaction ledger, and database, but most importantly it is a decentralized network, not relying on a single server/point of failure. This decentralization greatly improves the security of the network. The built in messaging system &amp; programming language of Ethereum blockchain (Solidity smart contracts) can be used to securely store &amp; communicate information between all nodes on the network, such as communicating our server's current IP address, or relaying a message to the firewall to open a port.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    An off the shelf wifi router with firewall (OpenWrt linux) also runs an Ethereum blockchain node (passive node, not mining). On the this blockchain we deploy a smart contract programmed(Solidity language) with variables &amp; methods specific to our firewall and dynamicDNS, such as "setIPaddress" and "openWebport". The user can securely &amp; remotely access/edit these smart contract methods/variables, setting openWebPort to ON/TRUE. The router will see this change to the contract and open the firewall accordingly. The same technique applies to the IP address of the server/firewall; it will edit the smart contract when the ISP changes the dynamic IP, and the remote user can easily find this new address via the smart contract.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Used a TP-LINK WDR3600 flashed with OpenWrt(LEDE). Cross compiled the Go-Ethereum(Geth) executable for MIPS architecture. Also Installed NodeJS on the router. Wrote the smart contract in Solidity language and deployed on the Rinkeby test network. The NodeJS uses the Web3  javascript library to interact with our local Ethereum node running on the router. The NodeJS program is synced to our smart contract, and edits the firewall via IPTables when the smart contract is edited by the owner.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Cross compiling NPM and the Web3 library. RAM memory issues on the router
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Coming up with a service that deters hackers and is a cheaper alternative to dynamicDNS providers.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Cross compiling will test your sanity
+                </p>
+                <h2>
+                    What's next for FireChain
+                </h2>
+                <p>
+                    Deploy to protect IoT networks. Once deployed, these networks won't have to rely on static IP addresses and remote users can securely access ports, without revealing their identity to port scans in the meantime.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            embedded-linux-openwrt
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            go-ethereum
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            web3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

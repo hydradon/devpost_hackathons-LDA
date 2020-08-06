@@ -1,0 +1,149 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="769818" data-title="mind_gap logo" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/818/datas/original.png">
+                            <img alt="mind_gap: predict mental distress, transform lives &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/818/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                mind_gap logo
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769798" data-title="First few go at logistic regression" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/798/datas/original.jpeg">
+                            <img alt="mind_gap: predict mental distress, transform lives &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/798/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                First few go at logistic regression
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="769800" data-title="Eventual distribution tree" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/800/datas/original.jpeg">
+                            <img alt="mind_gap: predict mental distress, transform lives &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/769/800/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Eventual distribution tree
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    For me I naturally gravitated towards the topic given my personal experiences. Over the past two years, a handful of my close friends have been left debilitated by mental health issues - a few grapple with crippling anxiety while others bravely confront depression. Yet, as a friend, I did not notice warning signs. Indeed, many of them had not sought professional help prior to this, making it difficult to assess whether or not something is amiss. Indeed, there still exists a stigma regarding mental health issues, a PsychCongress paper found large discrepancies between self-reported information and medical records. In some cases, particular illness history was underreported by a factor of a tenth. As a health care practitioner (even a GP), it might be useful to predict a patient's mental health through proxies (and biographical information) that could help determine if a need exists for intervention.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Mindgap helps to guide practitioners to make a routine assessment as to the mental health of their patient. It is a more machine-guided diagnostic tool that complements the professional judgement of doctors. This is particularly important given the tendency for mental health issues to be underreported amongst men and as previously mentioned, the stigma that comes along with mental illnesses. A more advanced version could also be scaled up, allowing these datapoints to have personal proxies that will inform loved ones (or close contacts) of anything that may be untoward.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I began by cleaning the dataset which initially had 358 variables. After doing some preliminary medical research and viewing literature, I came up with a general list of variables that may be worth integrating into a model. Considerations included whether the data was easily accessible (such as through random conversations), whether it relied on privileged access (such as prior medical records) or a contextualisation of the patient's past. Should these demands be too onerous, they were removed from consideration. One such instance was past medical records. I then began to deal with the missing data problem but soon realised that imputing substitute values may not be a good path given the time involved. The cleaning process required some editing with the stringR package, heavy interaction with the tidyverse and a few functions/loops along the way. I decided to combine the given CDC dataset with another CDC dataset which operated at a more macro-level. This allowed me to contextualise regional trends and fit a state-level variable in the model as well.
+                </p>
+                <p>
+                    I thus began with a few iterations of the logistic regression (probit) to get a stronger sense of the relationships within the data. Here, I kept in mind the need to consider interactions and logterms to maintain a proper model structure. I then did a 80/20 train-test split and the log-regression gave me a (pseudo-McFadden) R2 of around 0.65. It did, however, do alright on the predictive accuracy aspect, giving a score of around 89.9%. Nonetheless, it was not particularly good at predicting positives (with a rather dismal rate of 36% of all positive cases). However, I eventually rely on the logistic model to help understand the causal relationship better.I then moved on to other more trendy but not necessarily useful machine learning models.
+                </p>
+                <p>
+                    Specifically, I chose to zoom in on two models, decision trees and random forests. The advantage of these two methods is that unlike log-regression they are better at classifying problems (yes/no) where n is large and m (features) are not that numerous. However, they aren't particularly good at giving me clues about the underlying causal relationships in the data. I began with random forests, using the R equivalent of gridsearch CV to arrive at a pretty impressive predictive accuracy of 91%. It also marginally improved on the positive case identification rate, at around 39%. I also considered decision trees. This was the most successful, giving me a score of 51% in positive case identification rates and an overall accuracy of 90%.
+                </p>
+                <p>
+                    I experimented with support vector machines and one hot encoding to address the categorical nature of the data but eventually deemed myself to have to little time.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    ALOT. The data was not well-structured. The ambition I had was a little to much for the less than 24 hours.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    ALOT. I just began using plot.ly and only began coding in R last year. I came from a qualitative undergrad so this was pretty new for me. I also managed to learn and critically employ models I've learnt at school. More crucially, I saw through the project despite wanting to give up at multiple points. At the same time, it was also a personal goal to help build something for social good.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learnt that time is everything. You've got to manage learning (as I was going to lectures), mingling and knowing where to stop before the project veers of course. At the same time, it is also very easy to lose sight of where you are going and in the process, sacrifice statistical fundamentals for accuracy's sake.
+                </p>
+                <h2>
+                    What's next for mind_gap
+                </h2>
+                <p>
+                    As a civil servant, I will continue to explore means to integrate data into products to help broaden the social good. I will consider building on this experience to deliver even better products in the future.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            gis
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/kyiyeunggoh/Projects" rel="nofollow" target="_blank" title="https://github.com/kyiyeunggoh/Projects">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

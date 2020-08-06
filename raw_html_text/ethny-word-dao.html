@@ -1,0 +1,136 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    If you have tried to store strings on the blockchain, you know that storage is expensive. In the future, it could get even more expensive with storage rent. We've built a smart contract that lets everyone work together to save on rent.
+                </p>
+                <p>
+                    Anyone can compress a word by uploading it to the Word DAO contract, which is running on Ropsten at 0x4DC1ABd5181C0256E57cB7215b73781C5D10D224.  Once a word is compressed, anyone can save gas by saving a pointer to the word in Word DAO instead of saving the whole word.
+                </p>
+                <p>
+                    In our benchmarking, uploaders save 15-20% of the gas costs by saving pointers instead of whole words.
+                </p>
+                <p>
+                    Uploaders have an incentive to create words: they receive a
+                    <code>
+                        WORD
+                    </code>
+                    token for each word they upload.
+                    <code>
+                        WORD
+                    </code>
+                    tokens will have a claim on the cashflow from looking up words.
+                </p>
+                <p>
+                    We built a canonical contract to store all words, referenced by an integer. Instead of putting an entire string in your contract like "hello world", you can reference two integers: 1 and 4.
+                </p>
+                <p>
+                    The contract maps those keys to those words: { 1 =&gt; "hello", 4 =&gt; "world"}
+                </p>
+                <h2>
+                    This repo consists of three contracts:
+                </h2>
+                <p>
+                    WordDAOToken: Issues a coin for anyone contributing a word
+Registry: Stores all the words in uint32 -&gt; bytes32
+Manager: Owner of both of the above contract and interface to access them. Charges a tiny fee to get a word back, which is planned to go to owners of WordDAOToken (last part not implemented yet).
+Also, check out this repo for a contract that utilizes this manager: Ethnewyork-poi-tagger
+                </p>
+                <p>
+                    Instructions to get this running
+Terminal Window 1:
+                </p>
+                <h1>
+                    npm requirements
+                </h1>
+                <p>
+                    npm install -g truffle
+npm install -g zos
+npm install
+                </p>
+                <h1>
+                    Run ganache in one terminal
+                </h1>
+                <p>
+                    ganache-cli --deterministic
+Terminal Window 2:
+                </p>
+                <p>
+                    truffle migrate
+truffle console --network development
+                </p>
+                <blockquote>
+                    <p>
+                        let managerInstance = await Manager.at("0xCfEB869F69431e42cdB54A4F4f105C19C080A601")
+managerInstance.getDictionarySize()
+
+let txn = await managerInstance.addBytes(web3.utils.asciiToHex("Ethereum"))
+let word = await managerInstance.getBytesByKey(2)
+0x33834030300000000 \ returns in bytes (maybe different than what you put into addBytes)
+TODOs
+Upgrade Manager to withdraw Eth for WordDAOTokens
+Test withdrawl
+                    </p>
+                </blockquote>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/crazyrabbitLTC/ETHNY-Word-Dao" rel="nofollow" target="_blank" title="https://github.com/crazyrabbitLTC/ETHNY-Word-Dao">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/j0x0j/ethnewyork-poi-tagger" rel="nofollow" target="_blank" title="https://github.com/j0x0j/ethnewyork-poi-tagger">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/crazyrabbitLTC/ETHNY-Word-Dao/tree/master/client/buyword" rel="nofollow" target="_blank" title="https://github.com/crazyrabbitLTC/ETHNY-Word-Dao/tree/master/client/buyword">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

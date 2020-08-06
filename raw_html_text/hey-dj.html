@@ -1,0 +1,262 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    import speech_recognition as sr
+import os
+import pyaudio, wave
+import urllib
+import urllib2
+from bs4 import BeautifulSoup
+import re
+import pafy
+import vlc
+                </p>
+                <p>
+                    import RPi.GPIO as GPIO
+from time import sleep
+                </p>
+                <p>
+                    GPIO.setmode(GPIO.BCM)
+togglePin = 23
+resetPin = 5
+                </p>
+                <h1>
+                    sets up the button
+                </h1>
+                <p>
+                    GPIO.setup(togglePin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+GPIO.setup(resetPin,GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                </p>
+                <h1>
+                    0: waiting for wake word/reset button to be clicked
+                </h1>
+                <h1>
+                    1: start recording and analyze and download
+                </h1>
+                <h1>
+                    2: playing song
+                </h1>
+                <h1>
+                    3: song is played
+                </h1>
+                <h1>
+                    4: song is paused
+                </h1>
+                <p>
+                    global audioplaying, songName
+BUFFER_SIZE = 512
+REC_SECONDS = 5
+RATE = 44100
+WAV_FILENAME = "request.wav"
+FORMAT = pyaudio.paInt16
+i = vlc.Instance()
+p = i.media_player_new()
+                </p>
+                <p>
+                    def main():
+    record()
+    title = analyze()
+    songName = title.strip()
+    return songName
+                </p>
+                <p>
+                    def record():
+    pa = pyaudio.PyAudio()
+    stream = pa.open(
+    format=FORMAT,
+    input=True,
+    channels=1,
+    rate=RATE,
+    input_device_index=2,
+    frames_per_buffer=BUFFER_SIZE
+    )
+    # run recording
+    print('Recording...')
+    data_frames = []
+    for f in range(0, RATE // BUFFER_SIZE * REC_SECONDS):
+    data = stream.read(BUFFER_SIZE)
+    data_frames.append(data)
+    print('Finished recording...')
+    stream.stop_stream()
+    stream.close()
+    pa.terminate()
+                </p>
+                <pre class="language-nolang"><code>wf = wave.open(WAV_FILENAME, 'wb')
+wf.setnchannels(1)
+wf.setsampwidth(pa.get_sample_size(FORMAT))
+wf.setframerate(RATE)
+wf.writeframes(b''.join(data_frames))
+wf.close()
+</code></pre>
+                <p>
+                    def analyze():
+    r = sr.Recognizer()
+    with sr.AudioFile(WAV_FILENAME) as source:
+    audio = r.record(source)
+    # recognize speech using Sphinx
+    try:
+    request = r.recognize_google(audio)
+    print("We think you said " + request)
+    audioFile = getSong(request) + ".ogg"
+    return audioFile
+    except sr.UnknownValueError:
+    print("We could not understand audio")
+    except sr.RequestError as e:
+    print("We run into error; {0}".format(e))
+                </p>
+                <p>
+                    def getSong(title):
+                </p>
+                <pre class="language-nolang"><code>textToSearch = title
+query = urllib.quote(textToSearch)
+youtube_id = ""
+url = "https://www.youtube.com/results?search_query=" + query
+response = urllib2.urlopen(url)
+html = response.read()
+soup = BeautifulSoup(html)
+vid = soup.find(attrs={'class': 'yt-uix-tile-link'})
+youtube_id = vid['href']
+print len(youtube_id)
+if len(youtube_id) &lt; 50:
+url = 'https://www.youtube.com' + youtube_id
+
+video = pafy.new(url)
+print(video.title)
+
+audiostreams = video.audiostreams
+for a in audiostreams:
+if (a.extension == 'ogg'):
+a.download()
+return video.title
+else:
+return 'nope'
+</code></pre>
+                <p>
+                    try:
+    songName = ""
+    state = 0
+    while True:
+    toggle_button_state = GPIO.input(togglePin)
+    reset_button_state = GPIO.input(resetPin)
+    if state == 0:
+    if not reset_button_state:
+    state = 1
+    print 'Yo! Are you ready to get lit'
+    songName = main()
+    if songName == 'nope':
+    print 'sorry we ran to error, try again!'
+    state = 0
+    else:
+    state = 2
+    sleep(1)
+    elif state == 2:
+    print 'We got your song fam, it is '
+    if toggle_button_state:
+    print songName + ". gonna play it now!"
+    m = i.media_new(songName)
+    p.set_media(m)
+    p.audio_set_volume(100)
+    p.play()
+    state = 3
+    elif state == 3:
+    if toggle_button_state and reset_button_state:
+    continue
+    elif not toggle_button_state:
+    print "We got you, pausing song"
+    p.pause()
+    state = 4
+    sleep(1)
+    elif not reset_button_state:
+    print "Another song? Ok!"
+    p.stop()
+    state = 1
+    songName = main()
+    state = 2
+    sleep(1)
+    elif state == 4:
+    if not toggle_button_state:
+    print "Ready to get lit again? Awesome!"
+    p.play()
+    state = 3
+    sleep(1)
+    if not reset_button_state:
+    print "Tired of this song? no problem!"
+    p.stop()
+    state = 1
+    songName = main()
+    state = 2
+    sleep(1)
+                </p>
+                <p>
+                    finally:
+    #resets the GPIO pins to a safe state
+    GPIO.cleanup()
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            breadboard
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            leds
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mic
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pythonurl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            speaker
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vlc
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/bdatdo0601/DAEACC" rel="nofollow" target="_blank" title="https://github.com/bdatdo0601/DAEACC">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

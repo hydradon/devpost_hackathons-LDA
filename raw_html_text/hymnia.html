@@ -1,0 +1,167 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="496829" data-title="Searching for music" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/829/datas/original.PNG">
+                            <img alt="Hymnia &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/829/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Searching for music
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="496830" data-title="Playing music" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/830/datas/original.PNG">
+                            <img alt="Hymnia &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/830/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Playing music
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="496831" data-title="Log-in" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/831/datas/original.PNG">
+                            <img alt="Hymnia &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/831/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Log-in
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="496832" data-title="Selfie" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/832/datas/original.PNG">
+                            <img alt="Hymnia &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/832/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Selfie
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As music lovers, we all have trouble choosing which genre of music we would like to listen to.  And we have one more things in common: we like to selfie! Instead of spending tons of time trying the tracks recommended by music software, why not listen to a song that fits your mood? I mean, fits your selfie.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Hymnia is a music social iOS software that allows users to take selfies and enjoy music anytime, anywhere. By analyzing user's facial expression, Hymnia guesses the current mood of user with Microsoft cognitive services API and gives back the track that best fits user's mood right now. Users can take selfies whenever they want even when there is music being played by the app and the app will start to stream high quality music instantly.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The user and camera interface are built with react-native frame work. We use react-native to build a central control button that are responsible for taking pictures, controlling music and exploring the mood and music of others. After users take selfies, the pictures will be compressed and sent to Microsoft cognitive service API to get back the mood of users.
+                </p>
+                <p>
+                    Then, we utilize Spotify API to search for potentially best fitting song for user's current feeling and then extract track name, artist and album image. By calling youtube API to extract the video ID that corresponds to the song Spotify recommends, we send that ID to our server which would then stream high quality music back to the mobile app.
+                </p>
+                <p>
+                    The server side is build with Flask and MongoDB, and deployed on Linode. It keeps selfies and music of you and your friends and will return the mood by sending selfie to Microsoft API. It also implements the most exciting feature live music streaming with the help of Python requests module.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Because the main user interface is a control button that achieves 3 functionalities, it is hard to implement with react-native because we have to change the callback of button based on current state of the app and even the hand gesture of users. 
+Also, Spotify APIs are relatively difficult to work with because its recommendation system requires too detailed information and criteria so we have to extra and manipulate those data by sophisticated designing functions for API calls to Spotify.
+Another tough issue is music live streaming from server. Since music are usually large in size and we do not want users to experience interruption while they are listening, we implemented a streaming proxy which is difficult.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The music that the app recommends to users is relatively accurate according to user's current mood. The button control interface is beautiful, clear and has powerful functionalities that controls the workflow the the app. We achieve music live streaming so that the user can enjoy music without interruption.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We as a team all learned a lot from this project. We become more familiarize with react-native frame work, how to use camera and user interface design. Also, we get more practical experiences working and manipulating with APIs. Live streaming is a new topic for everyone in the group and we are glad that we learn how it works and eventually implements it.
+                </p>
+                <h2>
+                    What's next for Hymnia
+                </h2>
+                <p>
+                    We want the accuracy of music recommendation of Hymnia to be as high as possible so that users would enjoy their music worlds. In the future, Hymnia can recommend music not only just based on selfies but also with user's geolocations, current time and other fueatures. We also hope to improve the Hymnia's functionality as a social software in that users can connects to their friends, see every friends' selfies, moods and music they are listening to.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/linode">
+                                linode
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-cognitive-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react-native">
+                                react-native
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/youtube">
+                                youtube
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

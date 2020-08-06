@@ -1,0 +1,172 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The math works. Over the course of a season, there's some predictability to baseball. When you play 162 games, you eliminate a lot of random outcomes. There's so much data that you can predict: individual players' performances and also the odds that certain strategies will pay off. 
+-Billy Beane
+                </p>
+                <p>
+                    In 2002, the Athletics became the first team in the 100+ years of American League baseball to win 20 consecutive games by applying sabermetric methods.
+There are many models for different games but I didnt come across any such paper or article which tells us the method to create a model for soccer transfer market recommendation.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It aims to provide transfer market recommendations based on the player's potential and recent performances that would help the team perform better (with given constraints).
+                </p>
+                <p>
+                    Step-wise Method
+                </p>
+                <p>
+                    a. Predict the market value of the player based on input feature 
+b. Predict the Form of the player based on his last 5 year performance 
+c. Derive an equation for Impact Score of the player (combination of player potential and recent history)
+d. Calculate the MVP of the player which is a function of Market Value and Impact Score
+e. Use constrained programming to come up with a set of optimal recommendations for the transfer market.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used the following data:
+                </p>
+                <p>
+                    FIFA 18 All Player Database
+Fantasy Points and Player Statistics for Top 5 Leagues in Europe
+Scraping Websites for  League Performance Data
+Manually Searching and Gathering Transfer Budget for Clubs
+                </p>
+                <ol>
+                    <li>
+                        Predicting the Market Value of the Player
+                    </li>
+                </ol>
+                <p>
+                    Supervised learning using Ridge Regression (alpha = 0.01) and Feed-forward Neural Network (1024 * 1024 * 1024 hidden layers) 
+Input Feature - 75+ input features like FIFA attributes, Transfer Release Clause, Age, Characteristics on and off fields
+RMSE - 696431 (value in millions - upto 100 million)
+Score -  almost perfect 1.0 (17994 data-points, 75+ features) - NN
+0.9597 - Ridge with alpha = 0.001
+                </p>
+                <ol>
+                    <li>
+                        Predicting Form of Past Seasons
+                    </li>
+                </ol>
+                <p>
+                    Supervised learning using Ridge Regression  and Feed-forward Neural Network (1024 * 1024 * 1024 hidden layers) 
+Input Feature - 18 input features like Goals, Assists, Cards, Fantasy Points, Appearances, etc
+Score -   Very low as we don&rsquo;t have good features(3923 data points -  18 features and variability in actual performance, not so easily modelled.
+                </p>
+                <ol>
+                    <li>
+                        Calculating the Impact Score
+                    </li>
+                </ol>
+                <p>
+                    Evaluate different methods to calculate the form of the player based on the forms of the past 5 years form. (Weight Decay)
+Semi Supervised Learning to infer the &ldquo;Impact Score&rdquo; of the player based on the different weights on Overall FIFA score and Form obtained from the above model.
+                </p>
+                <ol>
+                    <li>
+                        Team&rsquo;s Last Season Performance (for Top 5 Leagues)
+                    </li>
+                </ol>
+                <p>
+                    Analyse the area of weakness (defence, attack) by normalizing Goal Scored, Goal Conceded, W/D/L ratio with respect to rest of the teams.
+                </p>
+                <ol>
+                    <li>
+                        Constrained Programming  (NOT IMPLEMENTED)
+                    </li>
+                </ol>
+                <p>
+                    Find multiple solutions of optimal team by replacing as few players as possible while maximising the impact score. 
+Constraints - Budget (Market Value + Weekly Wage), Squad Size, Player Position
+Challenges - Trade-off between quality and quantity
+Trade-off between positions (attacker vs defender)
+Brute-Force is not practical
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    a. DATA (more than 90% time was spent on data collection)
+b. 1-1 Mapping between different datasets (Manual annotation) - ~ 2 hrs to run once
+c. Important Data points missing for calculating impact score (match-winning goals/assists, penalty wins, accuracy etc)
+d. Incomplete Data in FIFA (not all clubs in Top 5 are listed)
+e. No PRIOR Work for Model Creation and lot of constraints
+f. Manually creating different functions for Impact Score.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    a. Understanding and defining a challenging problem statement
+b. Understanding the model behaviour and the scope for improvements
+c. Attemting to do something not done before as an individual (No Team)
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Its very hard to model real-life events to a mathematical model. Collecting data is one of the most challenging tasks of machine learning. I learned to experience the effects of regularization, bias-variance trade-off on real data-sets and see how to tune different hyperpaprameters.
+                </p>
+                <h2>
+                    What's next for Recommendation System for Soccer Transfer Market
+                </h2>
+                <p>
+                    a. Getting the time-constraint working to get the optimal solutions
+b. Collecting more data points to improve our Form Accuracy
+c. NLP on Football Commentary to infer important events of a match
+d. Applying Game Theory (Online Learning Theory) to implement strategies against specific teams.
+e. Optimized-Squad Selection and strategies based on Frame Analysis and heat-maps.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/anirudhajitani/ImplementAIHackathon" rel="nofollow" target="_blank" title="https://github.com/anirudhajitani/ImplementAIHackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

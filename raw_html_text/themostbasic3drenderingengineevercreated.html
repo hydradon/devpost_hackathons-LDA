@@ -1,0 +1,118 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="458716" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/458/716/datas/original.png">
+                            <img alt="TheMostBasic3DRenderingEngineEverCreated &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/458/716/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="458717" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/458/717/datas/original.png">
+                            <img alt="TheMostBasic3DRenderingEngineEverCreated &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/458/717/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I came into this hackathon having wanted to start working on a 3D Rendering engine for many months. I did not come here to win, I came here to throw myself at the challenge of the goal I had set and learn some things. For a while now I had wanted to understand the algorithm an application like Unity or a video game like Minecraft uses to create a 2D image representing an object in a 3D coordinate system, and over the winter, I managed to find a very informative website that had almost everything I wanted to know about the processes of computer graphics. So applying these concepts became my exercise of choice for this Hackathon, however that would manifest itself in end.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Unless you go into the files and change the drawLine() calls in the screen class, "what it does" is provide a 3D representation of a cube and the 3 axes. The perspective can be altered with the "A" and "D" keys on the keyboard, and all the points and the lines between them will be updated. (if you click anywhere while the program runs, the screen will lose focus and you will no longer be able to alter perspective. It's a function of javax.swing that I couldn't figure out how to fix for my purposes.) If you are feeling adventurous, you can rearrange which points are used in each call of drawLine(box[.....) to get a new shape, but no promises. I admit that the result may appear underwhelming, but it takes a lot of work to even get to be able to draw lines and move them in this way. That is something even I did not fully appreciate before the Hackathon.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Especially in the world of software development, I want to know how things are able to function the way they do, and I am certainly not satisfied using pre-existing software to create things; it feels like cheating. I guess you could call me a software programming purist. So in terms of what I used to build the program, I used solely the Java programming language and Java "swing" library, which I found out today was one of the harder ways to go about doing this, but as aforementioned, I'm glad that was the case. No shortcuts for me.
+                </p>
+                <p>
+                    Naturally, the best way to build a large scale application is to go piece by piece, making sure each section works exactly as intended before moving on. In practice this doesn't always pan out, but I managed to stay pretty close to this method for the duration of the hackathon. I began by setting up a JFrame and a loop with ticks to run the program and continuously make updates and render. Next, I set up an array of pixels, and put that into the JFrame window. Once that was in place, I spent quite some time expanding Bresenham's Line Algorithm for coloring pixels in a line between two given pixel coordinates on the screen. With that complete, I could create the illusion of a 3D field by drawing a few straight lines, and implementing a keyboardListener to move the lines when the A and D buttons are pressed. I finally added a bottom panel for user input to create new triangles in 3D space while the program is running, but for reasons I will explain later, the functionality has not been implemented yet.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Not much about this project was particularly easy, to be frank. The first thing I could not figure out was how to display a pixel array on a screen (it is a very complicated thing, involving rasters, BufferStrategies, BufferedImages, and a lot of function calls I still don't understand), and in the end I had to look up how to do it in an old YouTube video I had once seen. The next challenge was expanding Bresenham's Line Algorithm. The algorithm, though brilliant, was incredibly limited. It only functioned when compared to the first Pixel coordinate, the second was in the first octant of the cartesian plane, between the slopes of 0 and 1. I wanted to make it very versatile, successfully drawing a line in any direction given any coordinate points, and that took time. In the end, the most stupefying roadblock to the end product that I envisioned was the concept of coordinate plane to computer. Remember when I said the website I had found was almost perfect? "Almost" because I still have no idea how to represent a coordinate system in a programming language. Sure, I could write a Point object with the location (0,0,0) and call it the origin, but what does that mean when it comes time to render stuff? Where does the Point go? There is still no reference by which to orient it. I will have to look into solutions in the future.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Actually, I am very proud of the result of my expansion of the Bresenham's Line Algorithm. The application might not be crisp, as it requires two switch statements with 8 cases each, but the function is very reliable. After writing it, I had no problems whatsoever with it again, and I even was able to add another feature, where you can tell it to draw a line to a coordinate not defined on the screen, and it will cut off before throwing an exception, creating a nice line that flows seamlessly off of the screen.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    This was my first hackathon, and an important thing that I learned was what style of projects people undertake at these events. I see that my pure-programming-languages mentality does not gel with the use of new technology and APIs found in other projects here.
+                </p>
+                <p>
+                    Relevant to my project itself, I learned quite a bit about the javax.swing and java.awt.event library. I spent a lot of the time reading about how Components, LayoutManagers, ActionListeners, etc work in order to solve problems that I encountered. I also learned about the octants of a cartesian plane, and the relationships employed to convert coordinates between them, and I created easy (albeit flawed) ways to create the illusion of 3D without a real framework to back it.
+                </p>
+                <h2>
+                    What's next for TheMostBasic3DRenderingEngineEverCreated
+                </h2>
+                <p>
+                    This is most definitely not the end of the line for TMB3DREEC. I could not take the time to understand defining coordinate systems in code, and then write the proper algorithm for rendering polygons in 3D space, but that is something I planned to do even before the Hackathon, and it is on my To-do list in the future. I will also then add the proper functionality for the User Interface on the bottom of the screen, so that users can add triangles at will to the 3D space.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/JulianLanson/matrix-graphics" rel="nofollow" target="_blank" title="https://github.com/JulianLanson/matrix-graphics">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

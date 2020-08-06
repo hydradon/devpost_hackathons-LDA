@@ -1,0 +1,148 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    One of our passions is creating smart embedded devices. What we don&rsquo;t love, however, is having to work with low level undocumented hardware and software that doesn&rsquo;t facilitate collaboration. We wanted to create a platform that would allow us to develop just about any embedded device using only a few lines of code and a standardized hardware package that costs almost nothing. We also wanted to create a platform that would let us collaborate seamlessly during development.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Quarqi is a cloud-based platform for data analysis and embedded devices programming. Whereas most programming requires code to be written to the physical device every time the program is changed, our platform does all analysis in the cloud, so updating a program is as simple as changing a database entry.
+The Quarqi chips collect all relevant data, then send it up to the cloud in pre-determined intervals. This information is then separated into channels which can be listened for by a script on our cloud platform. New data channels can then be made which combine and analyze information from other channels. By using these synthetic channels we create a comprehensive data analysis platform which requires almost no code to be written by the end user. Analysis is simple and intuitive - writing an interaction script across multiple devices takes about as much code as an Arduino needs to blink an LED.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Quarqi is built on top of the ESP8266, a WiFi SoC  which delivers the essentials for wireless communication in a small package, and for under $2 wholesale. By harnessing the power of cheap commodity hardware like this we hope to make a platform that anyone can make and use regardless of their resources. The ESP8266 connects to a python servlet which does initial processing of the data and dumps it into various channels on a Redis server. Another python script runs the user&rsquo;s code on top of an advanced but simple-to-use API layer which abstracts the analysis of the data streams to just a few lines of code.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We designed Quarqi to abstract away all of the problems with coding embedded devices, and to do that we had to face all of those problems head on. The ESP has a limited WiFi stack, so we had to use a UDP system to ensure enough throughput. This means that we have a decent amount of packet loss and so have to deal with somewhat broken data channels from time to time.
+Because we have multiple Quarqi devices connecting to each other, and we have many users editing data simultaneously, we had to create a backend which could transmit data everywhere it needed to get efficiently. To solve this problem we used Redis, an open source memory database. Its publish-subscribe features allow us to pass data seamlessly between all parts of our application, even on separate servers. Because redis is the only part of our backend that can&rsquo;t be scaled up infinitely, its high performance even under extremely heavy message load makes it a great candidate for a scalable backend.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We&rsquo;re proud that we were able to get multiple devices working together, and the implications that has for the effectiveness of our data model. Our examples include sketches which take input from one device and output to any number of other devices. Because our information is sent entirely via redis channels this abstraction is easy for the end user to implement. Data pins are also abstracted the same way. We view all data as time-based data channels, and while we initially had some doubts about the efficacy of such a method, it turns out to be very effective for collecting, analyzing, and distributing data.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We worked a lot with real-time networking in this hack. From the web frontend to the hardware implementing a small network stack, performance mattered across the board. We learned to take advantage of all available resources to make all components work as efficiently as possible. Even our most basic design contains at least five computational components working perfectly in harmony, so this focus on efficiency was important.
+                </p>
+                <h2>
+                    What's next for Quarqi
+                </h2>
+                <p>
+                    We aim to make hackathon projects we would actually want to use. Quarqi is no exception. We plan to expand the software stack to be usable for routine data collection as well as for more complex assignments. There is also commercial potential, as Quarqi is a much stronger tool for data analysis than a lot of the more commonplace devices today. Arduinos lack built in wifi at a decent price and photons require repeated hardware programming just to get a prototype built. Compared to Quarqi these platforms seem obsolete, and we will likely want to pursue Quarqi as a replacement.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ace
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/canvas">
+                                canvas
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            form-2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/redis">
+                                redis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            solidworks
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://quarqi.com" rel="nofollow" target="_blank" title="http://quarqi.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                quarqi.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

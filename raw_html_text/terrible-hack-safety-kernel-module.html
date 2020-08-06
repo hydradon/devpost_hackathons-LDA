@@ -1,0 +1,173 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="655724" data-title="Blockchain Safety nOtification that is Decentralised" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/655/724/datas/original.png">
+                            <img alt="Blockchain Safety nOtification that is Decentralised &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/655/724/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Blockchain Safety nOtification that is Decentralised
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    About
+                </h2>
+                <p>
+                    This is the most innovative way to prevent ico fraud and protect your money on the volatile crypto market. It causes a Blue Safety nOtification that is Decentralized (BSOD) when you type the word "blockchain."
+                </p>
+                <h2>
+                    Warning
+                </h2>
+                <p>
+                    This is a kernel module. It is very dangerous to run. Use at your own risk. Also, if you follow the secure boot signing instructions below, keep in mind that adding a new MOK key allows anyone with the key to completely bypass secure boot.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    I used
+                    <a href="https://github.com/jarun/keysniffer" rel="nofollow">
+                        https://github.com/jarun/keysniffer
+                    </a>
+                    as a base to register a keyboard listener (see keyboard.c). When it detects the correct word has been typed, it adds a "just in queue" workqueue task to start the BSOD (otherwise, this will hang the keyboard listener, since it is an interrupt). See terminal.c for that. Finally, it calls the userspace commands chvt to change the terminal, and fbi to write directly to the frame buffer to display the image.
+                </p>
+                <p>
+                    Useful links:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch07.html" rel="nofollow">
+                            https://www.oreilly.com/library/view/linux-device-drivers/0596005903/ch07.html
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/fffaraz/kernel/blob/master/ldd3-examples/examples/misc-modules/jiq.c" rel="nofollow">
+                            https://github.com/fffaraz/kernel/blob/master/ldd3-examples/examples/misc-modules/jiq.c
+                        </a>
+                    </li>
+                </ul>
+                <h2>
+                    Usage
+                </h2>
+                <ul>
+                    <li>
+                        Install FBI (framebuffer image viewer)
+                    </li>
+                    <li>
+                        Change path in terminal.c to point to the absolute location of bsod.png on your machine.
+                    </li>
+                    <li>
+                        You may also need to change the tty from 3 in the code. Press CTRL+Alt+F[1-8] to see which tty is available. It should have a text-mode login prompt.
+                    </li>
+                    <li>
+                        Build and load the module (see below)
+                    </li>
+                    <li>
+                        Type "blockchain"
+                    </li>
+                    <li>
+                        You should get a "bsod". After 5 seconds, it will go away and you will see the tty. You can press Ctrl+Alt+F2 (on Fedora, your machine may differ) to get back to your graphical tty. One of CTRL+ALT+F1-F8 should have your existing graphical session, so try them all. Make sure you release and re-pres ctrl+alt every time if you want to cycle through them.
+                    </li>
+                </ul>
+                <p>
+                    Tested on Fedora 28, 4.16.15-300.fc28.x86_64
+                </p>
+                <h2>
+                    How to build with secure boot
+                </h2>
+                <p>
+                    Generate a key:
+                </p>
+                <pre class="language-nolang"><code>openssl req -x509 -new -nodes -utf8 -sha256 -days 36500 -batch -config secure_boot.config -outform DER -out public_key.der -keyout private_key.priv
+</code></pre>
+                <p>
+                    Add this key to your Machine Owner Key list (Danger! Make sure you only do this temporarily!):
+                </p>
+                <pre class="language-nolang"><code>sudo mokutil -#-import public_key.der
+</code></pre>
+                <p>
+                    <em>
+                        Remove it when you are done
+                    </em>
+                    (if you delete it accidentally there are some steps online to get it back):
+                </p>
+                <pre class="language-nolang"><code>sudo mokutil --delete public_key.der
+</code></pre>
+                <h2>
+                    How to build and insert into your running kernel
+                </h2>
+                <pre class="language-nolang"><code>make
+sudo make load
+</code></pre>
+                <h2>
+                    To unload
+                </h2>
+                <pre class="language-nolang"><code>sudo make unload
+</code></pre>
+                <h2>
+                    To view info &amp; debug
+                </h2>
+                <pre class="language-nolang"><code>modinfo terrible.ko
+</code></pre>
+                <p>
+                    When loaded, use dmesg to view output. Enable debug in the makefile for more output.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kernel
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/linux">
+                                linux
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/justinmichaud/terrible-hack-safety-kernel-module" rel="nofollow" target="_blank" title="https://github.com/justinmichaud/terrible-hack-safety-kernel-module">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

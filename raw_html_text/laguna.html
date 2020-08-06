@@ -1,0 +1,135 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We heard a rumor that if you access a travel site from a a different country, it's often cheaper. Thinking this couldn't possibly be true, we tried a bunch of different combinations of flights using a VPN till finally we found an example where buying a flight from Colombia was
+                    <strong>
+                        $200 cheaper
+                    </strong>
+                    That's insane. We didn't want to tolerate that sort of abuse.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Laguna books your travel in a way that searches from every country. It finds the best deal on a trip not just from your own country, but from every country we could think of to end country based price discrimination. Moreover, we automatically deal with currency fluctuations so that if an airline doesn't update their price when a currency decreases in value you can take advantage of that.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The primary user interface is a web app which is built in simple JavaScript/HTML/CSS. Where the magic happens is under the hood:
+                </p>
+                <ol>
+                    <li>
+                        We wanted to allow users to type in airport codes or city names and get accurate predictions so they don't need to type in the whole thing. We looked into using an API for this, but found that when I type in a single letter, the APIs don't intelligently rank them&ndash;-it's often just alphabetical. We created a proprietary algorithm that ranks each prediction based on where the matches occur (the IATA, ICAO, or airport name) and the popularity of the given airport. This whole process was done by constructing tries for each parameter, searching each trie, and then ranking the results across each trie. This whole algorithm is super fast&ndash;&ndash;noticeably faster than many website's own systems and works very well.
+                    </li>
+                    <li>
+                        The data. We needed a way to access each country. Originally, we actually distributed 14 servers to handle 14 countries, but eventually discovered that Kayak allow us to just pass in a header value to change the region. But, we still have to find each country that exists and do currency conversion back to USD which required building a decently large DB&ndash;&ndash;so lots of scraping.
+                    </li>
+                    <li>
+                        We needed to be able to wait for JavaScrip to execute t on the Kayak site instead of just downloading the HTML (see challenges). We ended up using a modified version of Electron to do so.
+                    </li>
+                    <li>
+                        We utilized micro-frameworks so that anything can easily be factored out and replaced. It's a fully sustainable code-base.
+                    </li>
+                    <li>
+                        Sockets. Searching in so many countries is slow and would provide a bad UX if we waited till everything was done. Sockets let us push everything out quickly and magically.
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We wanted to deal with as many countries as possible which led us to make the choice to use Kayak as one of our main sources of data. However, it turns out Kayak operates a different website entirely for each country down to the structure of the HTML. We had to figure out a way to still take their data in a scaleable manner. Moreover, Kayak updates their webpage live and doesn't have a cross-country JSON API (we reverse engineered their iOS API, but it only worked for the United States), so we had to emulate a browser and run full JavaScript to scrape their data&ndash;&ndash;and the only way to know when Kayak was finished searching was observing UI changes the same way a user does.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Companies don't want us to take their data, but we did anyway. We also architected the system to use micro-frameworks and be distributed across a series of servers so that our project is an actually scalable hackathon project.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that sites can shock you in the greatest of ways. We expected to just reverse engineer an iOS API and call it a day on data acquisition, but no. We needed to adapt to using a different website for each country...
+                </p>
+                <h2>
+                    What's next for Laguna
+                </h2>
+                <p>
+                    Price alerts.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            distributed-infrastructure
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            electron
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            micro-services
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nightmare
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sockets
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://jreinstra.github.io/laguna/" rel="nofollow" target="_blank" title="https://jreinstra.github.io/laguna/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                jreinstra.github.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

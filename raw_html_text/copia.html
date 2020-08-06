@@ -1,0 +1,160 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="318394" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/318/394/datas/original.png">
+                            <img alt="Copia &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/318/394/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    ● Phone provides addition security against malicious acts
+                </p>
+                <p>
+                    ● Organizes license information clearly, points on licenses, endorsements, restrictions, organ donor, under 21 before, expiration and etc&hellip;
+                </p>
+                <p>
+                    ● Faster information updates
+                </p>
+                <p>
+                    ● Adaptable and extensible standard
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    ● The state&rsquo;s DMV creates a master key and master root certificate.
+                </p>
+                <p>
+                    ● The user&rsquo;s device generates a key, which is then signed by the state&rsquo;s certificate
+                </p>
+                <p>
+                    ● Authority after proving the user&rsquo;s identity and possession of the physical drivers license.
+                </p>
+                <p>
+                    ● The relying party (bar, cop, etc) generates a random string (&ldquo;none&rdquo;), which is read 
+     by the user&rsquo;s camera or via NFC, signed by the user&rsquo;s key/certificate, and uploaded 
+     to a server or transmitted via NFC.
+                </p>
+                <p>
+                    ● User can scan a QR code with their phone instead of presenting a physical license
+                </p>
+                <ol>
+                    <li>
+                        The Driver supplies their drivers license ID and other identifying information to the DMV&rsquo;s server.
+                    </li>
+                    <li>
+                        The DMV responds with challenge questions, and the Driver replies with the answers.
+                    </li>
+                    <li>
+                        After successful identity verification, the Driver supplies the DMV with a RSA-4096 bit public key. The private key is always stored on the Driver&rsquo;s device. It must never be uploaded anywhere; loss of the device should result in the loss of the key.
+                    </li>
+                    <li>
+                        The DMV creates and signs a JSON Proof with the Driver&rsquo;s public key and data from the license, and provides this to the client. The DMV must not sign a JSON Proof with a serial number containing more than 18 hexadecimal characters.
+                    </li>
+                </ol>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    ● DMV
+-4096 bit RSA key
+-Stored in Azure Key Vault
+-Only generated once; needs to be cycled every ~20 years as it doesn&rsquo;t expire
+-Explicitly trusted by Relying Parties
+-Signs JSON Proofs after validating identity
+                </p>
+                <p>
+                    ● Driver
+-4096 bit RSA key
+-Supplies the DMV with its public key and identity validation information
+                </p>
+                <p>
+                    ● JSON Proof
+-Signed by the DMV
+-Contains the Driver&rsquo;s public key, expiration and license information.
+                </p>
+                <p>
+                    ● Relying Party
+-Has list of all state DMV public keys to be used to verify JSON Proofs.
+                </p>
+                <p>
+                    ●Signatures
+The DMV signs the JSON Proof below with SHA256, which the client presents along with the JSON. The Relying Party must verify this signature.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    ●Running into problems with Android Studio and Azure
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    ●Tons about Cryptography and secure solutions to problems we face today
+                </p>
+                <h2>
+                    What's next for Copia
+                </h2>
+                <p>
+                    ●Improving our proof of concept implementation
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/silicaRich/license-validator-android" rel="nofollow" target="_blank" title="https://github.com/silicaRich/license-validator-android">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

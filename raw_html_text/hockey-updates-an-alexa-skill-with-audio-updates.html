@@ -1,0 +1,226 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/DEyWdEGdOZU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    My family
+                    <em>
+                        adore
+                    </em>
+                    Alexa. My 4 year old daughter is particularly smitten with her. She&rsquo;s always asking Alexa to tell a joke, set a timer or...
+                </p>
+                <p>
+                    <img alt="Alexa, what's your favourite Pok&eacute;mon" data-canonical-url="https://s3.amazonaws.com/therink/pokemon.png" src="https://res.cloudinary.com/devpost/image/fetch/s--G3t08Euo--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/therink/pokemon.png">
+                </p>
+                <p>
+                    At this stage, Alexa is practically family. The sole issue is that she only speaks when spoken to - which is not how we communicate with each other - at all. Unfortunately, Alexa doesn't support native push notifications,
+                    <a href="https://techcrunch.com/2016/09/08/amazon-echo-could-soon-start-talking-to-you-unprompted/" rel="nofollow">
+                        yet
+                    </a>
+                    .
+                </p>
+                <p>
+                    In an effort to give Alexa a voice of her own, I came up with the audio updates pattern (which forms the basis of my Hockey Updates skill).
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <a href="https://www.amazon.com/Chris-Coombs-Hockey-Updates/dp/B071XWDYRN/" rel="nofollow">
+                        The Hockey Updates skill
+                    </a>
+                    uses Polly (the AWS text to speech service) to let Alexa initiate communication with us when she has something to say (e.g. when an NHL game starts, or someone scores). The result isn't quite to the level of native push notifications, as you have to ask Alexa to open a skill before she'll start providing updates, but it's pretty close! I've decided to call this the
+                    <em>
+                        audio updates
+                    </em>
+                    pattern (yes, I'm terrible at naming things).
+                </p>
+                <blockquote>
+                    <p>
+                        There are 2 hard problems in computer science: cache invalidation, naming things, and off-by-1 errors.
+                    </p>
+                </blockquote>
+                <h2>
+                    How I built Alexa's audio updates
+                </h2>
+                <p>
+                    The hockey part of this skill is pretty run of the mill. What's cool are the audio updates.
+                </p>
+                <p>
+                    This quasi-notification functionality is essentially a loop with an if condition. To give a brief synopsis, Alexa plays a filler track (using her AudioPlayer feature), and when the track is almost finished, she checks if there&rsquo;s an event to play to the user. If there is new audio, she queues that, alternatively, she queues the filler again. When the queued audio is played and almost finished, she checks again for a new event, and so on.
+                </p>
+                <p>
+                    The audio updates flow (which manages user state, generates and queues audio) is roughly as follows:
+                </p>
+                <p>
+                    <img alt="Audio Updates flow" data-canonical-url="https://s3.amazonaws.com/therink/notification.png" src="https://res.cloudinary.com/devpost/image/fetch/s--_Usi9qkx--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/therink/notification.png">
+                </p>
+                <ol>
+                    <li>
+                        Either an IntentRequest or an AudioPlayer.PlaybackNearlyFinished request triggers a Lambda function
+                    </li>
+                    <li>
+                        The function retrieves the user's data from DynamoDB (user table), providing the user's Alexa ID as the key
+                    </li>
+                    <li>
+                        The function calls a 3rd party API endpoint (in my case, the NHL schedule feed)
+                    </li>
+                    <li>
+                        If there's a new event to process for the user, the function calls DynamoDB (eventAudio table) with the event ID (to retrieve S3 URL, if one exists)
+                    </li>
+                    <li>
+                        If a new audio file is required (i.e. not present in the eventAudio table), the function generates a message and sends the SSML to Polly
+                    </li>
+                    <li>
+                        The function uploads the Polly response to S3 as an MP3 file
+                    </li>
+                    <li>
+                        The function updates the eventAudio DynamoDB table with the new event ID and S3 URL
+                    </li>
+                    <li>
+                        The function also updates the user&rsquo;s data in the DynamoDB user table (to set the new event ID as the user's current event ID)
+                    </li>
+                    <li>
+                        The S3 URL is sent back to the Alexa service for queueing
+                    </li>
+                </ol>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    This pattern raises a number of new and interesting challenges from a VUI perspective. For example:
+                </p>
+                <h5>
+                    Filler
+                </h5>
+                <p>
+                    If there haven&rsquo;t been any events in a while, how does the user know whether Alexa is still providing audio updates? I decided to play a filler track (the quiet sound of a hockey practice) to let the user know that Alexa is running in the background. Similarly, the absence of the filler track makes it clear that Alexa has stopped processing audio updates (after a user has cancelled them, or the game has finished).
+                </p>
+                <h5>
+                    Intro
+                </h5>
+                <p>
+                    Before jumping straight into the audio updates, I decided that Alexa should play an intro track. The intro track sets the expectation for the types of content the user will expect to hear whilst the skill is running. I also wanted to take this opportunity to remind the user that they can cancel the audio updates at any time. I felt that acknowledging the user&rsquo;s control over the notifications was important, so as to belay any fears that Alexa might blurt out an update when the user wasn&rsquo;t home.
+                </p>
+                <p>
+                    <img alt="Hockey Updates VUI" data-canonical-url="https://s3.amazonaws.com/therink/audioupdates-vui.png" src="https://res.cloudinary.com/devpost/image/fetch/s--r5PiW4nx--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/therink/audioupdates-vui.png">
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Whilst this pattern looked great on paper, I wasn&rsquo;t positive if Alexa would support it in practice. Thankfully, she does. Moreover, my design for the events backend was overly engineered (with scheduled jobs to generate the event audio files). As luck would have it, I ran out of time to build the backend I had drawn up and tried just-in-time event audio creation instead. To my surprise Polly was lightening fast. As a result, Alexa only generates audio files when she needs them, saving function execution time and object storage costs.
+                </p>
+                <p>
+                    Also, it turns out you can&rsquo;t emulate a goal siren using Polly,
+                    <a href="https://s3.amazonaws.com/therink/speech_20170424125248254.mp3" rel="nofollow">
+                        no matter how hard you try
+                    </a>
+                    !
+                </p>
+                <p>
+                    <code>
+                        &lt;speak&gt;&lt;prosody rate="x-slow" volume="x-loud"&gt;&lt;say-as interpret-as="expletive"&gt;discombobulated&lt;/say-as&gt;&lt;/prosody&gt;&lt;/speak&gt;
+                    </code>
+                </p>
+                <h2>
+                    What's next for Hockey Updates
+                </h2>
+                <p>
+                    Unfortunately, (at the time of writing) the hockey season is about to come to a close; and whilst I'd like to augment Polly's updates with actual game audio, there's probably more value in creating new skills which leverage the audio updates pattern.
+                </p>
+                <p>
+                    If you've been looking for a notification mechanism for Alexa, I hope this write-up has proved useful in some way. If you have any questions or feedback, please feel free to reach out to me on
+                    <a href="https://twitter.com/8_b1t_chr15/" rel="nofollow">
+                        Twitter
+                    </a>
+                    .
+                </p>
+                <p>
+                    Until next time... Alexa, stop.
+                </p>
+                <p>
+                    <a href="https://twitter.com/8_b1t_chr15/status/806251463995314176" rel="nofollow">
+                        .
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/Chris-Coombs-Hockey-Updates/dp/B071XWDYRN/" rel="nofollow" target="_blank" title="https://www.amazon.com/Chris-Coombs-Hockey-Updates/dp/B071XWDYRN/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

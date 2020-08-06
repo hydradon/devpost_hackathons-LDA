@@ -1,0 +1,1472 @@
+[
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736182",
+        "pull_request_review_id": null,
+        "id": 74736182,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM2MTgy",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 21,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "dont need `return`\n",
+        "created_at": "2016-08-15T09:05:04Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736182",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736182"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736182"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736347",
+        "pull_request_review_id": null,
+        "id": 74736347,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM2MzQ3",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 29,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "don't you want to use `self.user_name`?\n",
+        "created_at": "2016-08-15T09:06:40Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736347",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736347"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736347"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736427",
+        "pull_request_review_id": null,
+        "id": 74736427,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM2NDI3",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 38,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this you probably want to be in the `__init__` of AbstractCommand\n",
+        "created_at": "2016-08-15T09:07:35Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736427",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736427"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736427"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736457",
+        "pull_request_review_id": null,
+        "id": 74736457,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM2NDU3",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 40,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "again in `__init__`\n",
+        "created_at": "2016-08-15T09:07:57Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736457",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736457"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736457"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736485",
+        "pull_request_review_id": null,
+        "id": 74736485,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM2NDg1",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            \"\"\"Slack will send in the following format http://xxx.yyy.zz",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 42,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "use `#` for comments\n",
+        "created_at": "2016-08-15T09:08:14Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736485",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736485"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736485"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736958",
+        "pull_request_review_id": null,
+        "id": 74736958,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM2OTU4",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            \"\"\"Slack will send in the following format http://xxx.yyy.zz\n+               |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            HostedZone = hosted_zone['Name'].rstrip('.')\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:\n+                    if record_set['Type'] == 'CNAME':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\"\n+                                  % record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+                    elif record_set['Type'] == 'A':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\" %\n+                                  record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+        fields = []\n+        attachments = []\n+        for record in results:\n+            for field in record:\n+                fields.append({\n+                    'title': field,\n+                    \"value\": record[field],",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 83,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "single quotes\n",
+        "created_at": "2016-08-15T09:12:43Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736958",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74736958"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74736958"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74737075",
+        "pull_request_review_id": null,
+        "id": 74737075,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM3MDc1",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            \"\"\"Slack will send in the following format http://xxx.yyy.zz\n+               |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            HostedZone = hosted_zone['Name'].rstrip('.')",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 49,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "unused variable HostedZone\n",
+        "created_at": "2016-08-15T09:13:48Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74737075",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74737075"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74737075"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74737565",
+        "pull_request_review_id": null,
+        "id": 74737565,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM3NTY1",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            \"\"\"Slack will send in the following format http://xxx.yyy.zz\n+               |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            HostedZone = hosted_zone['Name'].rstrip('.')\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 51,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "you have some duplicate code for both CNAME and A.\nyou can replace the following 24 lines with:\n\n``` python\nresults = [{'Type': record_set['Type'],\n            'TTL': record_set['TTL'],\n            'Value': resource_record['Value']}\n          for resource_record in record_set['ResourceRecords']\n          if 'ResourceRecords' in record_set \n              and record_set['Type'] in ['CNAME', 'A']]\n```\n",
+        "created_at": "2016-08-15T09:19:28Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74737565",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74737565"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74737565"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74738352",
+        "pull_request_review_id": null,
+        "id": 74738352,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM4MzUy",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            \"\"\"Slack will send in the following format http://xxx.yyy.zz\n+               |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            HostedZone = hosted_zone['Name'].rstrip('.')\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:\n+                    if record_set['Type'] == 'CNAME':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\"\n+                                  % record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+                    elif record_set['Type'] == 'A':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\" %\n+                                  record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+        fields = []\n+        attachments = []\n+        for record in results:\n+            for field in record:\n+                fields.append({\n+                    'title': field,\n+                    \"value\": record[field],\n+                    \"short\": True\n+                })\n+            attachments.append({'title': dns, 'color': \"good\",\n+                                \"fields\": fields})",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 87,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "you can do this in list comprehension\n",
+        "created_at": "2016-08-15T09:27:04Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74738352",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74738352"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74738352"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74738512",
+        "pull_request_review_id": null,
+        "id": 74738512,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM4NTEy",
+        "diff_hunk": "@@ -0,0 +1,48 @@\n+from base64 import b64decode\n+from slacker import Slacker\n+import commands\n+\n+\n+# Enter the base-64 encoded, encrypted Slack command token (CiphertextBlob)\n+\n+ENCRYPTED_EXPECTED_TOKEN = \"AQECAHjU3NCewzvwjc0ycKf5a1f7GL4nYmg/ItsdAsXAhDYMXwAAAHYwdAYJKoZIhvcNAQcGoGcwZQIBADBgBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDGecnkSDyHRb9jfimgIBEIAzh2Hf8I3RgSVNq5PRQZBqt439tgZg3sqQtoQK0nHi7D7bl1me5org+2SAoK+QAggxGjyC\"\n+kms = boto3.client('kms')\n+expected_token = kms.decrypt(CiphertextBlob=b64decode(\n+    ENCRYPTED_EXPECTED_TOKEN))['Plaintext']\n+\n+COMMANDS = {'help': 'commands.Help',\n+            'route53': 'commands.Route53', 'ec2': 'commands.EC2'}\n+\n+\n+\"\"\"Entry point for lambda\"\"\"\n+\n+\n+def handle(event, context):\n+    param_map = _formparams_to_dict(event['formparams'])\n+    \"\"\"Check that the caller is legit\"\"\"\n+    if param_map['token'] != expected_token:\n+        return event\n+    if len(param_map['text'].split('+')) < 3:\n+        # call help\n+        return event\n+    return handle_command(param_map['text'].split('+')[1],\n+                          param_map)\n+\n+\"\"\" Get the command and execute it \"\"\"\n+\n+\n+def handle_command(commnad_name, text):\n+    command = COMMANDS.get(commnad_name, COMMANDS['help'])\n+    command = command + \"(\" + \"text\" + \")\"\n+    my_cls = eval(command)\n+    method = getattr(my_cls, \"run\")\n+    return method()\n+\n+\n+def _formparams_to_dict(s1):",
+        "path": "functions/nimbus/main.py",
+        "position": 42,
+        "original_position": 42,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "you can use:\n\n```\nfrom urlparse import parse_qs\n\nIn [12]: parse_qs('a=2&b=3')\nOut[12]: {'a': ['2'], 'b': ['3']}\n```\n",
+        "created_at": "2016-08-15T09:28:32Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74738512",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74738512"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74738512"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74738949",
+        "pull_request_review_id": null,
+        "id": 74738949,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzM4OTQ5",
+        "diff_hunk": "@@ -0,0 +1,96 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        kms = boto3.client('kms')\n+        icon = \"\"\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        return\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+        slack = Slacker(self.slack_token)\n+        slack.chat.post_message(\"#\" + self.channel_name,\n+                                msg, username=\"Nimbus\", as_user=False,\n+                                attachments=attachments,\n+                                icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            \"\"\"Slack will send in the following format http://xxx.yyy.zz\n+               |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            HostedZone = hosted_zone['Name'].rstrip('.')\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:\n+                    if record_set['Type'] == 'CNAME':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\"\n+                                  % record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+                    elif record_set['Type'] == 'A':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\" %\n+                                  record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+        fields = []\n+        attachments = []\n+        for record in results:\n+            for field in record:\n+                fields.append({\n+                    'title': field,\n+                    \"value\": record[field],\n+                    \"short\": True\n+                })\n+            attachments.append({'title': dns, 'color': \"good\",\n+                                \"fields\": fields})",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 87,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "doodyparizada",
+            "id": 965572,
+            "node_id": "MDQ6VXNlcjk2NTU3Mg==",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/965572?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/doodyparizada",
+            "html_url": "https://github.com/doodyparizada",
+            "followers_url": "https://api.github.com/users/doodyparizada/followers",
+            "following_url": "https://api.github.com/users/doodyparizada/following{/other_user}",
+            "gists_url": "https://api.github.com/users/doodyparizada/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/doodyparizada/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/doodyparizada/subscriptions",
+            "organizations_url": "https://api.github.com/users/doodyparizada/orgs",
+            "repos_url": "https://api.github.com/users/doodyparizada/repos",
+            "events_url": "https://api.github.com/users/doodyparizada/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/doodyparizada/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "``` python\nattachments = [{'title': dns,\n               'color': 'good',\n               'fields': [{'title': field, 'value': value, \"short\": True}\n                          for field, value in record.items()]}\n               for record in results]\n```\n",
+        "created_at": "2016-08-15T09:33:10Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74738949",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74738949"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74738949"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750421",
+        "pull_request_review_id": null,
+        "id": 74750421,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNDIx",
+        "diff_hunk": "@@ -22,3 +22,94 @@ _testmain.go\n *.exe\n *.test\n *.prof\n+\n+project.json\n+# Byte-compiled / optimized / DLL files\n+__pycache__/\n+*.py[cod]\n+*$py.class\n+\n+# C extensions\n+*.so\n+\n+# Distribution / packaging\n+.Python\n+env/\n+build/\n+develop-eggs/\n+dist/\n+downloads/\n+eggs/\n+.eggs/\n+lib/\n+lib64/\n+parts/\n+sdist/\n+var/\n+*.egg-info/\n+.installed.cfg\n+*.egg\n+\n+# PyInstaller\n+#  Usually these files are written by a python script from a template\n+#  before PyInstaller builds the exe, so as to inject date/other infos into it.\n+*.manifest\n+*.spec\n+\n+# Installer logs\n+pip-log.txt\n+pip-delete-this-directory.txt\n+\n+# Unit test / coverage reports\n+htmlcov/\n+.tox/\n+.coverage\n+.coverage.*\n+.cache\n+nosetests.xml\n+coverage.xml\n+*,cover\n+.hypothesis/\n+\n+# Translations\n+*.mo\n+*.pot\n+\n+# Django stuff:\n+*.log\n+local_settings.py\n+\n+# Flask stuff:\n+instance/\n+.webassets-cache\n+\n+# Scrapy stuff:\n+.scrapy\n+\n+# Sphinx documentation\n+docs/_build/\n+\n+# PyBuilder\n+target/\n+\n+# IPython Notebook\n+.ipynb_checkpoints\n+\n+# pyenv\n+.python-version\n+\n+# celery beat schedule file\n+celerybeat-schedule\n+\n+# dotenv\n+.env\n+\n+# virtualenv\n+venv/\n+ENV/\n+\n+# Spyder project settings\n+.spyderproject\n+\n+# Rope project settings\n+.ropeproject",
+        "path": ".gitignore",
+        "position": null,
+        "original_position": 94,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "who so many gitignore lines? remove irrelevant lines, make this open-source worthy\n",
+        "created_at": "2016-08-15T11:43:12Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750421",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750421"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750421"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750433",
+        "pull_request_review_id": null,
+        "id": 74750433,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNDMz",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3",
+        "path": "functions/nimbus/commands.py",
+        "position": 3,
+        "original_position": 1,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "pep257\n",
+        "created_at": "2016-08-15T11:43:21Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750433",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750433"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750433"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750453",
+        "pull_request_review_id": null,
+        "id": 74750453,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNDUz",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 6,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "sort\n",
+        "created_at": "2016-08-15T11:43:33Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750453",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750453"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750453"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750500",
+        "pull_request_review_id": null,
+        "id": 74750500,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNTAw",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 8,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "too bad you committed this into the tree, now we need to make sure this won't leak once we make this repo public\n",
+        "created_at": "2016-08-15T11:44:12Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750500",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750500"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750500"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750511",
+        "pull_request_review_id": null,
+        "id": 74750511,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNTEx",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 8,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "in any case tokens shouldn't be hard coded\n",
+        "created_at": "2016-08-15T11:44:19Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750511",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750511"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750511"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750527",
+        "pull_request_review_id": null,
+        "id": 74750527,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNTI3",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):",
+        "path": "functions/nimbus/commands.py",
+        "position": 11,
+        "original_position": 11,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "pep257\n",
+        "created_at": "2016-08-15T11:44:29Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750527",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750527"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750527"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750552",
+        "pull_request_review_id": null,
+        "id": 74750552,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNTUy",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):",
+        "path": "functions/nimbus/commands.py",
+        "position": 11,
+        "original_position": 11,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "just run flake8 and pep257 on all files\nand integrate them into your vim already. check my oryband/dotvim repo\n",
+        "created_at": "2016-08-15T11:44:52Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750552",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750552"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750552"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750600",
+        "pull_request_review_id": null,
+        "id": 74750600,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNjAw",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"",
+        "path": "functions/nimbus/commands.py",
+        "position": 21,
+        "original_position": 18,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "make sure you don't leak this url into a public repo\nit is now in the git history\n",
+        "created_at": "2016-08-15T11:45:32Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750600",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750600"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750600"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750611",
+        "pull_request_review_id": null,
+        "id": 74750611,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNjEx",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        kms = boto3.client('kms')\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']",
+        "path": "functions/nimbus/commands.py",
+        "position": 24,
+        "original_position": 21,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "indentation is off\n",
+        "created_at": "2016-08-15T11:45:39Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750611",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750611"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750611"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750619",
+        "pull_request_review_id": null,
+        "id": 74750619,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNjE5",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        kms = boto3.client('kms')\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        self.slack = Slacker(self.slack_token)\n+\n+\n+    def run(self):",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 25,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "class functions use one line space\npep257\n",
+        "created_at": "2016-08-15T11:45:53Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750619",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750619"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750619"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750641",
+        "pull_request_review_id": null,
+        "id": 74750641,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNjQx",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        kms = boto3.client('kms')\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        self.slack = Slacker(self.slack_token)\n+\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+\n+        self.slack.chat.post_message(\"#\" + self.channel_name,\n+                                     msg, username=self.botname, as_user=False,",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 31,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "one argument per line\nthan 3 arguments per line\nyeah that makes sense\n",
+        "created_at": "2016-08-15T11:46:11Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750641",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750641"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750641"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750705",
+        "pull_request_review_id": null,
+        "id": 74750705,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNzA1",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        kms = boto3.client('kms')\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        self.slack = Slacker(self.slack_token)\n+\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+\n+        self.slack.chat.post_message(\"#\" + self.channel_name,\n+                                     msg, username=self.botname, as_user=False,\n+                                     attachments=attachments,\n+                                     icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            # Slack will send in the following format http://xxx.yyy.zz\n+            #  |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:\n+                    if record_set['Type'] == 'CNAME' or record_set['Type'] == 'A':\n+                        if 'ResourceRecords' not in record_set:",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 53,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "can you use a logical AND instead of nesting multiple conditions?\n",
+        "created_at": "2016-08-15T11:47:11Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750705",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750705"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750705"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750773",
+        "pull_request_review_id": null,
+        "id": 74750773,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNzcz",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        kms = boto3.client('kms')\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        self.slack = Slacker(self.slack_token)\n+\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+\n+        self.slack.chat.post_message(\"#\" + self.channel_name,\n+                                     msg, username=self.botname, as_user=False,\n+                                     attachments=attachments,\n+                                     icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            # Slack will send in the following format http://xxx.yyy.zz\n+            #  |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:\n+                    if record_set['Type'] == 'CNAME' or record_set['Type'] == 'A':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\"\n+                                  % record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+        attachments = [{'title': dns,\n+               'color': 'good',\n+               'fields': [{'title': field, 'value': value, \"short\": True}\n+                          for field, value in record.items()]}\n+               for record in results]\n+        if len(results) == 0:\n+            attachments = [{\n+                \"color\": \"danger\",\n+                \"title\": \"Did not found\",\n+                \"text\": dns\n+            }]\n+        print json.dumps(attachments)\n+        self.post_message(\"Route53 Search\", attachments)",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 76,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "there are barely any comments here\nwon't hurt to separate into code \"paragraphs\" and abstractly explain what you're doing\n",
+        "created_at": "2016-08-15T11:47:42Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750773",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750773"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750773"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750790",
+        "pull_request_review_id": null,
+        "id": 74750790,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwNzkw",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"\n+        kms = boto3.client('kms')\n+        self.slack_token = kms.decrypt(CiphertextBlob=b64decode(\n+            ENCRYPTED_SLACK_TOKEN))['Plaintext']\n+        self.slack = Slacker(self.slack_token)\n+\n+\n+    def run(self):\n+        return\n+\n+    def post_message(self, msg, attachments):\n+\n+        self.slack.chat.post_message(\"#\" + self.channel_name,\n+                                     msg, username=self.botname, as_user=False,\n+                                     attachments=attachments,\n+                                     icon_url=self.icon)\n+\n+\n+class Route53(AbstractCommand):\n+\n+    def run(self):\n+        client = boto3.client('route53')\n+        hosted_zones = client.list_hosted_zones()['HostedZones']\n+        dns = urllib2.unquote(self.args)\n+        if dns.find('|') >= 0:\n+            # Slack will send in the following format http://xxx.yyy.zz\n+            #  |xxx.yyy.zz>\"\"\"\n+            dns = (urllib2.unquote(self.args)).split('|')[1].rstrip('>')\n+        results = []\n+        for hosted_zone in hosted_zones:\n+            record_sets = client.list_resource_record_sets(\n+                HostedZoneId=hosted_zone['Id'])['ResourceRecordSets']\n+            for record_set in record_sets:\n+                if record_set.get('Name').rstrip('.') == dns:\n+                    if record_set['Type'] == 'CNAME' or record_set['Type'] == 'A':\n+                        if 'ResourceRecords' not in record_set:\n+                            print(\"'ResourceRecords' not found in %s\"\n+                                  % record_set)\n+                            continue\n+                        for value in [x['Value']\n+                                      for x\n+                                      in record_set['ResourceRecords']]:\n+                            results.append({\n+                                'Type': record_set['Type'],\n+                                'TTL': record_set['TTL'],\n+                                'Value': value})\n+        attachments = [{'title': dns,\n+               'color': 'good',\n+               'fields': [{'title': field, 'value': value, \"short\": True}\n+                          for field, value in record.items()]}",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 67,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "bad indentation\nyou should probably also run https://github.com/google/yapf on this\n",
+        "created_at": "2016-08-15T11:48:01Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750790",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750790"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750790"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750890",
+        "pull_request_review_id": null,
+        "id": 74750890,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwODkw",
+        "diff_hunk": "@@ -0,0 +1,48 @@\n+from base64 import b64decode\n+from slacker import Slacker\n+import commands\n+import boto3\n+\n+# Enter the base-64 encoded, encrypted Slack command token (CiphertextBlob)\n+\n+ENCRYPTED_EXPECTED_TOKEN = \"AQECAHjU3NCewzvwjc0ycKf5a1f7GL4nYmg/ItsdAsXAhDYMXwAAAHYwdAYJKoZIhvcNAQcGoGcwZQIBADBgBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDGecnkSDyHRb9jfimgIBEIAzh2Hf8I3RgSVNq5PRQZBqt439tgZg3sqQtoQK0nHi7D7bl1me5org+2SAoK+QAggxGjyC\"\n+kms = boto3.client('kms')\n+expected_token = kms.decrypt(CiphertextBlob=b64decode(\n+    ENCRYPTED_EXPECTED_TOKEN))['Plaintext']\n+\n+COMMANDS = {'help': 'commands.Help',\n+            'route53': 'commands.Route53', 'ec2': 'commands.EC2'}\n+\n+\n+\"\"\"Entry point for lambda\"\"\"",
+        "path": "functions/nimbus/main.py",
+        "position": null,
+        "original_position": 17,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "this is not the correct place to put this in\nit should be at the top, right after the hashbang and coding lines https://www.python.org/dev/peps/pep-0263/\n",
+        "created_at": "2016-08-15T11:49:16Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750890",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750890"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750890"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750940",
+        "pull_request_review_id": null,
+        "id": 74750940,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwOTQw",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 16,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "i guess regexps would be more verbose and safe instead of using splits\n",
+        "created_at": "2016-08-15T11:50:03Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750940",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750940"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750940"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750972",
+        "pull_request_review_id": null,
+        "id": 74750972,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzUwOTcy",
+        "diff_hunk": "@@ -0,0 +1,48 @@\n+from base64 import b64decode\n+from slacker import Slacker\n+import commands\n+\n+\n+# Enter the base-64 encoded, encrypted Slack command token (CiphertextBlob)\n+\n+ENCRYPTED_EXPECTED_TOKEN = \"AQECAHjU3NCewzvwjc0ycKf5a1f7GL4nYmg/ItsdAsXAhDYMXwAAAHYwdAYJKoZIhvcNAQcGoGcwZQIBADBgBgkqhkiG9w0BBwEwHgYJYIZIAWUDBAEuMBEEDGecnkSDyHRb9jfimgIBEIAzh2Hf8I3RgSVNq5PRQZBqt439tgZg3sqQtoQK0nHi7D7bl1me5org+2SAoK+QAggxGjyC\"\n+kms = boto3.client('kms')\n+expected_token = kms.decrypt(CiphertextBlob=b64decode(\n+    ENCRYPTED_EXPECTED_TOKEN))['Plaintext']\n+\n+COMMANDS = {'help': 'commands.Help',\n+            'route53': 'commands.Route53', 'ec2': 'commands.EC2'}\n+\n+\n+\"\"\"Entry point for lambda\"\"\"\n+\n+\n+def handle(event, context):\n+    param_map = _formparams_to_dict(event['formparams'])\n+    \"\"\"Check that the caller is legit\"\"\"\n+    if param_map['token'] != expected_token:\n+        return event\n+    if len(param_map['text'].split('+')) < 3:\n+        # call help\n+        return event\n+    return handle_command(param_map['text'].split('+')[1],\n+                          param_map)\n+\n+\"\"\" Get the command and execute it \"\"\"\n+\n+\n+def handle_command(commnad_name, text):\n+    command = COMMANDS.get(commnad_name, COMMANDS['help'])\n+    command = command + \"(\" + \"text\" + \")\"\n+    my_cls = eval(command)\n+    method = getattr(my_cls, \"run\")\n+    return method()\n+\n+\n+def _formparams_to_dict(s1):",
+        "path": "functions/nimbus/main.py",
+        "position": 42,
+        "original_position": 42,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "18129b52852f677abffbd6ee19517e4c0d0b7cdc",
+        "user": {
+            "login": "oryband",
+            "id": 115387,
+            "node_id": "MDQ6VXNlcjExNTM4Nw==",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/115387?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/oryband",
+            "html_url": "https://github.com/oryband",
+            "followers_url": "https://api.github.com/users/oryband/followers",
+            "following_url": "https://api.github.com/users/oryband/following{/other_user}",
+            "gists_url": "https://api.github.com/users/oryband/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/oryband/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/oryband/subscriptions",
+            "organizations_url": "https://api.github.com/users/oryband/orgs",
+            "repos_url": "https://api.github.com/users/oryband/repos",
+            "events_url": "https://api.github.com/users/oryband/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/oryband/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": ":+1: didn't know that\n",
+        "created_at": "2016-08-15T11:50:25Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750972",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74750972"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74750972"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74755092",
+        "pull_request_review_id": null,
+        "id": 74755092,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzU1MDky",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]\n+        self.botname = \"Nimbus\"\n+        self.icon = \"http://am.rounds.com/cloudy_robot_200.png\"",
+        "path": "functions/nimbus/commands.py",
+        "position": 21,
+        "original_position": 18,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "avivl",
+            "id": 3265061,
+            "node_id": "MDQ6VXNlcjMyNjUwNjE=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/3265061?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/avivl",
+            "html_url": "https://github.com/avivl",
+            "followers_url": "https://api.github.com/users/avivl/followers",
+            "following_url": "https://api.github.com/users/avivl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/avivl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/avivl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/avivl/subscriptions",
+            "organizations_url": "https://api.github.com/users/avivl/orgs",
+            "repos_url": "https://api.github.com/users/avivl/repos",
+            "events_url": "https://api.github.com/users/avivl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/avivl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "it's on pupose\n",
+        "created_at": "2016-08-15T12:37:09Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74755092",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74755092"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74755092"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74755124",
+        "pull_request_review_id": null,
+        "id": 74755124,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDc0NzU1MTI0",
+        "diff_hunk": "@@ -0,0 +1,76 @@\n+import boto3\n+from base64 import b64decode\n+from slacker import Slacker\n+from urlparse import urlparse\n+import urllib2\n+import json\n+\n+ENCRYPTED_SLACK_TOKEN = \"AQECAHg8QL2Hv4gcRQx+v+dCSmHx49b3rYRL3cGPoGbbXajn7QAAAJEwgY4GCSqGSIb3DQEHBqCBgDB+AgEAMHkGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMpPqJfAqZTBh3TGCQAgEQgEyxwt4voUjanqgUdqonCiTCc8MtKofKpC1hG1kQz9xQHdJ4RKvnYtZbontp7kEv9sTjShmZ1s5cfMuEoTOFrgB8raP9ljoKzpYu3vj7\"\n+\n+\n+class AbstractCommand(object):\n+\n+    def __init__(self, args):\n+        self.channel_name = args['channel_name'].split('+')[0]\n+        self.user_name = args['user_name'].split('+')[0]\n+        self.args = args['text'].split('+')[2]",
+        "path": "functions/nimbus/commands.py",
+        "position": null,
+        "original_position": 16,
+        "commit_id": "9bd6c0161110c397b1380e1aa09e8b0e5e52b678",
+        "original_commit_id": "91e5c467fa54eae7884f3e0c9a8f302e16a8ce2f",
+        "user": {
+            "login": "avivl",
+            "id": 3265061,
+            "node_id": "MDQ6VXNlcjMyNjUwNjE=",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/3265061?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/avivl",
+            "html_url": "https://github.com/avivl",
+            "followers_url": "https://api.github.com/users/avivl/followers",
+            "following_url": "https://api.github.com/users/avivl/following{/other_user}",
+            "gists_url": "https://api.github.com/users/avivl/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/avivl/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/avivl/subscriptions",
+            "organizations_url": "https://api.github.com/users/avivl/orgs",
+            "repos_url": "https://api.github.com/users/avivl/repos",
+            "events_url": "https://api.github.com/users/avivl/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/avivl/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "why?\n",
+        "created_at": "2016-08-15T12:37:28Z",
+        "updated_at": "2016-08-15T13:01:21Z",
+        "html_url": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74755124",
+        "pull_request_url": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/comments/74755124"
+            },
+            "html": {
+                "href": "https://github.com/kikinteractive/nimbus/pull/1#discussion_r74755124"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/kikinteractive/nimbus/pulls/1"
+            }
+        }
+    }
+]

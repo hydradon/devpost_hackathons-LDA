@@ -1,0 +1,155 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/qCZG1XZTVg8?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="876813" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/876/813/datas/original.png">
+                            <img alt="Phone Hero - Spam Checks &amp; Caller Name Lookups &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/876/813/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Inspiration
+                </h1>
+                <p>
+                    These days, anyone who uses a phone at all is familiar with the scourge of spam callers that we all must endure each day. This fact combined with my mom's obsession with wanting to know whose number is appearing on her caller ID, was my inspiration for the Phone Hero skill. No matter how much I pleaded with her, she always felt compelled to call back potentially dangerous phone numbers to see who it was or if they were calling about something important.  I wanted to protect her and anyone else who has an unknown number in their call log by providing a way to help alleviate those concerns without needing to call back the number.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Phone Hero is a simple Alexa Skill that takes a phone number you provide and then checks two sources to see if it is flagged as being a spam number.  It can then go on to check up to three different sources in search of the caller's name.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I started out with some familiarity with Twilio because we use it at my company to send text messages to our customers.  While learning about it, I happened to notice it provided phone number lookups that could provide a caller's name as well.  I had also used YouMail personally in the past, so I happened to check, and they had an API that was able to return a spam risk level.  I tested the two services with a list of phone numbers and neither provided good information for all my test phone numbers, so I researched other sources.  Nothing I could find turned out to be a one-stop-shop, so I decided to use my best sources first and then fall back to the less reliable ones until I get a good result.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I learned about jsonpickle to help serialize my
+                    <code>
+                        LookupResponseBuilder
+                    </code>
+                    object so that I could maintain state between the different intents.  I also took some time realize that I had to manually track the last yes / no question I asked so that I could respond appropriately in the Yes and No Intents.  One of the biggest issues I ran into was figuring out how to use DynamoDB along with an Alexa Hosted Skill.  Getting the built-in persistent_attributes to work with DynamoDB rather than S3 in this case took a while to figure out because there were no samples or explicit instructions, that I could find demonstrating this scenario. I also had a lot of trouble getting the security set up because the instructions were not clear on the fact that after I got AWS Role set up, I needed to take the ARN from the role and use it in the code... (I was originally trying to use the ARN of my skill in the code because the instructions said to use it when setting up the role but didn't explain that after the role was set up, I needed to take the new ARN of the role and put it back into my code.)  I'm glad I started my project early, so I had plenty of time to work through these unforeseen stumbling blocks.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Overall, I feel like the skill has turned out to be the best that it can be for a v1 launch.  I did a proof of concept that proved the idea would work, but then I started down a path that resulted in a complicated user experience because I was going to provide two subscription levels (basic and premium) along with multiple sized packs of consumable lookups. Trying to juggle all those possibilities made for a clunky and confusing user experience.  The premium lookups would have been able to return lots of information including the caller's name, address, demographics, household members, etc. which isn't conducive to a voice UI. So, after some initial testing, I ultimately took a different approach and decided to start over.
+                </p>
+                <p>
+                    The latest iteration of the skill provides free spam checking lookups and one free caller name lookup per month to everyone.  This is to get customers engaged with the skill so that they can be periodically upsold to one of the premium products.  To make it simple, the subscription provides unlimited access to caller name lookups for $2.99 and there is also a 3-lookup pack for 99 cents. The 3 pack is mainly intended for those people who just want to try the service with no ongoing commitment.  However, it also serves as a point of reference to give customers something to compare the cost of the monthly subscription to and make it appear to be a better value. I also followed the recommendation to only upsell in such a way that it doesn't bother the customer too much.  The skill will only offer an upsell after both 72 hours have passed and the customer has checked at least 5 numbers since the last upsell. This way, heavy users will only be prompted to purchase every 3 days and light users with be prompted after every 5th lookup.
+                </p>
+                <p>
+                    On top of that, I'm proud that I've been able to refine the customer experience by streamlining the launch intent to welcome the customer and then only speak a tag line if they are not a subscriber, they don't have any paid lookups remaining, and their lifetime lookup usage count is divisible by 5. This allows the skill to get the customer the information they are seeking more quickly since the detailed welcome message isn't repeated every time the skill is launched.  I also revised the skill's responses as much as possible to remove any extraneous words or phrases in order to provide the requested information to the customer as quickly as possible. In addition, I tried to use randomization to pick equivalent words and phrases wherever possible so that the speech seems more natural and less repetitive. Finally, I created a jingle that plays when the skill launches and added a few "earcons" that play before the spam result is spoken which help indicate the spam risk level of the phone number.  The jingle sounds like the syllables in the words "phone hero" to help the customer know they are at the right place.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I had some exposure to Python through some classes in the past, but this project was my first time using it to build a production product, so I had quite a bit to learn about the language itself. I also learned about python Virtual environments, VS Code, the Alexa Skills Kit, pytest, jsonpickle (it's
+                    <em>
+                        amazing
+                    </em>
+                    ), and DynamoDB for the first time.
+                </p>
+                <h2>
+                    What's next for Phone Hero
+                </h2>
+                <p>
+                    I thought about adding a feature that can provide random tips to protect yourself against spam callers, fraudsters, and the like. I also plan to add an intent that will allow users to enter a promotion code or secret phrase to get several free lookups as a general promotion or as an incentive for people to provide me with feedback to help improve the skill. I even have plans to do some marketing campaigns once I am sure the pricing of the products is appropriate.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ask
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            everyoneapi
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencnam">
+                                opencnam
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,91 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    BeatBallot is a platform built to facilitate a fun and inclusive music listening/sharing experience for people in social gatherings. Users join custom rooms where they can suggest their favourite songs to the room and at the same time vote on everyone else's suggestions, with popular songs being added onto the queue.
+                </p>
+                <p>
+                    BeatBallot's seamless and intuitive React frontend is backed by a custom Standard Library API. Songs are streamed using a JavaScript library powered by YouTube requiring no authorization information from users.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <ul>
+                    <li>
+                        The more convenient Spotify API requires anyone using a player widget to have a Spotify Premium account. We opted to stream audio from YouTube instead, which required setting up a server that downloads, transcodes, then streams YouTube videos into audio that can be consumed in an HTML5 audio tag.
+                    </li>
+                    <li>
+                        The voting algorithm: We discussed everything from majority-wins to picking a fixed amount in preset intervals to, finally, having a minimum (upvote - downvote) threshold and sorting by oldest song inside of that. It ensures unpopular songs are never played without eliminating mildly positive ones.
+                    </li>
+                    <li>
+                        Stdlib doesn't allow cron-jobs or anything, so we had to think about how to implement everything in a reactive style. For example, rather than greedily updating the status of a room when it is changed, we check if there are any pending updates every time it is polled then update then.
+                    </li>
+                    <li>
+                        YouTube's search API started giving us quota exceeded errors just a couple hours before the deadline, but Cyrus saved the day with his secret collection of burner Google accounts.
+                    </li>
+                </ul>
+                <h2>
+                    Technologies
+                </h2>
+                <p>
+                    The majority of our backend is "serverless" and powered by stdlib. The youtube audio streamer requires real-time transcoding and had to be hosted on a more traditional cloud platform that could handle high CPU usage for extended periods of time. We opted for Google Cloud Platform.
+                </p>
+                <p>
+                    The intention behind BeatBallot is to reinvigorate people's love for music in a collaborative setting, and hopefully do it in a fun and refreshing way.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            stdlib
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/youtube">
+                                youtube
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://beat-ballot.netlify.com" rel="nofollow" target="_blank" title="https://beat-ballot.netlify.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                beat-ballot.netlify.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

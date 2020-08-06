@@ -1,0 +1,443 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/uPOKpOMyjqA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="919841" data-title="Title Slide" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/919/841/datas/original.png">
+                            <img alt="PowerPoint to Presentation &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/919/841/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Title Slide
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As a student technician for the Texas A&amp;M Engineering Department of Remote Education, the most pressing issue of future education I learn is that Professors are having to increase their content to students with less and less time, especially with the increased digitation of education.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In this project, we obtain a client-side PowerPoint (
+                    <strong>
+                        .pptx
+                    </strong>
+                    ) file with a transcript of notes located in the annotations section.
+                </p>
+                <p>
+                    From the PowerPoint, we use Python to extract the annotations (as text files) and the slides (as images), translate the annotations from a text file to an audio file using the Google Cloud Machine Learning's Text-to-Speech API, and combine the audio files and images to create a single video file (MP4) of the presentation.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <h2>
+                    Installation
+                </h2>
+                <p>
+                    This Python Program requires multiple pre-installed software to run:
+                    <em>
+                        Note: if you haven't installed [Python], it is the base coding language of the project
+                    </em>
+                </p>
+                <h4>
+                    Google Cloud Project and SDK
+                </h4>
+                <p>
+                    Setup for Google SDK can be found [here].
+The SDK is what allows the access token for the Google Service Account to be read and successfully processed. Only through installing and setting up the SDK will the Text-to-Speech API work.
+                </p>
+                <p>
+                    Please be sure a project is created in
+                    <strong>
+                        Google Cloud Console
+                    </strong>
+                    .
+                </p>
+                <ul>
+                    <li>
+                        The Google Text-to-Speech API must be enabled.
+                    </li>
+                    <li>
+                        A service account must be created with the API
+                    </li>
+                    <li>
+                        A client key (JSON) must be downloaded and placed in a path file that can be found.
+                    </li>
+                </ul>
+                <p>
+                    Additionally, you'll need to
+                    <code>
+                        pip
+                    </code>
+                    install the Google API:
+                </p>
+                <pre class="language-nolang"><code>pip install --upgrade google-cloud-texttospeech
+</code></pre>
+                <h4>
+                    Addtional Dependencies
+                </h4>
+                <p>
+                    This code relies on multiple different requirements to run.
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://www.ffmpeg.org/" rel="nofollow">
+                            FFmpeg
+                        </a>
+                        - Responsible for combining audio and images, as well as concatenating (combines) videos together.
+                    </li>
+                    <li>
+                        <a href="https://github.com/Belval/pdf2image" rel="nofollow">
+                            Pdf2Image
+                        </a>
+                        - Extracts X amount of images for a PDF files with X pages.
+                        <ul>
+                            <li>
+                                <a href="https://poppler.freedesktop.org/" rel="nofollow">
+                                    Poppler
+                                </a>
+                                <em>
+                                    Required for P2I
+                                </em>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="https://pypi.org/project/comtypes/" rel="nofollow">
+                            comtypes
+                        </a>
+                        -
+                        <em>
+                            Windows Only
+                        </em>
+                        - Responsible for PPTX-to-PDF Extraction.
+                    </li>
+                </ul>
+                <p>
+                    <em>
+                        The links above provide installation and documentation. Additionally, set both FFmpeg and Poppler's
+                        <code>
+                            /bin
+                        </code>
+                        folder into the
+                        <code>
+                            PATH
+                        </code>
+                        Variable (as described in each application's documentation.
+                    </em>
+                </p>
+                <hr>
+                <h2>
+                    Setup
+                </h2>
+                <p>
+                    In order to properly run the script, the directories of the Credentials Key and the location of the project folder must be setup.
+                </p>
+                <h4>
+                    Credentials Path
+                </h4>
+                <p>
+                    The
+                    <code>
+                        GOOGLE_APPLICATION_CREDENTIALS
+                    </code>
+                    must be set to the path of the JSON file. To set it while running a Python Script, the setting must be set in the python code.
+                </p>
+                <pre class="language-sh"><code>    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "[INSERT JSON PATH HERE]"
+</code></pre>
+                <h4>
+                    Setting Directories
+                </h4>
+                <p>
+                    A base directory also needs to be set. In the project folder, there should be a subset folder titled "pptx", which contains the PowerPoint to be converted.
+                </p>
+                <pre class="language-sh"><code>    base_dir = '[PATH TO PROJECT FOLDER]'
+</code></pre>
+                <p>
+                    <em>
+                        Note: This pathway should go to the folder that *contains
+                    </em>
+                    the PowerPoint folder, not the actual Powerpoint itself.*
+                </p>
+                <h2>
+                    Extracting Annotations from PowerPoint
+                </h2>
+                <p>
+                    In order to extract text from the annotations of the PowerPoint, the presentation must be converted to its raw files (
+                    <strong>
+                        XML
+                    </strong>
+                    ) and manually pulled out of the files. In order to accomplish this, we utilize two libraries:
+                    <strong>
+                        Zipfile
+                    </strong>
+                    and
+                    <strong>
+                        BeautifulSoup
+                    </strong>
+                </p>
+                <p>
+                    <em>
+                        Zipfile
+                    </em>
+                    converts the PowerPoint to a zip file, where the raw data files can then be extracted.
+                    <em>
+                        BeautifulSoup
+                    </em>
+                    extracts the text out of the annotations of the PowerPoint files.
+                </p>
+                <h2>
+                    Creating the Video File
+                </h2>
+                <h3>
+                    Initialization
+                </h3>
+                <p>
+                    The python script begins by checking for, creating, and defining 5 subdirectories:
+                </p>
+                <pre class="language-nolang"><code>/pptx/ -- Should already be created and contain the MP4 Files.
+/pdf/
+/img/
+/text/
+/audio/
+/video/
+</code></pre>
+                <p>
+                    These subdirectories are automatically created in the designated location established by the
+                    <code>
+                        base_dir
+                    </code>
+                    input.
+                </p>
+                <h3>
+                    The Increment Function
+                </h3>
+                <p>
+                    A single Incrementing Function Helps to Name our Images once they have been extracted from the powerpoint. It is later referenced.
+                </p>
+                <h3>
+                    Converting PowerPoint to Images
+                </h3>
+                <p>
+                    There is (currently) no automatable way to easily export PNG files from PowerPoint in a one-step process in Python.
+In order to create an Image from each slide of a PowerPoint Presentation, we must use convert it to a pdf, where Python then has a library which can convert a PDF into PNG Images.
+                </p>
+                <h5>
+                    The Comtypes Client
+                </h5>
+                <p>
+                    <em>
+                        "comtypes allows to define, call, and implement custom and dispatch-based COM interfaces in pure Python"
+                    </em>
+                    For this project, comtypes is used to open PowerPoint at the specified location of the file, save the file as a
+                    <strong>
+                        pdf
+                    </strong>
+                    format, and close PowerPoint.
+                </p>
+                <h5>
+                    Using pdf2image
+                </h5>
+                <p>
+                    Now that we have a pdf, we can use the pdf2image Python Library to extract and save each 'page' of the pdf - which is a 'slide' of PowerPoint - as an image.
+We do so using the
+                    <code>
+                        convert_from_path
+                    </code>
+                    keyword. Additionally, we need to specify parameters provided in the
+                    <code>
+                        convert_from_path
+                    </code>
+                    , including
+                    <code>
+                        output_folder
+                    </code>
+                    ,
+                    <code>
+                        format
+                    </code>
+                    , and
+                    <code>
+                        size
+                    </code>
+                    .
+                </p>
+                <p>
+                    The images extracted also have a unique identifier name which needs to be renamed in order to be merged with the text/audio. In this case, we rename the files to
+                    <strong>
+                        OOX.png
+                    </strong>
+                    by file order. It doesn't matter what the files are named, so long as they are in order, and match the names of the text files.
+                </p>
+                <p>
+                    <strong>
+                        <em>
+                            Important Note: The PNG's extracted MUST have dimensions thta are divisible by 2 (even). They will not be able to be converted to video otherwise - which is why we use size as a parameter to ensure corect formatting.
+                        </em>
+                    </strong>
+                </p>
+                <h3>
+                    Converting Text to Audio
+                </h3>
+                <p>
+                    The primary tool used in the conversion process is
+                    <strong>
+                        Google Cloud Text-to-Speech API
+                    </strong>
+                    , a machine learning tool. Various parameters and configurations can be adjusted, including the language, gender, output type, and even how fluent the text sounds (there is a premium, more expensive option for the translation process to have a more "natural" sounding voice). For this project, settings are kept as default and exported as a MP3 file.
+                </p>
+                <h5>
+                    Costs of Translation
+                </h5>
+                <h3>
+                    Combining Image and Audio to Video
+                </h3>
+                <p>
+                    At this point, we have a set of Images and Audio files. The total amount should be equal to each other, and each image should correspond to their correct audio file.
+                </p>
+                <p>
+                    FFmpeg, with a single line command, creates an MP4 Video File.
+                    <code>
+                        ffmpeg -loop 1 -i {image} -i {audio} -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest {video}
+                    </code>
+                    By the end of the process, you should have a set of MP4 files which match the amount of slides the powerpoint contains.
+                </p>
+                <h3>
+                    Creating the Complete Video
+                </h3>
+                <p>
+                    Finally, another FFmpeg command is used to concatenate all the videos into a single MP4 file.
+                    <code>
+                        ffmpeg -f concat -safe 0 -i {list file} -c copy output.mp4
+                    </code>
+                    This is performed by automatically creating a "list file" with all the names of the separate MP4 files, finding those files, and merging them together.
+                </p>
+                <p>
+                    The Final Video is Outputted as
+                    <strong>
+                        "output.mp4"
+                    </strong>
+                    , located in the same directory as the Python Script.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    This program initially used various Python libraries, including comtypes, a
+                    <strong>
+                        windows only
+                    </strong>
+                    python library. Therefore, the complete program will NOT work on any other operating system.
+                </p>
+                <p>
+                    Searching through libraries and code which would be cross-platform compatible was difficult, but ultimately possible. Where libraries didn't support the code, it was subsidized with code.
+                </p>
+                <p>
+                    Google Cloud's Text-to-Speech API is also one constantly developing, so figuring out how to implement a server style code into a clientside program was difficult, but eventually doable after reading documentation as well as trial-and-error processes.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm extremely proud of Google Cloud integration and Machine Learning use. Additionally, I'm proud to have the entire program run on its own, without the need for user interaction the entire time.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about Python library integrations, Google Cloud Machine Learning client uses. Additionally, I was able to learn more about operating system modifications.
+                </p>
+                <h2>
+                    What's next for PowerPoint to Presentation
+                </h2>
+                <p>
+                    The next hope is to improve the flexibility of the language and utilization of the program. These improvements include:
+                </p>
+                <ul>
+                    <li>
+                        Improving the Machine Learning API to understand the text more flexibly.
+                    </li>
+                    <li>
+                        Streamlining the extraction process to be faster and more efficient.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            text-to-speech
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/brandonle2001/pptx-to-presentation/" rel="nofollow" target="_blank" title="https://github.com/brandonle2001/pptx-to-presentation/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

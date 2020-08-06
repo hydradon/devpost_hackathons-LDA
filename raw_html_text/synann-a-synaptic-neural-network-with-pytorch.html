@@ -1,0 +1,212 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/sEki-TSeSu0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="839518" data-title="Structure of SynaNN MLP " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/839/518/datas/original.jpg">
+                            <img alt="SynaNN - A Synaptic Neural Network Implementation in PyTorch &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/839/518/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Structure of SynaNN MLP
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Synapses play an important role in biological neural networks.  They're joint points of neurons where learning and memory happened. Inspired by the synapse research of neuroscience, we found that a simple model can describe the key property of a synapse. By combining deep learning, we expect to build ultra large scale neural networks to solve real-world AI problems. At the same time, we want to create an explainable neural network model to better understand what an AI model doing instead of a black box solution.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Based on the analysis of excitatory and inhibitory channels of synapses, we proposed a synapse model called Synaptic Neural Network (SynaNN) where a synapse function is represented as the inputs of probabilities of both excitatory and inhibitory channels along with their joint probability as the output. SynaNN is constructed by synapses and neurons. A synapse graph is a connection of synapses. In particular, a synapse tensor is fully connected synapses from input neurons to output neurons. Synapse learning can work with gradient descent and backpropagation algorithms. SynaNN can be applied to construct MLP, CNN, and RNN models.
+                    <br>
+                    SynaNN Key Features:
+                </p>
+                <ul>
+                    <li>
+                        Synapses are joint points of neurons with electronic and chemical functions, location of learning and memory
+                    </li>
+                    <li>
+                        A synapse function is nonlinear, log concavity, infinite derivative in surprisal space (negative log space)
+                    </li>
+                    <li>
+                        Surprisal synapse is Bose-Einstein distribution with coefficient as negative chemical potential
+                    </li>
+                    <li>
+                        SynaNN graph &amp; tensor, surprisal space, commutative diagram, topological conjugacy, backpropagation algorithm
+                    </li>
+                    <li>
+                        SynaMLP, SynaCNN, SynaRNN are models for various neural network architecture
+                    </li>
+                    <li>
+                        Synapse block can be embedded into other neural network models
+                    </li>
+                    <li>
+                        Swap equation links between swap and odds ratio for healthcare, fin-tech, and insurance applications
+                    </li>
+                </ul>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The first SynaNN model has been implemented by Tensorflow for the MNIST digit handwriting recognition.
+                </p>
+                <p>
+                    PyTorch has special advantages to design and test machine learning models. We converted the synapse class from Tensorflow/Keras to PyTorch in four hours as a beginner of PyTorch. First, we run the MNIST sample code in the PyTorch tutorial and tested it. Second, we read the Python/PyTorch source code and understood what it was doing.
+                    <br>
+                    Third, we learned that we needed to create a module in the nn.Linear layer. PyTorch is convenient to provide the source code to complete this task.
+                </p>
+                <p>
+                    Finally, the key job is to convert Tensorflow/Keras synapse module to PyTorch module. The math functions were easy to find in PyTorch such as exp, log, and even log1p. However, PyTorch was lacking a key function of matrix_diag or expand a vector to a matrix in diagonal. No idea why PyTorch did not implement this function. It can be useful to construct an eigenvector into a matrix in quantum computing. We need this function to implement the batch matrix in the computing of synapse tensor. Fortunately, we found a complex implementation on the Internet.
+                </p>
+                <p>
+                    The debugging and testing were much pleasure in PyTorch. In the new implementation, we modified the core code for the general implementation.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One challenge was to represent the links of synapses as tensors so we can apply the neural network framework such as Pytorch. A key step is to construct a Synapse module to replace Linear module in Pytorch so we can embed synapse in deep learning neural network. This has been done by defining a custom module of Synapse.
+                </p>
+                <p>
+                    Another challenge is to find suitable functions for implementation. Fortunately, Pytorch has a rich tensor library.
+                </p>
+                <p>
+                    The third challenge is to use GPU. A special case for us is to generate a dynamic tensor which needs to be assigned to a device. This device-dependent code may need to be removed in the future version of Pytorch.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            We achieved 99% accuracy in MNIST training in relatively simple SynaNN. It has equal performance to normal deep learning neural network with the same structure of models.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            It is amazing to build a custom module in such a convenient way and short time. In contrast to other ML frameworks, PyTorch is easier to save custom modules and deploy them. That is an important feature of PyTorch.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Synapse pluses BatchNormalization can greatly speed up the processing to achieve an accuracy goal. We can think of a synapse as a statistical distribution computing unit while batch normalization makes evolution faster.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Pytorch is flexible to implement backward algorithms.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    From the view of software engineering, it is important to provide expandable standard APIs in a framework. So we are able to add custom Synapse module and use it like the Linear module. At the same time, the dataset API can easily change a dataset in source code such as replacing MNIST dataset to CIFAR10 dataset.
+                </p>
+                <h2>
+                    What's next for SynaNN and Pytorch
+                </h2>
+                <p>
+                    In summary, we presented an abstract synapse module from an exact nonlinear synapse function based on computational neuroscience analysis, explored synapse network and synapse learning, and built the synapse representation in a surprisal space.
+                </p>
+                <p>
+                    Many more complex applications can be implemented by the Synapse module which is the foundation of SynaNN for advanced exploration in Machine Learning.
+                </p>
+                <p>
+                    We are going to apply Pytorch to SynaNN graph of dataflow except for the tensor computing. For example, the odds computing network of SynaNN is convenient to be implemented by PyTorch.
+                </p>
+                <p>
+                    In edge computing, except applying tensors, we can apply a few scalar variables to implement SynaNN graphs or circuits to construct the complicated topological structure. It is going to be useful for IoT applications with ultra-low power and real-time AI and Synapse Learning.
+                </p>
+                <p>
+                    The paper of SynaNN is in the URL:
+                </p>
+                <p>
+                    "SynaNN: A Synaptic Neural Network and Synapse Learning"
+                    <a href="https://www.researchgate.net/publication/327433405_SynaNN_A_Synaptic_Neural_Network_and_Synapse_Learning" rel="nofollow">
+                        https://www.researchgate.net/publication/327433405_SynaNN_A_Synaptic_Neural_Network_and_Synapse_Learning
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            gpu
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            learning
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pytorch">
+                                pytorch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            synann
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            synapse
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Neatware/SynaNN" rel="nofollow" target="_blank" title="https://github.com/Neatware/SynaNN">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

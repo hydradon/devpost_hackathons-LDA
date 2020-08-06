@@ -1,0 +1,535 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/aKYoTsYbVAc?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="415504" data-title="Architecture diagram" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/504/datas/original.jpg">
+                            <img alt="SiteChecker Slackbot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/504/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Architecture diagram
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="415505" data-title="Sample interaction with SiteChecker bot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/505/datas/original.jpg">
+                            <img alt="SiteChecker Slackbot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/415/505/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Sample interaction with SiteChecker bot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    <img alt="Icon" data-canonical-url="https://raw.github.com/shinesolutions/sitechecker-slackbot/master/icon.png" src="https://res.cloudinary.com/devpost/image/fetch/s--FWqgzmQi--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.github.com/shinesolutions/sitechecker-slackbot/master/icon.png">
+                </p>
+                <p>
+                    <a href="http://travis-ci.org/shinesolutions/sitechecker-slackbot" rel="nofollow">
+                        <img alt="Build Status" data-canonical-url="https://img.shields.io/travis/shinesolutions/sitechecker-slackbot.svg" src="https://res.cloudinary.com/devpost/image/fetch/s--TxIaqJGR--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://img.shields.io/travis/shinesolutions/sitechecker-slackbot.svg">
+                    </a>
+                </p>
+                <h2>
+                    SiteChecker Slackbot
+                </h2>
+                <p>
+                    SiteChecker is a
+                    <a href="http://martinfowler.com/articles/serverless.html" rel="nofollow">
+                        serverless
+                    </a>
+                    <a href="https://www.wired.com/2015/08/slack-overrun-bots-friendly-wonderful-bots/" rel="nofollow">
+                        Slack bot
+                    </a>
+                    for checking whether a website can be reached from multiple locations on the planet.
+                </p>
+                <p>
+                    For example, Twitter has been
+                    <a href="https://en.wikipedia.org/wiki/Censorship_of_Twitter" rel="nofollow">
+                        censored multiple times in various countries
+                    </a>
+                    . So even though a website is available from your country, it might not be from another country. You can ask SiteChecker bot
+                    <strong>
+                        "sitechecker: Is twitter.com up?"
+                    </strong>
+                </p>
+                <p>
+                    <a href="https://raw.github.com/shinesolutions/sitechecker-slackbot/master/docs/sample_interaction.jpg" rel="nofollow">
+                        <img alt="Sample Interaction Screenshot" data-canonical-url="https://raw.github.com/shinesolutions/sitechecker-slackbot/master/docs/sample_interaction.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--uBIfmQ2P--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.github.com/shinesolutions/sitechecker-slackbot/master/docs/sample_interaction.jpg">
+                    </a>
+                </p>
+                <p>
+                    The locations where the checking is performed from are based on the available
+                    <a href="http://docs.aws.amazon.com/general/latest/gr/rande.html#lambda_region" rel="nofollow">
+                        AWS Lambda regions
+                    </a>
+                    . SiteChecker currently only supports 8 regions, but the list will grow and it's easy to add a new region to SiteChecker infrastructure.
+                </p>
+                <h2>
+                    Architecture
+                </h2>
+                <p>
+                    SiteChecker has two components, a bot that's configured on Slack, and a piece of infrastructure on
+                    <a href="https://aws.amazon.com/" rel="nofollow">
+                        AWS
+                    </a>
+                    .
+                </p>
+                <p>
+                    The bot is a Slack
+                    <a href="https://api.slack.com/outgoing-webhooks" rel="nofollow">
+                        outgoing webhook
+                    </a>
+                    custom integration.
+                </p>
+                <p>
+                    The infrastructure on AWS is implemented with master worker pattern. The master Lambda function receives POST requests from the Slack bot via an API Gateway, it parses the message using a simple natural language processing
+                    <a href="https://www.npmjs.com/package/speakeasy-nlp" rel="nofollow">
+                        speakeasy-nlp
+                    </a>
+                    package in order to understand the message from Slack user and to identify the website to be checked. The master Lambda function then distributes the tasks for checking that website to worker Lambda functions across multiple AWS regions.
+                </p>
+                <p>
+                    Even though SiteChecker's current feature is limited to checking website availability, the architecture is suitable for any other cross-region checks. E.g. tracerouting from multiple cities, measuring response time from multiple cities.
+                </p>
+                <p>
+                    <a href="https://raw.github.com/shinesolutions/sitechecker-slackbot/master/docs/architecture.jpg" rel="nofollow">
+                        <img alt="Architecture Diagram" data-canonical-url="https://raw.github.com/shinesolutions/sitechecker-slackbot/master/docs/architecture.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--ykI_Knop--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://raw.github.com/shinesolutions/sitechecker-slackbot/master/docs/architecture.jpg">
+                    </a>
+                </p>
+                <h2>
+                    Installation
+                </h2>
+                <p>
+                    There are two parts to install, the bot on Slack, and the infrastructure on AWS.
+                </p>
+                <p>
+                    Let's install the bot first by creating a Slack outgoing webhook custom integration.
+                </p>
+                <ol>
+                    <li>
+                        Go to your Slack account's custom integrations page at
+                        <code>
+                            https://account.slack.com/apps/manage/custom-integrations
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        The page will show the available custom integrations. Click on
+                        <strong>
+                            Outgoing WebHooks
+                        </strong>
+                        link.
+                    </li>
+                    <li>
+                        Click
+                        <strong>
+                            Add Configuration
+                        </strong>
+                        button.
+                    </li>
+                    <li>
+                        Click
+                        <strong>
+                            Add Outgoing WebHooks integration
+                        </strong>
+                        button.
+                    </li>
+                    <li>
+                        Fill in the integration settings:
+                        <ul>
+                            <li>
+                                <strong>
+                                    Channel
+                                </strong>
+                                : select the channel where you want the bot to be available from.
+                            </li>
+                            <li>
+                                <strong>
+                                    Trigger Word(s)
+                                </strong>
+                                : specify words to trigger the bot, e.g.
+                                <strong>
+                                    sitechecker:
+                                </strong>
+                            </li>
+                            <li>
+                                <strong>
+                                    URL(s)
+                                </strong>
+                                : leave this empty for now, we'll go back to this option after the infrastructure is built.
+                            </li>
+                            <li>
+                                <strong>
+                                    Token
+                                </strong>
+                                : Slack will generate the token for you, this token will be configured in master Lambda function.
+                            </li>
+                            <li>
+                                <strong>
+                                    Descriptive Label
+                                </strong>
+                                : description for this custom integration, e.g.
+                                <strong>
+                                    SiteChecker Outgoing WebHook
+                                </strong>
+                            </li>
+                            <li>
+                                <strong>
+                                    Customize Name
+                                </strong>
+                                : the name of your bot, e.g.
+                                <strong>
+                                    SiteChecker
+                                </strong>
+                            </li>
+                            <li>
+                                <strong>
+                                    Customize Icon
+                                </strong>
+                                : upload SiteChecker
+                                <a href="https://raw.githubusercontent.com/shinesolutions/sitechecker-slackbot/master/icon.png" rel="nofollow">
+                                    radar icon
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Click
+                        <strong>
+                            Save Settings
+                        </strong>
+                        button.
+                    </li>
+                </ol>
+                <p>
+                    Next, the second part is to create the infrastructure on AWS.
+                </p>
+                <ol>
+                    <li>
+                        <a href="https://nodejs.org/en/download/package-manager/" rel="nofollow">
+                            Install node.js
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Set up
+                        <a href="https://serverless.com/framework/docs/providers/aws/setup/" rel="nofollow">
+                            AWS credential
+                        </a>
+                        , to be used by
+                        <a href="https://serverless.com/" rel="nofollow">
+                            Serverless framework
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Clone the repository:
+                        <code>
+                            git clone https://github.com/shinesolutions/sitechecker-slackbot
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Configure the Slack token from the outgoing webhook custom integration settings in
+                        <code>
+                            master/conf/config.json
+                        </code>
+                        . Add the token to
+                        <code>
+                            allowedTokens
+                        </code>
+                        array property.
+                    </li>
+                    <li>
+                        Install tools and dependencies:
+                        <code>
+                            make tools deps
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Build the worker Lambda functions:
+                        <code>
+                            make deploy-workers
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Build the master Lambda function and API Gateway:
+                        <code>
+                            make deploy-master
+                        </code>
+                        . The output of this command will show a POST endpoint, e.g.
+                        <code>
+                            https://id.execute-api.us-east-1.amazonaws.com/prod/handle
+                        </code>
+                    </li>
+                    <li>
+                        Return to the Slack Outgoing WebHook custom integration settings page, and copy paste the POST endpoint from the command output to
+                        <strong>
+                            URL(s)
+                        </strong>
+                        setting, then click
+                        <strong>
+                            Save Settings
+                        </strong>
+                        button.
+                    </li>
+                </ol>
+                <h2>
+                    Usage
+                </h2>
+                <ol>
+                    <li>
+                        Join the Slack channel configured in the bot setting.
+                    </li>
+                    <li>
+                        Start asking SiteChecker bot
+                        <strong>
+                            "sitechecker: Is twitter.com up?"
+                        </strong>
+                        ,
+                        <strong>
+                            "sitechecker: Is facebook.com down?"
+                        </strong>
+                        .
+                    </li>
+                </ol>
+                <h2>
+                    Configuration
+                </h2>
+                <p>
+                    SiteChecker Slack bot master and worker Lambda functions can be configured in
+                    <a href="https://github.com/shinesolutions/sitechecker-slackbot/blob/master/master/conf/config.json" rel="nofollow">
+                        master/conf/config.json
+                    </a>
+                    and
+                    <a href="https://github.com/shinesolutions/sitechecker-slackbot/blob/master/worker/conf/config.json" rel="nofollow">
+                        worker/conf/config.json
+                    </a>
+                    files respectively.
+                </p>
+                <p>
+                    Master configuration:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                allowedTokens
+                            </td>
+                            <td>
+                                An array of allowed Slack tokens. If any is specified, then only incoming requests with that token are accepted. If left empty, then all incoming requests are accepted.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                regions
+                            </td>
+                            <td>
+                                An array of objects with region name and description.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    Worker configuration:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                Description
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                method
+                            </td>
+                            <td>
+                                HTTP method to be used for checking website availability.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                timeout
+                            </td>
+                            <td>
+                                timeout in milliseconds for the HTTP request sent for checking the website.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>
+                    Development
+                </h2>
+                <p>
+                    Install
+                    <a href="https://serverless.com/" rel="nofollow">
+                        Serverless
+                    </a>
+                    framework and other tools:
+                </p>
+                <pre class="language-nolang"><code>make tools
+</code></pre>
+                <p>
+                    Download library dependencies:
+                </p>
+                <pre class="language-nolang"><code>make deps
+</code></pre>
+                <p>
+                    Build the infrastructure with default prod stage:
+                </p>
+                <pre class="language-nolang"><code>make deploy
+</code></pre>
+                <p>
+                    Remove the infrastructure with default prod stage:
+                </p>
+                <pre class="language-nolang"><code>make remove
+</code></pre>
+                <p>
+                    Specify custom stage:
+                </p>
+                <pre class="language-nolang"><code>STAGE=dev make deps deploy remove
+</code></pre>
+                <h2>
+                    Colophon
+                </h2>
+                <p>
+                    SiteChecker radar icon made by
+                    <a href="http://www.flaticon.com/authors/trinh-ho" rel="nofollow">
+                        Trinh Ho
+                    </a>
+                    from
+                    <a href="http://www.flaticon.com" rel="nofollow">
+                        www.flaticon.com
+                    </a>
+                    is licensed by
+                    <a href="http://creativecommons.org/licenses/by/3.0/" rel="nofollow">
+                        CC 3.0 BY
+                    </a>
+                    .
+                </p>
+                <p>
+                    <a href="https://www.youtube.com/watch?v=aKYoTsYbVAc" rel="nofollow">
+                        Demo video
+                    </a>
+                    background music
+                    <a href="https://soundcloud.com/jamesmacdj/my-love-rework-james-mac-vall" rel="nofollow">
+                        My Love (Rework) by James Mac &amp; VALL
+                    </a>
+                    .
+                </p>
+                <p>
+                    This project is a submission to
+                    <a href="https://awschatbot.devpost.com/" rel="nofollow">
+                        AWS Serverless Chatbot Hackathon 2016
+                    </a>
+                    - with self-imposed 24-hour total time limit scattered across several days/nights.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/slack">
+                                slack
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/shinesolutions/sitechecker-slackbot" rel="nofollow" target="_blank" title="https://github.com/shinesolutions/sitechecker-slackbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

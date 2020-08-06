@@ -1,0 +1,169 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/zyN5LkE25bo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="675551" data-title="Waste Not logo" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/675/551/datas/original.png">
+                            <img alt="Waste Not &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/675/551/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Waste Not logo
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I'd been toying with this idea for more years than I'd been programming - wouldn't it be great to have a convenient app for keeping track of the food in my cupboards, fridge and pantry? Something that I could easily add to, mark things as used, and keep track of use-by dates? When the
+                    <em>
+                        Alexa Skills - Tech For Good
+                    </em>
+                    competition was announced, I knew that my idea would be an excellent fit for an Alexa Skill. Having written over a dozen Skills over the past two years, I'd learned the techniques and experience I'd need to implement it -
+                    <strong>
+                        Waste Not
+                    </strong>
+                    was born! What could be easier than saying, "Alexa, ask Waste Not to add tomatoes to use by the fourth of July", or, "Alexa, ask Waste Not to use tomatoes" whilst cooking or running around a busy kitchen? It could be used with the same level of convenience as an Alexa shopping list, but with the purpose of helping its users waste less by prompting when items were running close to their use-by dates.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <strong>
+                        Waste Not
+                    </strong>
+                    invites users to
+                    <em>
+                        add
+                    </em>
+                    food items to their personal stock list, telling Alexa when the item has been
+                    <em>
+                        used
+                    </em>
+                    , or
+                    <em>
+                        wasted
+                    </em>
+                    . You add use-by dates (that you could get from the item packaging, or simply stated when you want to use the item by), and
+                    <strong>
+                        Waste Not
+                    </strong>
+                    keeps you informed of when items will be expiring soon. It also let's you query what you have - "Alexa, ask Waste Not do I have beer?" "You have beer to use in three days." - and gives you a Waste Not Health Score: a percentage that indicates whether you are using more than you are wasting, or if you need to try harder!
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I wrote the Skill mostly in Python 3 and hosted it on AWS Lambda. My Alexa Skills background is a mixture of JavaScript (node.js) and Python, and the node.js experience came in handy for one particular challenge - see below!
+                </p>
+                <p>
+                    It took me quite a while to figure out the really important bits of the application. When I started, I wanted it to do everything - recording not only the name of the food items and their expiry dates, but also their location (for example, pantry, fridge) and quantity (2 table spoons, 30 ounces, etc). But as I worked on it, I found this added a lot of extra interaction requirements for the user - and so I gradually made it simpler, more streamlined and elegant. What do users
+                    <strong>
+                        really
+                    </strong>
+                    need to record about the food they have? That was the key question I tried to keep in mind while designing the software.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Parsing natural language dates in both US and UK English wasn't straightforward! I couldn't find a parsing library for Python that did everything I wanted (for example, international-friendly interpretation of "in one week", "on fourth of July" and "July third"), but I found a good one in JavaScript. So I created a "DateTime Service" in a separate Lambda function that my Python code could call. I'll also look to use it in other, future projects that work with dates and times.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    <strong>
+                        Waste Not
+                    </strong>
+                    has a personality of its own, but I'm proud of how fluently it extends the language used by Alexa in out-of-the-box functions like the native shopping list and to-do lists. I also wanted to add a bit of fun and humour to the way
+                    <strong>
+                        Waste Not
+                    </strong>
+                    praises using items over wasting them, and playfully admonishes the user if necessary. I used Amazon's speechicons to add this bit of personality, localising them to the UK and US.
+                </p>
+                <p>
+                    I'm really pleased with how
+                    <strong>
+                        Waste Not
+                    </strong>
+                    has turned out, since building it in a relatively short space of time for this hackathon. I'm excited to see where I can go with it in the future, and what the users think!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about separating out my code in more effective, easier to follow ways - separating out database processes, for example, from the intent handlers, and helper methods in their own spaces. This has made the code a great deal more maintainable.
+                </p>
+                <p>
+                    More generally, I learned a bit about how date formats work on both sides of the Atlantic!
+                </p>
+                <h2>
+                    What's next for Waste Not
+                </h2>
+                <p>
+                    <strong>
+                        Waste Not
+                    </strong>
+                    has bags of potential. At the moment, one of its selling points is that it's 100% Alexa-native, with no need for third party accounts. However, that does limit the Skill solely to voice-interaction - so I'd like to consider allowing a linked Amazon Account so that users could view and manage their lists via my website, alexaworks.net, in the future. Another thing I'd be keen to investigate is linking to the user's Alexa shopping list - so that when an item is marked as used in Waste Not, there could be an instant yes/no option to add it to your shopping list. Perfect 360 degree stock management :) I've done similar things in one of my previous Skills, Quick List, which allows users to add multiple items to their shopping list in a single command. I'm excited to see what other use-cases users of
+                    <strong>
+                        Waste Not
+                    </strong>
+                    can come up with!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

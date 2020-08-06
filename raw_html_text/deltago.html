@@ -1,0 +1,92 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration for this application was the level of uncertainty behind when airline customers should leave for the airport.  On some days, inclement weather, crowded terminals, and long TSA checkout lines could require a customer to arrive an hour in advance.  On other days, someone could breeze through in other ten minutes.  A smart way of knowing the most convenient time to leave was the focus of this project.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    DeltaGo is an Android app that utilizes Delta's API to predict when a patron should arrive at the airport, as well as Google Maps' API to determine when that patron should leave for the airport.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    First, the user is prompted to enter their flight number.  The flight number is then sent as a JSON request to Delta's API in order to obtain the airport from which the plane will embark.  A second JSON request is sent to determine the estimated TSA wait times at the airport.  A time is then predicted in which the user should arrive at the airport.
+                </p>
+                <p>
+                    Next, the application tracks the user's location (with their permission, of course).  Their coordinates are then sent as a JSON request (along with the coordinates of the target airport) to Google's API, which utilizes their maps and predictive traffic algorithms to give an estimated commute time to the airport.  This time is subtracted from the airport arrival time to obtain a home departure time.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The major issue was with gps tracking.  The app cashes when initially asking for location permission, an issue that resolves itself once the app exits and the dialog box for permission can still be accepted.  In many cases, when polling for the user's coordinates before sending the JSON request, the gps coordinates would return null.  This is because the code was moving "faster" than it could obtain a gps signal.  We had to halt the rest of the application until the gps returned non-null values for latitude and longitude.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to successfully create an application with real-life practicality in a little under 24 hours (we didn't start until Saturday morning).
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about JSON, as well as using API's in Android applications.  None of us had much experience with this before, so it was really cool to get some hands-on learning in this field.
+                </p>
+                <h2>
+                    What's next for DeltaGo
+                </h2>
+                <p>
+                    Next, we should explore more variables which may make the airport arrival time change.  Analyzing weather patterns, as well as the patterns of delays throughout the airport would give better results. Better parsing techniques of JSON results are also required, as some returns from the API's cause the application to crash.  Finally, there should be an option in which the user can input their preferred mode of transportation to the airport.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mjkrumwiede/DeltaGo" rel="nofollow" target="_blank" title="https://github.com/mjkrumwiede/DeltaGo">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

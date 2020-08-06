@@ -1,0 +1,131 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    This is a cool hack I did when I lost my cat
+                </h2>
+                <p>
+                    I think it's worth sharing because I created a distributed mass email system in one night for the greater good of finding a lost cat.
+                </p>
+                <p>
+                    Now; it is a bit spammy but since it is not commercial, I give it a pass.
+                </p>
+                <h3>
+                    Code synopsis
+                </h3>
+                <ol>
+                    <li>
+                        Generate lists: # used to generate permutations of phone number portions
+                    </li>
+                </ol>
+                <pre class="language-nolang"><code>for i in `seq 0 999`; do printf "%03d\n" $i; done &gt; second_uniq.txt # second section of a phone number
+for i in `seq 0 9999`; do printf "%04d\n" $i; done &gt; third_uniq.txt # third section of a phone number
+</code></pre>
+                <ol>
+                    <li>
+                        Generate all possible numbers # generates possible phone numbers
+                    </li>
+                </ol>
+                <pre class="language-nolang"><code>./gen_number_list.py &gt; all_numbers.txt
+</code></pre>
+                <ol>
+                    <li>
+                        Generate all possible cell provider emails # transpose numbers to possible emails
+                    </li>
+                </ol>
+                <pre class="language-nolang"><code>./gen_email_list.py &gt; all_email_list.txt
+</code></pre>
+                <ol>
+                    <li>
+                        Populate SQS with all e-mails # throw emails in aws sqs for processing
+                    </li>
+                </ol>
+                <pre class="language-nolang"><code>./populate_sqs.py
+</code></pre>
+                <ol>
+                    <li>
+                        Mass text everyone in a area code via a distributed worker system
+                    </li>
+                </ol>
+                <p>
+                    <strong>
+                        in the following script I set this up to run via digital ocean nodes that were spun up; processed x amount of outbound messages and then spun down the worker node.
+                    </strong>
+                </p>
+                <pre class="language-nolang"><code>./process_emails.py
+</code></pre>
+                <h3>
+                    Yes it's awesome
+                </h3>
+                <h4>
+                    No, I didn't ever find my cat
+                </h4>
+                <h5>
+                    My wife believes our neighbor stole her, because she was a gorgeous calico cat
+                </h5>
+                <p>
+                    <em>
+                        No, not happy about it
+                    </em>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bash">
+                                bash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sendmail
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sqs
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/morissette/find_kitty" rel="nofollow" target="_blank" title="https://github.com/morissette/find_kitty">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

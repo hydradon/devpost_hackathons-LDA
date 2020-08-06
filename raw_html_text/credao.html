@@ -1,0 +1,209 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="836953" data-title="Airdrop Distribution with Torus Login " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/953/datas/original.png">
+                            <img alt="Credao &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/836/953/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Airdrop Distribution with Torus Login
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The process of on-boarding users onto web3 platforms like Aragon is difficult. New users are required to not just understand a lot of new concepts, but also buy into these concepts even before they have actually interacted with an application generated any meaningful interactions.
+                </p>
+                <p>
+                    From a user perspective this is asking them to do a lot, create an account, possibly download an extension, connect a bank account and fund their new wallet, all before they can interact with an application or have realized any value. Some of the more successful onboarding tactics we have seen have been when users are given a pre-funded account and then asked to go through these hoops, because they know there is something that already exists that they want (money) on the other end.
+                </p>
+                <p>
+                    Mimicing this pattern, we thought it would be cool for community to be able to onboard contributors using existing workflows and tools like GitHub that are low friction, and based on those interactions reflect value in the a DAO in the form of reputations or tokens that would be accrue and simply be waiting for an individual if they ever decided jump through the required steps to actually onboard to web3.
+                </p>
+                <p>
+                    In this way users can interact as they normally would on GitHub, but as they contribute to the community they will accumulate value, and when sufficient value has accrued the hope is they will be more motivated to take the plunge.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The goal of our hack this week was to try and remedy some of this by enabling Aragon DAOs to 1) generate mapping between GitHub usernames and
+                    <a href="sourcecred.io" rel="nofollow">
+                        sourcecred
+                    </a>
+                    contribution scores 2) generate a mapping between ethereum addresses and contributions scores either manually or by using tor.us to pre-determine an ethereum address for users based on their google account. 3) easily distribute tokens or reputation to an existing set community members based on this mapping.
+                </p>
+                <p>
+                    In order to generate a meaningful score based on a users GitHub activity and determine how much we should value their contributions we deployed sourcecred and ran it on all of the 1Hive organizations repos. The distribution of "cred" ended up looking like this:
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://i.imgur.com/VIB6VBN.png" src="https://res.cloudinary.com/devpost/image/fetch/s--YFvLh6-Q--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/VIB6VBN.png">
+                </p>
+                <p>
+                    Along with this interface provided by sourcecred, there is an output file
+                    <code>
+                        cred.json
+                    </code>
+                    which contains all of the data associated with users, interactions, and computed cred scores. We created a
+                    <a href="https://github.com/1Hive/sourcecred-airdrop" rel="nofollow">
+                        script
+                    </a>
+                    , which takes this raw output from sourcecred and a mapping file (to translate usernames to addresses) and generates a formatted csv file.
+                </p>
+                <p>
+                    From there we adapted the Aragon App that was created for EthTrader's DAONuts project to tokenize reddit "points" to a more
+                    <a href="https://github.com/1Hive/airdrop" rel="nofollow">
+                        general tool
+                    </a>
+                    for Aragon orgs to distribute tokens or reputation based on a merklized airdrop. A user can propose an airdrop distribution by providing a formatted csv file which is converted into a merkle tree, uploaded to IPFS and used to allow users to "claim" tokens/reputation if their address was included in the csv upload.
+                </p>
+                <p>
+                    In order to minimize the burden on new users to be included under the assumption that they may have never used Ethereum and would not be able to provide an ethereum address to link their GitHub account to, we decided to integrate Tor.us logins into a
+                    <a href="https://torus.1hive.org/#/" rel="nofollow">
+                        forked version of the Aragon client
+                    </a>
+                    , this way we can ask users to
+                    <em>
+                        either
+                    </em>
+                    generate a key (but not necessarily have to immediately fund it) or just provide an email address that is a "google account". If the user opts to provide a google account, we can use torus' api to get an associated public key, and when the user decides they are ready to complete the full web3 onboarding, they can simply authenticate and claim that address using torus' login with google oauth flow.
+                </p>
+                <p>
+                    We deployed our airdrop app to a [rinkeby organization]
+                    <a href="https://torus.1hive.org/#/credao" rel="nofollow">
+                        https://torus.1hive.org/#/credao
+                    </a>
+                    , and used the sourcecred output from 1Hive to generate a cred distribution. We've notified members of the 1Hive community of the new dao and some of them have gone and tested the claim process.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Forking the and hosting the Aragon client to enable torus login not just for our project but for all existing Aragon organizations as well.
+                    </li>
+                    <li>
+                        Creating a basic framework for bridging Sourcecred reputation to an Aragon DAO
+                    </li>
+                    <li>
+                        Providing a flow for onboarding github organization from web2 (github) to web2 + web3 (github + sourcecred + aragon)
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Adding an additional login option to a dapp that already supports web3 injection and a fallback provider is a bit cumbersome. While we were able to get it working, it would be great if there was a single integration that supported all the various web3 providers/login types so this does not need to be handled separately for each provider by Dapp teams.
+                </p>
+                <p>
+                    We also struggled a lot with IPFS propagation, and eventually started using pinata's pinning service to make things more reliable (though we have not yet found a good way to automate this process from within the dapp itself, so the experience of uploading to is not ideal right now).
+                </p>
+                <h2>
+                    What's next for Credao
+                </h2>
+                <p>
+                    Tor.us will be adding login with github oauth which will be much better for this particular usecase!
+                </p>
+                <p>
+                    We can create a hosted service targeted at open source communities that allows orgs to create DAOs, generate rep for their communities, and help facilitate onboarding.
+                </p>
+                <h2>
+                    Other
+                </h2>
+                <h3>
+                    Github Links
+                </h3>
+                <p>
+                    <a href="https://github.com/1Hive/airdrop" rel="nofollow">
+                        Airdrop
+                    </a>
+                    - Aragon App for merklized airdrops
+                    <a href="https://github.com/1Hive/sourcecred-airdrop" rel="nofollow">
+                        sourcecred-airdrop
+                    </a>
+                    - Script for formatting sourcecred output to airdrop csv
+                    <a href="https://github.com/1Hive/aragon" rel="nofollow">
+                        Aragon with Torus integration
+                    </a>
+                    - forked version of the Aragon client which integrates torus as an available web3 provider
+                </p>
+                <h3>
+                    ETH Boston Sponsor integrations
+                </h3>
+                <p>
+                    <a href="https://tor.us" rel="nofollow">
+                        Tor.us
+                    </a>
+                    - We create a fork of Aragon which uses Torus as a login option to enable us to airdrop tokens based on google accounts
+                </p>
+                <h3>
+                    Credao Telegram Group
+                </h3>
+                <p>
+                    <a href="https://t.me/joinchat/FYJMzQuomkJ8Q7TnaO-DbA" rel="nofollow">
+                        https://t.me/joinchat/FYJMzQuomkJ8Q7TnaO-DbA
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aragon
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sourcecred
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            torus
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://torus.1hive.org/#/credao" rel="nofollow" target="_blank" title="https://torus.1hive.org/#/credao">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                torus.1hive.org
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

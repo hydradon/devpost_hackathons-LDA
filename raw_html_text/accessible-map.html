@@ -1,0 +1,156 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/252960471?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    A map is, by design, a very visual medium.  Paper maps can be augmented for use by vision-impaired individuals but what about interactive digital maps on a mobile device?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The app runs on an iPhone or iPad with Apple's VoiceOver technology enabled.  VoiceOver speaks the name of user interface elements as the user taps on them, providing audible guidance on the app's functionality.  The "Accessible Map" app extends this feature to provide more mapping-centric information to the user.  This functionality allows the user to hear:
+                </p>
+                <ul>
+                    <li>
+                        the address of their current location
+                    </li>
+                    <li>
+                        the number of points of interest near their location
+                    </li>
+                    <li>
+                        the name of a tapped-on point of interest
+                    </li>
+                    <li>
+                        audible directions to a tapped on location
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The app is created in Swift by combining the ArcGIS Runtime SDK for iOS' mapping, location and routing ability with Apple's VoiceOver technology.  VoiceOver allows you to specify textual labels for user interface elements and trigger audible cues and information in reponse to app events.
+                </p>
+                <p>
+                    Example:  when the user activates the callout's Navigate button, the word "Navigate button" will be spoken.  Triggering the button's action will initiate the routing task; when the route task is complete, the list of directions to the destination will be spoken.
+                </p>
+                <p>
+                    We chose a number of actions to provide audible cues for, such as current location, number of POIs in a give radius around the user, walking directions, and others.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    While the VoiceOver implementation was fairly straightforward, figuring out when and how VoiceOver triggered certain cues (and disabling the ones we didn't want), was a little tricky.
+                </p>
+                <p>
+                    In order to "tap on a button", you first needed to tap once to "select" the button, then double-tap to activate it.  This fundamental change in tap behavior did not play well with the MapView, such that we were never sure how to pan or zoom the map using gestures.  We may just not have been able to figure it out, or it may be something that the MapView needs to take into account at the SDK level.
+                </p>
+                <p>
+                    Also, tapping on the map with VoiceOver enabled did not provide the actual location tapped, but the center of the screen.  The correct GeoViewTouchDelegate method was received but the tapped map point was incorrect.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We have a functioning app that demonstrates the major features we wanted to highlight.  We successfully integrated VoiceOver to provide useful enhancements to the map experience and were able to incorporate a number of ArcGIS technologies, such as routing, feature services, location awareness, geocoding and vector base maps.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        a lot about VoiceOver!
+                    </li>
+                    <li>
+                        potential (?) conflicts with MapView and VoiceOver
+                    </li>
+                    <li>
+                        some cool Swift stuff (
+                        <code>
+                            unownedSelf
+                        </code>
+                        ,
+                        <code>
+                            DispatchQueue.main.asyncAfter
+                        </code>
+                        ,
+                        <code>
+                            dispatchGroup.enter()
+                        </code>
+                        ,
+                        <code>
+                            dispatchGroup.leave()
+                        </code>
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Accessible Map
+                </h2>
+                <ul>
+                    <li>
+                        styling of the vector base map to be more accessible to low-vision users, such as better colors and increased label size
+                    </li>
+                    <li>
+                        provide actual navigation as the user traverses the supplied route, speaking the next direction as the user nears the end of the current maneuver.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            arcgis-runtime-sdk-for-ios
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ios">
+                                ios
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            voiceover
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/gdhakal/accessible-map" rel="nofollow" target="_blank" title="https://github.com/gdhakal/accessible-map">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

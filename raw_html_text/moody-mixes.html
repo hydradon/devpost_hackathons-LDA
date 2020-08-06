@@ -1,0 +1,114 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/wfC16RE4u14?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="859529" data-title="A sample interaction between the user and the program." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/859/529/datas/original.png">
+                            <img alt="Moody Mixes &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/859/529/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A sample interaction between the user and the program.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted a fun way to get relevant spotify playlists according to how you are feeling at the moment
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    You take a selfie and send it to a client. Then, our program will analyze the image using Google Cloud Vision API and detect any emotion present on the face(s). Based on the emotions it detects, we send a search query for playlists to Spotify using Spotipy (a lightweight python wrapper for the Spotify API). We randomly select a playlist from the one returned from the query and send a text message of the link to the playlist back to the user.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We setup a flask server to run the program. Next, we added SMS integration using Twilio's API in order to be able to send/receive text messages to/from the user. We then experimented with Google's Cloud Vision API and implemented emotion detection for face images. To use the emotion values returned by the API, we had to properly parse the return object. Google's Cloud Vision API determines on a probability value for each emotion (joy, sorrow, anger, and surprise) on a scale of 1(least probable) to 5 (most probable). We specifically selected the emotion with the highest probability score. If two emotions had equal probability scores, we select one at random. After isolating the desired emotions, we associated them with specific search queries and sent get requests to Spotify using their API. Finally we again used the Twilio API to send a text message back to the user with the link of the Spotify playlist our program chooses.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The biggest challenge (by far) was deploying to app engine so that the web app could be utilized without having to run the code on a local computer. This was because we had a difficult time getting app engine to save images and use them for mood analysis. We circumvented this problem by giving google cloud the raw image data. Due to our unfamiliarity with the Spotify API, we had a significant learning curve in accessing information from Spotify.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    it works... It is deployed on app engine, meaning everything works without any dependence on a local device.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how deploy an app on Google App Engine. Also we found out that Google's Cloud Vision API automatically encodes any input image type to base64.
+                </p>
+                <h2>
+                    What's next for Moody Mixes
+                </h2>
+                <p>
+                    Using Auto ML tool of Google Cloud Vision AI, we will in the future generate more relevant playlists utilizing more advanced image-based emotion analysis, by training and customizing the Google Cloud Vision AI for our needs. Additionally, we intend to speed up the process from a half-minute to a matter of a few seconds to get results.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-cloud-vision
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            spotipy
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

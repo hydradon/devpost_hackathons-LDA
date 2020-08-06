@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/XOK_VJkBmFA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="876124" data-title="Classy in the Alexa App" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/876/124/datas/original.png">
+                            <img alt="Classy &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/876/124/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Classy in the Alexa App
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Having a daughter who lives in split households, it is incredibly important to keep up on the latest information regarding her education. Since she is now a teenager, communication is sometimes better, and sometimes... not so much.
+                </p>
+                <p>
+                    Since her school utilizes Google Classroom for coursework and assignments, I started receiving a weekly digest email from Google Classroom telling me about some topics covered that week and any missing assignments. While this is incredibly helpful and more insightful than anything available when I was in school, I found it lacking a bit.
+                </p>
+                <p>
+                    By the time I receive the email at the end of the week, there is little to no opportunity to rectify missing assignments, rendering that a piece of non-actionable insight. With that, the list of topics is interesting, but often obscures any upcoming assignments or current homework that we should be focusing on. Google Classroom also does not give you any additional insights or views into a student's progress as it does not give guardians an account, only the emails.
+                </p>
+                <p>
+                    It's with these limitations in mind that I built Classy, a voice-powered provider of insights into student's academic lives.
+                </p>
+                <h2>
+                    What It Does
+                </h2>
+                <p>
+                    Classy is an Alexa skill available for free through the Alexa skill ecosystem. Once activated, a parent, guardian, or student can link a Google Classroom account to Alexa via the app. After that, Classy can provide a list of active classes/courses, a view into any upcoming assignments, and a rundown of the past few grades received for any class the student is enrolled in.
+                </p>
+                <p>
+                    The standard features include the course listing and grade checking feature sets. For a one-time, in-skill product purchase for Enhanced Feature Access, the skill unlocks the ability to check on homework due dates and other features as they continue to be rolled out in future iterations.
+                </p>
+                <p>
+                    I love the ability to say, "Alexa, ask Classy what are the grades in science?" and hearing it read out the topic, assignment, and the assigned grade plus total points possible without ever having to open a laptop.
+                </p>
+                <h2>
+                    How I Built It
+                </h2>
+                <p>
+                    I began prototyping the connections to Google Classroom's API using their Python SDK locally. Thankfully, Google has made available a few examples of various uses and I was able to quickly get a simple script up and going utilizing my daughter's Google Classroom login. This process only took a few hours for simple results and two days for more robust retrieval of information.
+                </p>
+                <p>
+                    Once I was comfortable with the execution of the script in a local, controlled environment I logged into the Amazon Alexa Developer console and utilized the tools made available on that site to quickly generate a basic skill. With the chosen options, the Python backend would be hosted within the Alexa environment as an AWS Lambda function, reducing my need to look for external hosting or provide for connectivity through some other means.
+                </p>
+                <p>
+                    Within a day, I was able to get up to speed on generating an interaction model for voice engagement with the skill code. I began with the required intents for managing simple engagements such as beginning a skill session, closing down a skill session, and requesting help. The Alexa Skills Kit (ASK) provides significant documentation on getting started and the base intents were wired up and tested in the next two days.
+                </p>
+                <p>
+                    Next, I took the prototyped code used locally and integrated it into the base scripts as a library, separating out the interface from the heavy lifting components. I also had to generate local library copies of some modules I had installed and used during prototyping so the Lambda function could utilize them properly in that environment. After a few test runs, I had the base prototype responding to voice commands in the Alexa development environment.
+                </p>
+                <p>
+                    Then, I generated code and intents for managing the in-skill product (ISP) mechanisms utilized by Alexa to trigger and respond to purchase events within a skill. I know this is a skill I wish to continue to add to and, with that, there is development time and the cost of running services. I implemented a nominal fee (about $1 US) for lifetime access to enhanced features both current and future.
+                </p>
+                <p>
+                    Finally, I went through and completely tested the skill with various engagement models and added polish to responses and expected phrases. One such piece is a piece of spoken text that is randomly-selected from many predetermined options when the user leaves the skill session. It is fun pieces like this that, I believe, make this skill highly functional but also a lot of fun.
+                </p>
+                <h2>
+                    Challenges
+                </h2>
+                <p>
+                    After prototyping a local version of the basic Google Classroom API code, I realized I would have to change the authentication model to be in line with the "account linking" system Alexa utilizes to properly authorize communications with outside services. This conversion process wasn't trivial for me and required at least a day of additional research and experimentation.
+                </p>
+                <p>
+                    I had also not been familiar with packaging modules and libraries for use in AWS Lambda. All prior experience had been with using modules that could be easily imported and were available to default Lambda instances. Finding meaningful and current documentation or help was difficult. I cobbled together answers from official documentation as well as StackOverflow questions and answers to produce a meaningful method for consistently being able to add modules and get them uploaded into the Lambda function.
+                </p>
+                <p>
+                    The in-skill product (ISP) mechanisms were completely foreign to me and unlike interactions for in-app purchases that I did have prior experience with. Thankfully there is an abundance of documentation for setting this up and even an example Python skill on GitHub that utilizes the ISP interaction model. Through some research, trials, and a lot of errors, I was able to generate a consistent experience that behaved as desired.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Often the skill or app ideas I have are novelties and may not provide impact to the average day of a family, but such effortless access to class information for a student could mean the difference between effortlessly checking on progress and missing a crucial moment in a child's academic week. As soon as I ran through the skill on my own Alexa device and said, "I will use this," I knew I had succeeded. I am proud to make a skill that may not be hilarious or provide hours of entertainment, but can truly bring easy, meaningful academic insights to parents and students everywhere.
+                </p>
+                <h2>
+                    Lessons Learned
+                </h2>
+                <p>
+                    I learned that the process for generating a new skill has evolved tremendously since I first attempted to author a skill several years ago. The tools available in the Alexa Developer Console as well as locally utilizing ASK are amazing and provide invaluable logging and management of a skill as it goes through the development cycle.
+                </p>
+                <p>
+                    I also learned how valuable and rich the associated online documentation for both Alexa skill development and Google's various APIs are. Without these significant resources being available, this task would have been a lot more formidable and, perhaps, felt impossible.
+                </p>
+                <h2>
+                    What's Next for Classy
+                </h2>
+                <p>
+                    I want to continue to add to the skill with features that would use as well as some that may accommodate other types of families. For instance, the skill currently only supports a single linked authentication which limits the effective use of the skill to a single student in a household. For many families, multiple school-aged children may be in the house and the ability to engage the scholastic journey of each via voice would be a great addition.
+                </p>
+                <p>
+                    I will also be adding the capability to receive Alexa notifications when course announcements are sent for a course monitored by this skill. This would allow better "push" of messaging all the way into the home without relying on a "pull" of using the app or web browser to check for it.
+                </p>
+                <p>
+                    While Google Classroom definitely has a large presence in the educational space, there are many other vendors that are tapped by large school populations throughout the world. Gaining API access to those platforms and being able to provide Classy to the families dependent on those platforms would bring more value to the skill and, more importantly, to those families.
+                </p>
+                <p>
+                    As a stretch goal, I would like to work with the Google Classroom community to suggest and help prioritize the exposure of new features via the API and even the Classroom ecosystem as a whole. The enhancement of parent/guardian visibility into the system is but one area that feels it could use some additional attention.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/oauth">
+                                oauth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/dp/B07ZT4GW8Q/ref=sr_1_1?keywords=classy&amp;qid=1572544926&amp;s=digital-skills&amp;sr=1-1" rel="nofollow" target="_blank" title="https://www.amazon.com/dp/B07ZT4GW8Q/ref=sr_1_1?keywords=classy&amp;qid=1572544926&amp;s=digital-skills&amp;sr=1-1">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

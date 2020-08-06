@@ -1,0 +1,63 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="238350" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/238/350/datas/original.png">
+                            <img alt="Project Lift &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/238/350/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to do a fun and lighthearted project for LAHacks, so we decided to make an application that ostensibly measures how much a person can lift based on frames captured from a webcam.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    The application uses OpenCV to perform SURF feature extraction on images from the webcam. These features are then matched against features extracted from several pictures of Arnold Schwarzenegger. These matches are then used to create a projection matrix from the reference image to the scene. We then analyze the projection matrix to establish a confidence in the match using a custom algorithm developed at LAHacks. If confidence is established, the prominence of the reference image in the scene is used to "score" the lifting capability of the scene. Notably, this algorithm doesn't actually solve the problem of determining a user's strength. It is, however, a fun and entertaining program to use with friends.
+                </p>
+                <h2>
+                    Challenges We ran into
+                </h2>
+                <p>
+                    We ran into performance problems from the start. As we began to tune the OpenCV functions and increase the performance, we added more reference images to match against. With these additional reference images, the potential for false positives increased dramatically. Another surprising difficulty we encountered was that several standard methods for estimating confidence, such as the relative difference of the point descriptors, were ineffective in this context. We developed a novel algorithm to reject false positives in response to this.
+                </p>
+                <h2>
+                    Accomplishments that We're proud of
+                </h2>
+                <p>
+                    The most interesting thing we accomplished at LAHacks was creating an effective and computationally efficient way to reject false positive matches. After previous methods failed, we explored a variety of heuristics and methods for reducing the noise. As we were looking for heuristics to reject noise, we looked at many things. What ended up being the most effective was examining the eigenvalues of the projection matrix. The eigenvalues were typically one large positive value, its negative and a small value, typically in the range of 0 to 1. We noticed that whenever we found a good match, this small eigenvalue was very close to 0.5. When a false positive is found, it typically varies wildly. We're still not exactly sure why this is the case, but it does function as a good heuristic.
+                </p>
+                <h2>
+                    What We learned
+                </h2>
+                <p>
+                    We obviously learned a lot about computer vision, but we also learned the value of experimentation in solving and understanding technical problems. If we had approached the problem from a exclusively theoretical point of view, we never would have found the eigenvalue heuristic.
+                </p>
+                <h2>
+                    What's next for Project Lift
+                </h2>
+                <p>
+                    We'd really love to get this application on iOS and Android, but due to the computationally intensive nature of computer vision, we're not sure how successful that will be.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

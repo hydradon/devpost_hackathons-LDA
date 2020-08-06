@@ -1,0 +1,190 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/QvY_PVEH9AE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="679345" data-title="My Account interface to store your phone number to receive text messages" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/679/345/datas/original.png">
+                            <img alt="Station Finder &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/679/345/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                My Account interface to store your phone number to receive text messages
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="679347" data-title="Map link sent by Alexa skill" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/679/347/datas/original.png">
+                            <img alt="Station Finder &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/679/347/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Map link sent by Alexa skill
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I was driving with a friend a couple months ago in an electric car that was getting low on power. We were scrambling to find a high-speed recharging station in a nearby location (where we could grab a drink and a bite while it recharged). It was a scenario that Alexa was built to resolve... but there wasn't a skill to do it!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Station Finder is an intelligent search engine to locate alternative fuel stations in the city or zip code in which you're traveling (or plan to travel). It taps into the API at the National Renewable Energy Laboratory (
+                    <a href="https://developer.nrel.gov/docs/transportation/alt-fuel-stations-v1" rel="nofollow">
+                        https://developer.nrel.gov/docs/transportation/alt-fuel-stations-v1
+                    </a>
+                    ) to provide a list of locations by zip code or city for any of a number of different fuel types and electric connectors. It surpasses the capabilities of that API by translating city locations into corresponding zip codes. I did my research, and this API is considered the most accurate source of information on alternative fueling stations in the United States.
+                </p>
+                <pre class="language-nolang"><code>Alexa, ask Station Finder to find a station.
+
+Alexa, ask Station Finder to find a hydrogen station.
+
+Alexa, ask Station Finder to find a station in Phoenix, Arizona.
+
+Alexa, ask Station Finder to find a Tesla station in 92629.
+</code></pre>
+                <p>
+                    It not only leads you through the query process and gives you additional details on stations you select (delivering the address and phone number to your Alexa app), it texts you a Google map link to the designated location. You can instantly start navigation when you receive the text, which arrives in seconds. All you have to do is create a free account at
+                    <a href="https://daysfly.com" rel="nofollow">
+                        DaysFly.com
+                    </a>
+                    and add your phone number. (The reason I don't allow users to simply tell Alexa their phone number is to reduce the possibility of spam.)
+                </p>
+                <p>
+                    This isn't a simple EV fuel finder -- it is a locator for the
+                    <em>
+                        entire range of alternative fuel vehicles
+                    </em>
+                    . The fuel types are as follows:
+                    <strong>
+                        Electric, Biodiesel, Compressed Natural Gas, Ethanol, Hydrogen, Liquified Natural Gas, and Liquified Petroleum Gas
+                    </strong>
+                    (also known as
+                    <strong>
+                        Propane
+                    </strong>
+                    ). If you want a specific electric connector, you can instead say:
+                    <strong>
+                        Tesla, Level 1, Level 2, Chademo, or SAE Combo.
+                    </strong>
+                    An EV fuel finder without the ability to filter based on the type and speed of a connector wouldn't prove as useful.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    ASP.NET Web API 2, programmed in C#.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The interface for the government API for alternative fuel locations is primitive. It searches by zip code or state; there is no way to search by proximity to geocoordinates or within a city. If someone were using this skill while driving, it's unlikely they would know the zip code through which they were traveling. To remedy this, I implemented a service to translate a city name to a range of zip codes to feed to the API.
+                </p>
+                <p>
+                    The skill was originally named "Fuel Finder," but Alexa kept getting confused by the name.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was leaning into the
+                    <strong>
+                        dialog directives
+                    </strong>
+                    to leverage Alexa's ability to conduct a
+                    <strong>
+                        multi-turn conversation
+                    </strong>
+                    . You can offer Alexa a complete query (e.g., "Ask Station Finder to find a Tesla station in Albuquerque, New Mexico") or you can simply say, "Find a station," and allow Alexa to lead you through the steps. She will ask you the fuel type and city or zip code. If you specify a zip code, she will ask if you want to remain in that zip code or expand your search to the surrounding city.
+                </p>
+                <p>
+                    The query engine has
+                    <strong>
+                        persistent memory
+                    </strong>
+                    , storing the parameters to allow you to work through a list of possible fuel stations, one after another. It
+                    <strong>
+                        remembers
+                    </strong>
+                    your fuel type and U.S. state across sessions, so that the next time you invoke the skill you only need to mention the city you're driving through.
+                </p>
+                <p>
+                    The skill conversationally describes things like the types of connectors available to electric cars in clear terms. Even a government database can be personal and friendly with the help of Alexa.
+                </p>
+                <p>
+                    Having the skill send an SMS text with a map link enhanced the utility of the application dramatically. Alexa is especially powerful in conditions where hands-free is a necessity.
+                </p>
+                <p>
+                    In addition to being a software architect, I have a Ph.D. in Social Ethics. I'm proud to offer technology that benefits the world we live in.
+                </p>
+                <h2>
+                    What's Next
+                </h2>
+                <p>
+                    I am going to implement a mechanism for sending a precise geocoordinate from your phone to the skill (by text message, which the web service can instantly retrieve) so that it can sort the search results based on proximity to your exact geographical position. (Alexa doesn't know your latitude and longitude, but your phone does, and with account-linking, I can support this interchange.)
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            asp.net-web-api-2
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/dp/B07GWRH6YM/" rel="nofollow" target="_blank" title="https://www.amazon.com/dp/B07GWRH6YM/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://daysfly.com" rel="nofollow" target="_blank" title="https://daysfly.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                daysfly.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

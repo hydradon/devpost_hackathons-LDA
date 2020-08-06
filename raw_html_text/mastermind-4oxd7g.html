@@ -1,0 +1,279 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Mastermind RESTful API
+                </h1>
+                <h1>
+                    Ruby RESTful JSON API to play the Mastermind game application.
+                </h1>
+                <h2>
+                    Description
+                </h2>
+                <p>
+                    This is a Ruby application, in Sinatra, that implements a RESTful JSON API for playing, in single play mode, the Mastermind game.
+It supports multiple users hitting the API at the same time playing different games of Mastermind.
+You can checkout the rules at
+                    <a href="https://en.wikipedia.org/wiki/Mastermind_(board_game)#Gameplay_and_rules" rel="nofollow">
+                        Wikipedia
+                    </a>
+                </p>
+                <p>
+                    The API only has two endpoints which are outlined below.
+                </p>
+                <ul>
+                    <li>
+                        POST /new_game
+                    </li>
+                    <li>
+                        POST /guess
+                    </li>
+                </ul>
+                <p>
+                    You can checkout the
+                    <a href="./swagger.io" rel="nofollow">
+                        swagger.io
+                    </a>
+                    file for the complete API specification.
+                </p>
+                <p>
+                    Basically, the API enables you to start a new game and guessing the correct pattern. For every guessing, the API will give you the number of exact and near matches.
+                </p>
+                <p>
+                    You can choose from 8 different colors, duplicate allowed, and you will have up to 8 attempts to guess the correct pattern.
+If you correctly guess the pattern, you win! Otherwise, you lose after 8 attempts.
+                </p>
+                <p>
+                    The valid colors are:
+                </p>
+                <ul>
+                    <li>
+                        'R' for red
+                    </li>
+                    <li>
+                        'B' for blue
+                    </li>
+                    <li>
+                        'G' for gray
+                    </li>
+                    <li>
+                        'Y' for yellow
+                    </li>
+                    <li>
+                        'O' for orange
+                    </li>
+                    <li>
+                        'P' for purple
+                    </li>
+                    <li>
+                        'C' for cyan
+                    </li>
+                    <li>
+                        'M' for magenta
+                    </li>
+                </ul>
+                <p>
+                    After you start a new game, it wil give you a unique game_key, which you will be using to guess.
+                </p>
+                <p>
+                    The application uses the following stack:
+                </p>
+                <ul>
+                    <li>
+                        <a href="http://www.sinatrarb.com/" rel="nofollow">
+                            Sinatra
+                        </a>
+                        : it's a lightwight HTTP client for ruby. It's used to implement the REST API.
+                    </li>
+                    <li>
+                        <a href="https://github.com/sinatra/sinatra-contrib" rel="nofollow">
+                            Sinatra Contrib
+                        </a>
+                        : it's a collection of common Sinatra extensions.
+                    </li>
+                    <li>
+                        <a href="https://github.com/britg/sinatra-cross_origin" rel="nofollow">
+                            Sinatra Cross Origin
+                        </a>
+                        : it's a Cross Origin Request Sharing extension for Sinatra. It's used to enable CORS.
+                    </li>
+                    <li>
+                        <a href="https://docs.mongodb.com/ecosystem/tutorial/ruby-mongoid-tutorial/" rel="nofollow">
+                            Mongoid
+                        </a>
+                        : it's an ODM (Object-Document-Mapper) framework for MongoDB in Ruby.
+                    </li>
+                    <li>
+                        <a href="https://www.mongodb.com/" rel="nofollow">
+                            MongoDB
+                        </a>
+                        : it's a NoSQL database.
+                    </li>
+                    <li>
+                        <a href="http://rspec.info/" rel="nofollow">
+                            RSpec
+                        </a>
+                        : it's a testing framework for Behaviour Driven Development for Ruby.
+                    </li>
+                </ul>
+                <h2>
+                    Pre-Requisites
+                </h2>
+                <p>
+                    Before building, you will need to have installed in your machine the following tools:
+                </p>
+                <ul>
+                    <li>
+                        Ruby - 2.2.3+
+                    </li>
+                    <li>
+                        Bundler - 1.12.4+
+                    </li>
+                    <li>
+                        MongoDB - 3.2.x
+                    </li>
+                </ul>
+                <h2>
+                    Building
+                </h2>
+                <p>
+                    To build and run the application, first clone this repo in your machine:
+                </p>
+                <pre class="language-nolang"><code>  git clone https://github.com/andersonfarias/mastermind.git
+</code></pre>
+                <p>
+                    Open the terminal and go to application folder
+                </p>
+                <pre class="language-nolang"><code>  cd mastermind
+</code></pre>
+                <p>
+                    Execute the following command to install required libraries:
+                </p>
+                <pre class="language-nolang"><code>  bundle install
+</code></pre>
+                <p>
+                    Before you can run the application, you will need a running MongoDB instance. You can easily follow a
+                    <a href="https://docs.mongodb.com/manual/installation/" rel="nofollow">
+                        tutorial
+                    </a>
+                    to get MongoDB running into your own machine or use a
+                    <a href="https://mlab.com/" rel="nofollow">
+                        cloud instance
+                    </a>
+                    .
+                </p>
+                <p>
+                    If you decided to locally install and run MongoDB, then you just need to run it on default port. The application will start, connect to MongoDB and create everything it needs.
+                </p>
+                <p>
+                    If you're using a remote instance, or cloud, you will have to change the mongoid.yml file and setup a URL for the database. You can find this file at the config folder.
+                </p>
+                <p>
+                    Run
+                    <code>
+                        bundle exec rackup -p 4567
+                    </code>
+                    to run. This will start the API at
+                    <a href="http://localhost:4567/" rel="nofollow">
+                        http://localhost:4567/
+                    </a>
+                </p>
+                <p>
+                    Openup a terminal and execute the following command to start a new game
+                </p>
+                <pre class="language-nolang"><code>  curl --data "{ \"user\": \"Anderson Farias\" }" http://localhost:4567/new_game
+</code></pre>
+                <p>
+                    You should see a response like this
+                </p>
+                <pre class="language-javascript"><code>  {"colors":["R","B","G","Y","O","P","C","M"],"code_length":8,"game_key":"574142d7f293448b42000000","num_guesses":0,"past_results":[],"solved":false}
+</code></pre>
+                <p>
+                    Have fun!
+                </p>
+                <h2>
+                    Testing
+                </h2>
+                <p>
+                    Just execute the following command at the project's root directory
+                </p>
+                <pre class="language-nolang"><code>bundle exec rspec
+</code></pre>
+                <h2>
+                    License
+                </h2>
+                <p>
+                    Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+                </p>
+                <p>
+                    <a href="http://www.apache.org/licenses/LICENSE-2.0" rel="nofollow">
+                        http://www.apache.org/licenses/LICENSE-2.0
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/rspec">
+                                rspec
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby">
+                                ruby
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sinatra">
+                                sinatra
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/andersonfarias/mastermind" rel="nofollow" target="_blank" title="https://github.com/andersonfarias/mastermind">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://52.91.20.77" rel="nofollow" target="_blank" title="http://52.91.20.77">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                52.91.20.77
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

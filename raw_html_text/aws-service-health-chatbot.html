@@ -1,0 +1,417 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/rULEXvCmxHY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="417220" data-title="Screenshot " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/417/220/datas/original.png">
+                            <img alt="AWS-Service-Health-Chatbot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/417/220/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Screenshot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    AWS Service Health Dashboard slackbot
+                </h1>
+                <h2>
+                    Usage
+                </h2>
+                <p>
+                    There are two primary ways which the service health check slackbot works.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Custom slash command:
+                        </p>
+                        <pre class="language-nolang"><code>/aws_status
+</code></pre>
+                    </li>
+                    <li>
+                        <p>
+                            Scheduled via Cloudwatch Event
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    <img alt="Example" data-canonical-url="https://github.com/faultymonk/AWS-Service-Health-Chatbot/blob/master/screenshot.png?raw=true" src="https://res.cloudinary.com/devpost/image/fetch/s--6B26bPmc--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://github.com/faultymonk/AWS-Service-Health-Chatbot/blob/master/screenshot.png%3Fraw%3Dtrue">
+                </p>
+                <h2>
+                    Slack setup (part 1)
+                </h2>
+                <h3>
+                    Incoming Webhooks
+                </h3>
+                <ol>
+                    <li>
+                        Build a
+                        <code>
+                            Custom Integration
+                        </code>
+                        using
+                        <code>
+                            Incoming WebHooks
+                        </code>
+                        to the desired channel (e.g. #aws_health).
+                    </li>
+                    <li>
+                        Add the incoming webhooks integration and enter "AWS Health" for the
+                        <code>
+                            Customize Name
+                        </code>
+                        (additionally customize the Descriptive Label and icon if desired).
+                    </li>
+                    <li>
+                        Note the
+                        <code>
+                            Webhook URL
+                        </code>
+                        and save the settings.
+                    </li>
+                </ol>
+                <h2>
+                    AWS setup
+                </h2>
+                <h3>
+                    Export AWS credentials
+                </h3>
+                <p>
+                    The CLI commands below require the following environmental variables:
+                </p>
+                <pre class="language-sh"><code>AWS_DEFAULT_REGION=us-west-2
+AWS_DEFAULT_PROFILE=aws_profile
+AWS_SECRET_ACCESS_KEY=########################################
+AWS_ACCESS_KEY_ID=AKIA################
+</code></pre>
+                <h3>
+                    Create a
+                    <code>
+                        Simpledb
+                    </code>
+                    domain:
+                </h3>
+                <pre class="language-sh"><code>$ aws sdb create-domain \
+--domain-name aws-status
+--profile aws_profile
+</code></pre>
+                <h3>
+                    Create an
+                    <code>
+                        IAM role
+                    </code>
+                </h3>
+                <p>
+                    (and capture output to $ROLE_ARN)
+                </p>
+                <pre class="language-sh"><code>$ ROLE_ARN=$(aws iam create-role \
+--role-name lambda_aws_status \
+--assume-role-policy-document '{
+"Version": "2012-10-17",
+"Statement": {
+"Effect": "Allow",
+"Principal": {"Service": "lambda.amazonaws.com"},
+"Action": "sts:AssumeRole"
+}
+}' \
+--query 'Role.Arn' \
+--output text)
+</code></pre>
+                <h4>
+                    Attach an inline
+                    <code>
+                        IAM policy
+                    </code>
+                    to the
+                    <code>
+                        IAM role
+                    </code>
+                </h4>
+                <pre class="language-sh"><code>$ aws iam put-role-policy \
+--role-name lambda_aws_status \
+--policy-name lambda_aws_status \
+--policy-document file://lambda_aws_status_policy.json
+</code></pre>
+                <h3>
+                    Creating the Lambda .zip package
+                </h3>
+                <ol>
+                    <li>
+                        <p>
+                            Edit
+                            <code>
+                                aws_status.py
+                            </code>
+                            and edit as needed (i.e. provide Slack channel webhook URL).
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Create the
+                            <code>
+                                Lambda
+                            </code>
+                            package:
+                        </p>
+                    </li>
+                </ol>
+                <pre class="language-sh"><code>$ sh create_lambda_package.sh
+</code></pre>
+                <h3>
+                    Create a new Lambda function and upload
+                </h3>
+                <pre class="language-sh"><code>$ aws lambda create-function \
+--function-name aws_status \
+--zip-file fileb://aws_status.zip \
+--role $ROLE_ARN \
+--handler aws_status.lambda_handler \
+--runtime python2.7 \
+--timeout 5
+</code></pre>
+                <h3>
+                    Create a REST API endpoint
+                </h3>
+                <pre class="language-sh"><code>$ ACCT_ID=$(aws ec2 describe-security-groups \
+--group-names 'Default' \
+--query 'SecurityGroups[0].OwnerId' \
+--output text) ; \
+echo "account_id: $ACCT_ID"
+
+$ API_ID=$(aws apigateway create-rest-api \
+--name aws_status \
+--query 'id' \
+--output text) ;\
+echo "api_id: $API_ID"
+
+$ ROOT_ID=$(aws apigateway get-resources \
+--rest-api-id $API_ID \
+--query 'items[].id' \
+--output text) ;\
+echo "root_id: $ROOT_ID"
+
+$ RESOURCE_ID=$(aws apigateway create-resource \
+--rest-api-id $API_ID \
+--parent-id $ROOT_ID \
+--path-part aws_status \
+--query 'id' \
+--output text) ;\
+echo "resource_id: $RESOURCE_ID"
+
+$ aws apigateway put-method \
+--rest-api-id $API_ID \
+--resource-id $RESOURCE_ID \
+--http-method GET \
+--authorization-type NONE
+
+$ aws apigateway put-integration \
+--rest-api-id $API_ID \
+--resource-id $RESOURCE_ID \
+--http-method GET \
+--type AWS \
+--integration-http-method POST \
+--uri "arn:aws:apigateway:us-west-2:lambda:path//2015-03-31/functions/arn:aws:lambda:us-west-2:$ACCT_ID:function:aws_status/invocations"
+
+$ aws apigateway put-integration-response \
+--rest-api-id $API_ID \
+--resource-id $RESOURCE_ID \
+--http-method GET \
+--status-code 200 \
+--response-templates "{\"application/json\": \"\"}"
+
+$ aws apigateway put-method-response \
+--rest-api-id $API_ID \
+--resource-id $RESOURCE_ID \
+--http-method GET \
+--status-code 200 \
+--response-models "{\"application/json\": \"Empty\"}"
+
+$ aws apigateway create-deployment \
+--rest-api-id $API_ID \
+--stage-name prod
+
+$ aws lambda add-permission \
+--function-name aws_status \
+--statement-id apigateway-aws_status \
+--principal apigateway.amazonaws.com \
+--action lambda:InvokeFunction \
+--source-arn "arn:aws:execute-api:us-west-2:$ACCT_ID:$API_ID/*/GET/aws_status"
+</code></pre>
+                <h3>
+                    Optionally create a scheduled event (recommended)
+                </h3>
+                <pre class="language-sh"><code>$ aws events put-rule \
+--name lambda_aws_status_cron_3m \
+--schedule-expression "rate(3 minutes)"
+
+$ FUNC_ARN=$(aws lambda get-function \
+--function-name aws_status \
+--query 'Configuration.FunctionArn' \
+--output text)
+
+$ aws events put-targets \
+--rule lambda_aws_status_cron_3m \
+--targets Id=1,Arn=$FUNC_ARN
+</code></pre>
+                <h2>
+                    Slack setup (part 2)
+                </h2>
+                <h3>
+                    Custom Slash Command
+                </h3>
+                <ol>
+                    <li>
+                        Build another Custom Integration with
+                        <code>
+                            Slash Commands
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Enter "/aws_status" in the
+                        <code>
+                            Choose a Command
+                        </code>
+                        field then
+                        <code>
+                            Add Slash Command Integration
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Enter "https://$API_ID.execute-api.us-west-2.amazonaws.com/prod/aws_status" as
+                        <code>
+                            Invoke URL
+                        </code>
+                        where
+                        <code>
+                            $API_ID
+                        </code>
+                        is the API Gateway REST API ID.
+                    </li>
+                    <li>
+                        Set
+                        <code>
+                            Method
+                        </code>
+                        to
+                        <code>
+                            GET
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Enter "AWS Health" for
+                        <code>
+                            Customize Name
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Under
+                        <code>
+                            Autocomplete help text
+                        </code>
+                        , check
+                        <code>
+                            Show this command in the autocomplete list
+                        </code>
+                        and enter "Check AWS Service Health Dashboard for events".
+                    </li>
+                    <li>
+                        <code>
+                            Save Integration
+                        </code>
+                        .
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            xslt
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/faultymonk/AWS-Service-Health-Chatbot" rel="nofollow" target="_blank" title="https://github.com/faultymonk/AWS-Service-Health-Chatbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

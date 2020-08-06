@@ -1,0 +1,193 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/mhg3jcH-RzA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="597924" data-title="The SNES and Daydream Controller" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/597/924/datas/original.jpg">
+                            <img alt="SuperDreamWheel &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/597/924/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The SNES and Daydream Controller
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="597925" data-title="The custom Arduino SNES controller simulator" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/597/925/datas/original.jpg">
+                            <img alt="SuperDreamWheel &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/597/925/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The custom Arduino SNES controller simulator
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="597926" data-title="The whole setup" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/597/926/datas/original.jpg">
+                            <img alt="SuperDreamWheel &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/597/926/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The whole setup
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The ability to combine an old SNES console with new a modern input device gives a new way to play the games we all know and love. This enables re-using old technology with new input devices and allows putting them to new innovative purposes.  This reduces waste and proves that old technology need not just be thrown away, but the old can be combined with the new into something even great.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Allows using a Google Daydream controller as a steering wheel to control Super Mario Kart on the SNES by rotating it in the air. Also allows controlling other games when the controller is in D-Pad simulation mode (tested and working with Super Mario World).
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    [Google Daydream controller] -&gt; BLE -&gt; [Raspberry Pi] -&gt; [node.js] -&gt; [python] -&gt; USB Port -&gt; [Arduino] -&gt; Controller Port -&gt; [SNES]
+                </p>
+                <p>
+                    As seen above:
+The Daydream controller is connected to a node.js script using Bluetooth Low Energy (BLE) running on the Raspberry Pi (or an Apple Mac). The script reads the raw data from the controller and decodes it into orientation and button data. Next, a python script is used by the node.js script to map the Daydream controller buttons and rotation into SNES controller buttons (in steering or D-Pad mode). The python script encodes the rotation and button data from the Daydream controller into a SNES controller data packet and sends it through a serial port to the Arduino. The Arduino reads all the data packets from python and stores them in a buffer. When the SNES requests controller data, the Arduino uses 2 interrupt service routines to latch the bits of the data packet into the controller data registers on the SNES. The SNES interprets these bits as a standard controller and controls the game!
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    At first, we tried to load a custom game into the SNES memory through the controller port. After spending lots of time with that, we were stuck since the SNES would not write the custom game data to memory! After debating writing self-modifying code for the data loader, it was decided to not risk it...
+                </p>
+                <p>
+                    Powering the SNES using the Raspberry Pi's USB port did not provide a reliable power source, so we had to play around with the power supply circuitry.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Reading orientation and button data from the Google Daydream controller using node.js over BLE
+                </p>
+                <p>
+                    Successfully simulating a SNES controller using the Arduino
+                </p>
+                <p>
+                    Making the two work together was the tricky part, but we did it!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    How to read orientation and button data from the Google Daydream controller.
+                </p>
+                <p>
+                    How to send data to the SNES controller port by simulating a controller with an Arduino.
+                </p>
+                <p>
+                    Pair programming actually works!
+                </p>
+                <p>
+                    Programming the SNES using assembly is HARD!
+                </p>
+                <h2>
+                    What's next for SuperDreamWheel
+                </h2>
+                <p>
+                    More user-configurable button mappings for specific games.
+                </p>
+                <p>
+                    Support for more HID devices.
+                </p>
+                <p>
+                    Support for more retro consoles.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ble
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            snes
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/troygiorshev/QHacks2018" rel="nofollow" target="_blank" title="https://github.com/troygiorshev/QHacks2018">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

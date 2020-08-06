@@ -1,0 +1,227 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    <a href="https://snap-ci.com/ashwanthkumar/vamana/branch/master" rel="nofollow">
+                        <img alt="Build Status" data-canonical-url="https://snap-ci.com/ashwanthkumar/vamana/branch/master/build_image" src="https://res.cloudinary.com/devpost/image/fetch/s--N8bzd_qx--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://snap-ci.com/ashwanthkumar/vamana/branch/master/build_image">
+                    </a>
+                </p>
+                <h1>
+                    vamana
+                </h1>
+                <p>
+                    Vamana is an auto scalar that helps you scale your software or hardware based on application demand. Making Elasticity truely elastic.
+                </p>
+                <h2>
+                    How does it work?
+                </h2>
+                <p>
+                    Vamana has an Autoscaling algorithm which identifies your application load based on a Demand-Supply model and determine if it has to Upscale / Downscale. In order to integrate your application with Vamana it needs to implement what are called as a "Collector" and a "Scalar".
+                </p>
+                <h3>
+                    Collector
+                </h3>
+                <pre class="language-scala"><code>case class ResourceStat(demand: Demand, supply: Supply, timestamp: Long)
+
+trait Collector {
+def getStats: ResourceStat
+}
+</code></pre>
+                <p>
+                    Collector is used for collecting stats about the application in a
+                    <code>
+                        Demand-Supply
+                    </code>
+                    fashion.
+                    <code>
+                        Demand
+                    </code>
+                    represents how much unit of work is being done / still pending while
+                    <code>
+                        Supply
+                    </code>
+                    represents how much capacity is present in the application.
+                </p>
+                <h3>
+                    Scalar
+                </h3>
+                <p>
+                    Scalar is used to calculate given a normalised demand and supply. How much nodes are required to satisfy the demand / how much nodes to be downscaled.
+                </p>
+                <pre class="language-scala"><code>case class ScaleUnit(numberOfNodes: Int)
+
+abstract class Scalar(cluster: RunningCluster) {
+def scaleUnit(normalizedStat: ResourceStat): ScaleUnit
+
+def downscaleCandidates(number: Int): List[String]
+}
+</code></pre>
+                <p>
+                    Scalar is also used to determine which are all the nodes which has to be downscaled. It could be based on oldestRunning / latestRunning / machineWithLowestDiskSpace / machineWithLowestMemory, etc.
+                </p>
+                <h3>
+                    API
+                </h3>
+                <p>
+                    Vamana runs as a simple HTTP service that exposes the following endpoints
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Action
+                            </th>
+                            <th>
+                                API Resource
+                            </th>
+                            <th>
+                                Comments
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                POST
+                            </td>
+                            <td>
+                                /cluster/create
+                            </td>
+                            <td>
+                                Create a new cluster with an application and return the clusterId
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                GET
+                            </td>
+                            <td>
+                                /cluster/:id
+                            </td>
+                            <td>
+                                Returns the cluster information
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                PUT
+                            </td>
+                            <td>
+                                /cluster/:id/start
+                            </td>
+                            <td>
+                                Start the given cluster if its not running
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                PUT
+                            </td>
+                            <td>
+                                /cluster/:id/stop
+                            </td>
+                            <td>
+                                Stop the given cluster by terminating all the running instances
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                DELETE
+                            </td>
+                            <td>
+                                /cluster/:id
+                            </td>
+                            <td>
+                                Delete the given cluster instance and all the metadata associated with it.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                PUT
+                            </td>
+                            <td>
+                                /cluster/:id/upscale
+                            </td>
+                            <td>
+                                Upscale the cluster with
+                                <code>
+                                    nodes
+                                </code>
+                                (query param) number of nodes
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                PUT
+                            </td>
+                            <td>
+                                /cluster/:id/downscale
+                            </td>
+                            <td>
+                                Downscale the cluster with
+                                <code>
+                                    nodes
+                                </code>
+                                (query param) number of nodes
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    You can find a Postman Collection under the root of the repo as
+                    <a href="https://github.com/ashwanthkumar/vamana/blob/master/postmanCollection.json" rel="nofollow">
+                        <code>
+                            postmanCollection.json
+                        </code>
+                    </a>
+                    .
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            jclouds
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scala">
+                                scala
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ashwanthkumar/vamana" rel="nofollow" target="_blank" title="https://github.com/ashwanthkumar/vamana">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

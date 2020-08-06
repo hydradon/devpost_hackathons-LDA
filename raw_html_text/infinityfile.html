@@ -1,0 +1,142 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Don't we all want a single solution to all our hassles with cloud storage. A simple go to solution which is able to ensure that we can send files to anyone over the internet where the files are encrypted in such a way that the we don't need to trust the security of the cloud storage itself. Also all this for
+                    <strong>
+                        free
+                    </strong>
+                    , well that was the dream.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our web app, provides a mechanism to upload any kind of file on to the cloud services which is encrypted using the password that the user provides. Now any user can retrieve the file given they know the file name and the password respectively. Our design model is capable of providing Unlimited free storage on the cloud. Also do note that our server itself does NOT store the password, so you are ensured that your data cannot be retrieved by anyone else until and unless you give them the password.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We built the web app on
+                    <strong>
+                        node js
+                    </strong>
+                    using the
+                    <strong>
+                        express.js
+                    </strong>
+                    framework.
+The process involves- whenever the user uploads a file, we convert the file into an encrypted image (jpg / png) and upload it on (imgur/uploads.im). Also we maintain the entry of the file in our database.
+Later when the same user / (his/her) friend queries for the same file on our web app using a password, we provide them with the decrypted file(with respect to the password entered now) from the (imgur/uploads.im) irrespective of wether the password is correct or NOT. If the password entered is correct the file received by the user is meaningful otherwise meaningless.
+Here the encryption method was a very interesting idea. What we did was we mapped the integers from 1 to 255 to a permutation of these integers only. This permutation was generated based on the password provided by the user. Now using this mapping we remapped all the bytes of the files to new values and then discarded the password from our database forever.
+Now when a user came, he/she would query for the file with a password, we would again generate a permutation with respect to this password, the inverse mapping of the encrypted bytes would be correctly done in case the password input by the user is correct, otherwise, the data would be meaningless. This method of encryption ensures extremely low probability of collisions due to the fact that 255! is a HUGE number.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We had a hard time finding out how all the relevant APIs (for image manipulation and online image cloud upload service) come together.
+Another major issue was the fact that node.js works
+                    <em>
+                        asynchronously
+                    </em>
+                    and how to design something which aptly supports that.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Able to successfully implement a working web app in the Express.js framework despite having limited knowledge of node.js before the hackathon.
+Being able to encrypt the files in such a way that the server is independent of the security process once the file is uploaded, which enabled the user to have maximum security.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    How to integrate various npm modules into a single project.
+How can we store data in the form of details of each pixel (in an image).
+How to use cloud APIs that enable us to send and retrieve images from the cloud storage.
+                </p>
+                <h2>
+                    What's next for InfinityFile
+                </h2>
+                <p>
+                    (Due to lack of time and understanding of the asynchronous nature of node.js we were unable to correctly implement the upload of a big file since it involved splitting of files)
+(We also plan to enable user's to upload complete folders and store them on the cloud such that we can preserve the directory structure.)
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jade">
+                                jade
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/npm">
+                                npm
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/rahulb99/infinityfile" rel="nofollow" target="_blank" title="https://github.com/rahulb99/infinityfile">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

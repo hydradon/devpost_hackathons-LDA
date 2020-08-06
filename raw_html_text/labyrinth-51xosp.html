@@ -1,0 +1,371 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    surviv.io
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Maze Battle Royale
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <ul>
+                    <li>
+                        Implemented an XOR-Shift Random Number Generator in JavaScript for fast, seeded RNG
+                    </li>
+                    <li>
+                        Determined maze size constants using square roots &amp; information about player count
+                    </li>
+                    <li>
+                        Procedurally generated mazes by randomly choosing paths, and using a stack to resolve dead-ends
+                    </li>
+                    <li>
+                        Scaled mazes using size constants using a manually implemented nearest neighbor algorithm
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        Since JavaScript does not inherently have a seeded random number generator, I needed to write my own
+                    </li>
+                    <li>
+                        Previous WebSocket projects showed that Python WebSockets did not have the robustness to handle high-performance games, so I chose to learn a uWebSockets to implement it in C++
+                    </li>
+                    <li>
+                        Heroku does not support C++ in their buildpacks, so I tricked the Dyno into using the Node.js buildpack to arbitrarily run pre-compiled executables
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Developed a custom client-server protocol for the project
+                </p>
+                <h3>
+                    Client to Server
+                </h3>
+                <p>
+                    <code>
+                        0x00
+                    </code>
+                    - Create Room
+                    <br>
+                    <code>
+                        0x01
+                    </code>
+                    - Join Game
+                    <br>
+                    <code>
+                        0x02
+                    </code>
+                    - End Game
+                    <br>
+                    <code>
+                        0x03
+                    </code>
+                    - Start Countdown
+                    <br>
+                    <code>
+                        0x04
+                    </code>
+                    - Start Game
+                    <br>
+                    <code>
+                        0x05
+                    </code>
+                    - Update Position (int
+                    <em>
+                        start_x
+                    </em>
+                    , int
+                    <em>
+                        start_y
+                    </em>
+                    , short
+                    <em>
+                        degree
+                    </em>
+                    , bool
+                    <em>
+                        moving
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x06
+                    </code>
+                    - Start Move (int
+                    <em>
+                        start_x
+                    </em>
+                    , int
+                    <em>
+                        start_y
+                    </em>
+                    , short
+                    <em>
+                        degree
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x07
+                    </code>
+                    - Stop Move (int
+                    <em>
+                        stop_x
+                    </em>
+                    , int
+                    <em>
+                        stop_y
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x08
+                    </code>
+                    - Shoot (int
+                    <em>
+                        start_x
+                    </em>
+                    , int
+                    <em>
+                        start_y
+                    </em>
+                    , short
+                    <em>
+                        degree
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x09
+                    </code>
+                    - Update Health (char
+                    <em>
+                        health
+                    </em>
+                    )
+                </p>
+                <h3>
+                    Server to Client
+                </h3>
+                <p>
+                    <code>
+                        0x00
+                    </code>
+                    - Create Room
+                    <br>
+                    <code>
+                        0x01
+                    </code>
+                    - Join Game (char
+                    <em>
+                        response_code
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x02
+                    </code>
+                    - Disconnect
+                    <br>
+                    <code>
+                        0x03
+                    </code>
+                    - Start Countdown (int
+                    <em>
+                        seed
+                    </em>
+                    , int
+                    <em>
+                        player_id
+                    </em>
+                    , int
+                    <em>
+                        player_count
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x04
+                    </code>
+                    - Start Game
+                    <br>
+                    <code>
+                        0x05
+                    </code>
+                    - Update Position (int
+                    <em>
+                        start_x
+                    </em>
+                    , int
+                    <em>
+                        start_y
+                    </em>
+                    , int
+                    <em>
+                        degree
+                    </em>
+                    , bool
+                    <em>
+                        moving
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x06
+                    </code>
+                    - Start Move Player (short
+                    <em>
+                        player_id
+                    </em>
+                    , int
+                    <em>
+                        start_x
+                    </em>
+                    , int
+                    <em>
+                        start_y
+                    </em>
+                    , short
+                    <em>
+                        degree
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x07
+                    </code>
+                    - Stop Move (short
+                    <em>
+                        player_id
+                    </em>
+                    , int
+                    <em>
+                        stop_x
+                    </em>
+                    , int
+                    <em>
+                        stop_y
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x08
+                    </code>
+                    - Shoot (short
+                    <em>
+                        player_id
+                    </em>
+                    , int
+                    <em>
+                        start_x
+                    </em>
+                    , int
+                    <em>
+                        start_y
+                    </em>
+                    , short
+                    <em>
+                        degree
+                    </em>
+                    )
+                    <br>
+                    <code>
+                        0x09
+                    </code>
+                    - Update Health (short
+                    <em>
+                        player_id
+                    </em>
+                    , char
+                    <em>
+                        health
+                    </em>
+                    )
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    All new framework
+                </p>
+                <h2>
+                    What's next for Labyrinth
+                </h2>
+                <p>
+                    Art
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            uwebsocket
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://labyrin.tech" rel="nofollow" target="_blank" title="https://labyrin.tech">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                labyrin.tech
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

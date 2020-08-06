@@ -1,0 +1,223 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/285479902?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="671758" data-title="LPM vs. Logit" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/671/758/datas/original.png">
+                            <img alt="Machine Learning - Logistic Regression Model Activity &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/671/758/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                LPM vs. Logit
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Automation technologies of any kind have been disrupting industries for decades to date. The technological improvements during the 19th century have had great impact on human life, yet most of the innovation was limited to substitute human strength and dexterity. New disruptive technologies such as Artiﬁcial Intelligence and Robotic Process Automation enable a by far larger scope of automation eﬀorts. Robotic Process Automation enables organizations to deploy software robots that are able to execute manual tasks across any existing application. Suitable processes to be automated by software robots are often repetitive, highly standardized and rule-based. Yet, Robotic Process Automation has the potential to automate a wider range of processes if it utilizes cognitive capabilities through Artiﬁcial Intelligence.
+                </p>
+                <p>
+                    This is a first step to cognitive capabilities within a robot by implementing a Simple Logit Model with advanced statistical diagnostics.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The goal of this custom activity is to perform a forecast where the variable we want to predict (dependent variable) is either a 0 or a 1 (binary).
+                </p>
+                <p>
+                    <strong>
+                        Input
+                    </strong>
+                </p>
+                <p>
+                    The activity supports two required input variables, _ DataTable _ and _ inputValues _. DataTable is a datatable which contains all data required to train the model.
+                </p>
+                <p>
+                    <em>
+                        DataTable
+                    </em>
+                    contains a data set that enables you to train your model. The first column of DataTable should contain the dependent variable and the remainder columns should contain regressors. The first column should be some datatype that is easy to convert to a Boolean (int (0/1), string (false/true), double(0.0/1.0), the remainders columns should be numbers (supports: int, string, float) which are converted to doubles. If a value cannot be converted into the right datatype, the activity will throw an error.
+                </p>
+                <p>
+                    The array inputValues is an array containing the data you want to use to predict an outcome. This array can only consist of doubles and should have the same dimension as the number of regressors in DataTable, otherwise an error is thrown.
+                </p>
+                <p>
+                    <strong>
+                        Processing
+                    </strong>
+                </p>
+                <p>
+                    The processing works in three steps: validation; estimation; diagnostics. First the datatable is  converted to a multidimensional double array and a one dimensional double array, the first containing all regressor data and the latter containing only the dependent variable data. The dimension of the inputValues array is also validated. After the validation, we estimate the logit model with the
+                    <strong>
+                        Iterative Reweighted Least Squares
+                    </strong>
+                    method.
+                </p>
+                <p>
+                    Note
+Using the Least Square method results in losing explanation capability within the model but we gain prediction accuracy which is the ultimate goal of this activity. After the estimation is done, we store diagnostics for understanding and further processing.
+                </p>
+                <p>
+                    <strong>
+                        Output
+                    </strong>
+                </p>
+                <p>
+                    Results and diagnostics
+                </p>
+                <pre class="language-nolang"><code>struct Diagnostics
+{
+Dictionary&lt;string, string&gt; Summary
+{
+"Dependent Variable",
+"Method",
+"Sample Size",
+"Convergence",
+"Iterations"
+},
+DataTable Regressors
+{
+"Variable": typeof(string),
+"Coefficient": typeof(double),
+"Standard Error": typeof(double),
+"z-Statistic": typeof(double),
+"Probability": typeof(double),
+"Odds Ratio": typeof(double),
+},
+Dictionary&lt;string, double&gt; Statistics
+{
+"McFadden R-squared",
+"AIC",
+"BIC",
+"HQC",
+"Log likelihood",
+"LR Statistic",
+"Prob(LR Statistic)",
+"Log likelihood Loss",
+},
+double[] Prediction,
+double PredictionStdError
+}
+</code></pre>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Built in Visual Studio using C# implementing a CodeActivity with support of the Accord.Statistics Framework (
+                    <a href="http://accord-framework.net/docs/html/N_Accord_Statistics.htm" rel="nofollow">
+                        Accord MSDN
+                    </a>
+                    )
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    This model comprises of a very inclusive set of diagnostics such as akaike information criteria but also an LR test statistic which is tested on the Logit model against a Logit model with only an intercept. We have tested this model on various datasets from kaggle.com and were able to make accurate predictions on business data (
+                    <a href="https://www.kaggle.com/c/to-loan-or-not-to-loan/data" rel="nofollow">
+                        To loan, or not to loan
+                    </a>
+                    ).
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We have learned the ease of implementing custom code into Custom Activities for UiPath. Although this model is not as fancy as the ML / DL models that fascinates the academic society these days. The results of this model are pretty awesome, check them out in Demo_Results on Github.
+                </p>
+                <h2>
+                    What's next for Machine Learning - Logistic Regression Model Activity
+                </h2>
+                <ol>
+                    <li>
+                        Enabling our activity to engage in self learning within its own model
+                    </li>
+                    <li>
+                        Independently selecting its own regressors from the dataset to prevent overfitting
+                    </li>
+                    <li>
+                        Supply the user with more advanced prediction quality measures
+                    </li>
+                </ol>
+                <h2>
+                    Demo video
+                </h2>
+                <p>
+                    <a href="https://vimeo.com/285479902" rel="nofollow">
+                        https://vimeo.com/285479902
+                    </a>
+                </p>
+                <h2>
+                    Background information
+                </h2>
+                <p>
+                    A Logit model describes a non-linear regression,in this short explanation we assume that the reader knows what regression is. The goal is to perform a forecast where the variable we want to predict (dependent variable) is either a 0 or a 1 (binary). We could perform a standard linear regression, however since the linear model works better on real dependent variables and not binary ones we have come up with a better solution.
+                </p>
+                <p>
+                    The red line in the left pane of the image shown above is a linear model used on a binary dependent variable, this is a linear probability model (LPM). Note that the fit of this line is bad and rather awkward. Instead of a linear relation between the dependent variable and the regressors, the logit model uses the logistic probability function to determine the relationship between the dependent and the independent variables. Hence the values of the estimates of the dependent variable can be interpreted as the probability of the dependent variable attaining the value 1. We are now able to properly specify a model for a binary dependent variable, hence we are also able to make predictions with the model, which satisfies our main objective of this custom UiPath activity.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/net">
+                                .net
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            accord.statistics
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Ciphix/LogitModel" rel="nofollow" target="_blank" title="https://github.com/Ciphix/LogitModel">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,109 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Former President Barack Obama, like other past presidents, put in efforts to strengthen international diplomacy during his time in office. While he was abroad, some of his achievements didn't make it to the top of the news radar - we've developed this app in response, to show where he's gone for the good of America.
+                </p>
+                <p>
+                    <img alt="Obama" data-canonical-url="http://carlotto.us/intelligentGadgets/doc/ffClipArt/obama.png" src="https://res.cloudinary.com/devpost/image/fetch/s--uczC7K7Z--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://carlotto.us/intelligentGadgets/doc/ffClipArt/obama.png">
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used Ruby on Rails 5.0, vanilla JS, Esri's ArcGIS 4.2 JS API, and a PostgreSQL 9.6 database to set up our application.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The app draws data from the PostgreSQL database, which is populated with information of Obama's visits abroad.
+                </p>
+                <p>
+                    The Rails backend sends an ActiveRecord to the client-side JavaScript, where it is then used in JSON format to  create our data points. It loops through all the data and makes an AJAX call to the Google Maps Geocoding API in order to determine the latitude and longitude of the place he visited. We now pass the location data to the Esri ArcGIS API to create points on the map with information about his visit. Finally, we use ArcGIS' polyfill class, in combination with the quadratic Bezier curve function to draw a path between the points and color it according to the near.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Setting up the application properly on Heroku proved to very challenging! We also ran into difficulty with being able to filter the dataset based on year - we looked at Layers in the ArcGIS documentation, but we were unable to produce something that would toggle specific datasets on and off.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Esri's ArcGIS JavaScript API features a Polyline class that draws a straight line between any two points - however, in 3D space, we noticed that it would intersect the globe if the distances were too far apart. To neatly draw a path between two points, we calculated the Quadratic Bezier Curve between the two points, with about 50 intermediary points in between. The result are curves that wrap around the globe.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We've learned how to deploy on Heroku and set up a full-stack web application with its own SQL database (there were many headaches along the way). We also learned about how to quickly prototype with unfamiliar technology!
+                </p>
+                <h2>
+                    What's next for Globama
+                </h2>
+                <p>
+                    The ability to customize the dataset you want is the next big thing for Globama. Since we have a PostgreSQL database available, we can introduce CRUD principles into our app. Additionally, more user interactivity would give the app more life and generate more interest amongst users.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/esri">
+                                esri
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/postgresql">
+                                postgresql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ruby-on-rails">
+                                ruby-on-rails
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://globama.herokuapp.com/" rel="nofollow" target="_blank" title="https://globama.herokuapp.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                globama.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

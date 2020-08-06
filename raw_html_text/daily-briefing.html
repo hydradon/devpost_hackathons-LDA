@@ -1,0 +1,166 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="467312" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/312/datas/original.jpg">
+                            <img alt="Daily Briefing &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/312/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="467383" data-title="Today's top stories pulled from reddit" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/383/datas/original.jpg">
+                            <img alt="Daily Briefing &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/383/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Today's top stories pulled from reddit
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="467381" data-title="Weather forecast in our hometown of Boston, as well as reminders for the day" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/381/datas/original.jpg">
+                            <img alt="Daily Briefing &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/381/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Weather forecast in our hometown of Boston, as well as reminders for the day
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="467382" data-title="Today in history fun facts" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/382/datas/original.jpg">
+                            <img alt="Daily Briefing &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/467/382/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Today in history fun facts
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We believe that there's something special about waking up and reading a good old fashioned newspaper. What we wanted to do was allow the user to print their own newspaper from home to wake up to every morning. Our solution was Daily Briefing, a web server that allows the customization of news to be printed by the user.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Every morning, it will print out a receipt slip containing top news articles that appeared overnight, as well as a joke, the weather, any reminders that you set for yourself, and a fun fact about this day in history.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The printer is controlled from an Arudino Mega 2560, which has code on it to accept serial input, and send that to the printer.  Using this Arduino software we are able to send data from anywhere over serial to the Arduino, and have it print.  This makes it easy to use serialPy, a library for python which communicates over serial through the usb ports of a computer.  A simple script was written to find the Arduino port based on a keyword seen every time it was plugged in.  From there a program was written which pulled data from online, from sources such as reddit, wunderground, and Today in History.  The python script would grab the data, convert it to a readable ASCII format for the printer, and then sent it with nice section breaks and formatting to the printer.  We decided to convert a few local python scripts into a flask server, to allow users to add reminders from a form. This server is also running a RESTful API, which will send JSON files to the printer.&nbsp;
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We ran into several challenges with this project, including formatting the strings to be outputted by the printer, setting up the post api call from the form, and linking a relational database.&nbsp;When we first used the printer, the default was for it to send each character to the printer, and once it ran out of space at the end of the 32 character wide paper, it would loop to the next line.  This caused words to be broken in half which severely reduced readability.  Using the python script we were able to analyze the words in the inputted string, and format a new string which maintained whole words and line breaks in order to be more visually appealing and legible.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about python, specifically string modification, and how python works with serial communication and ports. We also learned about managing, running, and creating sustainable flask servers with python, and using such a server to create a RESTful API that can be accessed externally.
+                </p>
+                <h2>
+                    What's next for Daily Briefing
+                </h2>
+                <p>
+                    We would like to run the python script from a raspberry Pi which would make it feasible to keep on 24/7, allowing us to use this as an actual morning briefing in our dorm room.  It would also allow interfacing with other hardware such as LEDs, which could help convey information quickly using different colors or blink patterns for example.  We also made it easy to implement new sections, so we could expand on those in the future.  As we add more sections though we realize the paper becomes very long, so it would be nice to make an easy interface where the user could choose what they wanted to see, maybe on a day-by-day basis.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mini-thermal-receipt-printer
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serial
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/smpenna3/Daily-Briefing" rel="nofollow" target="_blank" title="https://github.com/smpenna3/Daily-Briefing">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

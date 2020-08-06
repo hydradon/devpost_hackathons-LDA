@@ -1,0 +1,323 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/C8AvjzDzx00?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    OpenPower- Emergency Prediction using Spark
+                </h1>
+                <p>
+                    An estimated 240 million calls to 911 are made each year, in the U.S alone. Firefighters constitute a significant number of first responders to these emergency calls. 
+Predicting frequency of emergency events is extremely useful, as it allows better fire deparment logistics. This incurs in not only a reductions of costs, but it also helps saving more lives.
+                </p>
+                <p>
+                    This project demontrates how deep learning can be used to predict amount of emergency calls, given different types of emergency events and multiple fire stations. 
+Our method relies on Apache Spark for dataprocessing, making it possible to scale across multiple machines. We also provide optional GPU processing for some operations.
+                </p>
+                <p>
+                    Data used for our experiments is public, and are made available through
+                    <a href="https://data.seattle.gov/" rel="nofollow">
+                        Seattle Open Data portal
+                    </a>
+                    .
+The datasets used in our experiments are the following:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://data.seattle.gov/Public-Safety/Seattle-Real-Time-Fire-911-Calls/kzjm-xkqj" rel="nofollow">
+                            Seattle Real-Time Fire 911 Calls
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://data.seattle.gov/Community/My-Neighborhood-Map/82su-5fxf" rel="nofollow">
+                            My Neighborhood Map
+                        </a>
+                    </li>
+                </ul>
+                <h2>
+                    Requirements
+                </h2>
+                <p>
+                    This package is compatible with Spark 1.5+ and scala 2.10
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Spark Version
+                            </th>
+                            <th>
+                                Scala Version
+                            </th>
+                            <th>
+                                Compatible version of Spark GPU
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    1.5+
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    2.10
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    1.0.0
+                                </code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    GPU requirements are the following:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                CUDA Toolkit Version
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    7.5
+                                </code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>
+                    Setup
+                </h2>
+                <p>
+                    Before running this project, set following environment variables accordingly:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Variable
+                            </th>
+                            <th>
+                                Value
+                            </th>
+                            <th>
+                                Example
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <code>
+                                    SPARK_HOME
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    &lt;path to Apache Spark installation&gt;
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    /home/user/apache-spark
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    MASTER
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    &lt;URL to SPARK Master&gt;
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    spark://192.168.0.1:7077
+                                </code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <code>
+                                    HADOOP_HOME
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    &lt;path to Apache Hadoop installation&gt;
+                                </code>
+                            </td>
+                            <td>
+                                <code>
+                                    /home/user/hadoop
+                                </code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    See also
+                    <code>
+                        example_set_environment.sh
+                    </code>
+                    .
+                </p>
+                <h2>
+                    Building
+                </h2>
+                <p>
+                    (Note: Not necessary if using pre-compiled release version)
+                </p>
+                <p>
+                    Requires
+                    <a href="http://www.scala-sbt.org/" rel="nofollow">
+                        SBT
+                    </a>
+                    .
+Also make sure
+                    <code>
+                        nvcc
+                    </code>
+                    is visible through the PATH environment variable.
+                </p>
+                <p>
+                    Just excute the following commands:
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            cd fireplanning
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            ./build.sh
+                        </code>
+                    </li>
+                </ul>
+                <h2>
+                    Uploading Seattle emergency data to Hadoop
+                </h2>
+                <p>
+                    This step is necessary before running this application. 
+Make sure
+                    <code>
+                        HADOOP_HOME
+                    </code>
+                    has been correctly set before uploading data
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            cd fireplanning
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            ./submit_data.sh
+                        </code>
+                    </li>
+                </ul>
+                <h2>
+                    Running
+                </h2>
+                <p>
+                    After uploading data into Hadoop, run with the following commands:
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            cd fireplanning
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            ./run.sh
+                        </code>
+                    </li>
+                </ul>
+                <p>
+                    This shell script will run our main application through Spark Shell in interactive mode. 
+This means that after execution, the application will not exit, and scala terminal will be available to user.
+                </p>
+                <h2>
+                    Execution logs
+                </h2>
+                <p>
+                    Sample execution logs are available under
+                    <code>
+                        execution-log-samples
+                    </code>
+                    folder.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            cuda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scala">
+                                scala
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/shell">
+                                shell
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/marcojrfurtado/EmergencyPredictionOnSpark" rel="nofollow" target="_blank" title="https://github.com/marcojrfurtado/EmergencyPredictionOnSpark">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

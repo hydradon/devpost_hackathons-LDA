@@ -1,0 +1,176 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="462343" data-title='Hardware, the "Penn"' href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/462/343/datas/original.jpg">
+                            <img alt="AirPenn - Accessible 3D Drawing, Beautified &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/462/343/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Hardware, the "Penn"
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="462590" data-title="Image drawn by user" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/462/590/datas/original.jpg">
+                            <img alt="AirPenn - Accessible 3D Drawing, Beautified &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/462/590/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Image drawn by user
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="462591" data-title="Output from Neural Net" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/462/591/datas/original.jpg">
+                            <img alt="AirPenn - Accessible 3D Drawing, Beautified &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/462/591/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Output from Neural Net
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    With the rapid rise in popularity of AR and VR, artistic applications that allow the user to draw in 3D space are also gaining traction, the most popular of which is Tilt brush, however there's quite a big barrier to entry: namely the cost and requirement of artistic skill. So we thought, what if we made a small and compact digital pen that allowed the user to draw in 3D space but implement some software to stylize and beautify the drawing so that more people are encouraged to explore art in 3D without the need of an expensive and bulky VR system to get started?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    A digital "Penn" which allows the user to draw freely in the air to create a 3D image that is subsequently beautified in software with AI.
+                </p>
+                <p>
+                    With the recent advances in neural networks for image processing, the application of artistic styles from famous paintings to ordinary drawings and pictures has become both possible and visually pleasing in certain situations. We wanted to apply this stylization to 3D drawings made with our AirPenn. Since there is a lack of training data for 3D "pictures" or sculptures, we decided to utilize the power of existing training sets and networks for 2D images. Our goal was to take the 3D drawings of the user, which we assumed would be likely embedded in a curved plane around them (as in many Oculus/Vive videos users draw most in the immediate area), so a non-linear dimensionality reduction such as Laplacian Eigenmaps could preserve local relationships to a relatively high degree. Then we would have a 2D image from a 3D drawing, stylize that image, and output it back to the user where we can reverse the transform to get a stylized 3D drawing. Unfortunately we ran into challenges with such a demanding form of dimensionality reduction and were unable to implement it.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The "Penn": A 9 DoF motion sensor talking via I2C to a Bluetooth LE microcontroller which sends the acceleration data via a BLE link to the computer.
+                </p>
+                <p>
+                    Software: A local flask application using a python BLE library that receives acceleration data and calculates relative position which are then sent to a web interface for rendering with three.js. We take the drawn 3D image and de-dimensionalizes it into a 2D image to feed into a deep learning neural network (VGG 19) that was pre-trained on a variety of artistic styles to produce a beautified image.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Lines drawn with three.js cannot have vertices added dynamically. Instead, we made a new line for each data point.
+The neural network takes a lot of fiddling to work well and its many libraries are a hassle to install.
+Double integration of acceleration to obtain position data is non-trivial and requires advanced filtering to perform well.
+Originally, we planned to use the Web Bluetooth API to directly access BLE data from the web browser but Google has put the technology in a transition period just now and thus is currently unavailable.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    three.js as a flexible JS graphics library
+BLE and Bluetooth Web (which no longer works)
+Python
+I squared C for chip to chip communication
+                </p>
+                <h2>
+                    What's next for AirPenn
+                </h2>
+                <p>
+                    Implement better filtering and integration math to obtain position data
+Include rotation data to the "Penn" so that it can be rotated in the air while getting correct positional data
+Utilize gyroscope to help filter the accelerometer data
+Better hardware/ergonomics by making a sleeker design
+Finished dimensionality reduction and restoration for stylization with neural networks
+Optimize the parameters for the Neural Network such as number of phases and iterations
+Give the user more options
+More colors and brushes for the Penn
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/accelerometer">
+                                accelerometer
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluetooth">
+                                bluetooth
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hardware">
+                                hardware
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/three-js">
+                                three.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jacsonding/BerniniBot" rel="nofollow" target="_blank" title="https://github.com/jacsonding/BerniniBot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

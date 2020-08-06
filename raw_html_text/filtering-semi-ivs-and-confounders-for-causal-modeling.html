@@ -1,0 +1,217 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="515384" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/515/384/datas/original.jpg">
+                            <img alt="Causal Modeling of Patient-Level Time Series Data &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/515/384/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Econometrics. Confounding: a blessing in disguise.
+                </p>
+                <p>
+                    Core focus: controlling for confounding, including confounding that is introduced by the introduction of confounders ("garbage in, garbage out").
+                </p>
+                <p>
+                    Electronic health records represent a rich, but imperfect record of routine clinical practice. Why not use them as input for causal modeling and discovery methods?
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    <strong>
+                        Adverse Drug Events
+                    </strong>
+                    (ADEs) pose a threat to individuals and healthcare systems worldwide. In the United States alone, some 870,000 ADEs were reported in 2014, the last year for which data was available (well last year when I looked) (FAERS). Pharmacovigilance is the discipline that is tasked with the monitoring of pharmaceuticals after regulatory approval, since surveillance cannot and does not end after a drug is approved for market by regulators. Traditionally, spontaneous reporting systems such as
+                    <strong>
+                        FAERS
+                    </strong>
+                    and
+                    <strong>
+                        EUdraVigilance
+                    </strong>
+                    in the EU were the primary source of data. These data are assembled from submissions from by physicians, health clinics, labs, clinical trials, and package labeling events from pharmaceutical concerns. However, the usefulness of these data are attenuated by incompleteness and inaccuracy. So why not use electronic health records, since it represents a rich, though imperfect record of routine clinical practice. However, these data present their own set of problems, including the overhead incurred with natural language processing in order to transform unstructured free text into a format more amenable to computation, and confounding.
+                </p>
+                <p>
+                    Confounding is often understood to be any influence or bias upon a predictor and/or outcome of interest that results, if it is its source(s) is/are not accounted for, in spurious statistical associations. Judea Pearl, among others, have argued elsewhere that confounding is a concept that belongs to causality rather than statistics, since it requires assumptions with regard to the direction of influence that traditional statistics cannot make alone.
+                </p>
+                <p>
+                    In medicine, we are fortunate to possess structured sources of causal knowledge. This knowledge can help to inform causal models so as to facilitate the automation of causal reasoning.  In my research, I have demonstrated elsewhere that if the raw detection signal is above noise level (0.6 AuC), improvement is possible by using literature-based discovery (LBD) techniques. For example, given a spurious drug exposure (predictor): nevirapine and an ADE (outcome): gastrointestinal bleeding, LBD can identify confounding variables (HIV seropositivity, aspirin) that &ldquo;explain away&rdquo; the spurious association. Why not use LBD to identify causally relevant covariates that can populate causal Bayesian networks?
+                </p>
+                <p>
+                    In the current stage of my research, the steps for accomplishing this objective are the following:
+                </p>
+                <p>
+                    1.) Use LBD methods to identify covariates that are relevant to the &ldquo;causal story&rdquo; of a given predictor and outcome. These will include both &ldquo;true confounders&rdquo; (variables that mutually influence both the predictor and the outcome) and instrumental variables (variables which influence the cause, but not the effect, except through its error term).
+                </p>
+                <p>
+                    2.) Build a Vector Auto Regression (VAR) model for each covariate along with its given predictor and outcome from time series panel data extracted from observational clinical records derived from electronic health records. (VAR models enable analysis of time-series panel data at the patient level.)
+                </p>
+                <p>
+                    3.) Use the residuals (errors) from the VAR models in Step 2 as input for TETRAD graph topology learning algorithms and retain only those models that fulfill the graphical criteria for their respective variable type (as IVs and/or confounders).
+                </p>
+                <p>
+                    4.) Construct models with Cartesian expansion (different combinations) of the identified and vetted covariates, optimize for model fit with Bayesian Information Criterion score.
+                </p>
+                <p>
+                    5.) Compute Average Treatment Effect from Instantiated Parameterized models of graphs from Step 4 (I&rsquo;ve done something like this using particle filter MCMC simulations).
+                </p>
+                <p>
+                    Note: originally, I was using the (Ryan et al., 2013) reference data set for pharmacovigilance, but in the coming year I shall be using the time-indexed reference data set of (Harpaz et al., 2014), so as to control for confounding of the performance of my methods from integrated knowledge that was not yet widely known (a form of bias otherwise known as &ldquo;retrospective corruption of anachronistic knowledge&rdquo;).
+                </p>
+                <p>
+                    For this Datathon submission, my focus was on identifying methods that would facilitate the construction of causal models using time series panel data at the patient level. Using Vector Auto Regression is but another approach to confounding control since each subject&rsquo;s data set is in a sense its own control.
+                </p>
+                <p>
+                    What I have presented is some sample data that is similar in form to what the data that I shall be extracting from (C-TAKES or MetaMap or CLAMP-processed) clinical notes in the weeks and months to come. The short and sweet code snippet that is presented at
+                    <a href="http://www.github.com/kingfish777/causalVAR" rel="nofollow">
+                        http://www.github.com/kingfish777/causalVAR
+                    </a>
+                    is a sort of glue that will enable more granular analysis and one may hope more specific and sensitive results.
+                </p>
+                <h2>
+                    Error Analysis
+                </h2>
+                <p>
+                    Natural Language Processing (NLP) is simultaneously a facilitating technology of this venture and as well as a limiting factor. I did not have a chance to demonstrate the LBD methods that I have been developing, since I have plenty of expertise back in Houston that I can draw from. My focus at this Datathon, rather, was putting the temporal and patient-level pieces into play.
+                </p>
+                <p>
+                    Divide these data into training, validation, and test set.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    R
+r-causal (R API for TETRAD)
+ ... in the background, semanticvectors, SemMedDB
+                </p>
+                <p>
+                    For more background, visit:
+                    <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5333204/" rel="nofollow">
+                        link
+                    </a>
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Was not familiar with VAR/panel data before the last week or so.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    My research has a way forward beyond my prior imaginings.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    How to handle time series data and perform patient level modeling.
+                </p>
+                <h2>
+                    What's next for Filtering semi-IVs and Confounders for causal modeling
+                </h2>
+                <p>
+                    Obtaining the data and implementing my covariate vetting procedure.
+                </p>
+                <h2>
+                    Acknowledgements
+                </h2>
+                <p>
+                    Acknowledgements: NIH NLM Training Program in Biomedical Informatics &amp; Data Science (T15LM007093)
+                </p>
+                <h2>
+                    To do
+                </h2>
+                <p>
+                    Obtain data of the required format for this analysis.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sql">
+                                sql
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://www.github.com/kingfish777/causalVAR" rel="nofollow" target="_blank" title="http://www.github.com/kingfish777/causalVAR">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

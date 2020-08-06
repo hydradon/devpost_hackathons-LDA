@@ -1,0 +1,100 @@
+[
+    {
+        "url": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/comments/258294934",
+        "pull_request_review_id": 205531091,
+        "id": 258294934,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDI1ODI5NDkzNA==",
+        "diff_hunk": "@@ -0,0 +1,155 @@\n+package com.lhd.earlybirdapi.subscription;\n+\n+import static java.util.Arrays.asList;\n+import static org.junit.Assert.assertEquals;\n+import static org.junit.Assert.assertTrue;\n+import static org.mockito.Mockito.inOrder;\n+import static org.mockito.Mockito.times;\n+import static org.mockito.Mockito.verify;\n+import static org.mockito.Mockito.when;\n+\n+import com.lhd.earlybirdapi.githubrepo.GithubRepo;\n+import com.lhd.earlybirdapi.githubrepo.GithubRepoRepository;\n+import com.lhd.earlybirdapi.githubrepo.GithubRepoService;\n+import com.lhd.earlybirdapi.githubrepo.IssueDto;\n+import com.lhd.earlybirdapi.util.Mailer;\n+import java.time.Instant;\n+import java.util.ArrayList;\n+import java.util.List;\n+import org.junit.Test;\n+import org.mockito.ArgumentCaptor;\n+import org.mockito.Captor;\n+import org.mockito.InOrder;\n+import org.mockito.InjectMocks;\n+import org.mockito.Mock;\n+\n+// TODO: NONE OF THIS IS FUNCTIONAL, i just moved this over from a previous test class because it's got logic that\n+// can be reused\n+public class SubscriptionServiceTest {\n+\n+  private Instant currentTime = Instant.now();\n+  private Instant currentTimePlus5Seconds = currentTime.plusSeconds(5L);\n+  private Instant currentTimeMinus5Seconds = currentTime.minusSeconds(5L);\n+  private IssueDto issueDto1;\n+  private IssueDto issueDto2;\n+  private GithubRepo githubRepo1;\n+  private GithubRepo githubRepo2;\n+  private Subscription subscription1;\n+  private Subscription subscription2;\n+\n+  @Mock\n+  private Mailer mailerMock;\n+\n+  @Mock\n+  private GithubRepoService githubRepoServiceMock;\n+\n+  @Captor\n+  ArgumentCaptor<List<GithubRepo>> savedGithubReposCaptor;\n+\n+  @Mock\n+  private GithubRepoRepository githubRepoRepositoryMock;\n+\n+  @Captor\n+  ArgumentCaptor<Subscription> savedSubscriptionsCaptor;\n+\n+  @Mock\n+  private SubscriptionRepository subscriptionRepositoryMock;\n+\n+  @InjectMocks\n+  private SubscriptionService subscriptionServiceMock;\n+\n+\n+  @Test\n+  public void sendEmailNotificationsForNewIssues() {\n+    createTestDoublesAndStubMockedServices();\n+\n+    assertGithubReposUpdatedWithLatestIssueUrlAndTimestampAndVerifySaved();\n+    verifyEmailSentOnlyForSubscription1();\n+    assertSubscriptionsUpdatedAndVerifySaved();\n+  }\n+\n+  private void createTestDoublesAndStubMockedServices() {\n+    createIssueDtos();\n+    createGithubRepos();\n+    createSubscriptions();\n+    stubGithubRepoRepositoryMock();\n+    stubGithubRepoServiceMock();\n+    stubSubscriptionRepositoryMock();\n+  }\n+\n+  private void createIssueDtos() {\n+    issueDto1 = new IssueDto();\n+    issueDto1.setCreatedAt(currentTimePlus5Seconds);\n+    issueDto1.setHtmlUrl(\"http://github.com/user/repo/issue1\");\n+    issueDto2 = new IssueDto();\n+    issueDto2.setCreatedAt(currentTimeMinus5Seconds);\n+    issueDto2.setHtmlUrl(\"http://github.com/user/repo/issue2\");\n+  }\n+\n+  private void createGithubRepos() {\n+    githubRepo1 = GithubRepo.builder()\n+        .id(\"genericRepoId1\")\n+        .latestRecordedIssueTimestamp(currentTime)\n+        .build();\n+    githubRepo2 = GithubRepo.builder()\n+        .id(\"genericRepoId2\")\n+        .latestRecordedIssueTimestamp(currentTime)\n+        .build();\n+  }\n+\n+  private void createSubscriptions() {\n+    subscription1 = Subscription.builder()\n+        .email(\"generic1@email.com\")\n+        .githubRepo(githubRepo1)\n+        .lastCheckedTimestamp(currentTime)\n+        .build();\n+    subscription2 = Subscription.builder()\n+        .email(\"generic2@email.com\")\n+        .githubRepo(githubRepo2)\n+        .lastCheckedTimestamp(currentTime)\n+        .build();\n+  }\n+\n+  private void stubGithubRepoRepositoryMock() {\n+    when(githubRepoRepositoryMock.findAll()).thenReturn(new ArrayList<>(asList(githubRepo1, githubRepo2)));\n+  }\n+\n+  private void stubGithubRepoServiceMock() {",
+        "path": "src/test/java/com/lhd/earlybirdapi/subscription/SubscriptionServiceTest.java",
+        "position": 117,
+        "original_position": 117,
+        "commit_id": "4b8de1ab651c880924ab8ac075a357dc536aafa7",
+        "original_commit_id": "4b8de1ab651c880924ab8ac075a357dc536aafa7",
+        "user": {
+            "login": "dwood12",
+            "id": 7341308,
+            "node_id": "MDQ6VXNlcjczNDEzMDg=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/7341308?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/dwood12",
+            "html_url": "https://github.com/dwood12",
+            "followers_url": "https://api.github.com/users/dwood12/followers",
+            "following_url": "https://api.github.com/users/dwood12/following{/other_user}",
+            "gists_url": "https://api.github.com/users/dwood12/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/dwood12/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/dwood12/subscriptions",
+            "organizations_url": "https://api.github.com/users/dwood12/orgs",
+            "repos_url": "https://api.github.com/users/dwood12/repos",
+            "events_url": "https://api.github.com/users/dwood12/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/dwood12/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Is this planned on being used or should it be removed?",
+        "created_at": "2019-02-20T00:59:21Z",
+        "updated_at": "2019-02-20T00:59:21Z",
+        "html_url": "https://github.com/mitchellirvin/earlybird-api/pull/33#discussion_r258294934",
+        "pull_request_url": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/33",
+        "author_association": "COLLABORATOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/comments/258294934"
+            },
+            "html": {
+                "href": "https://github.com/mitchellirvin/earlybird-api/pull/33#discussion_r258294934"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/33"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/comments/259653659",
+        "pull_request_review_id": 207186575,
+        "id": 259653659,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDI1OTY1MzY1OQ==",
+        "diff_hunk": "@@ -82,59 +86,20 @@ private Instant findLatestIssueCreatedAtTimestamp(String githubRepoId) {\n     return Optional.of(issues[0]);\n   }\n \n-  // TODO: debug why this request wouldn't work with RestTemplate or the like\n-  // this really should be an http request, not a cURL executed with ProcessBuilder\n   private IssueDto[] postForGithubRepoIssues(String githubRepoId) {\n+    String URL = \"/repos/\" + githubRepoId + \"/issues\";\n     IssueDto[] issues;\n \n     // TODO: each of the methods that could throw IOExceptions should handle it themselves\n     // we could remove the try/catch here in that case, and create more specific custom exceptions\n     try {\n-      Process curlRequestProcess = executeCurlRequestAndRetrieveProcess(githubRepoId);\n-      BufferedReader bufferedReader = getBufferedReaderFromProcess(curlRequestProcess);\n-      String serializedResponse = getSerializedResponse(bufferedReader);\n-      issues = new ObjectMapper().readValue(serializedResponse, IssueDto[].class);\n-    } catch (IOException e) {\n+      ResponseEntity<String> responseEntity = restTemplate.getForEntity(URL, String.class);",
+        "path": "src/main/java/com/lhd/earlybirdapi/githubrepo/GithubRepoService.java",
+        "position": null,
+        "original_position": 55,
+        "commit_id": "75e2dd61dbbe8cebc9a353a5bef3f6f7624599c0",
+        "original_commit_id": "4173aa4d7f93970184ac516004210beb08af53a0",
+        "user": {
+            "login": "mitchellirvin",
+            "id": 16233245,
+            "node_id": "MDQ6VXNlcjE2MjMzMjQ1",
+            "avatar_url": "https://avatars0.githubusercontent.com/u/16233245?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/mitchellirvin",
+            "html_url": "https://github.com/mitchellirvin",
+            "followers_url": "https://api.github.com/users/mitchellirvin/followers",
+            "following_url": "https://api.github.com/users/mitchellirvin/following{/other_user}",
+            "gists_url": "https://api.github.com/users/mitchellirvin/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/mitchellirvin/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/mitchellirvin/subscriptions",
+            "organizations_url": "https://api.github.com/users/mitchellirvin/orgs",
+            "repos_url": "https://api.github.com/users/mitchellirvin/repos",
+            "events_url": "https://api.github.com/users/mitchellirvin/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/mitchellirvin/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "do we want to capture this as a string? should we capture as a list of the object type we expect?",
+        "created_at": "2019-02-25T01:15:36Z",
+        "updated_at": "2019-02-27T02:14:10Z",
+        "html_url": "https://github.com/mitchellirvin/earlybird-api/pull/34#discussion_r259653659",
+        "pull_request_url": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/34",
+        "author_association": "OWNER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/comments/259653659"
+            },
+            "html": {
+                "href": "https://github.com/mitchellirvin/earlybird-api/pull/34#discussion_r259653659"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/mitchellirvin/earlybird-api/pulls/34"
+            }
+        }
+    }
+]

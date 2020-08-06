@@ -1,0 +1,163 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/5q9Xtn3KOqE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="521037" data-title="high level architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/521/037/datas/original.png">
+                            <img alt="yourweb.co &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/521/037/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                high level architecture
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The current state of digital news is overcrowded with text, and non-personalised content which makes it hard to focus on one particular story. Yourweb.co solves this problem by creating a more intimate &lsquo;news discussion&rsquo; allowing users to be more involved in a headline rather than rapidly skimming over it. The Lex based chatbot facilitates this new user experience by interpreting and eliciting user statements in a natural way. This has allowed an extremely simple interface to be developed around discovering and saving news articles.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It enable users to discuss and discover current news and save articles for reading later. Users interact with a AWS Lex and AWS Lambda powered bot which has contextual awareness of recent news. The bot discusses recent news with the user based on the profile they have developed in the system and the queues the bot receives throughout the conversation.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Please refer to the high level architecture diagram supplied as an image.
+                </p>
+                <p>
+                    On a daily basis, fresh news articles are automatically loaded from the Bing news API into S3 which is accessed by the Lex bot&rsquo;s Lambda backend (Lambda worker) during runtime. Once a user signs into the service the Lex session is automatically triggered from the client.  This generates the initial 'intent' which allows the Lambda worker function to take proactive control of the conversation.
+                </p>
+                <p>
+                    The Lambda worker function is configured to perform logic from all the intents set up in Lex and also the UI activity in the client web app (
+                    <a href="https://yourweb.co" rel="nofollow">
+                        https://yourweb.co
+                    </a>
+                    ). The reason for this is to enable simpler integration between chat directives and UI directives (e.g. button presses etc.). As a result, a lot of the Lambda worker code is based around managing the status of the user and determining which functions should be invoked.
+                </p>
+                <p>
+                    The goal of the Lambda worker is to provide relevant articles to the user throughout the conversation, so it is regularly placing data into the session attributes and S3 profile for further reference at later stages in the conversation. The Lambda worker is the most complex component in the architecture.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Scaleability was an initial concern due to the high price of the Bing News API, however this was solved by leveraging Cloudwatch Events in AWS to control the loads on the Bing News endpoint. Another challenge was finding the right balance between the Lex actions which can be coordinated from Lambda and the actions which can be configured in the Lex console.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am proud that I have been able to stand-up a personalised service that can infinitely scale for as little as $6 per month running costs.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Failing fast is vital to getting a good outcome. For this hackathon, the yourweb.co chatbot was the fourth idea I had developed after doing tech spikes on three previous concepts. Rapid prototyping is critical to enabling better decisions earlier in the project (before too much time has been invested into one particular idea). These other ideas were fine as concepts but after doing the spikes it became evident that they were either too irrelevant, time-consuming or too risky to be attempted in the hackathon.
+                </p>
+                <h2>
+                    What's next for yourweb.co
+                </h2>
+                <p>
+                    Once the hackathon judging is over, I'll make some further enhancements to the recommendations engine serving up articles for users. I'll also do some exploratory marketing to draw traffic and gather feedback/ analytics from real-life users. I will also expand Lex's utterance configuration for the bot based on this feedback and usage data.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-cloudwatch">
+                                amazon-cloudwatch
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            auth0
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            bing-news
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lex
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://yourweb.co" rel="nofollow" target="_blank" title="https://yourweb.co">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                yourweb.co
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

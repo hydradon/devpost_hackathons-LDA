@@ -1,0 +1,196 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/327574508?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="790110" data-title="Language Recognition" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/110/datas/original.PNG">
+                            <img alt="SyntaxML &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/110/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Language Recognition
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="790111" data-title="word2code" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/111/datas/original.PNG">
+                            <img alt="SyntaxML &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/111/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                word2code
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="790112" data-title="Home" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/112/datas/original.PNG">
+                            <img alt="SyntaxML &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/790/112/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Home
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We knew we wanted to do something educational, specifically for programmers. Our first idea was to generate flash cards with code snippets that a programmer often forgets.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We changed our idea when we considered that a programmer could quickly access syntax patterns at exactly the time they forget it, and this would make them a much more productive programmer. Our program pulls a code snippet from a curated database of common syntactical structures based on a natural language search. For example, searching
+                    <code>
+                        reverse a list
+                    </code>
+                    or
+                    <code>
+                        make a list backwards
+                    </code>
+                    or
+                    <code>
+                        make a list go the other way
+                    </code>
+                    returns the following code snippet in the context of Python:
+                </p>
+                <pre class="language-python"><code>array=[0,10,20,40]
+array=list(reverse(array))
+</code></pre>
+                <p>
+                    Another example is
+                    <code>
+                        make an item from a list go bye bye
+                    </code>
+                    , which returns the code:
+                </p>
+                <pre class="language-python"><code>numbers = [0,2,4,5]
+numbers.remove(2)
+</code></pre>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used a lot of different technologies which ultimately resulted in a Flask server that makes use of both a custom classification algorithm and a package containing a trained model on vector representations of words, called word2vec. This model was implemented through the Gensim Python package, As it required a lot of computing power, we made use of our Google Cloud Credit and have an instance of a 16 vCPU Compute Engine Instance. This provides quick computations for a lag-free website.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Where do we get started? Two words: web scraping. We tried many techniques to extract relevant code snippets algorithmically, but this was much harder than we anticipated. This partially speaks towards why we think our program is so helpful -- it is hard to quickly find the basic syntax you want by searching somewhere like StackOverflow because there are many irrelevant answers. We eventually decided to curate our database of solutions by hand. We have around 50 relevant code snippets in the dataset which cover simple operations including working with iterables, files, data type manipulation, and string manipulation. Our dataset currently contains relevant snippets for 3 programming languages: Python, C++, and JQuery.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We believe that we've created something very helpful by making use of machine learning research. This is a very practical and feasible application as shown by the demo on our website. We hope it can be used as an extension in text editors such as Visual Studio Code to quickly lookup syntax without having to search the Internet.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    This was our first time working with machine learning, and we are happy to have made something that works very well. This was accomplished by using previously trained models from accomplished machine learning research. Then we were able to apply it by running a compute engine in the cloud. We also learned that web scraping is hard if you want clean, structured data all the time.
+                </p>
+                <h2>
+                    What's next for SyntaxML
+                </h2>
+                <p>
+                    We are very excited about this project, and definitely want to see it become an extension for the most popular text editors. We also want to improve and extend our database so that more common syntax structures can be quickly returned to the user.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://SyntaxML.com" rel="nofollow" target="_blank" title="http://SyntaxML.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                SyntaxML.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/omaralsayed/syntax-ml/" rel="nofollow" target="_blank" title="https://github.com/omaralsayed/syntax-ml/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

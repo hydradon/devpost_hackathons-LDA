@@ -1,0 +1,320 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="389809" data-title="Interactions with the slack bot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/809/datas/original.png">
+                            <img alt="Axiom-Zen - Mastermind Challege #3 (Slack Bot) &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/389/809/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Interactions with the slack bot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Mastermind Slack Bot
+                </h1>
+                <p>
+                    This is a slack bot providing access to a multiplayer version of the
+                    <a href="https://en.wikipedia.org/wiki/Mastermind_(board_game)" rel="nofollow">
+                        Mastermind
+                    </a>
+                    ,
+on top of the APIs provided by
+                    <a href="https://github.com/macacoprego/mastermind-backend" rel="nofollow">
+                        mastermind-backend
+                    </a>
+                    running at
+                    <a href="http://mastermind-macacoprego.herokuapp.com/" rel="nofollow">
+                        http://mastermind-macacoprego.herokuapp.com/
+                    </a>
+                    .
+                </p>
+                <p>
+                    This original game was for two players: One player becomes the
+                    <em>
+                        codemaker
+                    </em>
+                    , the other the
+                    <em>
+                        codebreaker
+                    </em>
+                    . The codemaker chooses a
+pattern of
+                    <em>
+                        four
+                    </em>
+                    code pegscodebreaker. The codebreaker tries to guess
+the pattern, in both order and color, within twelve (or ten, or eight)
+turns.
+                </p>
+                <p>
+                    This bot mimics the
+                    <em>
+                        codemaker
+                    </em>
+                    role and supports multiple concurrent
+                    <em>
+                        codebreakers
+                    </em>
+                    for each game.  This is a very simple implementation,
+with minimal interfaces, no authentication and was created during the
+participation of
+                    <a href="https://macacoprego.tech" rel="nofollow">
+                        macacoprego.tech
+                    </a>
+                    on the
+2016's
+                    <a href="https://www.vanhack.com/hackathon/" rel="nofollow">
+                        vanhackathon
+                    </a>
+                    .
+                </p>
+                <h1>
+                    Installation
+                </h1>
+                <p>
+                    The bot runs in
+                    <a href="http://www.python.org/" rel="nofollow">
+                        python3.5
+                    </a>
+                    using
+                    <a href="https://github.com/macacoprego/aslack" rel="nofollow">
+                        aslack
+                    </a>
+                    asynchronous interface
+to slack.  Typically you would run it inside a pyvenv::
+                </p>
+                <p>
+                    $ git clone
+                    <a href="https://github.com/macacoprego/mastermind-bot" rel="nofollow">
+                        https://github.com/macacoprego/mastermind-bot
+                    </a>
+                    $ mastermind-bot
+  $ mkdir venv
+  $ pyvenv venv/mastermind-bot
+  $ source venv/mastermind-bot/bin/activate
+                </p>
+                <p>
+                    It is distributed with
+                    <code>
+                        setuptools
+                    </code>
+                    , you only need to install it
+using::
+                </p>
+                <p>
+                    $ python setup.py install .
+                </p>
+                <p>
+                    And then::
+                </p>
+                <p>
+                    $ mastermind-bot
+                </p>
+                <p>
+                    It will ask you for the api token, you can also user
+                    <code>
+                        --token
+                    </code>
+                    or set
+                    <code>
+                        MACACOPREGO_MASTERMIND_BOT_TOKEN
+                    </code>
+                    .
+                </p>
+                <h1>
+                    Usage
+                </h1>
+                <p>
+                    The bot is currently
+                    <strong>
+                        very
+                    </strong>
+                    simple, you can
+                    <em>
+                        create games
+                    </em>
+                    ,
+                    <em>
+                        make a
+guess
+                    </em>
+                    and
+                    <em>
+                        ask for a hint
+                    </em>
+                    .
+                </p>
+                <h2>
+                    Create games
+                </h2>
+                <p>
+                    Send a message to the bot (for the sake of the example, let's call it
+                    <em>
+                        macaco
+                    </em>
+                    ):
+                </p>
+                <pre class="language-nolang"><code>@macaco create ... [list of players]
+</code></pre>
+                <p>
+                    For example:
+                </p>
+                <pre class="language-nolang"><code>jvdm [6:42 PM]
+@macaco: create with @felipenfranco
+
+macacoBOT [6:42 PM]
+@jvdm: sure, give me a second to create a game for you...
+
+[6:42]
+@jvdm: the game #1 has been created, there are 2 players (@jvdm, @felipenfranco), you all may send guesses by sending messages like 'guess #29 &lt;your guess&gt;'.
+</code></pre>
+                <h2>
+                    Making a guess
+                </h2>
+                <p>
+                    Send a message to the bot like this:
+                </p>
+                <pre class="language-nolang"><code>@macaco guess #&lt;game-id&gt; &lt;guess string&gt;
+</code></pre>
+                <p>
+                    And the bot will reply (to the same channel):
+                </p>
+                <pre class="language-nolang"><code>jvdm [6:42 PM]
+@macaco: guess #29 abcdefgh
+
+macacoBOT [6:42 PM]
+@jvdm: 0 exacts, 6 nears (total guess: 1)
+</code></pre>
+                <p>
+                    Guesses are all lower-case characters from
+                    <code>
+                        a
+                    </code>
+                    to
+                    <code>
+                        g
+                    </code>
+                    (8
+possibilities, 8**8 combinations).
+                </p>
+                <p>
+                    A reply with
+                    <code>
+                        8 exacts
+                    </code>
+                    marks you as a winner.  The other players
+can keep playing (the bot will accept their guesses) until they submit
+the correct answer.  If you have already guessed the correct answer or
+if you send a invalid guess (for example, bad characters in the guess
+and so on) the bot only replies with:
+                </p>
+                <pre class="language-nolang"><code>macacoBOT [6:42 PM]
+@jvdm: bad guess
+</code></pre>
+                <p>
+                    Yes, that's a
+                    <code>
+                        FIXME
+                    </code>
+                    .
+                </p>
+                <h2>
+                    Asking for a hint
+                </h2>
+                <p>
+                    To ask for a hint just say something to the bot with
+                    <em>
+                        hint
+                    </em>
+                    followed
+by a game id in the form
+                    <code>
+                        #&lt;id&gt;
+                    </code>
+                    , e.g.:
+                </p>
+                <pre class="language-nolang"><code>@macaco please, give a hint for the game #29?
+</code></pre>
+                <p>
+                    Or:
+                </p>
+                <pre class="language-nolang"><code>@macaco with a hint i certainly can finish the game #29
+</code></pre>
+                <p>
+                    The bot replies:
+                </p>
+                <pre class="language-nolang"><code>jvdm [6:51 PM]
+@macaco: with a hint I can finish #29
+
+macacoBOT [6:51 PM]
+@jvdm: 'd' at position 0
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aiohttp
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aslack
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            asyncio
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/slack">
+                                slack
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jvdm/mastermind-bot" rel="nofollow" target="_blank" title="https://github.com/jvdm/mastermind-bot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

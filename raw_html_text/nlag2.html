@@ -1,0 +1,195 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    nlag2
+                </h1>
+                <p>
+                    <em>
+                        Natural Language ASG Generator (Version 2)
+                    </em>
+                </p>
+                <h3>
+                    About
+                </h3>
+                <p>
+                    This project automatically generates
+                    <a href="https://www.aaai.org/ojs/index.php/AAAI/article/view/4147" rel="nofollow">
+                        answer set grammars
+                    </a>
+                    for encoding natural language.
+                </p>
+                <p>
+                    In brief, the process is as follows:
+                </p>
+                <ul>
+                    <li>
+                        The text corpus is tokenized and split into sentences. Each token is assigned a Part-of-Speech (POS) tag and a lemma. We use Stanford's
+                        <a href="https://stanfordnlp.github.io/CoreNLP/" rel="nofollow">
+                            CoreNLP
+                        </a>
+                        for this step.
+                    </li>
+                    <li>
+                        A simplified
+                        <a href="https://www.aclweb.org/anthology/P19-1230/" rel="nofollow">
+                            head-driven phrase structure grammar
+                        </a>
+                        (HPSG) is generated. This step uses Zhou et Zhao's
+                        <a href="https://github.com/DoodleJZ/HPSG-Neural-Parser" rel="nofollow">
+                            approach
+                        </a>
+                        .
+                    </li>
+                    <li>
+                        Working backwards from the HPSG, a rule-based approach, following the dependency structure of the text is used to generate production rules for an ASG.
+                    </li>
+                </ul>
+                <h4>
+                    Motivation
+                </h4>
+                <p>
+                    In brief, this work is motivated by two main factors:
+                </p>
+                <ul>
+                    <li>
+                        Answer set grammars are context-sensitive grammars which can encode both the syntax (CFG part) and the semantics (ASP annotations) of a language. In natural language, this is a powerful formalism which encodes both a structural
+                        <em>
+                            and
+                        </em>
+                        a logical form for text, which we believe will be useful for natural language understanding tasks.
+                    </li>
+                    <li>
+                        Answer set grammar induction can be translated into an
+                        <a href="http://ilasp.com/" rel="nofollow">
+                            ILASP
+                        </a>
+                        task, allowing one to
+                        <em>
+                            learn
+                        </em>
+                        the semantic constraints of a grammar, given its syntax. In a future project, we aim to learn some semantic constraints of natural language, and apply this, for example, to difficult coreference problems which require commonsense reasoning.
+                    </li>
+                </ul>
+                <h4>
+                    Example
+                </h4>
+                <p>
+                    For the text "The fish ate the worm. It was hungry", we generate the ASG:
+                </p>
+                <pre class="language-nolang"><code>start -&gt; S {
+        event(E, S, O) :- event(E, S, O)@1.
+  event(S, M) :- modifier(S, M)@1.
+  valid :- event(eat, fish, worm)@1.
+  valid :- modifier(it, hungry)@1.
+  :- not valid.
+}
+S -&gt; NP VP . {
+event(E, S, O) :- nominal(S)@1, partial_event(E, O).
+modifier(S, M) :- nominal(S)@1, partial_modifier(M).
+valid :- nominal(fish)@1, partial_event(eat, worm)@2.
+valid :- nominal(it)@1, partial_modifier(hungry)@2.
+:- not valid.
+}
+NP -&gt; DT NN {
+nominal(N) :- lemma(N)@2.
+valid :- lemma(the)@1, lemma(fish)@2.
+valid :- lemma(the)@1, lemma(worm)@2.
+:- not valid.
+}
+VP -&gt; VBD NP {
+partial_event(E, N) :- lemma(E)@1, nominal(N)@2.
+valid :- lemma(eat)@1, nominal(worm)@2.
+:- not valid.
+}
+NP -&gt; PRP {
+nominal(N) :- lemma(N)@1.
+valid :- lemma(it)@1.
+:- not valid.
+}
+VP -&gt; VBD ADJP {
+partial_modifier(M) :- lemma(M)@2.
+valid :- lemma(be)@1, lemma(hungry)@2.
+:- not valid.
+}
+ADJP -&gt; JJ {
+lemma(X) :- lemma(X)@1.
+valid :- lemma(hungry)@1.
+:- not valid.
+}
+
+DT -&gt; "The" { lemma(the). }
+NN -&gt; "fish" { lemma(fish). }
+VBD -&gt; "ate" { lemma(eat). }
+DT -&gt; "the" { lemma(the). }
+NN -&gt; "worm" { lemma(worm). }
+PRP -&gt; "It" { lemma(it). }
+VBD -&gt; "was" { lemma(be). }
+JJ -&gt; "hungry" { lemma(hungry). }
+. -&gt; "."
+</code></pre>
+                <h3>
+                    Setup
+                </h3>
+                <ul>
+                    <li>
+                        Recursively clone.
+                    </li>
+                    <li>
+                        Setup the two submodules.
+                    </li>
+                    <li>
+                        Download the models and set the model locations.
+                    </li>
+                    <li>
+                        Setup the pipenv environment.
+                    </li>
+                    <li>
+                        Choose your text and run the driver program.
+                    </li>
+                </ul>
+                <h4>
+                    Development
+                </h4>
+                <p>
+                    PyCharm is recommended. To speed up development, leave the CoreNLP server running (this avoids having to spin it up every time you need to test something).
+                </p>
+                <pre class="language-bash"><code>java -mx4g -cp "lib/CoreNLP/*:lib/CoreNLP/lib/*:lib/CoreNLP/liblocal/*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -annotators "tokenize,ssplit,pos,lemma,ner" -port 9000 -timeout 10000
+</code></pre>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jordanspooner/nlag2" rel="nofollow" target="_blank" title="https://github.com/jordanspooner/nlag2">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

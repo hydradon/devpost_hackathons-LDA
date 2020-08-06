@@ -1,0 +1,385 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/w1NhxYa9VFo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719718" data-title="Map View" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/718/datas/original.PNG">
+                            <img alt="Nānā Ikehu &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/718/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Map View
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719717" data-title="Summary View" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/717/datas/original.PNG">
+                            <img alt="Nānā Ikehu &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/717/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Summary View
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719716" data-title="Single Building View" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/716/datas/original.PNG">
+                            <img alt="Nānā Ikehu &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/716/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Single Building View
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Nānā Ikehu
+                </h1>
+                <blockquote>
+                    <p>
+                        Nānā: To see, observe, or inspect
+Ikehu: Power, intensity, or energy
+                    </p>
+                </blockquote>
+                <p>
+                    Welcome to Nānā Ikehu (Seeing Power)
+                    <a href="http://ics-software-engineering.github.io/meteor-application-template-react/" rel="nofollow">
+                        Meteor/React application
+                    </a>
+                    to analyze power usage data, designed for the
+                    <a href="https://manoa.hawaii.edu/" rel="nofollow">
+                        University of Hawaii at Manoa
+                    </a>
+                    as part of the
+                    <a href="http://hacc.hawaii.gov/" rel="nofollow">
+                        Hawaii Annual Code Challenge 2018
+                    </a>
+                </p>
+                <p>
+                    Demo:
+                    <a href="https://nana-ikehu.powerclique.com" rel="nofollow">
+                        nana-ikehu.powerclique.com
+                    </a>
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This app visualizes energy usage throughout the University of Hawaii campus through the use of graphs and maps.  Users are able to see the amount of energy used for each building by either clicking a building on the campus map, or by selecting a building through the drop down menu.
+                </p>
+                <h2>
+                    Configuration
+                </h2>
+                <p>
+                    Raw database files from Aurora BPA MS-SQL can be exported to CSV for import into this application. Three files must be placed in
+                    <code>
+                        app/private/files
+                    </code>
+                    before deploying.
+                </p>
+                <h3>
+                    export.csv - Raw data
+                </h3>
+                <p>
+                    <code>
+                        SampleTsUtc
+                    </code>
+                    is a timestamp, we do our best to parse any given format
+                    <code>
+                        TagLogId
+                    </code>
+                    matches a meter tag
+                    <code>
+                        Mean
+                    </code>
+                    is the main measurement used for display
+                    <code>
+                        Min
+                    </code>
+                    is used to calculate least demand
+                    <code>
+                        Max
+                    </code>
+                    is used to calculate peak demand
+                </p>
+                <p>
+                    This file can be automatically generated using Aurora BPA MS-SQL with this sample query:
+                </p>
+                <p>
+                    <code>
+                        SELECT SampleTsUtc,LogHour.TagLogId
+      ,Mean
+      ,Min
+      ,Max
+  FROM [LogHour]
+  JOIN LogHourExtension on LogHour.TagLogId = LogHourExtension.TagLogId AND
+  LogHour.DayId = LogHourExtension.DayId AND
+  LogHour.TimeId = LogHourExtension.TimeId
+  JOIN tags.dbo.[TagIds] on LogHour.TagLogId = [TagIds].TagLogId
+  where (TagName = 'kw') and Quality = 1;
+                    </code>
+                </p>
+                <p>
+                    This query will select needed header fields, reconcile DayId and TimeId values from the Extension table, then filter out high quality power data
+                </p>
+                <h3>
+                    BuildingList.csv - Building configuration
+                </h3>
+                <p>
+                    Column 1 supplies a unique tag or identifier for a building
+                </p>
+                <p>
+                    Column 2 is a friendly name for a building
+                </p>
+                <p>
+                    Columns 3,4,5 supply gross square footage, floor count, and room count for the building
+                </p>
+                <h3>
+                    TagIds.csv - Meter configuration
+                </h3>
+                <p>
+                    <code>
+                        BuildingName
+                    </code>
+                    is a column that matches a building Name
+                </p>
+                <p>
+                    <code>
+                        EntityName
+                    </code>
+                    is a column that supplies a name for a meter
+                </p>
+                <p>
+                    <code>
+                        TagLogId
+                    </code>
+                    is a column that matches the a meter's tag in the raw data
+                </p>
+                <p>
+                    <code>
+                        TagName
+                    </code>
+                    contains that meter's unit of measurement
+                </p>
+                <h2>
+                    Deployment
+                </h2>
+                <p>
+                    If you are not familiar with Meteor it is recommended that you
+                    <a href="https://guide.meteor.com/deployment.html#galaxy" rel="nofollow">
+                        Galaxy or mup
+                    </a>
+                    to deploy this application.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The technologies used include:
+                </p>
+                <ul>
+                    <li>
+                        Meteor.js
+                    </li>
+                    <li>
+                        React.js
+                    </li>
+                    <li>
+                        Semantic-UI
+                    </li>
+                    <li>
+                        Victory (Graphs)
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    During the HACC, we ran into many challenges.  It was difficult finding a way to handle such a large amount of data for our app without slowing it down.  We also ran into problems with scheduling and role assignments.  Due to time constraints and our members busy schedules, we were not able to work on our app as much as we wanted to.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    This Hackathon demanded of us (in a good way) to build a project portfolio and most importantly, it gives an opportunity for us to learn new experiences with our team. We've also learned how to manage our time since the duration of the hackathon is in a very short term, this way actually encouraging us to work with the most productive and efficient method because of limited time.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of and todo
+                </h2>
+                <p>
+                    As a team, we are proud of the fact that our application works the way we want to. We see value in providing tighter integration with other data sources and plan to add REST APIs. These APIs will allow other teams to get data from our application transparently as well as allow users to import data in real time using HTTP. We also would like to develop more historical tracking and metrics to further insights.
+                </p>
+                <h2>
+                    Mahalo
+                </h2>
+                <p>
+                    Special thanks to:
+                </p>
+                <p>
+                    Miles Topping, Director of Energy Management at University of Hawaii for providing us gigabytes of data and resources for this challenge
+                </p>
+                <p>
+                    <a href="http://ee.hawaii.edu/faculty/detail.php?usr=87" rel="nofollow">
+                        Dr.-Ing. Darren Carlson
+                    </a>
+                    , Professor of Computer Engineering for providing beefy computer and space resources
+                </p>
+                <p>
+                    <a href="http://ics-software-engineering.github.io/meteor-application-template-react/" rel="nofollow">
+                        UH Manoa ICS Department
+                    </a>
+                    for supplying the inital template for Meteor and React
+                </p>
+                <p>
+                    <a href="https://formidable.com/open-source/" rel="nofollow">
+                        Formidable Labs
+                    </a>
+                    for supplying the Victory graphing engine
+                </p>
+                <p>
+                    <a href="https://www.papaparse.com/" rel="nofollow">
+                        Papa Parse
+                    </a>
+                    for the powerful, in-browser CSV parser for big data
+                </p>
+                <h3>
+                    HAAC Sponsors:
+                </h3>
+                <p>
+                    <a href="https://www.gatesfoundation.org/" rel="nofollow">
+                        Bill and Melinda Gates Foundation
+                    </a>
+                </p>
+                <p>
+                    <a href="http://hdoa.hawaii.gov/" rel="nofollow">
+                        Hawaii Department of Agriculture
+                    </a>
+                </p>
+                <p>
+                    <a href="https://thrive.kaiserpermanente.org/" rel="nofollow">
+                        Kaiser Permanente
+                    </a>
+                </p>
+                <p>
+                    <a href="http://transformhawaiigov.org/" rel="nofollow">
+                        Transform Hawaii Government
+                    </a>
+                </p>
+                <p>
+                    <a href="http://www.datahouse.com/" rel="nofollow">
+                        DataHouse
+                    </a>
+                </p>
+                <p>
+                    <a href="http://www.pacxa.com/" rel="nofollow">
+                        Pacxa
+                    </a>
+                </p>
+                <p>
+                    <a href="https://www.salesforce.com/" rel="nofollow">
+                        Salesforce
+                    </a>
+                </p>
+                <p>
+                    <a href="https://www.unisys.com/" rel="nofollow">
+                        Unisys
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/meteor-js">
+                                meteor.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mssql
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            papa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://nana-ikehu.powerclique.com/" rel="nofollow" target="_blank" title="https://nana-ikehu.powerclique.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                nana-ikehu.powerclique.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/HACC2018/Nana-Ikehu" rel="nofollow" target="_blank" title="https://github.com/HACC2018/Nana-Ikehu">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

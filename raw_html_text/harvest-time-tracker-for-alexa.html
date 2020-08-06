@@ -1,0 +1,327 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/SOtD_zcdzS4?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Almost every company requires their employees to track time. Maintaining time sheets can be a pain, but fortunately a few years ago we came across Harvest.
+                </p>
+                <p>
+                    It's a great tool, used by over 50,000 businesses worldwide, that allows you to track time as you work. It's way more efficient than filling time sheets later.
+                </p>
+                <p>
+                    Recently, we started working from home more and more often. 
+We joined over 4M employees in the US, who use latest technology to save time spent on commute and have more time for their families.
+                </p>
+                <p>
+                    While it's great to save time, working from home also brings a lot of distractions.
+You know, all these moments when your dog wants to go out for a walk, your child needs attention or a FedEx courier rings at your door.
+                </p>
+                <p>
+                    With such distractions, it's hard to keep accurate time entries, even in Harvest.
+A lot of people forgot to stop their running timers and realize that while away from their computer.
+To be fair with their employers and clients, they have to correct their time entries later.
+                </p>
+                <p>
+                    <em>
+                        Was I off for half an hour or more?
+                    </em>
+                </p>
+                <p>
+                    Wouldn't it be great if you could control time tracking from anywhere in your house?
+                </p>
+                <p>
+                    <em>
+                        "Alexa, tell time tracker to stop billing"
+                    </em>
+                </p>
+                <p>
+                    <em>
+                        "Alexa, tell time tracker to start tracking project management for Upside"
+                    </em>
+                </p>
+                <p>
+                    Just tell it what you're doing and it will be reflected in your time sheets.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In our project we focused on three most important tasks that people use time tracking software for.
+That is:
+                </p>
+                <ul>
+                    <li>
+                        starting tracking time for a task, as they get down to work
+                    </li>
+                    <li>
+                        stopping, when taking a break or when they're done for the day
+                    </li>
+                    <li>
+                        getting a summary of today's time entries
+                    </li>
+                </ul>
+                <p>
+                    Our goal was to deliver the best possible experience for these core features.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We contacted Harvest to ask if they're fine with us building an Alexa skill that would integrate with their product.
+                </p>
+                <p>
+                    They loved the idea!
+                </p>
+                <p>
+                    <strong>
+                        Designing the skill was the most important part
+                    </strong>
+                </p>
+                <p>
+                    We built personas that would help us better understand the needs of the user and how they may interact with voice interfaces.
+                </p>
+                <p>
+                    Our major persona was called
+                    <em>
+                        Jane
+                    </em>
+                    .
+                </p>
+                <p>
+                    <em>
+                        Jane works in marketing in a mid-sized agency. She lives in Midwest and regularly works from home.
+                    </em>
+                </p>
+                <p>
+                    <em>
+                        Each morning, she makes herself a cup of coffee, sits on her couch and starts work. Sometimes she works without a computer, especially when writing articles. Using pen and paper helps her avoid distractions such as Facebook.
+                    </em>
+                </p>
+                <p>
+                    <em>
+                        She often switches between projects for her company's clients.
+                    </em>
+                </p>
+                <p>
+                    <em>
+                        She likes to do a bit of housework during her "working hours", to clean her mind before diving into creative work.
+                    </em>
+                    <em>
+                        She also has a dog that sometimes comes to her with its leash, waiting to go for a walk.
+                    </em>
+                </p>
+                <p>
+                    This gave us a sense of what features we should focus on and how they may be used.
+                </p>
+                <p>
+                    Based on our experience with VUIs, we knew that simplicity is a must in such applications.
+                </p>
+                <p>
+                    Without graphics that support conventional user interfaces, we needed to avoid complex dialogues and make interactions with our skill as simple as possible.
+                </p>
+                <p>
+                    We prepared a large list of samples of how users may ask our skill to perform a task.
+                </p>
+                <p>
+                    They were really similar to asking or telling someone what you're doing right now.
+                </p>
+                <p>
+                    <strong>
+                        Then we moved into implementing the skill
+                    </strong>
+                </p>
+                <p>
+                    We started with a simple proof of concept, written in Python and hosted using AWS Lambda. That was the moment when we discovered various challenges that we needed to overcome in order to build a fully functional skill (more about challenges in the next section).
+                </p>
+                <p>
+                    After we got it running, we needed to build a layer for authenticating with Harvest and allowing to save user's preferences. At this point we needed to migrate from AWS Lambda to our own HTTPS service.
+                </p>
+                <p>
+                    Fortunately, we were able to reuse all the code written before and within an hour we had our skill working in a service based on Django.
+                </p>
+                <p>
+                    <strong>
+                        Testing the product
+                    </strong>
+                </p>
+                <p>
+                    With fully functional product, we wanted to verify our assumptions so we tested it with a few Harvest users.
+                </p>
+                <p>
+                    First thing that we noticed was that our skill missed a few sample utterances that people tried to use. Our guesses there were not 100% correct.
+                </p>
+                <p>
+                    We also confirmed our assumption that the tasks that people ask our skill to track may differ from what's in Harvest.
+Good thing was that we prepared for it in advance.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    To start tracking time, user needs to provide name of the task and name of the project. Available tasks and projects are defined in Harvest.
+                </p>
+                <p>
+                    One of the biggest challenges was dealing with situations when user's input differs slightly from what's in Harvest.
+When testing with users, we confirmed that people often shorten some names when asking Alexa.
+                </p>
+                <p>
+                    They'll say
+                    <em>
+                        "management"
+                    </em>
+                    instead of
+                    <em>
+                        "project management"
+                    </em>
+                    . They'll say
+                    <em>
+                        "Facebook"
+                    </em>
+                    instead of
+                    <em>
+                        "Facebook Inc."
+                    </em>
+                    .
+                </p>
+                <p>
+                    Alexa has great capabilities when it comes to matching inputs to available options, however they work only when the list of options is constant.
+                </p>
+                <p>
+                    For us, every Harvest user may have a different set of options available to them.
+In order to account for that, we needed our own algorithm for recognizing similar words.
+                </p>
+                <p>
+                    Another challenge that we ran into was more technical, related to how Alexa's and Harvest's APIs are built. 
+In order to start a time entry in Harvest API, we need to know user's timezone.
+Currently, there's no way to pull this information from Alexa's API (although looking at how fast Amazon adds new features to Alexa, it's a matter of time).
+                </p>
+                <p>
+                    To get this information, we decided to ask user for their timezone during account linking process.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're really proud of how our system handles user's inputs.
+                </p>
+                <p>
+                    Besides handling project and task names that don't exactly match what's in Harvest (see the section above), we were able to make the best out of Alexa's dialog model for prompting for missing information.
+                </p>
+                <p>
+                    When one of the inputs is missing, we move from command-like interface into a simple dialogue.
+                </p>
+                <p>
+                    <em>
+                        [Alexa] Sorry, could you repeat thet name of the task
+                    </em>
+                </p>
+                <p>
+                    or
+                </p>
+                <p>
+                    <em>
+                        [Alexa] And what project do you want to start billing?
+                    </em>
+                </p>
+                <p>
+                    This kind of dialogue makes the interaction feel natural, like conversation with another person.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Building Harvest for Alexa skill gave us a chance to experiment with latest Alexa capabilities (Dialogue delegation turned out to be an especially useful concept).
+                </p>
+                <p>
+                    We had a chance to refresh our NLP knowledge.
+                </p>
+                <p>
+                    We were also surprised by how little time it took Amazon to review our skill (and how constructive their feedback was).
+                </p>
+                <h2>
+                    What's next for Harvest Time Tracker for Alexa
+                </h2>
+                <p>
+                    We've just launched the skill for everyone. Our current goal is to get more Harvest users to give it a try.
+                </p>
+                <p>
+                    We also have a few new features in mind. The most interesting ones are:
+                </p>
+                <ul>
+                    <li>
+                        Recognizing synonyms in task/project names (sometimes people say "programming" instead of "development")
+                    </li>
+                    <li>
+                        Adding push notifications to let users know that they've been working for too long (and help them avoid overtime)
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-alexa">
+                                amazon-alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://skills-store.amazon.com/deeplink/dp/B07CL3YXNM?deviceType=app&amp;share&amp;refSuffix=ss_copy" rel="nofollow" target="_blank" title="https://skills-store.amazon.com/deeplink/dp/B07CL3YXNM?deviceType=app&amp;share&amp;refSuffix=ss_copy">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                skills-store.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,175 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="764210" data-title="The initial profile page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/210/datas/original.png">
+                            <img alt="MusiCare &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/210/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The initial profile page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="764209" data-title="A medical survey to evaluate our model and rigorously confirm our initial classification" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/209/datas/original.png">
+                            <img alt="MusiCare &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/209/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A medical survey to evaluate our model and rigorously confirm our initial classification
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="764225" data-title="A custom user-tailored playlist of happy music suggestions" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/225/datas/original.png">
+                            <img alt="MusiCare &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/225/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                A custom user-tailored playlist of happy music suggestions
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to work with something that was impactful but fun to implement. We were able to incorporate interests within our team to work on a health-related project with interests to work with large amounts of data and interests to work with music.
+                </p>
+                <p>
+                    There are currently very few metrics used as indicators of mental health issues outside of surveys and self-reports. We want to see if music preferences over time could help remedy this problem by providing another means of quantifying emotional and mental stability.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our project is able to collect a user&rsquo;s history of music preferences on Spotify, and after comparing and normalizing to the Top 100 Billboard songs at that time, predict whether a user&rsquo;s music listening patterns generally trend downwards, indicating that they have been listening to more negative songs recently. If the user seems to have this downward trend, we provide a survey to get a more holistic understanding of what emotional state they might be in. Combining all this data, we suggest whether the user might want to seek therapy or outside help. Regardless of what trends exist in a user&rsquo;s data, we think everyone can benefit from happier music, which is why we create a custom playlist of generally happier music, tailored specifically to the user&rsquo;s recent music preferences.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The first step was to access and process the music habit data that we needed. We used Spotify&rsquo;s Web API to get user listening data by scraping their playlists and used Billboard Top 100 lists to get a baseline for a certain time period.
+                </p>
+                <p>
+                    We then extracted three features: &ldquo;danceability&rdquo;, &ldquo;valence&rdquo;, and &ldquo;energy&rdquo; of all of this music data, calculating a score that took these three features into consideration. We then used the baseline data to normalize a user&rsquo;s data (if popular music was mostly negative during a certain time period then a user&rsquo;s score is naturally more likely to skew negative so we wanted to mitigate that effect).
+                </p>
+                <p>
+                    Finally, to calculate whether we would assign a net &ldquo;POSITIVE&rdquo; or &ldquo;NEGATIVE&rdquo; classification to a user&rsquo;s data, we took a weighted sum of slopes over various time spans, weighing more recent data more heavily.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Spotify&rsquo;s API is intended for simple hobby use, not the levels of data collection and extraction that we required. The API often automatically rate-limited our application, preventing us from getting complete data. We were able to do some pre-calculation of data, specifically the Billboard data, but despite all the optimization we did, the web app is still susceptible to rate limiting by Spotify&rsquo;s API. (At which point the user simply needs to wait 5 seconds and refresh to try again)
+                </p>
+                <p>
+                    Another big challenge we ran into was in how we built our model and weighed our variables. Since we don&rsquo;t have labeled data available to us and hand-labeling data would introduce our own bias into our model, we went with simple weights since we used various Spotify features that have been and keep being carefully calibrated to calculate sentiment.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Many of us lacked experience in web development/ React. To have built a complete, functional web app, in the end, was in itself highly satisfying, and in the process of doing so, we found a way to look at music from a new perspective as an analytical health tool.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Overall, we learned a lot about the process of taking multiple technical components and integrating them together into one cohesive product, from start to finish. Individually, we learned React, use of the Spotify API, data mining and analysis, and NLP.
+                </p>
+                <h2>
+                    What's next for MusiCare
+                </h2>
+                <p>
+                    Implementing more sophisticated methods for extracting mood from music, such as lyric analysis with NLP. Finding/creating training data to train machine learning models to optimize weighting procedures for averages and comparing user data from our model and the survey to evaluate the model. Eventually, we hope to sync as part of Spotify&rsquo;s background data analysis rather than a separate add-on web-app with extremely limited access to their API. Given the functionalities, we hope to provide subliminal messages with counseling ads and advertisements for other supportive services through Spotify as a means of raising awareness and having a larger impact.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/spotify">
+                                spotify
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://treehacks.herokuapp.com/" rel="nofollow" target="_blank" title="http://treehacks.herokuapp.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                treehacks.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,51 @@
+[
+    {
+        "url": "https://api.github.com/repos/gokul2259/Human2Human/pulls/comments/326877994",
+        "pull_request_review_id": 291484065,
+        "id": 326877994,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDMyNjg3Nzk5NA==",
+        "diff_hunk": "@@ -57,29 +56,35 @@ export default class QRScanner extends React.Component {\n     );\n   }\n \n-  handleBarCodeScanned = ({ type, data: accountId }) => {\n+  handleBarCodeScanned = async ({ type, data: accountId }) => {\n     this.setState({ isFetching: true });\n-    //const account = \"7f60df74-fa27-4018-b896-d15533572327\";\n-    get(`api.td-davinci.com/api/accounts/${accountId}`)\n-      .then(response => {\n-        const { relatedCustomerId } = response.result.bankAccount;\n-        get(`api.td-davinci.com/api/customers/${relatedCustomerId}`).then((result) => {\n-          AsyncStorage.setItem('recipient', JSON.stringify(result));\n-          this.props.navigation.dispatch(\n-            StackActions.reset({\n-              index: 0,\n-              actions: [NavigationActions.navigate({ routeName: 'DonateFund' })],\n-            })\n-          );\n-        });\n-      })\n-      .catch(response => {\n-        alert(`Error: ${JSON.stringify(response)}`);\n-      })\n-      .then(() => {\n-        this.setState({ isFetching: false });\n-      });\n+    try {\n+      //const accountId = \"7f60df74-fa27-4018-b896-d15533572327\";\n+      const accountResponse = await get(\n+        `api.td-davinci.com/api/accounts/${accountId}`\n+      );\n+      const {\n+        result: {\n+          bankAccount: { relatedCustomerId }\n+        }\n+      } = accountResponse;\n+\n+      const customerResponse = await get(\n+        `api.td-davinci.com/api/customers/${relatedCustomerId}`\n+      );\n \n+      const { result } = customerResponse;\n+      await AsyncStorage.setItem(\"recipient\", JSON.stringify(result));",
+        "path": "app/components/QRScanner.js",
+        "position": 53,
+        "original_position": 53,
+        "commit_id": "c19f6b95fa7000d9e99e4f64766d445955bcd6eb",
+        "original_commit_id": "c19f6b95fa7000d9e99e4f64766d445955bcd6eb",
+        "user": {
+            "login": "SK8007",
+            "id": 5456509,
+            "node_id": "MDQ6VXNlcjU0NTY1MDk=",
+            "avatar_url": "https://avatars1.githubusercontent.com/u/5456509?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/SK8007",
+            "html_url": "https://github.com/SK8007",
+            "followers_url": "https://api.github.com/users/SK8007/followers",
+            "following_url": "https://api.github.com/users/SK8007/following{/other_user}",
+            "gists_url": "https://api.github.com/users/SK8007/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/SK8007/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/SK8007/subscriptions",
+            "organizations_url": "https://api.github.com/users/SK8007/orgs",
+            "repos_url": "https://api.github.com/users/SK8007/repos",
+            "events_url": "https://api.github.com/users/SK8007/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/SK8007/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`await AsyncStorage.getItem(\"recipient\")` will contain `customer.result`:\r\n\r\n```json\r\n{\r\n    \"addresses\": {\r\n      \"principalResidence\": {\r\n        \"addressType\": 0,\r\n        \"latitude\": 0,\r\n        \"longitude\": 0,\r\n        \"municipality\": \"string\",\r\n        \"postalCode\": \"string\",\r\n        \"streetName\": \"string\",\r\n        \"streetNumber\": \"string\"\r\n      }\r\n    },\r\n    \"age\": 0,\r\n    \"birthDate\": \"string\",\r\n    \"gender\": \"string\",\r\n    \"givenName\": \"string\",\r\n    \"habitationStatus\": \"string\",\r\n    \"id\": \"string\",\r\n    \"maidenName\": \"string\",\r\n    \"occupationIndustry\": \"string\",\r\n    \"otherName\": \"string\",\r\n    \"relationshipStatus\": \"string\",\r\n    \"schoolAttendance\": \"string\",\r\n    \"schools\": {},\r\n    \"surname\": \"string\",\r\n    \"totalIncome\": 0,\r\n    \"type\": \"string\",\r\n    \"workActivity\": \"string\"\r\n  }\r\n```",
+        "created_at": "2019-09-21T23:56:29Z",
+        "updated_at": "2019-09-21T23:56:30Z",
+        "html_url": "https://github.com/gokul2259/Human2Human/pull/11#discussion_r326877994",
+        "pull_request_url": "https://api.github.com/repos/gokul2259/Human2Human/pulls/11",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/gokul2259/Human2Human/pulls/comments/326877994"
+            },
+            "html": {
+                "href": "https://github.com/gokul2259/Human2Human/pull/11#discussion_r326877994"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/gokul2259/Human2Human/pulls/11"
+            }
+        }
+    }
+]

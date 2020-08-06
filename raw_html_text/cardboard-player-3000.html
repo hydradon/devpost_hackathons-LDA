@@ -1,0 +1,228 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/EM7xBE4U4mM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="626456" data-title="the thing itself" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/626/456/datas/original.jpg">
+                            <img alt="Cardboard Player 3000 &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/626/456/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                the thing itself
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="626474" data-title="another angle" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/626/474/datas/original.jpg">
+                            <img alt="Cardboard Player 3000 &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/626/474/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                another angle
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <div class="alert-box alert">
+                            This image is currently processing. Please be patient...
+                        </div>
+                        <img alt="Cardboard Player 3000 &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="https://devpost-challengepost.netdna-ssl.com/assets/defaults/software-d4334efb72013df43784baffede9d379.gif">
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Cardboard Player 3000
+                </h1>
+                <h2>
+                    TEAM
+                </h2>
+                <p>
+                    Rokas G - No hardware experience, several (software) hackathons.
+Ieva P - No programming experience, first hackathon. Good with motorcycles.
+                </p>
+                <h2>
+                    Motivation
+                </h2>
+                <p>
+                    This is an entry for CreatED 2018 Hardware Hackathon in Edinburgh. I had two goals with it - introduce hackathons and programming to my girlfriend and play with basic sensors and modules available for Rasberry Pi. The record player was simple enough to make while still having multiple very different parts to play around with.
+                </p>
+                <h2>
+                    Parts
+                </h2>
+                <ul>
+                    <li>
+                        Adafruit TCS34725 RGB Sensor
+                    </li>
+                    <li>
+                        5 V Stepper Motor
+                    </li>
+                    <li>
+                        Motor Driver
+                    </li>
+                    <li>
+                        Jumper Wires
+                    </li>
+                    <li>
+                        Raspberry Pi 3B
+                    </li>
+                    <li>
+                        Cardboard
+                    </li>
+                </ul>
+                <h2>
+                    Hardware Set-Up
+                </h2>
+                <p>
+                    ~~~ Diagram Here ~~~
+                </p>
+                <h2>
+                    Software Set-Up
+                </h2>
+                <pre class="language-nolang"><code>Libraries used:
+```
+adafruit_tcs34725
+pygame
+smbus
+```
+</code></pre>
+                <p>
+                    smbus and pygame should already be in a Raspbian install, therefore all we need is:
+                </p>
+                <pre class="language-nolang"><code>```
+pip install adafruit_tcs34725
+```
+</code></pre>
+                <p>
+                    then to test if the sensor is correctly connected (point it at something with a clear color preferably):
+                </p>
+                <pre class="language-nolang"><code>```
+python testsensor.py
+```
+</code></pre>
+                <p>
+                    test motor (it just spins it):
+                </p>
+                <pre class="language-nolang"><code>```
+testmotor.py
+```
+</code></pre>
+                <p>
+                    observe the LEDs flashing as they indicate the sequence the commands are being passed in. If they do not go in order, some GPIOs might be mismatched.
+                </p>
+                <p>
+                    Before running play.py, make sure to provide your own toto.mp3 and rick.mp3, as I am not allowed to share these in the repository for obvious reasons.
+                </p>
+                <h2>
+                    Improvement TODOs
+                </h2>
+                <ul>
+                    <li>
+                        Script runs constantly (No need to restart)
+                    </li>
+                    <li>
+                        Color checks after song started (React to "needle" being moved away from the "record")
+                    </li>
+                    <li>
+                        More realistic "record" behaviour: wind-up, alternating speeds of audio, scratch sound when removing needle
+                    </li>
+                    <li>
+                        Continue the song where it left off if needle was moved and placed back on the same color
+                    </li>
+                    <li>
+                        Detect more colors
+                    </li>
+                    <li>
+                        Physical buttons
+                    </li>
+                    <li>
+                        Streaming current music choice to a web app (Websockets?)
+                    </li>
+                    <li>
+                        Speakers
+                    </li>
+                    <li>
+                        Tidier design
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rgb-sensor
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            stepper-motor
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Roxerg/CardboardPlayer3000" rel="nofollow" target="_blank" title="https://github.com/Roxerg/CardboardPlayer3000">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://drive.google.com/file/d/1o4WhlkT3iVuL_yLy09xfTUEF489WLJhR/view?usp=sharing" rel="nofollow" target="_blank" title="https://drive.google.com/file/d/1o4WhlkT3iVuL_yLy09xfTUEF489WLJhR/view?usp=sharing">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                drive.google.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

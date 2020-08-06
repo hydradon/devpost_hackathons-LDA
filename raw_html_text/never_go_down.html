@@ -1,0 +1,185 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    Every engineering organization has multiple team responsible for critical
+services (e.g. adserving, monetization, data, etc) and their own oncall roaster.
+The rotation is usually done weekly moving between primary, and secondary.
+Sometimes some people go on vacations and manual edits are expected, and
+medium term planning is also desired.
+                </p>
+                <h2>
+                    How it works
+                </h2>
+                <p>
+                    We built a backend ngd (never go down !) server (written in Go), an android app, and 
+js, which is the driver for the android app. The JS driver is to avoid any logic on the
+android app, hence making the update almost solely server side. SDK only provides
+make call, send sms and receive sms functionality to the NGD-bridge that connects
+it with JS. Go Server talks to MySql backends an uses transactions to ensure correctness
+and randomness to minimize contentions across mobile agents helping server to make
+the alerting.
+                </p>
+                <p>
+                    The server gets alerts from monitoring infra (nagios,  home grown scripts, etc)
+and send alerts (phone call, sms, email)  to on-call team members
+using worker devices (set of dedicated smart phones - using diftft gsm carriers )
+                </p>
+                <p>
+                    On call team member can ACK/NACK, which the server parses to the original handler.
+The acks can be silenced directly too.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Android hick-ups, with playing a pre-recorded audio in an outgoing android phone call
+&amp; injecting prec-recorded audio in an potgoing android call (apparently android does not allow it)
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ol>
+                    <li>
+                        The app doesnt need updation
+The server send the latest js code (which implements all the complex logic of retries, primary , secondary on-call teammates, rotations, etc etc)
+2.We handle rotations.
+3.We can even handle a team member, going on vacation, 
+and opting out of on-call, say, next week.
+                    </li>
+                    <li>
+                        Multiple servers and multiple phones can be part of worker pool.
+                    </li>
+                </ol>
+                <p>
+                    They automatically get pushed to the bottom of the roaster
+, but we still respect human load balancing ( roughly = no of on call days / human :D)
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <h2>
+                    What's next for never_go_down
+                </h2>
+                <p>
+                    -- provide Meta monitoring services.
+ -- use AWS RDS instead of mysql on our local machine ( we didnt get the AWS credit email )
+ -- monitoring an org's AWS infra for metrics, alerts, etc
+ --  web ui for command line stuff now
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bitbucket">
+                                bitbucket
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chrome">
+                                chrome
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            closure
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/curl">
+                                curl
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/git">
+                                git
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/golang">
+                                golang
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            i3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/intellij-idea">
+                                intellij-idea
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mysql">
+                                mysql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            netcat
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            urxvt
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/vim">
+                                vim
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            wget
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

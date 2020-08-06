@@ -1,0 +1,148 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="870723" data-title="Gas Sign Sample 1" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/723/datas/original.png">
+                            <img alt="GasFinder: ML Gas Price Picture Parser &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/723/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Gas Sign Sample 1
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="870581" data-title="Workflow of the Algorithm" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/581/datas/original.PNG">
+                            <img alt="GasFinder: ML Gas Price Picture Parser &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/581/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Workflow of the Algorithm
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="870706" data-title="Gas Sign Sample 2" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/706/datas/original.png">
+                            <img alt="GasFinder: ML Gas Price Picture Parser &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/706/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Gas Sign Sample 2
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="870741" data-title="Gas Sign Sample 3" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/741/datas/original.png">
+                            <img alt="GasFinder: ML Gas Price Picture Parser &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/870/741/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Gas Sign Sample 3
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    What It Does
+                </h2>
+                <p>
+                    GasFinder takes images of gas station signs and breaks them down into a text based table of gas types and their respective prices.  This allows for the automation of price detection and data collection.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    To power the Computer Vision, we used a variety of tools including Google Cloud and our own algorithm tailor made for semantically recognizing signs.  This algorithm uses sensible constraints that increase the accuracy of the detection.  The process is as follows.
+                </p>
+                <p>
+                    First, the sign image is sent to Google Cloud, where a compute engine VM interacts with Google&rsquo;s Vision API.  Individual characters are recognized, and coordinates are retrieved.  This character-based instead of automatic word-based recognition allows algorithm customization towards expected price formats and increases accuracy.
+                    <br>
+                    Once retrieved, our algorithm must first find prices and their respective positions.  To power this, we assume that each price is together in a line and is parallel with respect to each other.  Therefore, the algorithm first finds the left-most digit in the image and the nearest digit with respect to vertical coordinates to this leftmost digit.  Then, a line is drawn between these two digits and all the inlier characters, or the ones that are nearby this imaginary line are recorded.  By then reasoning about the amount of inliers and the expected price format (3 digits, hopefully periods are detected or they&rsquo;re inserted), valid price(s) are matched and added.  This parallelism of prices is leveraged continually by picking non-matched leftover leftmost digits, drawing new lines with the same slope as the first price to match together.  Additional valid prices are pulled until all characters have been queried, where valid assumes either 3 digits, 4 characters with a period and any ending including &ldquo;9/10ths&rdquo; is ignored.  If the first line drawn has an incorrect slope or an incorrect match, the valid prices corpus will not be large or sensible.  Therefore, the algorithm will continually start over with new lines until a sensible corpus is made.
+                </p>
+                <p>
+                    Next, we must recognize words that denote gas types in the image.  To do this, a similar algorithm from previous is used, grouping characters together to find words and their center of masses. Once all words in the image are found, then only those related to gas types are preserved and the rest are removed.
+                </p>
+                <p>
+                    Finally, prices must be matched to available types.  To do this, we assume that if the sum of the l2-norm or the sum of the distances between each of the valid prices and gas type pairs are minimized then we have a correct mapping.  This has proven to work in almost all cases, because even if labels are in-between different prices, the minimization of the sum of the L2 norm will still force correctness. For instance, if a wrong pair is made due to labels between numbers, it would make the other pair much further than necessary.  If the quantity of prices or labels don&rsquo;t match, then pairs minimizing the norm are chosen and the rest of the values are ignored, assuming they&rsquo;re invalid or extra labels.
+                </p>
+                <p>
+                    For the web-app frontend, Node.js/Express is used to manage the data.  This includes collecting an uploaded image, previewing the uploaded image, and then sending the image to the a Google compute engine VM. The image is then received by the Express app, which writes the image to a folder on the VM. The Express app runs the Python script which performs all necessary computer vision, generates a JSON with corresponding gas types and prices, and then returns the JSON to the site which then displays the information to the user.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned about how to use Google Cloud&rsquo;s Vision API as well as worked on an advanced algorithm that worked effectively with the sign.  Additionally, we learned more about Web Development and debugging through the process of using Node.js.
+                </p>
+                <h2>
+                    What's next for GasFinder: ML Gas Price Picture Parser
+                </h2>
+                <p>
+                    By using geographic data from the camera image, additional information could be discerned about the prices and general trends happening in the area.  Additionally, safe search would allow for invalid images to be filtered out, ignored and not saved to the database.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            computer-vision
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

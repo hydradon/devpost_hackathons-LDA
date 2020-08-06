@@ -1,0 +1,185 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/C0nKQzJcHIY?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719508" data-title="Transcribing" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/508/datas/original.png">
+                            <img alt="QuickSeek &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/508/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Transcribing
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719509" data-title="Video Search" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/509/datas/original.png">
+                            <img alt="QuickSeek &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/509/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Video Search
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="719510" data-title="Sentiment Analysis" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/510/datas/original.png">
+                            <img alt="QuickSeek &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/719/510/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Sentiment Analysis
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When watching tutorials, lectures or any video on YouTube, I usually come across long videos, sometimes I don't need to watch the entire video but only specific parts of it. If I want to find when a word was mentioned in a video, I could use the seek bar to guess the position, but that becomes very hard especially on really long videos. What if there was a way to search the video and quickly find what you're looking for? That's where QuickSeek comes in.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    QuickSeek is a chrome extension that allows you to easily search and navigate through a YouTube video, you can quickly find and watch only parts of the video that contain words you are looking for.
+The Chrome extension uses Amazon Transcribe to make the audio searchable and Amazon Comprehend to perform sentiment analysis on the transcript.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I started with the Chrome extension which was built with Javascript, HTML, and CSS. The backend is a set of Lambda functions written in python. The Chrome extension sends the video ID from the browser through an API gateway which triggers the first Lambda function. The Lambda function gets the download URL from YouTube using a Python library called Pytube, the Lambda function will also send the video directly to an S3 bucket. The Chrome extension will call another API gateway to start the transcription process on the video using Amazon Transcribe. The transcription process can take a while, so the Chrome extension will check to see if the transcription process is complete or still in progress. When the transcription process completes the Chrome extension will call an API gateway which will trigger another Lambda function to get the transcription data. The function will also perform sentiment analysis on the video and return the data back to the Chrome extension. The video file gets automatically deleted after the process completes.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I ran into a lot of small challenges while building this app, one big challenge was figuring out how to get the video from YouTube directly to an S3 bucket and figuring out which two A.I services to use. Another challenge I ran into was the 5000-byte text limitation of Amazon Comprehend.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm glad it actually works! when I started this project I wasn't even sure if it would be possible to implement such an idea within a short period of time.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about the AWS machine learning services.
+                </p>
+                <h2>
+                    What's next for QuickSeek
+                </h2>
+                <p>
+                    Next, I plan to make it possible to save the transcript data locally on your PC so that you can search the same video without going through the transcribing process again. It would also be cool to try out Amazon video Rekognition to allow label, activity and celebrity detection in YouTube videos.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-comprehend
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-transcribe
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/harrybanda/QuickSeek" rel="nofollow" target="_blank" title="https://github.com/harrybanda/QuickSeek">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

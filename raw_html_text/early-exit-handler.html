@@ -1,0 +1,106 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/mGQy_I4qHFU?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    At work I created a front-office process in UIPath that works with legacy systems and will sometimes run for multiple hours, depending on the size of the project. (The length of these runs is due not to any limitation on UIPath's part, but rather to the inherent slowness of these legacy systems.) I was inspired to create an "early exit" framework after having to force-quit the robot two or three times due to time constraints. Force quitting like this would result in weird errors (both from UIPath and from the legacy systems involved). In addition, I would lose out on my built-in end-of-process reporting-- a nice, well-formatted report on all relevant activity the robot would spit out at the end of the process... but only if it naturally reached the end of the program. I wanted this report to be created regardless of whether or not I had to exit the robot early.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The Early Exit Handler does just that. -- It allows the user to pre-set a condition (a shortcut key trigger, time of day, file change, etc.) for a smooth early exit from any process. The process will exit without crashing, and the user can easily set up one (or multiple) "wrap up" workflows (to generate reports, close programs, etc.), one of which will be triggered (depending on where/when the early exit occurred) as the robot exits the process.
+                </p>
+                <p>
+                    See included "Instructions" file for full details on how to use the robot.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The Early Exit Handler is an easy-to-apply framework that uses nothing but UIPath's default activities/workflows. This automation is essentially just a combined and generalized use case for three of UIPath's lesser-used but very powerful activities/workflows -- Parallel, Monitor, and State Machine.
+                </p>
+                <ul>
+                    <li>
+                        <p>
+                            The Parallel is the basic framework for the Early Exit Handler.-- It contains the Monitor activity and the State Machine workflow. Within the Parallel, a pair of boolean variables work in concert to trigger a smooth exit of the robot when/if the early exit trigger is activated.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The Monitor activity (which can be replaced with a time limit or some other monitor equivalent, if desired) is used to wait for a trigger (a user key event, in my example) that will activate the early exit.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The State Machine is the framework for the user's primary workflow. The State Machine divides the user's workflow into as many discrete pieces as necessary. A transition at the end of each discrete step with one of the early exit boolean variables as its condition allows the process to seamlessly exit the workflow (going to one or more "early exit"/wrap up Final States) whenever an early exit is triggered.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    (NOTE: I strongly encourage the use of the Robotic Enterprise Framework for the State Machine inside of the Early Exit Handler. The REF (particularly it's error-handling system) works particularly well with the Early Exit Handler framework. In concert, the two can be used to create a 100% crash-free robot that will not break regardless of whether or not an early-exit is triggered.)
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The biggest challenge in creating this framework had to do with how I triggered the early exit from the process. Originally I had a single boolean variable to both (A) be assigned to TRUE within the "Monitor" activity whenever the early exit trigger activated and (B) serve as the "Exit" condition for the Parallel statement. My wrap-up activities were contained outside of the Parallel, and I used Try-Catches within/around the State Machine to catch any resulting UIPath errors that might occur (to ensure that the robot would successfully make it to the wrap up activities each time).
+                </p>
+                <p>
+                    After many hours of using the process this way and additional experimentation, I found that this way of doing things was error-prone.-- Namely, it is possible (depending on which activity is currently being executed within the State Machine) that trying to "force" the process out of the Parallel out by satisfying its completion condition while the State Machine is still running will result in an un-catchable error. By un-catchable, I literally mean that the robot will throw the error EVEN IF there is a sytstem.exception Try Catch at the HIGHEST LEVEL of your robot. Meaning that triggering an early exit could crash your robot, which is exactly what this framework was created to prevent.
+                </p>
+                <p>
+                    I then created the two-boolean method to address this issue. -- Using the two booleans the State Machine should now always finish running before the Parallel exits, regardless of whether an early exit is triggered, thus avoiding any un-catcahable errors.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            rpa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            uipath
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/RileyHansen/Early-Exit-Handler" rel="nofollow" target="_blank" title="https://github.com/RileyHansen/Early-Exit-Handler">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,200 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/aRCWxlnXp0E?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="922104" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/922/104/datas/original.png">
+                            <img alt="MoodViewed &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/922/104/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="920701" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/920/701/datas/original.png">
+                            <img alt="MoodViewed &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/920/701/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            Throughout our busy student lives, stress and failure due to poor time management was often a harrowing reality. We could pinpoint moments when incorrectly ordering our deadlines and commitments through the day had dropped morale and motivation to work, and therefore led to unacceptable productivity levels.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We wanted to help students and all busy individuals by removing the chore of figuring out when to complete tasks. This is where MoodViewed comes in, reordering your calendar in a way that suits your mood for the day. Studies show that at negative mood levels, hard work could not be accomplished well and some motivating factors, such as the satisfaction of completing an easy task could precede your hard tasks and leave you with greater energy to complete it.
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    MoodViewed prompts the user to input all their fixed time events and schedulable tasks, even with deadlines! Then takes care of the rest for you by using a Natural Language Processor (Google NLP) to get sentiment analysis on your statement. Based on this derived mood, and factors such as difficulty and closeness of deadline your events and tasks are smartly ordered.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Back End:
+                </p>
+                <ul>
+                    <li>
+                        Using the R programming language, an optimized multiple regression model was determined for the 3 variable (difficulty, duration, and deadline) model to best align events with scheduling priorities.
+                    </li>
+                    <li>
+                        JSON data is imported and the main file running the back end system is done in Python with functions to calculate the heuristic values for our events, order them based on sentiment values (and difficulty). If the sentiment is below a "negative" threshold your day will start with a few easy tasks followed by some hard tasks and alternating between the two to give the user a balanced yet motivating workload. (similarly but in reverse for a positive sentiment), if you're feeling neutral at the particular moment your events will be returned in the entered order.
+                    </li>
+                    <li>
+                        Events are then assigned time slots in succession using linked lists in Python and finally returned as JSON to the front end.
+                    </li>
+                </ul>
+                <p>
+                    Front End:
+On the front end, React was used to design the interactive interface for the user, as well as page functionality such as the event editing and a button to trigger the algorithm if reordering the events is required. JSON was passed to the Google App Engine which does the processing, and a JSON array of ordered scheduled items are received on the front end and rendered as a stack of elements representing the to-do list. The difficulty that the user inputted is also shown to demonstrate the functionality that the ordering changes based on a set of criteria including the sentiment of their inputted string. The user is asked to input a series of answers to our questions to inquire about their day.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        Connecting Front end to Back end poses an issue in terms of getting a response from the Google Server to run the Natural Language Processing of the sentiment analysis part of our application. Everything worked locally quite easily, however, we ran into issues when attempting to deploy to the Cloud. Understanding what was required for the application to be built and run on the cloud, required deep investigation and finding out which packages and authentications were required also proved to be a challenge. Another issue with the cloud is that the debugging process was very convoluted, and digging into the build logs on Google App Engine and understanding the errors was difficult. However, we did end up overcoming these Cloud-based difficulties and allowed us to not have to run a local server with an exposed endpoint re-route through ngrok, but with a Google App Engine (appspot) endpoint instead.
+                    </li>
+                    <li>
+                        One other issue was hitting the endpoint through the front end, and choosing how to pass the JSON data to the server. We had to tinker around to find the right fit with the configuration that we had for our application.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    From this project, each hacker had a hand in the Full Stack Development experience giving us an enhanced and realistic hackathon development experience. Creating a functional and deployed web app that can take a load off of our minds to relieve stress in the little ways that it builds up. Furthermore, working with the Google NLP API and seeing its ML capabilities in action had given great insight into the possibilities that machine learning has to offer for bettering the lives of individuals.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        How the Google NLP API can be used in a python-based project to facilitate sentiment analysis on an inputted text block.
+                    </li>
+                    <li>
+                        Practical experience using the Pandas python library to manipulate dataframes using SQL-like methods, but after discovering simpler ways to transform incoming front end data, the focus was then shifted to simple reindexing and sorting using Standard Python Library functions.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for MoodViewed
+                </h2>
+                <ul>
+                    <li>
+                        Automated tagged Difficulty values, ML generated: The future could show a tag-based input system that can be used to automatically set difficulty values to your tasks based on (e.g how often you rescheduled it and other metrics)
+                    </li>
+                    <li>
+                        We would also like to include a machine learning model that will learn based on user habits. Based on similar difficulty tasks and their delta between completion time and estimated time, in the future, when the user tries to add in a task with the same difficulty, we will pop out a suggestion to maybe consider adding some more time, following past trends.
+                    </li>
+                    <li>
+                        We will also allow the user to be able to edit a task on our desktop, allowing them to make changes to future tasks they have previously added, and then reschedule it based on the new time allotments.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            ai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ai-applied-sentiment-analysis">
+                                ai-applied-sentiment-analysis
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-app-engine">
+                                google-app-engine
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/natural-language-processing">
+                                natural-language-processing
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/AndyJiang99/DeltaHacks2020" rel="nofollow" target="_blank" title="https://github.com/AndyJiang99/DeltaHacks2020">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

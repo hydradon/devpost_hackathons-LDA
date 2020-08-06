@@ -1,0 +1,256 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/ncNHdofhOAw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="861592" data-title="AlfredBot4SC2 - A twitch extension to play SC2 with your streamer" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/592/datas/original.png">
+                            <img alt="AlfredBot4SC2 &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/592/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                AlfredBot4SC2 - A twitch extension to play SC2 with your streamer
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Twitch itself as a platform was an inspiration. It provides an Interactive experience to its viewers and streamers. Viewers can digitally interact with their streamers live. With game matched extension now this digital interaction could be made more specific to the content of the stream. In
+                    <strong>
+                        StarCraft
+                    </strong>
+                    2, a strategy game, a player has to handle multiple functions at the same time, like building new structures, building new more powerful army units, attach enemy units, expand and so on.
+                </p>
+                <p>
+                    Blizzard has published a library that helps in building SC2 bots. This was another source of inspiration, which got us thinking what if the Bot instead of being unmanned, could be remotely controlled by viewers from Twitch extensions. The streamer can play along with the Bot against an opponent. Hence, viewers also become a very core part of the gamers journey through StarCraft 2.****
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The streamer installs and starts AlfredBot(Twitch based Desktop App). The bot is then used to start SC2 in controlled mode. Now the streamer can play SC2 normally while the Bot also active is listening for commands on streamer's channel.
+                </p>
+                <p>
+                    The streamer enables the Twitch Extension for AlfredBot on their channel.
+                </p>
+                <p>
+                    Viewers can now issue commands like build Pylons, Assimilators or Cybernetic Core engine etc, from the Twitch extension. These commands are published and AlfredBot running on streamer's machine executes them live in game.
+                </p>
+                <p>
+                    Thus, the streamers can delegate some responsibilities in the game to their viewers.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <h3>
+                    Frontend Twitch Extension UI:
+                </h3>
+                <ul>
+                    <li>
+                        Svelte 3 (Reactive UI)
+                    </li>
+                    <li>
+                        Bulma CSS
+                    </li>
+                    <li>
+                        Apollo (graphql-client)
+                    </li>
+                </ul>
+                <h3>
+                    Extension Backend Service
+                </h3>
+                <ul>
+                    <li>
+                        Hasura GraphQL Engine Over Postgres with query subscriptions support over WebSocket
+                    </li>
+                    <li>
+                        A lightweight NodeJs Microservice with Redis Cache to manage a live game session
+                    </li>
+                    <li>
+                        Docker to run Hasura and Microservice in containers on a single machine (this is so we can scale later if the need be)
+                    </li>
+                    <li>
+                        AWS Lambda to create a Auth service which can validate Twitch tokens and also facilitates login with Twitch in applications.
+                    </li>
+                </ul>
+                <h3>
+                    AlfredBot - Twitch Application - Desktop App
+                </h3>
+                <ul>
+                    <li>
+                        A bot created using
+                        <strong>
+                            python-sc2
+                        </strong>
+                        library. The bot can start the game in controlled mode and receive commands over network.
+                    </li>
+                    <li>
+                        Electron to build a desktop Application which encapsulates the bot and also provides an interface to login the streamer into Twitch.
+                    </li>
+                    <li>
+                        <strong>
+                            ZeroRPC
+                        </strong>
+                        , for starting and stopping the Bot from NodeJs bases electron.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        First challenge was, how to interact with the Python program running SC2
+                        <strong>
+                            from
+                        </strong>
+                        Electron(NodeJs) code. Solved using RPC.
+                    </li>
+                    <li>
+                        Responsive Design of the extension UI.
+                    </li>
+                    <li>
+                        A GraphQL Subscription Client in python. There were no mature solution available. So created our custom library for subscribing to the new commands in Hasura GraphQL Engine.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        The python desktop client, was developed in non-blocking reactive architecture, which does not degrade in performance with time.
+                    </li>
+                    <li>
+                        The whole journey was kind of daunting, but to be able to complete the first cut release within the stipulated period of time really makes us happy.
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        I learned how to build a Twitch extension and was really amazed at the detail documentation available which made this learning curve small.
+                    </li>
+                    <li>
+                        RPC remote procedure calls, was a theoretical concept for me. Learned the challenges and hacks of implementing one practically.
+                    </li>
+                    <li>
+                        Svelte 3 is another amazing UI framework, which we had fun learning and implementing UI.
+                    </li>
+                    <li>
+                        Hasura GraphQL engine a no code platform for developing GraphQL queries and subscriptions.
+                    </li>
+                    <li>
+                        How to find a problem, by doing surveys with Twitch Streamers and understand if a certain digital experience is really needed by the community or not.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for AlfredBot4SC2
+                </h2>
+                <ul>
+                    <li>
+                        Currently the Bot only supports Protoss Race in game. Going forward support more Races.
+                    </li>
+                    <li>
+                        Enable multiple player mode, wherein one streamer along with his/her viewers can go against another similar hive of a streamer and his/her viewers.
+                    </li>
+                    <li>
+                        Expand the application of the concept of
+                        <strong>
+                            "Human Controlled Bots"
+                        </strong>
+                        to other strategy games.
+                    </li>
+                    <li>
+                        Introduce support for Advertisers to unlock different offers based on number of commands executed.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            caddy
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            electron
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            graphql
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/hasura">
+                                hasura
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            svelte
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://bishwenduk029.github.io/alfredbotsite/" rel="nofollow" target="_blank" title="https://bishwenduk029.github.io/alfredbotsite/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                bishwenduk029.github.io
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

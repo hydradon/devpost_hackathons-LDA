@@ -1,0 +1,103 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="422457" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/422/457/datas/original.png">
+                            <img alt="Mind Invaders &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/422/457/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    After hearing about the muse headband at another hackathon, I was excited to get my hands on one and see what could be done with it. While still far off in the future, technology that is able to guess what you want to do by reading your mind is bound to become an integral part of our lives. While the project is not directly translatable to something as robust as I had imagined at first, I treated this as a learning experience to learn more about real-time signal processing.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The game itself is a re-creation of the popular space-invaders game released in 1978. Instead of controlling the player with keys however, the ship movement and shots is controlled through the muse headband in two parts. The built-in accelerometer will control the movement of the ship, while the players blinks trigger the shots.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The app is run on Java using the Swing framework for rendering the player. Communication between the application and the Muse headband is done through a command line tool called muse-io. First the muse is paired through bluetooth with the laptop, then the muse-io program connects to the device and streams data through itself. In order to access this data, a protocol named Open Sound Control (OSC) is used. Specific signals from the device are accessed on dedicated paths on localhost created by the muse-io program.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    At first I just wanted to experiment with the device and see what I could come up with. Since I was working alone, I decided to go with a relatively simple game implementation such as Space Invaders.
+                </p>
+                <p>
+                    My main challenge involved processing the raw EEG input from the headband in order to detect blinks from the user. There are 4 data points produced which measure voltages across the forehead, and these values are updated 200 times a second. Having never encountered any signal processing problems, I was at a loss on how to approach the problem. A bit of research led me to consider using Fourier transforms to detect peaks in the signals, however it was getting late so I ended up using the built-in /elements/blink path which returns the integer 1 when a person blinks. Given more time, I think I could have made a more reliable solution for my use case. The implementation I tried involved using a running average of the signal values but was not very reliable and prone to changes depending on how one wore the headset..
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was able to connect up to the muse relatively quickly and start seeing the data coming from the streams. It was a bit daunting at first given how much data there is but the end product doesn't feel impossible to control while still being difficult enough to be entertaining.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about the OSC protocol which is used a lot in digital signal processing. Additionally I was able to get my feet wet in something I have zero experience with and the end product was satisfying given how primitive it is.
+                </p>
+                <h2>
+                    What's next for Mind Invaders
+                </h2>
+                <p>
+                    I would like to learn more about signal processing and try to rely less on the accelerometer for controls. While I think it is a lot more simple and intuitive, there are already many substitutes which can be used for similar things. The strength of the muse lies in the ability to read electric signals from the brain, thus controlling technology in was nothing else can. I wouldn't mind also improving the game aspect since it is very static currently. Adding power ups, or varying player power based on concentration could add a twist to the game which would make it worthwhile playing with the muse.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/muse">
+                                muse
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            osc
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            swing
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

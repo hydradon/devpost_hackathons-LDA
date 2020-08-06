@@ -1,0 +1,186 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/MOrgrkzkyKM?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="298904" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/904/datas/original.png">
+                            <img alt="tunemap &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/904/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="298905" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/905/datas/original.png">
+                            <img alt="tunemap &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/905/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="298906" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/906/datas/original.png">
+                            <img alt="tunemap &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/906/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="298907" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/907/datas/original.png">
+                            <img alt="tunemap &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/298/907/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    The lyrics of a song are a powerful source of information about the themes and sentiment in the song.
+We aimed to build a unique profile of each song based on its lyrical content. 
+We first obtained a large dataset of music lyrics (~200000) and performed topic modeling on it. We specifically used an algorithm called
+                    <strong>
+                        Latent Dirichlet Allocation
+                    </strong>
+                    (LDA), a modern statistical method that can discover themes in corpora in an unsupervised fashion (meaning no hand labeling is necessary).
+                </p>
+                <p>
+                    We were able to obtain
+                    <em>
+                        topic vectors
+                    </em>
+                    associated with each song, which essentially act as a unique profile. The value in the vector with the highest value is the main genre/theme the song fits into. We decided to use these topic neighbors to construct a music graph. Each song is considered a node in the graph and is connected to several of its closest neighbors. Logically, songs with similar themes are closer to each other, so the graph structure holds a lot of information about song similarity.
+                </p>
+                <p>
+                    We first built a simple graph visualizer, where a user can start at a random song (or pick their own) and explore the vicinity by expanding the neighborhood of nearby nodes. We built this in the browser using
+                    <code>
+                        d3.js
+                    </code>
+                    , a SVG visualization tool for Javascript. We display an interactive snapshot of the music graph, where nodes are colored by genre. Furthermore, we can listen to any of the songs on the music graph in the interface by double-clicking a node.
+                </p>
+                <p>
+                    This interface led us to discover some really interesting trends in the music graph, most obviously that foreign languages have some very dense clusters, and that there exists an 80s "black hole", an extremely dense region of lyrically similar songs from the 80s (that is often hard to leave while traversing). This tool actually worked well as a tool of music discovery, as we found ourselves listening to new genres and even languages of music and enjoying the extremely random element to the discovery.
+                </p>
+                <p>
+                    We then decided to build a second tool, based on the ideas of random walks on the music graph. Given two songs, we found a random path between the two. This allows us to generate a random playlist where we slowly transition from the first song's genre into the second's. This also acted as a really interesting tool of music discovery, since we could watch the playlist being built in realtime and observe the different genre and theme transitions that were being made. A user can specify the two songs of their choice or pick two at random. After the playlist is generated, it immediately begins playing in the interface.
+                </p>
+                <p>
+                    This application is a novel instance of visual music discovery. Most music discovery tools just list out copious amounts of songs and albums, or pick a random chain for you with no context. With our tool, you can begin your music discovery in a familiar place and branch out as you feel, exploring particular clusters of music before moving onto others. Associating the connectivity of the music graph with our own tastes has great power, as it really allows us to understand our own auditory taste from a visual perspective.
+                </p>
+                <p>
+                    We feel that this application is a cool proof-of-concept that should be the future of music discovery. The current state of music discovery is not so great; black-box machine learning algorithms make predictions based on past listens. The random element of our approach, along with the unsupervised aspect of our data, gives the user a lot more power to discover music their own interests at their own pace.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/d3-js">
+                                d3.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            latent-dirichlet-allocation
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/prudhvil/musichack" rel="nofollow" target="_blank" title="https://github.com/prudhvil/musichack">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://svikram.ucsd.edu" rel="nofollow" target="_blank" title="http://svikram.ucsd.edu">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                svikram.ucsd.edu
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

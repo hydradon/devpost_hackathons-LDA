@@ -1,0 +1,116 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Approximately 1 in 5 individuals in the United States will experience some form of mental illness in their lifetime. Fortunately, it seems that mental health awareness is beginning to get the attention it deserves, but due to a history of ignorance and stigmatization, the resources available for those who are struggling are sparse and diagnosis often comes too late. In addition to this lack of resources and historical stigmatization, the difficulty of formally diagnosing mental health conditions (as opposed to other more physically apparent health conditions) creates a dearth of data available on the topic. This project seeks to address this lack of data by utilizing the vast trove of social media data publicly available on the internet to facilitate early diagnosis and prediction of mental health conditions.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This project looks at depression, specifically, and aims to utilize machine learning classifiers like Naive Bayes and K-Nearest Neighbors on Twitter data to determine if a user is at risk of having depression.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Utilizing Twitter as the source of data poses the challenge of determining how to generate positive and negative training data. Previously successful projects utilize self-diagnosis as a method of generating positives, and as such, this project utilizes the Twitter search API to search for key phrases that indicate self-diagnosis of depression. For example, users that state &ldquo;I was diagnosed with depression&rdquo; or &ldquo;I was prescribed antidepressants&rdquo; are placed into our positive training set. Their tweets that contain these phrases are removed from their timelines in our dataset, so the classifier does not rely on these phrases for prediction. The control set is comprised of randomly sampled Twitter users, with the understanding that a small percentage of the control set is contaminated.
+                </p>
+                <p>
+                    After searching for a list of users for our positive and negative datasets using the Twitter Search API, I output their usernames into a txt file. I then used the Twitter Timeline API to generate the timelines and other information about the user from the list of names, and stored these as a Python dictionary along with their classification labels.
+This project uses a balanced dataset, as opposed to a representative dataset, because this project is attempting to build a predictive model as opposed to a representative model.
+                </p>
+                <p>
+                    Under the Gaussian Naive Bayes model, once given the dictionary of users and their timelines, this project extracts continuous numerical data points as features for each user. These features are: Number of followers, Number of friends, Follower to friend ratio, Average number of favorites, Sentiment ratio (ratio of positive to negative tweets), Average sentiment, Ratio of tweets that are tweeted between 12am to 4am, and Average mentions.
+These features were chosen because the literature we had read had shown that social indicators, time awake, and sentiment could all be correlated with depression. The feature values were determined either directly via a Twitter API call or basic calculations based off collected Tweets (i.e. algebraic mean). The extracted feature values were stored as a csv, where each line represents a user and each feature value is separated by commas. The users in this file were then randomly split up 50 different times with a training to test ratio of around 0.7.
+                </p>
+                <p>
+                    I also wanted to extract feature values from the raw text of tweets. Under the Multinomial Naive Bayes and K-Nearest Neighbors models, the tweet text was extracted from the dictionary of user features. Each users tweets was cleaned (remove non-ASCII characters, links, etc) and concatenated into one line and placed alongside their classification labels. Each user was split into the training set or test set with a ratio of 0.7, and this is done randomly 10 times, resulting in 10 different training/test files to do inference on, for a more unbiased perspective. I then trained the different models and tuned them using n-grams for n=1 and n=5.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    This project is based on many assumptions that come as a result of using a public dataset that does not have accurate labels for what we are trying to classify. Thus, framing the problem and solution was difficult, but if we were able to obtain the reliable data, this technology could possible translate well.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    The Naive Bayes models were very fast. This is because due to its conditional independence assumptions, they can calculate joint distributions very quickly, by just multiplying frequencies together. As a result, both Naive Bayes implementations have a runtime of O(n) since we just need to loop through each word once to get their conditional probabilities. Because of its fast nature and the many words in this specific data set, Naive Bayes was the better choice in terms of runtime as well.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    The Multinomial Naive Bayes implementation for the bag-of-words language model outperformed the other methods in all performance metrics and had a short runtime, with an average accuracy over ten trials of around 73% and runtime of 582ms.
+                </p>
+                <h2>
+                    What's next for Detecting Mental Health Risk By Social Media Posts
+                </h2>
+                <p>
+                    While I observed initially promising results, there are many areas for possible future work and improvement. In particular, I would plan on procuring a larger and better dataset, optimizing the feature selection, and attempting to implement more complex ML algorithms.
+                </p>
+                <p>
+                    At a higher level, the approach makes the assumption of depression as a binary, permanent attribute; either someone has it indefinitely, or never has it. This assumption is manifested i the examination of a users entire timeline, regardless of the time of diagnosis or time of admitted diagnosis. While I considered this issue of temporality to be insignificant to simplify the project, in the future it would be beneficial to address this issue.
+                </p>
+                <p>
+                    I also considered looking into other ML algorithms, including but not limited to Neural Networks, SVM Classifiers, and Random Forest. I would also like to explore classifying depression temporally (i.e. not treating it as binary and permanent), which would potentially involve the employment of Hidden Markov Models. Finally, this implementation is generic enough that it could easily be modified to examine other mental health conditions like PTSD and anxiety as well, which could be further analyzed in the future.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pickle
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            textblob
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twitter">
+                                twitter
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jennyhuangg/Treehacks-2019" rel="nofollow" target="_blank" title="https://github.com/jennyhuangg/Treehacks-2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

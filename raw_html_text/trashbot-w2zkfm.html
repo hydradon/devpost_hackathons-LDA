@@ -1,0 +1,170 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="448300" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/448/300/datas/original.png">
+                            <img alt="WakeupBot &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/448/300/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="448301" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/448/301/datas/original.png">
+                            <img alt="WakeupBot &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/448/301/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    WakeupBot
+                </h1>
+                <p>
+                    9am meetings suck. But you know what sucks even more? When that one dev who works remote just
+                    <em>
+                        keeps
+                    </em>
+                    sleeping through your 9am Slack meetings. Fortunately, there's now a solution! Enter
+                    <strong>
+                        WakeupBot
+                    </strong>
+                    .
+                </p>
+                <p>
+                    Invite WakeupBot to your meeting channel, and send it to go wake up that dev by mentioning it followed by the request
+                    <code>
+                        wakeup @&lt;sleeping dev&gt;
+                    </code>
+                    . It'll then, very kindly, send your sleeping beauty a wakeup text (via the Twilio SMS API)!
+                </p>
+                <p>
+                    If, unfortunately, they still don't show up, a second invocation of
+                    <code>
+                        @&lt;bot&gt; wakeup @&lt;sleeping dev&gt;
+                    </code>
+                    and WakeupBot will try again, this time with a gentle wakeup phone call (via the Twilio calling API). A third time, and WakeupBot will bring out the big guns, doing a reverse-lookup on their phone number (via the Twilio Lookup API with the Next Caller Advanced Caller ID add-on) to get their home address and dispatch a search and rescue party for our truly unconscious dev.
+                </p>
+                <p>
+                    Once they show up, let WakeupBot know with
+                    <code>
+                        @&lt;awakened dev&gt; [came/is here/showed up]
+                    </code>
+                    !
+                </p>
+                <h2>
+                    Setup
+                </h2>
+                <p>
+                    To integrate WakeupBot to your Slack team, follow the steps below.
+                </p>
+                <ul>
+                    <li>
+                        Clone this repo, and run
+                        <code>
+                            npm install
+                        </code>
+                        .
+                    </li>
+                    <li>
+                        Create a "Custom Integration" for your Slack team, of type Bot.
+                    </li>
+                    <li>
+                        Add a config.js file to the root of this project, of the format:
+                        <code>
+                            javascript
+module.exports = {
+TWILIO_ACCOUNT_SID: '', // Twilio IDs and tokens
+TWILIO_AUTH_TOKEN: '',
+TWILIO_TWIML_APP_SID: '',
+TWILIO_CALLER_ID: '', // Twilio phone number to send from
+SLACK_TOKEN: '', // Bot integration API token
+PHONE_NUMBERS: {
+&lt;user Slack ID&gt;: &lt;phone number&gt; // ID and phone number of each member of the team
+},
+RESPONSES: {
+&lt;user Slack ID&gt;: 0 // Tracks the escalation level
+},
+GOOGLE_MAPS_KEY: '' // Key for the Google Maps api (only static map access required)
+};
+                        </code>
+                    </li>
+                </ul>
+                <h2>
+                    Deploying
+                </h2>
+                <p>
+                    Once set up, simply run
+                    <code>
+                        node index.js
+                    </code>
+                    locally to deploy the bot (deploying an instance of the project locally will deploy the bot for the entire team). No hosting is required.
+                </p>
+                <h2>
+                    Example conversation
+                </h2>
+                <p>
+                    See below an example wakeup flow!
+                </p>
+                <p>
+                    <img alt="Screenshot 1" data-canonical-url="/img/example_ss_1.png?raw=true" src="/img/example_ss_1.png?raw=true" title="Screenshot 1">
+                    <img alt="Screenshot 2" data-canonical-url="/img/example_ss_2.png?raw=true" src="/img/example_ss_2.png?raw=true" title="Screenshot 2">
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/sashaweiss/trashbot" rel="nofollow" target="_blank" title="https://github.com/sashaweiss/trashbot">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

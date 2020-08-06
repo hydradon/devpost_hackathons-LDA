@@ -1,0 +1,326 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Skip Count Alexa Skill
+                </h1>
+                <p>
+                    Skip Count is a simple and interactive Alexa skill aimed at making learning to skip count fun. Skill helps reinforce the concept of counting in increments.
+                </p>
+                <p>
+                    <a href="https://travis-ci.org/ravishan16/CountByAlexa" rel="nofollow">
+                        <img alt="Build Status" data-canonical-url="https://travis-ci.org/ravishan16/CountByAlexa.svg?branch=master" src="https://res.cloudinary.com/devpost/image/fetch/s--Weqpce2U--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://travis-ci.org/ravishan16/CountByAlexa.svg%3Fbranch%3Dmaster">
+                    </a>
+                    <a href="https://codeclimate.com/github/ravishan16/CountByAlexa" rel="nofollow">
+                        <img alt="Code Climate" data-canonical-url="https://codeclimate.com/github/ravishan16/CountByAlexa/badges/gpa.svg" src="https://res.cloudinary.com/devpost/image/fetch/s--mMvVERON--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://codeclimate.com/github/ravishan16/CountByAlexa/badges/gpa.svg">
+                    </a>
+                    <a href="https://codeclimate.com/github/ravishan16/CountByAlexa/coverage" rel="nofollow">
+                        <img alt="Test Coverage" data-canonical-url="https://codeclimate.com/github/ravishan16/CountByAlexa/badges/coverage.svg" src="https://res.cloudinary.com/devpost/image/fetch/s--hZW18gUx--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://codeclimate.com/github/ravishan16/CountByAlexa/badges/coverage.svg">
+                    </a>
+                    <a href="https://codeclimate.com/github/ravishan16/CountByAlexa" rel="nofollow">
+                        <img alt="Issue Count" data-canonical-url="https://codeclimate.com/github/ravishan16/CountByAlexa/badges/issue_count.svg" src="https://res.cloudinary.com/devpost/image/fetch/s--RpqUhwx0--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://codeclimate.com/github/ravishan16/CountByAlexa/badges/issue_count.svg">
+                    </a>
+                </p>
+                <h2>
+                    Architecture
+                </h2>
+                <p>
+                    Developing a Custom Skill needs understanding of how Alexa Voice Service ( Interaction Schema, Intents, utterance, custom slots ...) works and how to build a service that can expose the custom skill as an API endpoint. Alexa voice service converts the voice command to a JSON and routes the requests to our custom API. Custom API should accept requests from Alexa Voice Service/Skill and send back response complying to the JSON Contract.
+                </p>
+                <p>
+                    <img alt="Architecture - Ravishankar Sivsubramaniam" data-canonical-url="docs/arch_diagram.png" src="https://res.cloudinary.com/devpost/image/fetch/s--DLcFXhtW--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/v1/docs/arch_diagram.png">
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://developer.amazon.com/blogs/post/Tx14R0IYYGH3SKT/Flask-Ask-A-New-Python-Framework-for-Rapid-Alexa-Skills-Kit-Development" rel="nofollow">
+                            Amazon Developer Blog
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/deploying-a-sample-skill-as-a-web-service" rel="nofollow">
+                            Deploying a Sample Custom Skill as a Web Service
+                        </a>
+                    </li>
+                </ul>
+                <h3>
+                    Flask-Ask
+                </h3>
+                <p>
+                    Flask-Ask is a plugin for flask, a popular Micro-services framework. Flask-Ask makes building the custom skill API a breeze, it abstracts all the heavy lifting and lets you focus on the core code. Flask-Ask validates requests signature (You can turn this off for Testing), maps requests to view functions, construct response complying with the JSON Interface contract and more.
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://alexatutorial.com/flask-ask/" rel="nofollow">
+                            Flask-Ask Reference
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/johnwheeler/flask-ask/tree/master/samples" rel="nofollow">
+                            Flask-Ask samples
+                        </a>
+                    </li>
+                </ul>
+                <h3>
+                    Configuring Skill
+                </h3>
+                <p>
+                    Configuring Skill is done in
+                    <a href="https://developer.amazon.com/" rel="nofollow">
+                        Amazon Developer Portal
+                    </a>
+                    . Here you add Skill Information, Interaction Model (Intent Schema, Custom Slots, Sample utterances), Configuration (Mapping the skill to the custom API). Building the Interaction model is the most critical part of building a custom skill.
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://developer.amazon.com/alexa-skills-kit/big-nerd-ranch" rel="nofollow">
+                            Big Nerd Ranch Tutorial
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://developer.amazon.com/alexa" rel="nofollow">
+                            Registering Skill in Developer Portal
+                        </a>
+                        : This step involves configuring skill providing intent schema, sample utterance, custom slots.. and linking to the Flask-Ask API endpoint.
+                    </li>
+                </ul>
+                <h3>
+                    Deploying Service to AWS
+                </h3>
+                <p>
+                    Deploying a flask-ask skill to AWS can be done is so many different ways. IMHO easiest way is to use
+                    <code>
+                        ZAPPA
+                    </code>
+                    and deploy the app in a server-less way to AWS Lambda and AWS API Gateway.
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://gun.io/blog/serverless-microservices-with-zappa-and-flask/" rel="nofollow">
+                            Deploying Server Less Micro-services using Zappa
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/Miserlou/Zappa" rel="nofollow">
+                            ZappaGit
+                        </a>
+                    </li>
+                </ul>
+                <h3>
+                    Development Practice
+                </h3>
+                <ol>
+                    <li>
+                        Python Version - 2.7
+                    </li>
+                    <li>
+                        Project Structure - Standard python project structure.
+                        <a href="speech_assets/" rel="nofollow">
+                            speech_assets
+                        </a>
+                        folder has interaction model assets. Check out
+                        <a href="http://python-guide-pt-br.readthedocs.io/en/latest/writing/structure/" rel="nofollow">
+                            Structuring Guide
+                        </a>
+                    </li>
+                    <li>
+                        Nose tests for Unit Testing -
+                        <a href="tests/" rel="nofollow">
+                            tests
+                        </a>
+                        folder has the test cases. Understanding JSON interface is critical to writing unit tests for flask-ask app.
+                    </li>
+                    <li>
+                        Travis CI for build and Code Climate for static code analysis and publishing Test Coverage reports
+                    </li>
+                </ol>
+                <h2>
+                    Testing Flask-Ask App in Local
+                </h2>
+                <p>
+                    Clone the repo, cd to the app folder
+                </p>
+                <pre class="language-shell"><code>
+git clone git@github.com:ravishan16/CountByAlexa.git
+cd CountByAlexa
+pip install -r requirements.txt
+
+
+</code></pre>
+                <p>
+                    Run app.py launches flask-ask app on
+                    <a href="http://127.0.0.1:5000/" rel="nofollow">
+                        http://127.0.0.1:5000/
+                    </a>
+                </p>
+                <pre class="language-python"><code>
+python countbyalexa/app.py
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 145-691-207
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+</code></pre>
+                <p>
+                    App exposes one endpoint as POST method. Below curl command to invoke launch intent
+                </p>
+                <pre class="language-shell"><code>
+$ curl -X POST \
+http://127.0.0.1:5000/ \
+-H 'cache-control: no-cache' \
+-H 'content-type: application/json' \
+-d '{
+"request": {
+"locale": "en-US",
+"requestId": "amzn1.echo-api.request",
+"timestamp": "2017-04-08T21:53:03Z",
+"type": "LaunchRequest"
+},
+"session": {
+"application": {
+"applicationId": "amzn1.ask.skill"
+},
+"new": true,
+"sessionId": "amzn1.echo-api.session",
+"user": {
+"userId": "amzn1.ask.account"
+}
+},
+"version": "1.0"
+}'
+</code></pre>
+                <h3>
+                    Flask-Ask deployment in AWS
+                </h3>
+                <ol>
+                    <li>
+                        Configuring awscli
+                    </li>
+                    <li>
+                        Setup virtualenv,
+                    </li>
+                    <li>
+                        Configuring Zappa and runnning deployment
+                    </li>
+                </ol>
+                <pre class="language-shell"><code>pip install awscli
+aws configure
+AWS Access Key ID [None]: XXXX
+AWS Secret Access Key [None]: XXXX
+Default region name [None]: us-east-1
+Default output format [None]: json
+</code></pre>
+                <pre class="language-shell"><code>virtualenv venv
+venv\Scripts\activate
+pip install flask-ask zappa awscli
+zappa init
+zappa deploy dev
+</code></pre>
+                <h3>
+                    Checking Logs
+                </h3>
+                <pre class="language-shell"><code>zappa tail dev
+</code></pre>
+                <h3>
+                    Pushing Update To Code
+                </h3>
+                <pre class="language-shell"><code>zappa update dev
+</code></pre>
+                <h2>
+                    Configuration
+                </h2>
+                <p>
+                    The following are set as environment variables in Lambda Function:
+                </p>
+                <p>
+                    MY_USERID &amp; MY_NAME are added to personalize the experience only for the alexa userid added to the environment variable.
+                </p>
+                <ul>
+                    <li>
+                        <code>
+                            LOG_LEVEL
+                        </code>
+                        : LOG_LEVEL is set to default
+                        <code>
+                            INFO
+                        </code>
+                        this can be overridden by adding the env variable.
+                    </li>
+                    <li>
+                        <code>
+                            MY_USERID
+                        </code>
+                        : Env variable set to my
+                        <code>
+                            Alexa User Id
+                        </code>
+                        that comes as part of the request. This is optional.
+                    </li>
+                    <li>
+                        <code>
+                            MY_NAME
+                        </code>
+                        : Env variable set to any text\name that will be added as part of the launch intent/ stop intent greeting
+                    </li>
+                </ul>
+                <h2>
+                    License
+                </h2>
+                <p>
+                    <a href="https://github.com/atom/atom/blob/master/LICENSE.md" rel="nofollow">
+                        MIT
+                    </a>
+                </p>
+                <p>
+                    -- Ravishankar Sivsasubramaniam
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            batchfile
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ravishan16/CountByAlexa" rel="nofollow" target="_blank" title="https://github.com/ravishan16/CountByAlexa">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://skills-store.amazon.com/deeplink/dp/B071D22S4Q?deviceType=app&amp;share&amp;refSuffix=ss_copy" rel="nofollow" target="_blank" title="https://skills-store.amazon.com/deeplink/dp/B071D22S4Q?deviceType=app&amp;share&amp;refSuffix=ss_copy">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                skills-store.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

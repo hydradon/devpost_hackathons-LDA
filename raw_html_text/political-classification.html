@@ -1,0 +1,115 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The original impetus for our project came naturally: wouldn&rsquo;t it be cool to see an overlay displaying the political inclinations of each webpage behind the results of a Google search without having to investigate each link individually? Our original intentions were further emboldened following the recent presidential election, the results of which caused a surging storm of general hysteria, mass dismay and rage battling against intense euphoria and schadenfreude. Often drowned out by the toxic interactions across ideological lines are pleas for cooperation, and more fundamentally, basic mutual understanding. Our project gained a new purpose: for those realizing that they might have been living in an ideological bubble, our Chrome extension would serve to show what links might offer a different perspective.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    On the front end, our Chrome extension, once clicked, causes any link it finds on the current webpage to be highlighted one of two colors (blue or red) based on the political inclination of the text behind that link.
+                </p>
+                <p>
+                    Behind the scenes, things are slightly more complicated. The core algorithm is a supervised learning system that uses the Naive Bayes Classifier. A feature vector is synthesized by the text through determining the frequencies of 500 key trigrams found through experimentation. This feature vector is fed into the classifier, which creates a probability distribution of each vector element in order to find the posterior probability of a datapoint being of class C (liberal or conservative) given the feature vector. Training and testing data were scraped from articles with clear political bias. We have a server running through Flask that interfaces with the front end and visits links on the user's current web page, crawls out the main text in that web page, and feeds the text to the classifier.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We scraped certain websites for highly partisan articles for a training set using Python (we obtained articles that were highly liberal and highly conservative). Then, we divided the articles into trigrams and calculated the number of occurrences for each trigram. We sorted these occurrences using a special ranking function we derived in order to have trigrams that are not too commonly used and distinguish liberal and conservative parties well. We then used the top 500 trigrams as the baseline for our feature vectors, where each feature vector is composed of the frequency of each of the 500 key trigrams. We then calculated these feature vectors for each article in our training set and then used them to train on the Naive Bayes Classification algorithm. We used leave-one-out cross validation and received a mean accuracy of 93%. We then tested on a testing set, which was composed of articles from the same sources as the training data, and received 85% accuracy on the testing set. The front end was made in Javascript and uses a flask server.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The main challenge we experienced while working on the back end came from the fact that getting a good training data set often felt like a three-body problem: when the classifier did well in classifying conservative-leaning documents, it did incomprehensibly poorly in identifying liberal-leaning documents, and adding a few liberal-leaning documents to balance out the too-conservative training set suddenly meant jeopardizing the accuracy of the classifier on our test set completely, and all this was _ before _ we realized the ranking function we used was a monotonically increasing function, which meant it didn&rsquo;t actually _ rank _ things more so than scale them. We did end up finding a good balance of issues for our training set, as well as a stronger ranking subroutine, but it turned out that our original approach was destined to mediocrity, as unigrams simply did not account for enough context to consistently yield correct classifications.
+                </p>
+                <p>
+                    On the front-end, it&rsquo;s basically been a story of constant tussling with Javascript. Also, when the front end was initially linked to the back end, it took all too much effort to figure out why the test links were not showing up as the color the documents behind them should yield. The front end is a complicated system that searches through the source of the current web page, and extract out all the links. The links would then be sent to our server with XHR requests. Making sure everything work smoothly in an environment of a Google Chrome extension is very hard since it involves utilizing the chrome API and messaging between multiple javascript files. The XHR requests  are received by a server we implemented. It runs under Flask, and provides a fast and robust interface for classifying the content of the website. The server makes API calls to the IBM Watson Alchemy Service, and extracts the main body of text from the web url. The text goes through our custom text filtering process, and make sure the web content can be processed by our back-end classifier. The server returns the classification of the content of a web url, and the javascript injects CSS styles into the web page the user is viewing, padding every link in the page with colors to indicate its political inclination.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Our biggest accomplishments during the hackathon can probably be boiled down to two main breakthroughs: creating a strong mathematical ranking subroutine and converting from unigrams to trigrams. On the mathematical side, after much research and callback to math classes of the past, we came up with a ranking function that compiled 500 strong key words. The main issue hindering us was trying to bring out strong trigger words that may not have high frequencies, and discount frequencies of very common words while putting emphasis on the ratio of max(# liberal, # conservative) with (# liberal + # conservative), in order to filter out words that may be common but used in similar quantities across the spectrum. The re-discovery of the asymptotic tanh(x) function resolved the latter objective, while the power of ln(x) function resolved the former.
+                </p>
+                <p>
+                    The second breakthrough of non-trivial implementation of trigrams was the beacon of hope our team needed when we were discouraged by our inability to make the unigram model work. The implementation of trigrams immediately boosted the poor accuracy of classifications immensely (on some test sets, even to 100%), which we could not have predicted. It seems even the slightest inclusion of word proximity in our model was crucial. The swift decision to essentially re-write our entire script to account for trigrams was in hindsight a wise choice.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We definitely learned that Chrome extensions were agents of the Devil. Jokes aside, we learned a lot about natural language processing while ripping our hair out trying to come up with a good model that was theoretically programmable in 36 hours (unfortunately sentiment analysis would have been too ambitious). A lot of estimation mathematics was learned and cobbled together as well. We also somehow refined the art of group debugging along the way.
+                </p>
+                <h2>
+                    What's next for Political Classification
+                </h2>
+                <p>
+                    We see much potential for our seemingly simple extension. For starters, there are many immediate areas that could be further optimized to increase efficiency and ergonomic sense given more time with Javascript. Additionally, we are thinking of implementing confidence intervals when classifying the links to not only identify the political inclination, but also actually bring in the _ spectrum _ of "political spectrum", i.e. give a rough idea of where the document lies on the political spectrum, which would ideally be shown through different shades of red/blue. That way, more moderate documents could find themselves classified more accurately. Perhaps some sentiment analysis could be thrown in there to better grasp the context of the words in the article and reduce the chance of false positives.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            scipy-stack
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            web-scrapers
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/sreejank/YHack2016" rel="nofollow" target="_blank" title="https://github.com/sreejank/YHack2016">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

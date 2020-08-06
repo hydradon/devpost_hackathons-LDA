@@ -1,0 +1,134 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    The natural flow of creating music requires a seamless method of recording sounds onto the computer. The current method requires using a MIDI keyboard, which restricts the creativity of the artist. Using a simple wireless device, any monophonic musical instrument can be digitized as a midi instrument or used to power insightful new human-computer interfaces.
+                </p>
+                <h1>
+                    Executive Summary
+                </h1>
+                <p>
+                    Pyed Piper is an intelligent electronic music assistant that will turn the sound of any monophonic instrument into midi notes as the musician plays the corresponding note. These midi notes can be interpreted by a computer and work with the musician's existing digital audio workstation (DAW). This allows electronic music to be created using the instrument that the musician knows best. They can even whistle. Going further, particular notes can be tied to keys so that you can use an ocarina to play Legend of Zelda: Ocarina of Time.
+                </p>
+                <p>
+                    # Context of Creation
+Pyed Piper was created on January 16 &amp; 17, 2016 as part of Dragon Hacks 2016, held at Drexel University in Philadelphia, Pennsylvania. Pyed Piper was created by Christopher Frederickson, Nick Felker, and Max Bareiss.
+                </p>
+                <h1>
+                    Market Landscape
+                </h1>
+                <p>
+                    There are several different applications for this technology. Electronic music artists can benefit from using more tools to compose music, moving from just a keyboard to the entire range of analog musical instruments. This can also benefit students studying music theory as they will not have to learn piano to develop simple compositions. Educational software can be written around students playing their instrument without relying on expensive, proprietary solutions. Using a musical instrument as an input device can have many purposes for musicians and gaming.
+                </p>
+                <h1>
+                    Features
+                </h1>
+                <ul>
+                    <li>
+                        Allows for natural instrument input
+                    </li>
+                    <li>
+                        Laptop software creates a virtual MIDI port which works with any MIDI supported program
+                    </li>
+                    <li>
+                        Laptop software can also wirelessly send / receive MIDI commands from another computer
+                    </li>
+                    <li>
+                        Android app can wirelessly receive MIDI commands using Marshmallow&rsquo;s built-in MIDI APIs
+                    </li>
+                    <li>
+                        Keyboard events can be sent by detecting the pitch of your instrument
+                    </li>
+                </ul>
+                <h1>
+                    Hardware Description
+                </h1>
+                <p>
+                    Pyed Piper consists of a software program which runs on a computer. It uses your laptop&rsquo;s microphone to capture sound, which can come from any monophonic instrument such as an ocarina. The sound is analyzed for its pitch and intensity and creates a MIDI command. This MIDI command can be used locally through a virtual MIDI port or sent over TCP/IP to another computer.
+                </p>
+                <p>
+                    The dataflow for Pyed Piper starts with the musician playing an instrument. This audio is then recorded by the computer, running our software. The software analyzes the note the musician is playing, and some filtering is applied to the detected note in order to improve the algorithm. The note signal can either be sent as MIDI data over a network to commercial audio software, or sent as keystroke data to any computer program, giving the musician flexibility in how their music is used.
+                </p>
+                <h1>
+                    Development Insights
+                </h1>
+                <p>
+                    Determining the pitch of audio is easy within a given octave, but extending it for a larger audio range has been an active area of research for the past fifty years. While developing our project, we restarted our project several times using different libraries and algorithms in order to reduce the effects of harmonics.
+                </p>
+                <p>
+                    A bunch of instruments -- slide whistle, electric guitar, ocarina, recorder, and even whistling -- were played in order to test the robustness of our algorithm.
+                </p>
+                <p>
+                    The greatest success came from limiting the range of pitches that could be detected. Additionally, using the ocarina provided the best results as the sound generated was the closest to a sinusoid.
+                </p>
+                <p>
+                    At that point, the project shifted to using an instrument as a general input device. The video game Legend of Zelda: Ocarina of Time has the protagonist use an in-game ocarina that is played by pressing particular buttons. These buttons were set to be called when the musician plays the corresponding notes on a real ocarina.
+                </p>
+                <p>
+                    There were a number of problems getting this project to run on Windows. Setting up libraries for the first iteration took several hours of building and installing tools to build the libraries. When we opened a terminal in a Linux based operating system, all that work was finished with a single apt-get command.
+                </p>
+                <p>
+                    Also, when we shifted the project to a general input device, there was difficulty getting keys to be pressed correctly. Although keys could be pressed down, Windows would immediately release them. There was no way to hold down a key, which prevented the game from detecting the inputs as each key needs to be held down.
+                </p>
+                <h1>
+                    Appendix A
+                </h1>
+                <h2>
+                    Version 0.1
+                </h2>
+                <pre class="language-nolang"><code>Using Aubio library using Python in an Ubuntu VM created by Chris and Nick
+</code></pre>
+                <h2>
+                    Version 0.2
+                </h2>
+                <pre class="language-nolang"><code>Using new algorithm to detect frequencies written by Max. This algorithm runs Goertzel&rsquo;s algorithm for each frequency band of interest, and compares the frequencies over time to determine the note the musician is playing.
+Sending MIDI messages over TCP/IP is now successful
+</code></pre>
+                <h2>
+                    Version 0.3
+                </h2>
+                <pre class="language-nolang"><code>Switch from pysoundboard to pyaudio for audio input by Chris and Nick
+</code></pre>
+                <h2>
+                    Version 0.4
+                </h2>
+                <pre class="language-nolang"><code>Using Python library SoundAnalyse  to determine pitch by Chris and Nick
+</code></pre>
+                <h2>
+                    Version 0.5
+                </h2>
+                <p>
+                    Normalized autocorrelation algorithm written in python and tested by Max. Works for a single octave, but not beyond that range
+                </p>
+                <h2>
+                    Version 0.6
+                </h2>
+                <pre class="language-nolang"><code>Max peak FFT based algorithm by Max. While not a proper pitch detection algorithm, it was created as a baseline. Worked worse than previous algorithms.
+</code></pre>
+                <h2>
+                    Version 0.7
+                </h2>
+                <pre class="language-nolang"><code>Returned to SoundAnalyse for pitch detection. Further tuned configuration.
+</code></pre>
+                <h2>
+                    Version 0.8
+                </h2>
+                <pre class="language-nolang"><code>Nick develops a MIDI service for Android devices running Android 6.0 Marshmallow. It can receive MIDI down messages over a TCP/IP socket and play that note with a synthesizer.
+</code></pre>
+                <h2>
+                    Version 0.9
+                </h2>
+                <pre class="language-nolang"><code>There is a proof-of-concept for turning analog sounds into MIDI notes, now the next step is using music as an input device for a video game, such as the Legend of Zelda: Ocarina of Time.
+</code></pre>
+                <h2>
+                    Version 1.0
+                </h2>
+                <pre class="language-nolang"><code>After more iterating, the game now responds to ocarina notes.
+</code></pre>
+            </div>
+        </div>
+    </body>
+</html>

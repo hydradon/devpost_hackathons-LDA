@@ -1,0 +1,178 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/XwQ9yWr9hLE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Pets are a huge source of enjoyment for many people, especially children. The smiles and laughter that an animal can bring can absolutely make a day. We started to wonder, how could you do that with an Echo Show? So we set out to create one - and so Purple Kitty was born!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    This is a custom Alexa skill that only works on an Echo Show or Echo Spot as it needs a screen to work. When enabled, the child can say different commands like "Dance", "Sing", or "Feed the Kitty". The skill understands what was asked for, then plays a short video on the device screen that responds to the command. The experience is quite responsive, and leads to interactive play - the child asking again and again for the kitty to do a trick!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The architecture of the Alexa skill leverages the natural language processing to interact with the user, and determine what the cat should do (dance, sing, eat, etc.) It's based on the intent model that we built into the Alexa, and here is how the basic interaction works.
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://s3.amazonaws.com/purplekitty/images/alexa-nlp.png" src="https://res.cloudinary.com/devpost/image/fetch/s--uueeyBWF--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/purplekitty/images/alexa-nlp.png">
+                </p>
+                <p>
+                    We thought of different ways that someone would want to talk to the cat, and created them as sample utterances. Each of these is mapped to an intent, and as part of creating the models for the skill, all of this information is submitted. This is provided to Alexa as part of the skill submission process.
+                </p>
+                <p>
+                    Once the intent is understood, the Skill then plays a different video that is hosted in S3. This is done by the Lambda function that is passed the intent, which then uses functions within the SDK to formulate a response, mainly matching the intent with the location of the appropriate video file. The link to this video file is passed back to the device, which then plays it on its screen. We wrote the Lambda function in NodeJS, and here's what the code looks like that creates the response for the Dance video.
+                </p>
+                <pre class="language-nolang"><code>// this plays the dance video
+                'Dance': function() {
+                if (this.event.context.System.device.supportedInterfaces.Display) {
+                // the videoLoc is the folder in S3 where all the videos are located
+                const videoClip = videoLoc + "Dance.mp4";
+                const metadata = {
+                'title': 'Purple Kitty'
+                };
+                this.response.playVideo(videoClip, metadata);
+                this.emit(':responseReady');
+                } else {
+                // this is what gets invoked if an Alexa device attempts to use the skill
+                this.emit(':tell', noVideoMessage);
+                }
+    },
+</code></pre>
+                <p>
+                    Here's a visual describing how the components interact.
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://s3.amazonaws.com/purplekitty/images/architecture.png" src="https://res.cloudinary.com/devpost/image/fetch/s--CQXPi8eP--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/purplekitty/images/architecture.png">
+                </p>
+                <p>
+                    Creating the video animations were done on a computer as part of developing the skill using desktop software.
+                </p>
+                <p>
+                    First we used Powerpoint to draw pictures of a cat. We created different scenes, and saved them as separate slides. Each slide would have just a few things different, like the cat tilting its head, or a piece of food disappearing from the bowl.
+                </p>
+                <p>
+                    Once we had all of the pictures for the storyline, we imported them into Camtasia, and put them in sequence. We then added audio of us making cat noises (which was a lot of fun).  The two are laid over one another in time sequence - here's a screenshot of what it looks like when producing.
+                </p>
+                <p>
+                    <img alt="" data-canonical-url="https://s3.amazonaws.com/purplekitty/images/videocreation.png" src="https://res.cloudinary.com/devpost/image/fetch/s--zUNBFJry--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://s3.amazonaws.com/purplekitty/images/videocreation.png">
+                </p>
+                <p>
+                    Once the videos were completed, we uploaded them into S3, and each video was an endpoint that was delivered to the Alexa.  We tested it on both the Echo Show as well as Echo Spot, and both worked great!
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We searched for cartoon software to create the videos, but didn't find anything readily available, so we decided to use images using some basic desktop software (Powerpoint) then animate within Camtasia. The process is tedious as each frame needs to be generated into an image then imported. I'm sure there is some software that could do this easier, but we now have more appreciation for how hard it must be to make good cartoons and movies!
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We tested this out, and all the children that saw it thought it was amazing! Having it published in the Alexa Skill store lets children everywhere enjoy our creation.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned how to do write short cartoons, create basic animation videos, and how to incorporate into Alexa using both the Echo Show as well as the Echo Spot.
+                </p>
+                <h2>
+                    What's next for Purple Kitty
+                </h2>
+                <p>
+                    We're looking for new things to train kitty. Maybe give it a bath, or maybe take a nap? If you have ideas for us, let us know by responding in the comments! We also are going to work on our cartooning skills, and maybe make a friend for kitty.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alexa-sdk
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/camtasia">
+                                camtasia
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/powerpoint">
+                                powerpoint
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/terrenjpeterson/purplekitty" rel="nofollow" target="_blank" title="https://github.com/terrenjpeterson/purplekitty">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.com/dp/B078VYMV2W" rel="nofollow" target="_blank" title="https://www.amazon.com/dp/B078VYMV2W">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

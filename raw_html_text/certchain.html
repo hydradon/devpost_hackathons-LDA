@@ -1,0 +1,168 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="608969" data-title="TLS 101" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/608/969/datas/original.jpg">
+                            <img alt="CertChain &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/608/969/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                TLS 101
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to use blockchain technology as a way to remove unnecessary third parties. After a member learned about TLS and certificate authorities in a cyber security class, the connection was made.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    (CertChain-01.jpg)
+                </p>
+                <p>
+                    CertChain holds companies' certificate information and provides an interface for the browser to verify the certificate. This cuts out the need for a certificate authority's signature, as the blockchain technology provides a man-in-the-middle proof way to verify a certificate.
+                </p>
+                <h2>
+                    How We built it
+                </h2>
+                <p>
+                    Our implementation is split into three parts:
+                </p>
+                <p>
+                    Blockchain Interface
+                </p>
+                <p>
+                    This provides a key/value store type layer of abstraction on top of the blockchain. This allows us to insert and get values as if the blockchain was just a database.
+                </p>
+                <p>
+                    Certificate Generation
+                </p>
+                <p>
+                    This is a tool that generates the required certificates, places the what is needed on the blockchain, and downloads a certificate for the user to place on their server.
+                </p>
+                <p>
+                    Blockchain-Browser Sync
+                </p>
+                <p>
+                    Due to the limitations of current browser security (discussed more below), we were forced to work within the certificate authority system. This piece periodically syncs the certificates with the trusted certificates in the browser (currently Firefox). This is the part that in a full implementation, we would like to see be swapped out for a simple key check.
+                </p>
+                <h2>
+                    Challenges We ran into
+                </h2>
+                <ol>
+                    <li>
+                        NEO
+                    </li>
+                </ol>
+                <p>
+                    NEO has sparse documentation, and we encountered challenges in accessing the API. Their custom build of Python (neo-python) lacked functionality common to regular Python (i.e.: appending to lists). We also did not have any experience deploying to or working with blockchains.
+                </p>
+                <ol>
+                    <li>
+                        Existing Browser Security
+                    </li>
+                </ol>
+                <p>
+                    In modern browsers, there is not a lot of flexibility with SSL certificates. For example, front end JavaScript is unable to access details about the site's SSL certificate. This blocked an idea we had to use a chrome extension to act as an extra layer of security. In addition, we were unable to get a modern browser to trust a self signed certificate, even if the signing certificate was in the browser's trusted certificates. As a result, our implementation involves generating a temporary CA, signing a certificate, and throwing away the private key in order to prevent the kind of security vulnerabilities certificate authorities themselves present.
+                </p>
+                <ol>
+                    <li>
+                        Updating Firefox's Local Certificate Authority Database
+                    </li>
+                </ol>
+                <p>
+                    Firefox stores its local certificate authority database in a user's local app data in a database file. The most supported way of reading from and writing to this database file is to use certutil. However, Firefox 58's certificate settings did not seem to match up with the database file; we were able to manually use Firefox's UI to add certificates, but updating the database file seemed to have no effect. In order to get something working, we used Firefox 48 instead, which did not seem to have this bug.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    -We managed to setup and interface with a private blockchain.
+-We managed to create a user-friendly interface to generate and deploy keys.
+-We managed to work with the security constraints that modern browsers impose on us.
+-We managed to deploy and integrate this group of applications efficiently.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    -We learned more about how blockchain operates.
+-We learned a lot about how certificates are distributed as well as how to generate and sign our own with OpenSSL.
+                </p>
+                <h2>
+                    What's next for CertChain
+                </h2>
+                <p>
+                    As CertChain is meant as a proof of concept, we would like to see an open source community take over and provide a more thorough analysis to using block chain as a
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            neo
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            neo-python
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            openssl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ryanrouleau/CertChain" rel="nofollow" target="_blank" title="https://github.com/ryanrouleau/CertChain">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

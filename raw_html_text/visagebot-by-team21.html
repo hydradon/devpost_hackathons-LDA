@@ -1,0 +1,133 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/l_t7mxN_8GE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    Autistic people have double the rate of depression and are five times more likely to attempt suicide than the wider population according to a 2015 study by Kaiser Permanente (
+                    <a href="https://iancommunity.org/aic/link-between-autism-and-suicide-risk" rel="nofollow">
+                        https://iancommunity.org/aic/link-between-autism-and-suicide-risk
+                    </a>
+                    ).
+                </p>
+                <p>
+                    Imagine Steven, a 12-year-old child, who because of his autism finds it difficult to both recognize the emotions of the people around him and effectively communicate how he is feeling to others. Think about how isolated that makes him feel.
+                </p>
+                <p>
+                    These difficulties extend to Facebook, the primary platform for digital social interaction. How can Steven  possibly engage with the content he sees, when he can&rsquo;t recognize the emotions of the people in the photos in his feed?
+                </p>
+                <p>
+                    We have created a bot, which we have named &lsquo;Visage&rsquo;, to allow Steven to determine the emotions of the people in pictures he sees. Visage can identify the 6 basic emotions &amp; neutrality.
+                </p>
+                <p>
+                    extend this functionality to Facebook,  opening up this network for people like Steven, with our bot that we have named &lsquo;Visage&rsquo;, which identifies the 6 basic emotions &amp; neutrality.
+                </p>
+                <p>
+                    Visage makes use of the FER2013 dataset from Kaggle (
+                    <a href="https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data" rel="nofollow">
+                        https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data
+                    </a>
+                    ). The training set consists of 28,709 examples of 48x48 pixel grayscale images of faces. The test set used consists of 3,589 examples.
+                </p>
+                <p>
+                    Presentation slides:
+                    <a href="https://docs.google.com/presentation/d/152szZ68KfrmoyODtv1XK4kVgspMky7INgCt8UYlEJNI/edit#slide=id.g290a79d1fe_0_330" rel="nofollow">
+                        https://docs.google.com/presentation/d/152szZ68KfrmoyODtv1XK4kVgspMky7INgCt8UYlEJNI/edit#slide=id.g290a79d1fe_0_330
+                    </a>
+                </p>
+                <p>
+                    We have implemented &lsquo;VGG Face&rsquo;, a custom VGG-style neural network for expression recognition. In theory the network should be able to achieve a precision of 71.64% (
+                    <a href="https://github.com/XiaoYee/emotion_classification" rel="nofollow">
+                        https://github.com/XiaoYee/emotion_classification
+                    </a>
+                    ); with our time limitations we were able to achieve 60% accuracy on the test set.
+                </p>
+                <p>
+                    Messenger acts as the point for the user to interact with our experience. Visage will allow users who have difficulties distinguishing different emotions to use machine learning to help them in this aspect of their lives. We have used Messenger as a vehicle to receive images from the user using established methods within Facebook (both file uploads and images taken directly on a mobile device). We then use the url generated when Facebook stores the image on its servers and pass this to the neural network via a request to a Flask server.
+                </p>
+                <p>
+                    The neural network takes the url of a web-hosted image as input, and outputs the most likely emotion of each of the faces in the image. This emotion is used to generate a string which is piped back to the Messenger app and posted into Messenger as Visage's response.
+                </p>
+                <p>
+                    We had originally wanted to annotate the images themselves with the emotions of each the people, but it was challenging to pass images between the Messenger API and the Python backend. We ultimately decided to work entirely with strings.
+                </p>
+                <p>
+                    We were delighted to have developed a fully functioning product with near-state-of-the-art accuracy. The ability of the bot to recognize the emotions of multiple people in the same picture, which required the layering of two neural networks, is something we are particularly proud of.
+                </p>
+                <p>
+                    What's next:
+                </p>
+                <ol>
+                    <li>
+                        Augment training set with additional images sourced directly from Facebook - we expect this will improve accuracy when Facebook images are used as inputs.
+                    </li>
+                    <li>
+                        &lsquo;Balance&rsquo; training set - for example there were (relatively) very few examples of faces expressing disgust.
+                    </li>
+                    <li>
+                        Extend functionality to allow users for game play with photos selected at random - this will allow users to develop their own ability to recognition emotions.
+                    </li>
+                    <li>
+                        Improve classification based on context - people in the same image are likely to be expressing the same emotion and this could be used to improve classification.
+                    </li>
+                    <li>
+                        Allow users to 'flag' images they believe have been incorrectly classified to further improve the accuracy of the network.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            colab
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/facebook-messenger">
+                                facebook-messenger
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/pytorch">
+                                pytorch
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/FBChatterBots/hackathon" rel="nofollow" target="_blank" title="https://github.com/FBChatterBots/hackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

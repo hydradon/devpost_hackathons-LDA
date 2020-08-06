@@ -1,0 +1,90 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The Linux Users' Group at WSU runs several servers, most of which are getting migrated to Docker hosts before the end of the semester. Some people who are not LUG sysadmins (and normally would not have access to our servers) want to administer their own game servers on LUG hardware. Since there are several large security vulnerabilities associated with giving users access to the docker group on a host, I wanted to figure out a way to mitigate those vulnerabilities, protect other container admins on the same server, and allow users to still use the same familiar docker CLI to work on their systems.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Compartmentalized Docker (or docker-rbac, depending on when you asked me during the course of this project) plays man-in-the-middle between the docker CLI and the docker daemon. In some cases, it limits invalid commands from ever hitting the daemon, or transparently filters out containers that the viewing user did not create. Additionally, it manages the special ssh server containers that individuals use to access their other containers.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The main issues tended to circle back to not quite precisely replicating the API requests and responses that the daemon and CLI expected, causing some very odd errors. I mitigated these by substituting nearly verbatim requests I captured through the man in the middle system, but sometimes, that wouldn't even work. Another issue was the fact that I needed to find a way to communicate with my application from the outside to tell it when I wanted to launch a new ssh server even though its only inputs were to docker stuff. I ended up creating a throwaway container through the CLI that just got replaced with a different container that was prebuilt for its environment.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    As far as I can tell, software like this isn't yet available without stepping up to a much more complicated system like Kubernetes or Rancher and flipping your entire infrastructure.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Well-documented APIs, such as the one Docker provides, are a godsend when you are constantly needed to reference and check up on tiny details that could be throwing your code off course.
+                </p>
+                <h2>
+                    What's next for Compartmentalized Docker
+                </h2>
+                <p>
+                    Clean it up. Right now, it's super hacky. Like, not even pre-alpha. Also, documentation, since it's pretty sparse. I might rewrite it in a language better suited for lots of piping streams around.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bash">
+                                bash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/czhanacek/docker-rbac" rel="nofollow" target="_blank" title="https://github.com/czhanacek/docker-rbac">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

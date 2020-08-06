@@ -1,0 +1,118 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It's a web application (backed by Azure) that tells you how much a title is clickbait, giving it a score from 0 to 100 (and sometimes higher!). Titles from Buzzfeed receive higher clickbait scores, and titles from actual news sites (CNN, PBS, etc.) will receive low clickbait scores.
+                    <strong>
+                        Check out the
+                        <a href="https://www.ismyinternetworking.com/clickbait/index.html" rel="nofollow">
+                            live demo here
+                        </a>
+                        .
+                    </strong>
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I first collected hundreds of sample titles from Buzzfeed (considered clickbait) and other news sites (CNN, PBS, ABC, Fox, etc, not considered clickbait). Then, I came up with and generated values for a variety of heuristics, such as "does it begin with a number?", "does it include a word in ALLCAPS?", "how many words are in the title?" for each title.
+                </p>
+                <p>
+                    I then plugged the data into Microsoft Azure's Machine Learning platform and ran a regression on predicting clickbait-ness based on the heuristics. With some trial and error, I found a Boosted Decision Tree to be the best regression type for predicting clickbait, giving a mean error of ~23% in predicting the training data.
+                </p>
+                <p>
+                    The trained model was then deployed to Azure's web application platform, which generated an API for querying the model. I wrote a PHP middleman for abstracting away API access (and secret keys), and then a HTML/JavaScript frontend for making requests to the PHP script. Try the live demo with your own titles and try out the examples here:
+                </p>
+                <p>
+                    <a href="https://www.ismyinternetworking.com/clickbait/index.html" rel="nofollow">
+                        https://www.ismyinternetworking.com/clickbait/index.html
+                    </a>
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Gathering article titles was difficult because few news sites have official APIs for pulling down their news article titles. Some titles were simply copied and pasted one by one. I was able to strip elements from some webpages so I could copy lists of titles at a time, which made data collection much faster. My training data included almost 1000 titles in total, and is available on GitHub.
+                </p>
+                <p>
+                    Coming up with effective heuristics also took some work. I used some online word analysis tools to find the most commonly used words and make that a heuristic. Some clickbait titles could "look" like legitimate news. Having many heuristics enabled Azure to build an effective decision tree that could handle the tougher cases.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It actually works! Most titles ripped right from Buzzfeed will score highly in clickbait scores, while other news pieces from other news sites will score low.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    How to effectively train a prediction model with Azure and tie it to a web application service.
+                </p>
+                <h2>
+                    What's next for Clickbait Detector
+                </h2>
+                <p>
+                    The dream is to build an API and browser extensions that automatically block out clickbait titles while browsing the web.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/machine-learning">
+                                machine-learning
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/php">
+                                php
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.ismyinternetworking.com/clickbait/index.html" rel="nofollow" target="_blank" title="https://www.ismyinternetworking.com/clickbait/index.html">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.ismyinternetworking.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

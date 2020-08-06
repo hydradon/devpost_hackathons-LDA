@@ -1,0 +1,167 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/5VAKcQtoELo?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602839" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/839/datas/original.png">
+                            <img alt="deeplens-asl &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/839/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    AWS DeepLens Challenge
+                </h1>
+                <p>
+                    The future is not in keyboards and mice. Everyone agrees on the fact that interaction with computers will mainly use voice in the coming years. Siri, Cortana, Google Home, and, of course, Alexa (and Alexa for Business) are all examples of what the future may be. Even Werner Vogels thinks voice interaction will be the new traditional interaction (Nov&rsquo; 2017).
+                </p>
+                <p>
+                    However, if nearly everybody can speak to a computer, removing the need for literacy (mandatory with a keyboard), some people in the society are still put apart: those who can&rsquo;t speak. Whether they are deaf-and-dumb, or they don&rsquo;t know the right languages (e.g. Foreigners or immigrates), they cannot interact with conversational agents.
+                </p>
+                <p>
+                    The Deeplens may help them understand those who can&rsquo;t speak, thanks to the American Sign Language (or some variants). The processing of video flow and a deep learning model can leverage the Deeplens as a new interface for them, translating ASL to written / spoken English in real time, so as to interact with computers.
+                </p>
+                <p>
+                    Our participation at the AWS DeepLens Challenge shows it is possible by understanding the ASL alphabet. We have chosen the alphabet because it is mainly composed of static hands positions.
+Our model is homemade, based on a Sagemaker vision model, fine trained on a specific dataset we have made during the challenge. We have removed &lsquo;j&rsquo; and &lsquo;z&rsquo; letters, as they require movement, and added special signs, up to you to find them ;)
+                </p>
+                <h2>
+                    Demo video
+                </h2>
+                <p>
+                    Video available on
+                    <a href="https://www.youtube.com/watch?v=5VAKcQtoELo" rel="nofollow">
+                        Youtube
+                    </a>
+                </p>
+                <h2>
+                    How to use it
+                </h2>
+                <h3>
+                    Deployment
+                </h3>
+                <p>
+                    The model is located in the
+                    <em>
+                        model
+                    </em>
+                    folder and the Lambda function handler is located in the
+                    <em>
+                        lambda
+                    </em>
+                    folder. To use it, you just have to follow the same steps as described in the
+                    <a href="https://docs.aws.amazon.com/deeplens/latest/dg/deeplens-train-model.html" rel="nofollow">
+                        AWS documentation
+                    </a>
+                    starting step 4.
+                </p>
+                <p>
+                    Once deployed on the DeepLens, you will have to open the Project Stream to see the inference results and try to create sentences!
+                </p>
+                <h3>
+                    Interface
+                </h3>
+                <p>
+                    The actual detected letter is shown in the top left corner (letter and confidence). If there is nothing displayed, it means that no letter was recognized with more than 40% confidence.
+                </p>
+                <p>
+                    On the bottom of the image you can see your message as it is written. Each letter appears if the same letter is recognized during a sufficient time.
+                </p>
+                <p>
+                    To make a whitespace: wait a few seconds with nothing recognized.
+To reset the message: wait longer ;)
+                </p>
+                <p>
+                    Be careful:
+                </p>
+                <ul>
+                    <li>
+                        Results are better if the background is white-ish, and there is nothing in the DeepLens field of view.
+                    </li>
+                    <li>
+                        Try to do the signs only in the field (no face / body / ...).
+                    </li>
+                    <li>
+                        There is a small delay between your movement and the camera feedback.
+                    </li>
+                </ul>
+                <h2>
+                    How we made it
+                </h2>
+                <p>
+                    The dataset was made with a specific Lambda function that runs on the DeepLens (see "Snapshot sub-project" below for more information).
+                </p>
+                <p>
+                    We have taken different pictures with different people for each letter of the alphabet (except 'j' and 'z') and the special signs.
+                </p>
+                <p>
+                    The training was done using Amazon SageMaker, with transfer learning on a squeezenet with 18 layers. It converges in 4 epochs to a satisfaying result.
+                </p>
+                <h2>
+                    The Snapshot sub-project
+                </h2>
+                <p>
+                    This project consists in using the DeepLens to generate the dataset. The camera is responding to user clicking on a button to take a snapshot and classifying the image right away.
+                </p>
+                <p>
+                    It uses a frontend hosted on S3, authenticating with Cognito and communicating with the DeepLens through IoT topics. Once images arrive in S3, they are automatically optimized for SageMaker training jobs.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/bmeudre/deeplens-asl" rel="nofollow" target="_blank" title="https://github.com/bmeudre/deeplens-asl">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

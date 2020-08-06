@@ -1,0 +1,403 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://player.vimeo.com/video/184892009?byline=0&amp;portrait=0&amp;title=0#t=" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416369" data-title="Flow - Successful query" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/369/datas/original.png">
+                            <img alt="slikipedia &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/369/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Flow - Successful query
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416827" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/827/datas/original.png">
+                            <img alt="slikipedia &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/827/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416828" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/828/datas/original.png">
+                            <img alt="slikipedia &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/828/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416829" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/829/datas/original.png">
+                            <img alt="slikipedia &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/829/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    slikipedia - a serverless slackbot powered by AWS
+                </h1>
+                <p>
+                    By harnessing the powers of AWS you can operate a serverless slackbot.  This bot is built using:
+                </p>
+                <ul>
+                    <li>
+                        Amazon API Gateway
+                    </li>
+                    <li>
+                        Amazon Lambda (two seperate functions)
+                    </li>
+                    <li>
+                        Amazon SNS
+                    </li>
+                </ul>
+                <p>
+                    Now you&rsquo;re thinking, why use two Lambda functions and SNS this could all be done in one function.  This is true but you will run into issues with timeouts in Slack.  There is a 3 second timeout that can be beat sometimes but not always.  We want a reliable bot that doesn't return timeout errors.  The first Amazon Lambda function validates there is a term to search for and responds to the user immediately that the query is being processed.  It then publishes a message to Amazon SNS to handoff the user&rsquo;s search.  This message is forwarded to the worker lambda function for processing as detailed in the Code flows below.
+                </p>
+                <h2>
+                    Setup
+                </h2>
+                <p>
+                    <em>
+                        You will need an Amazon AWS and Slack account.
+                    </em>
+                </p>
+                <h3>
+                    AWS
+                </h3>
+                <ul>
+                    <li>
+                        [ ] Create an API Gateway API
+                        <ul>
+                            <li>
+                                [ ] Create a method of type: POST
+                            </li>
+                            <li>
+                                [ ] Select Integration Type: Lambda
+                            </li>
+                            <li>
+                                [ ] Select the region in which you created your Lambda function
+                            </li>
+                            <li>
+                                [ ] Select the Lambda Function you created
+                            </li>
+                            <li>
+                                [ ] Click "Integration Request"
+                            </li>
+                            <li>
+                                [ ] At the bottom of this Page select "Add mapping Template"
+                            </li>
+                            <li>
+                                [ ] For content type please specify: "application/x-www-form-urlencoded"
+                            </li>
+                            <li>
+                                [ ] Insert the template code below into the text field for the template. This code converts a URL Encoded form post into JSON for your Lambda function to parse
+                            </li>
+                            <li>
+                                [ ] Deploy your API
+`
+                                <code>
+                                    { "body": $input.json($) }
+                                </code>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        [ ] Create SNS topic
+                        <ul>
+                            <li>
+                                [ ] Give the topic a name and a display name
+                            </li>
+                            <li>
+                                [ ] Record ARN
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        [ ] Create the first Lambda function that will process the Slack Requests(lambda-slack-concierge)
+                        <ul>
+                            <li>
+                                [ ] Select Create a Lambda function
+                            </li>
+                            <li>
+                                [ ] Choose Skip on select blueprint
+                            </li>
+                            <li>
+                                [ ] Choose API the API gateway as the trigger
+                            </li>
+                            <li>
+                                [ ] Add a name and description, choose python as the runtime
+                            </li>
+                            <li>
+                                [ ] Paste the content of lambda_function.py from the lambda-slack-concierge folder
+                            </li>
+                            <li>
+                                [ ] Change the sns_arn and ENCRYPTED_EXPECTED_TOKEN
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        [ ] Create the second Lamda function that will work the SNS message and process the query(lambda-slack-worker)
+                        <ul>
+                            <li>
+                                [ ] Select Create a Lambda function
+                            </li>
+                            <li>
+                                [ ] Choose Skip on select blueprint
+                            </li>
+                            <li>
+                                [ ] Choose API the API gateway as the trigger
+                            </li>
+                            <li>
+                                [ ] Add a name and description, choose python as the runtime
+                            </li>
+                            <li>
+                                [ ] Change Code entry type to 'Upload a .ZIP File'
+                            </li>
+                            <li>
+                                [ ] Zip up the contents of the lambda-slack-worker folder and upload
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>
+                    Slack
+                </h3>
+                <ul>
+                    <li>
+                        [ ] Log into Slack then go to
+                        <a href="https://TEAMNAME.slack.com/apps/build" rel="nofollow">
+                            https://TEAMNAME.slack.com/apps/build
+                        </a>
+                    </li>
+                    <li>
+                        [ ] Select Make a Custom Integration
+                    </li>
+                    <li>
+                        [ ] Select Slash Commands
+                    </li>
+                    <li>
+                        [ ] Add your slash command
+                    </li>
+                    <li>
+                        [ ] CLick Add Slash Command Intergation
+                    </li>
+                    <li>
+                        [ ] Add your AWS API Gateway URL to the URL field
+                    </li>
+                    <li>
+                        [ ] Keep method as POST
+                    </li>
+                    <li>
+                        [ ] Record your token
+                    </li>
+                    <li>
+                        [ ] Use the rest of the settings to customize the command(icon, description, help text..)
+                    </li>
+                    <li>
+                        [ ] Click Save Integration
+                    </li>
+                </ul>
+                <h2>
+                    Code flows
+                </h2>
+                <h3>
+                    Successful bot query
+                </h3>
+                <p>
+                    <img alt="successful" data-canonical-url="http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/369/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--FFaoIZ7d--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/369/datas/gallery.jpg">
+                </p>
+                <ol>
+                    <li>
+                        User uses slack command and a search term in Slack (/wiki iphone) which gets sent to Amazon API Gateway
+                    </li>
+                    <li>
+                        AWS API Gateway accepts the request and sends it to the Amazon Lambda concierge function
+                    </li>
+                    <li>
+                        The Amazon Lambda function does two things:
+                        <ul>
+                            <li>
+                                The function returns a message that the request is being serviced ("ok, looking up iphone..")
+                            </li>
+                            <li>
+                                Sends the search request to Amazon SNS
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Amazon SNS sends the message to the linked Amazon Lambda worker function
+                    </li>
+                    <li>
+                        Amazon Lambda worker function queries wikipedia for the search term
+                    </li>
+                    <li>
+                        The results are sent back to the worker function from Wikipedia
+                    </li>
+                    <li>
+                        Results are formatted and return to the slack user
+                    </li>
+                </ol>
+                <h3>
+                    Bot cannot find Wikipedia match
+                </h3>
+                <p>
+                    <img alt="failed" data-canonical-url="http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/827/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--Kv7I2U8R--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/827/datas/gallery.jpg">
+                </p>
+                <ol>
+                    <li>
+                        User uses slack command and a search term in Slack (/wiki g9is2ef ) which gets sent to Amazon API Gateway
+                    </li>
+                    <li>
+                        AWS API Gateway accepts the request and sends it to the Amazon Lambda concierge function
+                    </li>
+                    <li>
+                        The Amazon Lambda function does two things:
+                        <ul>
+                            <li>
+                                The function returns a message that the request is being serviced ("ok, looking up g9is2ef..")
+                            </li>
+                            <li>
+                                Sends the search request to Amazon SNS
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Amazon SNS sends the message to the linked Amazon Lambda worker function
+                    </li>
+                    <li>
+                        Amazon Lambda worker function queries wikipedia for the search term
+                    </li>
+                    <li>
+                        Wikipedia returns a failed lookup
+                    </li>
+                    <li>
+                        Message is sent back to user that the term cannot be found and offers a link to Google for the search term (Sorry, g9is2ef could not be found. Search Google for 'g9is2ef')
+                    </li>
+                </ol>
+                <h3>
+                    Search term too vaugue
+                </h3>
+                <p>
+                    <img alt="vauge" data-canonical-url="http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/829/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--abMhUHtW--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/829/datas/gallery.jpg">
+                </p>
+                <ol>
+                    <li>
+                        User uses slack command and a search term in Slack (/wiki tesla) which gets sent to Amazon API Gateway
+                    </li>
+                    <li>
+                        AWS API Gateway accepts the request and sends it to the Amazon Lambda concierge function
+                    </li>
+                    <li>
+                        The Amazon Lambda function does two things:
+                        <ul>
+                            <li>
+                                The function returns a message that the request is being serviced ("ok, looking up tesla..")
+                            </li>
+                            <li>
+                                Sends the search request to Amazon SNS
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Amazon SNS sends the message to the linked Amazon Lambda worker function
+                    </li>
+                    <li>
+                        Amazon Lambda worker function queries wikipedia for the search term
+                    </li>
+                    <li>
+                        Wikipedia returns up to eight suggested search terms based on the original vauge term
+                    </li>
+                    <li>
+                        Message is formatted and returned to user with the possible searhc options
+                    </li>
+                </ol>
+                <h3>
+                    Empty search
+                </h3>
+                <p>
+                    <img alt="empty" data-canonical-url="http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/828/datas/gallery.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--MbqWXZGF--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/828/datas/gallery.jpg">
+                </p>
+                <ol>
+                    <li>
+                        User uses slack command but doesn't add a search term (/wiki ), blank request gets sent to Amazon API Gateway
+                    </li>
+                    <li>
+                        AWS API Gateway accepts the request and sends it to the Amazon Lambda concierge function
+                    </li>
+                    <li>
+                        The Amazon Lambda function does two things:
+                        <ul>
+                            <li>
+                                The function validates the empty search and returns "Great, now try to search for something." to the user
+                            </li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mcclanahan/slikipedia" rel="nofollow" target="_blank" title="https://github.com/mcclanahan/slikipedia">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,192 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="861511" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/511/datas/original.png">
+                            <img alt="3db &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/511/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="861334" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/334/datas/original.png">
+                            <img alt="3db &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/334/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="861337" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/337/datas/original.png">
+                            <img alt="3db &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/337/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="861314" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/314/datas/original.png">
+                            <img alt="3db &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/861/314/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    3db: 3D visual debugging. In VR.
+                </h1>
+                <h2>
+                    The inspiration
+                </h2>
+                <p>
+                    As students with a passion to learn and innovate, we sought to raise the standards for teaching by creating a debugger that allows students to visualize what is happening in their program.
+                </p>
+                <p>
+                    Our first idea was to make a 3D debugger using Unity. This in itself seemed fairly interesting and innovative; a quick Google search yields very few results for "3D debugger." But why not take it a step further? That's why we decided to add VR support with the Oculus Rift.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Our solution was to create a Flask server in Python that acts as a wrapper around
+                    <code>
+                        pdb
+                    </code>
+                    . It then makes requests to that server from Unity and displays the information dynamically in a three-dimensional environment viewed using the Oculus Rift.
+                </p>
+                <p>
+                    The front-end in Unity was all developed using Unity 2019.2.9f1, with our scripts (including those interfacing with Python and JSON requests) in Unity all being written in C#.
+                </p>
+                <p>
+                    After 36 hours of coding (30 of which were most likely debugging), we were able to design a program that is functional, interactive, and fun.
+                </p>
+                <h2>
+                    Our (many) challenges
+                </h2>
+                <p>
+                    Our biggest challenge came in the construction of the server, where we had to scrape what seemed like all 32 million Google results for python libraries and commands to communicate with Unity. There were a lot of options available, but it seemed like every one we tried using had some issue or dead-end that forced us to scrap everything and restart, but we were finally able to communicate using a combination of Flask and pexpect.
+                </p>
+                <p>
+                    Correctly positioning, scaling, and rendering all of the dynamically instantiated 3D objects in Unity also seemed a little convoluted and counter-intuitive at first. Everything is positioned and scaled relative to its parent, so we had to do a little ugly fraction math to ensure that all the data structures were encapsulated correctly. In order to get the billboard-rendered text to render correctly, we had to make several empty wrapper GameObjects when needed, a custom VR-supported camera-tracking script, and even our own shader.
+                </p>
+                <p>
+                    The most interesting problem we faced was determining how clicks were registered in Unity with VR. We ended up using raycasting from a plane in front of the camera since the VR's two cameras are not always oriented in the same direction as the scene's main camera.
+                </p>
+                <h2>
+                    What we've learned
+                </h2>
+                <ul>
+                    <li>
+                        Unity is surprisingly complicated. Kudos to all of the talented game developers out there!
+                    </li>
+                    <li>
+                        Finding the right tools for the job is important. It's better to know all the tools at the start rather than to learn about the right tool only a few hours before the submission is due.
+                    </li>
+                    <li>
+                        Problems can often be solved with simple solutions that use indirection. I.e. using a dummy request to pexpect to ensure that our output is synchronized correctly with the process that
+                        <code>
+                            pdb
+                        </code>
+                        is being ran on
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pdb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pexpect
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ianhrobinson/3db" rel="nofollow" target="_blank" title="https://github.com/ianhrobinson/3db">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

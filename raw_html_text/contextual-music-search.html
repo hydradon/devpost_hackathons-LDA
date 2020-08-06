@@ -1,0 +1,325 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="615889" data-title="Contextual Music Search" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/615/889/datas/original.png">
+                            <img alt="Contextual Music Search &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/615/889/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Contextual Music Search
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Background
+                </h1>
+                <p>
+                    Music tracks are dynamic, often changing the tone and mood dramatically over the course of the song. An ominous intro may lead to a raucous chorus and finish with a harmonious, uplifting outro. When people think "more like this!" it may be a very specific section of music they're thinking of, rather than the song in its aggregate entirety. This project attempts to provide a more specific, music-context-sensitive search that recognizes the dynamic nature of music. Our goal is to help music fans, DJs, video creators, and more discover new music containing elements that pique their interest, fit their use case, or just make them smile.
+                </p>
+                <h1>
+                    How It Works
+                </h1>
+                <h3>
+                    Music recommendation systems usually make you input an entire song. We don't.
+                </h3>
+                <p>
+                    Within any song, there's plenty of variation.
+                </p>
+                <p>
+                    The
+                    <strong>
+                        intro
+                    </strong>
+                    sounds different from a
+                    <strong>
+                        verse
+                    </strong>
+                    , which sounds different from the
+                    <strong>
+                        chorus
+                    </strong>
+                    ...
+                    <br>
+                    Maybe you like the way the bridge of a song sounds, but you don't
+                    <em>
+                        really
+                    </em>
+                    like the rest of it.
+                </p>
+                <p>
+                    We created a search algorithm that lets you find
+                    <strong>
+                        sections of other songs
+                    </strong>
+                    that sound like
+                    <strong>
+                        a specific section
+                    </strong>
+                    that you like from a song.
+                </p>
+                <h3>
+                    Step 1: Break a song into it's component parts
+                </h3>
+                <p>
+                    We do this algorithmically (with Laplacian Segmentation) by determining when the rate of change in audio from one fraction of a second to the next is high.
+                </p>
+                <p>
+                    These seperations often line up with verse/chorus seperations of songs, but by emulating how our ears process raw audio, we can develop a more nuanced model of the way our brains understand the degrees of similarity between segments of a song.
+                </p>
+                <h3>
+                    Step 2: Determine the properties of sound for each of these parts
+                </h3>
+                <ul>
+                    <li>
+                        What notes appear during this audio segment?
+                    </li>
+                    <li>
+                        How percussive is this segment?
+                    </li>
+                    <li>
+                        How harmonic is it?
+                    </li>
+                </ul>
+                <p>
+                    We collect data like this for each part of each song using a cocktail of Music Information Retrieval (MIR) algorithms.
+                </p>
+                <h3>
+                    Step 3: Group similar audio clips from different songs using machine learning
+                </h3>
+                <p>
+                    We feed an audio segment to our search algorithm (currently K-Nearest Neighbors) and it spits out segments of other songs in the music library that match it.
+                </p>
+                <p>
+                    To maximize the effectiveness our search, we messed around with the extent that the algorithm relies on each audio property, giving
+                    <em>
+                        more weight
+                    </em>
+                    to properties that are
+                    <em>
+                        more predictive
+                    </em>
+                    of similarity.
+                </p>
+                <h1>
+                    Future Plans
+                </h1>
+                <p>
+                    The roadmap for taking our proof-of-concept into a full-fleged product will require:
+                </p>
+                <h3>
+                    Cloud Infrasctructure
+                </h3>
+                <p>
+                    During the hackathon, our analysis took place on our own computers, and was limited to the first 100 songs in the 7digital database.
+                </p>
+                <p>
+                    By moving our computing to the cloud using AWS, we'll be able to analyze the entire 7digital catalog (and more!), allowing us to deliver better recommendations across an exponentially wider set of songs.
+                </p>
+                <h3>
+                    Algorithmic Improvements
+                </h3>
+                <p>
+                    Steps 2 and 3 worked sufficiently well in our prototype on the 100 songs we analyzed, but with an influx of data, we'll need to make significant improvements to the way we model properties of audio as well as the way we search for similarities between the audio properties of different segments.
+                </p>
+                <h3>
+                    Alexa and Web UI
+                </h3>
+                <p>
+                    The search experience should integrate seamlessly with users' workflows.
+                </p>
+                <p>
+                    We plan on integrating with the Amazon Alexa, as well as providing a web interface to make that happen.
+                </p>
+                <p>
+                    We use an algorithm to segment songs into musically relevant parts and then analyze the segments individually using a cocktail of Music Information Retrieval (MIR) algorithms. A Machine Learning algorithm clusters the segments by similarity, and the results are stored in a database of slices. This database can then be querried for songs in a context-sensitive way.
+                </p>
+                <p>
+                    We would like to improve the search system we developed in the following ways:
+                </p>
+                <ol>
+                    <li>
+                        Provide a UI (web/Alexa) to enable quick testing and improve demo-ability.
+                    </li>
+                    <li>
+                        Move the processing into the cloud (AWS) for massive parallelism.
+                    </li>
+                    <li>
+                        Improve analysis algorithm cocktail (algorithms and implementations) to improve search.
+                    </li>
+                </ol>
+                <h1>
+                    The Road We Took
+                </h1>
+                <p>
+                    We set out with the goal of creating a simple prototype to see if the algorithm we proposed provided useful information or not. The initial design was relatively complex, including the following components:
+                </p>
+                <ol>
+                    <li>
+                        Download the 7digital library into a private S3 bucket for analysis.
+                    </li>
+                    <li>
+                        Use the AWS Lambda service to run the analysis functions in parallel.
+                        <ol>
+                            <li>
+                                Implement a music segmentation algorithm to identify segments using MIR.
+                            </li>
+                            <li>
+                                Use Librosa, Numpy, and Scikit to analyze and classify audio segments.
+                            </li>
+                        </ol>
+                    </li>
+                    <li>
+                        Store the analysis results in a MongoDB or PostgreSQL database in AWS.
+                    </li>
+                    <li>
+                        Provide a local web server to both serve a UI to a browser (HTML) and access the AWS database for search queries.
+                    </li>
+                    <li>
+                        Add an Alexa skill capable of interfacing with the search engine.
+                    </li>
+                </ol>
+                <p>
+                    With these in mind, we began breaking up work and distributing it to the team:
+                </p>
+                <ol>
+                    <li>
+                        Eric began by implementing the 7digital APIs to access the music.
+                    </li>
+                    <li>
+                        Alivia began exploring a solution for the AWS architecture.
+                    </li>
+                    <li>
+                        Paulo began working with the MIR andy Python tools to get Segmentation and Analysis working.
+                    </li>
+                </ol>
+                <h2>
+                    Bumps In the Road
+                </h2>
+                <p>
+                    Almost immediately we ran into issues with the 7digital APIs. Their use of OAuth 1.0 for authentication meant that third-party tools were difficult to find (most are on OAuth 2.0 now). We started using an implementation prepared by Cloudinary for the Hackathon to speed things up, but had to fix a few issues to make it work for our purposes.
+                </p>
+                <p>
+                    It soon became clear that creating a system that would work entirely in AWS was beyond the scope of the 24hour Hackathon. As a result, we dropped it as a goal partway through the first day and rescaled the designs to work without it (instead of analyzing all 14k songs in the dataset, we would pick the first 100 to process locally). That said, Alivia did continue to pursue the architecture such that we would have a plan for implementation provided we could continue development.
+                </p>
+                <p>
+                    A misconfigured alarm clock during a nap resulted in Paulo missing a few hours of development. To compensate, Eric switched from finishing a frontend UI implementation to finishing up the audio search implementation. While Eric was able to complete the implementation of the search, the UI (both web and Alexa) had to be dropped. This resulted in a UI-less demo during the pitch, wherein actual results of the search were shown.
+                </p>
+                <h1>
+                    What We Learned
+                </h1>
+                <p>
+                    We were excited when the first results came back as they showed an array of results across different sections of different songs. The prototype successfully showed that there is promise to a context-based music search system; that it
+                    <strong>
+                        <em>
+                            works
+                        </em>
+                    </strong>
+                    .
+                </p>
+                <p>
+                    Further, everyone on the team learned more about MIR and music analysis, as well as the various AWS services available. We are excited by what we learned on this project and eager to dig deeper.
+                </p>
+                <h1>
+                    Special Thanks
+                </h1>
+                <p>
+                    Special thanks to Capitol Music Group, 7digital, and Cloudinary for allowing us to use their music and APIs to implement the prototype. A big shoutout to the Amazon AWS team for their interest in our prototype and providing us with guidance with respect to the vast array of services available in AWS.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/7digital">
+                                7digital
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/cloudinary">
+                                cloudinary
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            jupyter
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            librosa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/saNed/ContextalMusicSearch" rel="nofollow" target="_blank" title="https://github.com/saNed/ContextalMusicSearch">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

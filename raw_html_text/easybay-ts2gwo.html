@@ -1,0 +1,166 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/dcNli2VC1zk?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    How often did you really want to impulsively buy a cute outfit or a sleek usb to usb-c convertor that your friend has, only to realize that they bought it for a really high price?
+We have felt this too often. So naturally, easyBay was the best solution to our problems.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The user may take a photo or use an existing one and our app will automatically identify the plausible items and provide a list of items from eBay that match their specifications the best, while simultaneously also removing any scam sellers from the search. easyBay is capable of using Google Cloud's Vision API and its own ML based scam detector to search an image for the least expensive, but most secure buying options on eBay.  easyBuy then provides you with listings from eBay that best match your search criteria, also notifying you of potential scam listings.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <h3>
+                    Google Cloud Vision API
+                </h3>
+                <h3>
+                    Keras
+                </h3>
+                <h3>
+                    eBay APIs
+                </h3>
+                <ol>
+                    <li>
+                        Finding API
+                    </li>
+                    <li>
+                        Browse API
+                    </li>
+                    <li>
+                        Shopping API
+                    </li>
+                </ol>
+                <p>
+                    We built easyBay as an iOS app , which we built on Xcode with Swift. The app fetched the required data by making the necessary API calls using the URLRequest and URLSession built-in protocol. 
+The eBay API is essential to this application. Its Finding API and Shopping AI allowed us to get more information on the sellers and the specifics of the products that they sell.
+                </p>
+                <p>
+                    We then passed this data using our ML model which could then make an accurate prediction of the "suspicion rating" of the seller. This was an ML model that we built form scratch using Keras and Tensorflow. We trained it on data received from eBay POST requests and did extensive research on string indicators of scam sellers. In this process, we also took into account some guidelines and tips to avoid scams laid out by eBay in their official documentation. This feature is essential for users who would like to only deal with unsuspicious and non-fraudulent sellers, which is often a major problem for users shopping on eBay.
+                </p>
+                <p>
+                    We also extensively used the Browse API that enabled the app search by image giving the user seamless experience. It also enabled us to create one of the most important features of the app: the image search.
+However, it is not just any ordinary image search. 
+We first pass the user's image to Google Cloud's Vision API which locates and classifies objects. We crop the images based on the data returned and then, pass those to the eBay Browse API that locates EACH object in the picture. 
+Furthermore, you can also add filters to your search for example, a budget (price), delivery postal code, 
+For example, say you loved the clothes your friend is wearing but you you have a slim budget? No problem, because EasyBay lets you quickly take a picture of your friend and search for all clothing items available at the budget you selected!
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The Google Vision API had certain bugs related to x, y coordinates. These bugs are very hard to find and took hours of debugging because we initially believed that the faulty results were due to our code. We also had problems due to image compression and Google Cloud Vision has a limit on the size of the images and since we were writing we needed to find a way to rescale and size down images.
+It was extremely challenging to navigate eBays APIs to feed relevant data to train our Scam Detection ML Model. We had to perform a lot of data preprocessing, keeping in mind the various factors, that based on our research, had proven to be good indicators of spam. We also ran into a lot of challenges integrating Keras and Tensorflow into Swift using their CoreML modules.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    The search results produced are very accurate. The app is even able to recognize background objects like sleeping bags, clothes of individuals not in focus. The ML model is also very accurate in predicting possible spam-sellers.
+We started this project with little experience with APIs and vision processing with Google Cloud and faced many challenges along the way. We were most proud of being able to integrate both the eBay API and the Google Cloud Vision API onto an iOS app using Swift since none of us had any experience in Swift and had to learn over the course of the hackathon. Also, integrating Keras into an iOS was a massive challenge as we had to transform our model into Apple's CoreML modules. Getting though all the dependency errors and having a working ML model on an iOS app was a great achievement!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned to incorporate various APIs successfully in our program. We also learnt to code in Swift, given that none of us had prior experience. We learned how make key animations and extensive UI designs. As the APIs often gave us many errors, we learned to use Postman. 
+We were complete beginners in Google Cloud Platform and eBay APIs, however we quickly picked these skills up with the aid of the amazing mentors. 
+Specifically, we learnt how to make API calls in Swift and how to handle JSON and XML data.
+We also learnt on how to build an ML model in iOS using Core ML with no prior experience whatsoever.
+                </p>
+                <h2>
+                    What's next for easyBay
+                </h2>
+                <p>
+                    There were numerous features we wanted to add for easyBay but ran out of time for. One of the most prominent was to add the ability for the user to purchase the item they liked straight from our app using Ebay&rsquo;s Buy API.&nbsp;&nbsp;This way our app acts as the start point and end point of the user experience from uploading or taking a picture to completing the payment on the app.
+We also hope to improve the accuracy of our eBay product listings by being able to filter out repetitive images from our Google Cloud Vision software. Due to the nested structure of our vision processing, there are a decent amount of duplicate images as a by product. Our goal is to find a way to remove those duplicates in order to make easyBay more efficient and more accurate.
+One major feature we want to implement in the future is the usage of easyBay as a means of finding stolen items. Through additional user information and eBay&rsquo;s reverse image search, we want to be able to pinpoint a user&rsquo;s item that has been stolen and is being resold on eBay. One example is with MacBooks. Every MacBook has a serial number and many listings on eBay would list the serial number in order to gain validity. Our application would take the user&rsquo;s picture of their Mac and reverse search it and compare the serial numbers to see if the user&rsquo;s laptop is being resold on eBay
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            coreml
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ebay-browse-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ebay-find-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ebay-shopping-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-cloud-vision-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/swift">
+                                swift
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Innovr3/EasyBay" rel="nofollow" target="_blank" title="https://github.com/Innovr3/EasyBay">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

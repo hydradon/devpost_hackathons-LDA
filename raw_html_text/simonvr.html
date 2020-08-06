@@ -1,0 +1,162 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/ZmVlw3y_O80?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="377705" data-title="game startup" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/377/705/datas/original.png">
+                            <img alt="MemoriaVR &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/377/705/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                game startup
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="377709" data-title="showing leap-motion hands" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/377/709/datas/original.png">
+                            <img alt="MemoriaVR &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/377/709/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                showing leap-motion hands
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="377716" data-title="extras like zombies" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/377/716/datas/original.png">
+                            <img alt="MemoriaVR &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/377/716/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                extras like zombies
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The 1978 classic handheld electronic memory game simon took the world by storm. While simple, it is addictive and fun. Since this was my first time with any VR technologies and being relatively new to Unity, I wanted to choose something I could finish.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The Oculus provides the Virtual Reality interface for you to have an immersive view of the game world. The Leap Motion sensor allows you to interact naturally with your hands in this world. Unity provides the physics, rendering, and gameplay control through GameObjects and scripts. The gameplay mimics that of the original simon game with the same tones and colors.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I started by getting the Oculus drivers and Leap Motion SDK and Unity components setup on my dev machine so that I could experiment with the available demos and determine a general estimate of what I would be capable of completing in a little over 24 hours. I then started on the Unity VR samples and the Leap Unity samples and found an open source keyboard demonstration that showed a method for key press processing with the Leap Motion sensor. I decided to build my project off of this sample. Instead of pressing keys on a keyboard, I needed to press the simon buttons. I started by just editing the text on the buttons and consolidating down to 4 large buttons. This allowed me to start on the gameplay code.
+                </p>
+                <p>
+                    I created a GameManager MonoBehavior that I used to handle game startup, playtime, and end game. I put in basic timing for these main stages and then developed the computer turn / player turn states and transitions. In simon the computer goes first and progressively builds a longer and longer sequence of color button presses. The user is then tasked with repeating the sequence in the exact same order. Each round gets one more random button pressed at the end as long as the user keeps getting the sequence correct. If the user makes a mistake the game is over.
+                </p>
+                <p>
+                    Including here are worrying about timings to allow for enough time for the player to see the sequence and press buttons when it is their turn. Additionally, there are some game state metadata pieces to track like round number, running sequence, current score, high score, etc.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The Leap Motion sensor is great, but it can be a bit flaky at times and with a game where you are not supposed to hit the wrong button, this can be frustrating for the player. Sometimes a random finger will poke out or the wrist will rotate or some other movement occurs that the user did not command. Likewise on button pressing, there were some challenges in timing how long to consider a button pressed and debounce such that a user would not accidentally double tap. I used a faster loop for detecting and handling player button presses and a slower loop for handling the game logic for the player and computer turns. This was very flexible and allowed me to design a fairly robust solution to the flakiness.
+                </p>
+                <p>
+                    Another challenge was the versioning of the Leap Motion sensor itself and the documentation and samples related to these versions. Since the software is still at beta level, they have not ported all the old components that used to be available into the Orion Unity package. This is confusing because you can see samples of something you want to do but they are old and no longer work and basically just cause a distraction. Some of the features included in the main Leap Motion demo games (closed-source) are not included in the dev components that go with Unity. So you end up having to dig further into the details of operation of the sensor quicker than desired, especially during a short hackathon period. In general, I was still very happy with my choice of this sensor and VR headset.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm proud that I was able to make the complete game with sound effects. I was even able to add some easter eggs that take advantage of some of the fun factor portions of the Leap Motion sensor but are not related to simon. I used a wrist rotate gesture from the keyboard demo to bring up a menu that provides access to the extras including a ball dropper and a zombie spawner.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a ton about virtual reality, the Oculus Rift and the Leap Motion sensor. I got a lot more practice in Unity as well, which is great. My basic take home lesson is that I need to get this headset sensor setup for myself since development is fun and rewarding and there are so many possibilities for games to make.
+                </p>
+                <h2>
+                    What's next for SimonVR
+                </h2>
+                <p>
+                    I hope to show the game to the community and if people want to open source it for others. Hopefully, it can be a fun introduction to Oculus+Leap Motion for others in addition to being a fun game.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/leap-motion">
+                                leap-motion
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/oculus">
+                                oculus
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vr
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://developer.leapmotion.com/gallery/simonvr" rel="nofollow" target="_blank" title="https://developer.leapmotion.com/gallery/simonvr">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                developer.leapmotion.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,209 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    The recent rise of Augmented and Mixed Reality technologies allow us to completely re-imagine the world we live in. Within the next 8 years, the AR market is expected to reach $120 billion dollars in size, and we believe the technology will become as widespread as smartphones are today - the next step of the modern digital revolution.
+                </p>
+                <p>
+                    With that in mind, we decided to use the latest Mixed Reality headset, the Microsoft Hololens, to re-envision one of the most imperative of human acts - conversation. Presence is a software experience unlike anything that has ever been attempted before, facilitating human connection while also expanding human conversation with a wide array of activities and tools. Through a slick social media integration,  Presence does not only make communicating easier and more objective to all who own a Mixed Reality device - it also pushes people to have genuine interactions with strangers, all while making human connection even more aesthetically beautiful.
+                </p>
+                <p>
+                    This is technology that doesn't take you away from the conversation or the moment - it does the opposite - it improves it.
+                </p>
+                <h2>
+                    Why we chose this idea
+                </h2>
+                <ul>
+                    <li>
+                        Our group finds there's a big lack of technologies and solutions that facilitate genuine human connection with the people around their physical space.
+                    </li>
+                    <li>
+                        We find that social anxiety/shyness/social pressure leads to a lot of missed opportunities in terms of developing friendships and having meaningful social interactions. We believe that if people can know about some things they have in common with strangers, they'll be more likely to engage and connect.
+                    </li>
+                    <li>
+                        We wanted to use user data to push people to engage - all while respecting their privacy.
+                    </li>
+                    <li>
+                        We wanted to create a beautiful user interface that blends seamlessly into the world clutter-free,  only showing relevant information where it's needed, when it's needed.
+                    </li>
+                </ul>
+                <h2>
+                    What it does
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            Upon entering our Unity Hololens application, users are prompted to connect to Facebook - a large amount of data is then processed upon registration (everything ranging from posts, apps, interests) to build a dataset of interests as well as a psychological profile using IBM Watson, both of which will be used to connect you to strangers that also have the app installed in their Mixed Reality device. All of that is saved in our Django database and exchanges are handled by an API we also created.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            If two or more users find themselves wearing a Mixed Reality device within the same wi-fi network, our application uses the Microsoft Hololenses' spatial mapping feature to build a 3D mesh of the user's surroundings and discover the location of each individual device. The devices then connect to each other using network code we wrote, assigning one user as an anchor while all other Vector3 positions are then calculated. While this is happening, we're also running several comparisons between users using Facebook's Graph API to find out what they have in common. All of this happens in a fraction of a second.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            If you look at another connected user from a distance, you can see very basic information about them in a minimal HUD, such as their Facebook Profile Picture, first name and something you both share in common - it can be a Facebook page you liked, a band, or a movie. We hope that these snippets of information can serve as conversation starters, giving users incentive to connect. We call this
+                            <strong>
+                                exploration mode
+                            </strong>
+                            .
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            To have access to all of the app's other features, you must then start to talk with another user. An algorithm we developed can intelligently tell when both users are beginning a conversation by analyzing their position in space and firing raycasts so we know they're facing each other. This swiftly changes the User Interface to what we call the
+                            <strong>
+                                conversation mode
+                            </strong>
+                            , all without any need for button pressing or windows.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The conversation mode allows you to view more information about the user - you can look at their personal BIO and a summed-up personality profile provided by IBM Watson with conversation suggestions (if they allow it). We also allow you to swiftly follow the user you're talking to on all social media, making it easy to keep in touch with people you've just met. If you're romantically interested in the person, you can click on a heart icon to
+                            <em>
+                                like
+                            </em>
+                            them. If they happen to like you back, heart particles will discretely float out of both of the user's heads. We hope that this will nudge them into the right direction (:
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            There are a great many features we wanted to add to this platform, such as several games and activities that users could do while in
+                            <em>
+                                conversation mode
+                            </em>
+                            , but we decided to use our hackathon time focused in tackling the challenge of pushing people to connect and start conversations.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    We believe that the tools we created provide positive reinforcement of pro-social conversational habits, all while being quite useful - as well as delightful to users.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            Django and Python were used in conjunction with the Facebook Graph API and IBM Watson for the web-backend portion of the project, which handled and interpreted all user data. The Django REST Framework was used to make the API RESTful, exposing API endpoints and a simple Token Authentication Schema.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The backend ultimately gathers and creates user Facebook profiles containing information such as their names, usernames, and info about their likes and posts. That information is then serialized and, in conjunction with Watson AlchemyLanguage and PersonalityInsight technologies, returns a tidy serialized object containing everything needed for the Hololens.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            All together, the endpoints come together to form a tidy workflow on the Hololens: a player authenticates on the Session (POST) and receives a JSON object with an authentication token and their ID. They swap IDs with another player, and then get the user information of that player (GET) which is authenticated by their authentication token. All in all, the back-end abstracts requests away to two API endpoints that users worry about.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We used Unity's Networking tools as well as Microsoft's SDK to build the 3D experience. We ended up developing a 3D visual framework of our own for this project, and had to develop an algorithm of our own to accurately track the position of each player in the space taking into account the wi-fi connection and local geometry. We feel that the details of this part of the project are too complicated to describe here.
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        <p>
+                            This was a very ambitious interdisciplinary project that pushed all members of our team to the limit. Leveraging so many distinct types of technology was a challenge.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Getting our network code to work correctly was particularly a challenge from beginning to end, especially because we want everything to be extremely scalable and this experience can work with 2 users as well as it does with 100.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Giving up so many interesting ideas to focus on the smaller scope of a hackathon was (and still is) painful to all members.
+                        </p>
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        We attempted to solve a very human problem in a very human way, combining several aspects of emerging technologies to tackle this solution in likes that were never attempted before.
+                    </li>
+                    <li>
+                        We created an application that works well and is extremely scalable for up to 250 simultaneous users,
+                    </li>
+                    <li>
+                        We developed an innovative 3D user interface that leverages real-world context, is beautiful and doesn't clutter the user's vision.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Presence
+                </h2>
+                <p>
+                    Visual polish, more features, world domination.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            django-rest-framework
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/facebook-graph">
+                                facebook-graph
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/microsoft-hololens">
+                                microsoft-hololens
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

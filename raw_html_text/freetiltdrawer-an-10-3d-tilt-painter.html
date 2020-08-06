@@ -1,0 +1,207 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We first heard of the idea from Google.
+                    <a href="https://www.tiltbrush.com/" rel="nofollow">
+                        https://www.tiltbrush.com/
+                    </a>
+                    is the
+                    <em>
+                        tiltbrush
+                    </em>
+                    project by google Inc., which use HTC VIVE VR set to do 3D painting. It is brilliant and awesome, however the cost of over 900$ made it almost impossible to be fit into daily use.
+Previously we have the experience of building autonomous cars, and we found several algorithms used in localization of cars can be applied to this situation, so we tried to build our own version of
+                    <em>
+                        TiltBrush
+                    </em>
+                    using cheap cameras.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It is a proof-of-concept demo with two different backends, enabling user to draw art pieces in
+                    <strong>
+                        unrestricted
+                    </strong>
+                    space with the precision of
+                    <strong>
+                        millimeter
+                    </strong>
+                    level.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Firstly,by analyzing the closed-source android client of GoPro motion camera, we hacked into a GoPro cam, by using shell scripts to control ffmpeg on Linux to convert it into UDP Streaming format we managed to turn it into a wireless webcam, and we tweaked it so that the overall delay shall not exceed 500ms. We then used CameraCalibrationToolbox from Matlab calculated its focal lengths(fx,fy) and principal points(cx,cy).
+                </p>
+                <p>
+                    Then, by modifying the source code and recompiling source of
+                    <a href="https://april.eecs.umich.edu/software/apriltag" rel="nofollow">
+                        AprilTags Visual Fiducial System developed by University of Michigan
+                    </a>
+                    together with
+                    <a href="http://webdiis.unizar.es/%7Eraulmur/MurMontielTardosTRO15.pdf" rel="nofollow">
+                        ORB-SLAM: A Versatile and Accurate Monocular SLAM System
+                    </a>
+                    , both of which are commonly used in autonomous robotics and other industrial usage, we managed to achieve millimeter-precise localization of the GoPro Camera.
+                    <img alt="Apriltag Robots" data-canonical-url="https://april.eecs.umich.edu/media/apriltag/apriltagrobots_overlay.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--CRq5k7W5--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://april.eecs.umich.edu/media/apriltag/apriltagrobots_overlay.jpg">
+                    <img alt="Apriltag locators" data-canonical-url="https://april.eecs.umich.edu/media/apriltag/tagformats_web.png" src="https://res.cloudinary.com/devpost/image/fetch/s--DM4YKyVF--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://april.eecs.umich.edu/media/apriltag/tagformats_web.png">
+                    the families of Apriltag locators.
+                </p>
+                <p>
+                    After that, we built a simple render program using Qt on C++, and we used
+                    <a href="https://zeromq.org/" rel="nofollow">
+                        ZeroMQ
+                    </a>
+                    instead of boost::interprocess to achieved IPC communication.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Firstly, we didn't find a webcam. Geeks12 informed us just before the competition that they couldn't give us the webcam, which unfortunately was one of our core components. We called all nearby electronic stores and finally bought a GoPro Hero 7, in hope of hacking it. After nearly 5 hours of effort on cracking the camera, to our surprise we really managed to read its streaming and control it using automated commands.
+                </p>
+                <p>
+                    Secondly, we had met great difficulty in driving the camera to work. Though OpenCV claimed to support FFmepg format, but we found out that's only the very bare-boned version of ffmpeg, which cannot decode GoPro's video compression format. We have to research a lot about the principle of ffmpeg, and (unfortunately) struggling between confusing parameters. Luckily we overcame them.
+                </p>
+                <p>
+                    Thirdly, though some of us have experience in Computer Vision and camera calibration, we have no experience though in the Calibration based on video streaming. Dealing with that high latency required us to think of some hacks to find out which part is the latency come from. By recording a Timer and using internal timing tools, we found out that the latency comes from buffer pool of OpenCV as well as ffmpeg itself. In the end, we made it to reduce the latency and calibrate the camera.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    <strong>
+                        Everything.
+                    </strong>
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <ul>
+                    <li>
+                        FFMPEG
+                    </li>
+                    <li>
+                        Qt OpenGL Programming
+                    </li>
+                    <li>
+                        QThread QTimer
+                    </li>
+                    <li>
+                        Reverse Engineering
+                    </li>
+                    <li>
+                        Stereo Computer Vision, Camera Intrinsic and Extrinsic, Distortion Matrix
+                    </li>
+                    <li>
+                        How to reduce the latency of a (comparatively) complex system
+                    </li>
+                    <li>
+                        How to divide the work properly
+## What's next for Free Tilt Painter
+We will continue. At least I will continue.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            apriltags
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            gopro
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/matlab">
+                                matlab
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opengl">
+                                opengl
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/qt">
+                                qt
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Kenton1989/FreeTiltPainter" rel="nofollow" target="_blank" title="https://github.com/Kenton1989/FreeTiltPainter">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

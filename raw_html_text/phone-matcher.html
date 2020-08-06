@@ -1,0 +1,136 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The ubiquitousness of smartphones, has also brought with it, the inability for a user to use his/her phone for an entire day, because battery technology has far lagged all other smartphone technology. This makes most modern smartphones unreliable. An average user's usage of smartphones, in terms of app usage, location, WiFi and mobile data parameters, remains fairly static. In such a scenario, we wondered, was it possible that some phones would work better than others to perform, the same tasks a user requires it for day after day.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Using M2Catalyst's huge knowledge base, our program learns models to fit usage log characteristics to device energy usage for those characteristics. Using these models, for any user who wants to know the best phone (device) for his characteristics across all apps used by him, our program will be able to recommend the best phone for someone with his usage characteristics (in terms of battery or energy).
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    For every device type, and for every app version, we pooled user logs across all users and timestamps to look at features including CPU usage, run time, mobile data usage and memory used. For every device and app version combination, we fit a linear regression model to take in these features and estimate the energy or battery used.
+                </p>
+                <p>
+                    Once we have these black box models for every device type and app combination, we can take a particular user's timestamped logs and estimate the total energy footprints across all the device types. We then rank the devices in ascending order of total energy usage. The intuition is that these models will be able to estimate what is the total battery used by a user having certain app usage characteristics if he/she had been using a particular device. Since a user's characteristics don't change from device to device, the device which gives the optimal energy usage will be the best for that particular user.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        Handling the sheer amount log data - in order, to parse and obtain the features that we are using to build the models. This was a fairly obvious challenge for us, to be able to parse, and mine the features we were looking for.
+                    </li>
+                    <li>
+                        Finding the most efficient serialization of feature data, so we could exchange information, and run model building scripts. A shoutout to MessagePack!
+                    </li>
+                    <li>
+                        Malformed CSVs, in M2C's dataset led to some loss in training data and features. We had to drop out applications like Twitter, merely because, there was a ',' somewhere in there which was throwing off our CSV parsers.
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ol>
+                    <li>
+                        Our hunch, that we could model the coupling of device and application usage in terms of phone battery metrics, actually held.
+                    </li>
+                    <li>
+                        That we got somewhere, in terms of this entire enterprise.
+                    </li>
+                </ol>
+                <h2>
+                    What we learned
+                </h2>
+                <ol>
+                    <li>
+                        That MessagePack is like the best serializer ever!
+                    </li>
+                    <li>
+                        We learned some nifty ways to handle such large amounts of data. Seeing as this was our first ever data hack, that is probably the most useful thing we learnt.
+                    </li>
+                </ol>
+                <h2>
+                    What's next for Phone Matcher
+                </h2>
+                <ol>
+                    <li>
+                        Improve delivery of training data, and possibly, clean up and use all of M2Catalyst's log data and build a more comprehensive model.
+                    </li>
+                    <li>
+                        Build a webapp, platform that lets a user use this model, to get phone suggestions.
+                    </li>
+                    <li>
+                        Revisit, the models, to find insight about how some phone manufacturers perform as compared to others, for some forms of usage. This could be useful information about what improvements can be scoped for some phones.
+                        <br>
+                    </li>
+                    <li>
+                        Explore more advanced models than linear regression to estimate energy usage and perform feature engineering.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/postgresql">
+                                postgresql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/kishore-narendran/UCIDataHackathon" rel="nofollow" target="_blank" title="https://github.com/kishore-narendran/UCIDataHackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

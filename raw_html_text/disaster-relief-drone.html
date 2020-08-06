@@ -1,0 +1,262 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="496765" data-title="Quadcopter with pixhawk flight controller  " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/765/datas/original.JPG">
+                            <img alt="Disaster Relief Drone &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/765/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Quadcopter with pixhawk flight controller
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="496802" data-title="Microsoft Kinetic with Nvidia Jetson TX1 " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/802/datas/original.JPG">
+                            <img alt="Disaster Relief Drone &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/802/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Microsoft Kinetic with Nvidia Jetson TX1
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="496869" data-title="Jetson with connection to flight controller to receive GPS coordinates" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/869/datas/original.jpg">
+                            <img alt="Disaster Relief Drone &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/869/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Jetson with connection to flight controller to receive GPS coordinates
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to increase the effectiveness of first responders and non-profits to reach victims during the immediate aftermath of a disaster. We want to save lives by getting the help to where its needed faster and more accurately. Third world countries do not have the same amount of resources for disaster relief efforts as other nations such as helicopters. Drones can not only find people, but also deliver supplies to them in emergency situations while also giving exact GPS coordinates to help aid rescue efforts.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The purpose of the "Disaster Relief Drone" is to create a drone application that can detect and find people without the need of Wifi. This is a traditionally difficult problem, because most computer vision algorithms are computationally intensive and require the use of a server to do image processing. This is impractical in a disaster situation, because network infrastructure will likely be fatally damaged. The drone runs a human detection algorithm onboard without the use of WiFi. A ground control app was created in order to simplify the deployment of the drone in disaster scenarios. The app allows the user to place a geofence for the drone on a mapview. The drone then flys through the mapview and plots the locations of any detected humans on the map. Pictures and locations of the survivors are then visualized on a custom-built application.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    To create the whole product, we used a variety of services, APIs, and applications. We first start off with creating the Android Application. To create the Android Application, we used 3DR's services off of the AppStore and DroneKit, a python API that allows one to build apps to interface with a drone directly. DroneKit offers the 3DR Services library which is built in Android Studio. We ran the application using Android 6.0 Marshmallow. To create the application we used two different Android apps. The first android app was built off of drone-kit and the second was the tower application which controlled the drone. We then did a Software-in-the-loop (SITL) simulation to test our code. We then used the app to create the geofence for the drone and calculate a flight path to cover the area inside the boundaries the user created. After simulating the results we then stored the coordinates of the flight path and created a data pipeline to our visualization application.
+                </p>
+                <p>
+                    The second part of the project was to build the human detection algorithm and have it interface with the flight controller in order to receive GPS coordinates of survivors. We used OpenCV3 compiled with a CUDA wrapper to implement the human detection algorithm. The algorithm ran off of the histogram of gradients (HOG) method using the default human detection support vector machine (SVM) provided by OpenCV. Typically, HOG provides poor realtime performance. However, thanks to the GPU architecture of the Nvidia Jetson TX1, we were able to easily parallelize the entire process providing a speedup from 2-4 frames per second (fps) to 15-24 fps on a videostream with a resolution of 640*480. We used the Microsoft Kinect to get both an RGB videostream and depthmap and imported it to OpenCV for further processing. The RGB stream was used for the human detection algorithm, and the depthmap was used to control the altitude for the drone.
+                </p>
+                <p>
+                    In order to interface the Jetson to the Pixhawk we created a serial link using USB to the Pixhawk's serial port. This was done using a modified cable attached to a USB to TTL converter plugged into the Jetson. We installed DroneKit on the Jetson and used pymavlink in order to create a communication link between the Jetson and the Pixhawk. This allows the Jetson to ping the Pixhawk for GPS coordinate information whenever it detects a human. The python script to receive the state information was embedded into the OpenCV program. We also published the altitude the drone should fly at for each pass of the OpenCV program's while loop using the depthmap from the Kinect. All coordinates were stored in a textfile, and all detected humans had their pictures stored in a separate folder.
+                </p>
+                <p>
+                    Using the data pipelined pictures and coordinates, we used the Google Map API to create markers of the geofence and then the markers of the people that we have found along with the pictures and coordinates of where the people are located.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <ul>
+                    <li>
+                        Figuring out what parameters we need for the detection algorithm
+                    </li>
+                    <li>
+                        Increase the frame rate and accuracy of the detection algorithm
+                    </li>
+                    <li>
+                        Building an application on top of Dronekit
+-Taking in the data and visualizing it.
+                    </li>
+                    <li>
+                        Interfacing Kinect on Linux
+                    </li>
+                    <li>
+                        Numerous dependency issues on the Jetson
+                    </li>
+                    <li>
+                        Lack of storage space on the Jetson
+                    </li>
+                    <li>
+                        Getting Kinect interfaced with OpenCV
+                    </li>
+                    <li>
+                        Compiling and running CUDA-accelerated OpenCV applications
+                    </li>
+                    <li>
+                        Finding the sweetspot on the parameters for the human detection algorithm to balance speed and an accurate algorithm
+                    </li>
+                    <li>
+                        Numerous CMake conflicts and linking issues when compiling CUDA-wrapped OpenCV programs
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Our team is proud to develop a product that will help people when they are most in need. 
+We were proud that we were able to integrate so many technologies together.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    We learned how to interface different types of technologies from numerous areas (embedded systems, computer vision, app development) and integrate it all into one product. In addition we learned how to massively increase the performance of computer vision tasks using CUDA, and how to do basic app and web development.
+                </p>
+                <h2>
+                    What's next for Disaster Relief Drone
+                </h2>
+                <p>
+                    The next step is to create a drone platform that handle the weight of both the Jetson and an attached RGBD camera. We also plan on integrating more sensors on the drone for more robust navigation. After that, we hope to deploy our platform and test it should the day comes that its necessary. Following that, we believe the vision algorithms can be adapted to help augment the lives of people living in more rural areas. We know that the drones' use can be extended into other areas such as agriculture.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            3dr
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cmake
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cuda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dronekit
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            jetsontx1
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mavlink
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-kinect
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            nvidia-jetson
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sitl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ubuntu">
+                                ubuntu
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/khmurakami/lahacks" rel="nofollow" target="_blank" title="https://github.com/khmurakami/lahacks">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

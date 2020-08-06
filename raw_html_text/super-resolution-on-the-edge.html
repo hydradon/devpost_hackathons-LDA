@@ -1,0 +1,203 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Priyam and Akshay hail from India. While internet penetration and mobile adoption has seen tremendous growth in the last few years, high-speed &amp; reliable internet is still only available in dense metro cities.
+                </p>
+                <p>
+                    As we started the project, our hope was to empower in our country who could really use the vast resources of the internet -- farmers who could learn from the latest in agricultural techniques, students in remote areas without good schooling, etc. Given the language barriers illiteracy that exist in our country, we realised that video resources (i.e. learning by seeing) would be most effective.
+                </p>
+                <p>
+                    But how do we deliver good quality video content to rural areas which have low bandwidth and poor signal strengths? The answer, was to build a super-resolution model that can work on mobile devices.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The system is split into 4 major components explained below:
+                    <img alt="" data-canonical-url="https://user-images.githubusercontent.com/8805316/57276332-dc156e80-70be-11e9-97a2-ebfe31f7b129.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--oV7BnFFT--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://user-images.githubusercontent.com/8805316/57276332-dc156e80-70be-11e9-97a2-ebfe31f7b129.jpg">
+                </p>
+                <p>
+                    <strong>
+                        Training
+                    </strong>
+                </p>
+                <ol>
+                    <li>
+                        Data is prepared using the
+                        <code>
+                            tensorflow dataset
+                        </code>
+                        apis. All pre-processing, batching, etc is done in block 1. This gives us batches of small (low-res) frames with the past and future context (frames from the previous and next timestep), along with the target (high-res) frames for training.
+                    </li>
+                    <li>
+                        This data first flows into the
+                        <a href="http://openaccess.thecvf.com/content_cvpr_2017/papers/Caballero_Real-Time_Video_Super-Resolution_CVPR_2017_paper.pdf" rel="nofollow">
+                            motion compensation block 2
+                        </a>
+                        which estimates coarse as well as fine flow-vectors.
+                    </li>
+                    <li>
+                        The context frames are warped using their respective flow-vectors using block 3. This is achieved by the
+                        <code>
+                            dense_image_warp
+                        </code>
+                        addon in
+                        <code>
+                            tfa
+                        </code>
+                        . These warped frames (now sans-motion) are then sent to block 4.
+                    </li>
+                    <li>
+                        In block 4, we perform an
+                        <a href="https://cs.stanford.edu/people/karpathy/deepvideo/" rel="nofollow">
+                            Early Fusion
+                        </a>
+                        of inputs by using a
+                        <code>
+                            TimeDistributed-Conv2d
+                        </code>
+                        operation which performs a conv2d op on every context frame. The output filters are then averaged (i.e. fused) for computing the training error.
+                    </li>
+                    <li>
+                        Finally, the fused image is compared against the high-res image using a
+                        <a href="https://arxiv.org/pdf/1609.04802.pdf" rel="nofollow">
+                            perceptual loss
+                        </a>
+                        specifically for super-resolution and an additional Huber loss for minising flow.
+                    </li>
+                </ol>
+                <p>
+                    <strong>
+                        Testing
+                    </strong>
+                </p>
+                <ol>
+                    <li>
+                        Non-overlapping patches from the test video are extracted in a similar manner (i.e. with their appropriate context patches).
+                    </li>
+                    <li>
+                        These are fed to the feed-forward network (Blocks 2, 3, 4).
+                    </li>
+                    <li>
+                        The output frames are then tiled in order to produce a complete high-res image.
+Individual frames are merged using a video encoder utility (eg. ffmpeg) to produce a high-res video.
+                    </li>
+                </ol>
+                <h2>
+                    How we built it
+                </h2>
+                <ol>
+                    <li>
+                        We did a thorough literature survey of recent and classical methods in image super-resolution by reading papers from recent CVPR/ICCV/NeurIPS conferences and review articles on arXiv.
+                    </li>
+                    <li>
+                        Then we decided on tackling the problem of video superresolution as it a much more nuanced and extremely important for large-scale deployement of superresolution.
+                    </li>
+                    <li>
+                        We created an overview of the subproblems we had to solve in order to make this work. This is uploaded in our GitHub repository's README.
+                    </li>
+                    <li>
+                        We then split the work and kept updating the repo as we made progress.
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    As we both live in different time-zones, we had to have discussions at the opposite ends of a day often late into the night or early in the morning and sometimes it was difficult to move forward with an idea as we had to wait ~12 hours to have a discussion.
+                </p>
+                <p>
+                    While both of us are not new to the field of machine learning and deep neural networks, we did have a hard time deciphering some of the recent lliterature on single image super-resolution as a large portion of this field stems from classic image processing pipelines. This resulted in some delays during experimentation as most works assumed a fair bit of knowledge on the topic and thus we had to make guesses on experimental parameters such as whether to early or late fuse our frames and the tradeoffs between classical DeConvolution based upsampling that is used heavily in the image segmentation literature versus a fairly new sub-pixel convolution based approach. Fortunately, tensorflow&rsquo;s state of the art and up to date modules gave us access to both.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Despite living in different time-zones we were able to collaborate on this project and make tangible progress on it. When we started toying around with the idea of Super resolution, we did not know much about the current state of the art methods to solve this problem and thus had to spend weeks just reading (and summarizing) papers from the most recent CVPR/ICCV/NeurIPS conference which often left us confused. But we braved through the literature review and settled on a combination of recent techniques which have shown to give reliable and perceptually sane super resolution results. Also, we are currently in the process of extending this method with a perceptual loss which makes it even harder to distinguish between a super-resoluted image and the original HighRes image.
+                </p>
+                <p>
+                    For the interested reader here is a link to our notes on recent work in image Superresolution (WARNING! Not for the faint of heart!)
+                    <a href="https://hackmd.io/c/HJEN0RlFE/%2FEe8Qcr_dQdaH4-ihAIlVFA" rel="nofollow">
+                        https://hackmd.io/c/HJEN0RlFE/%2FEe8Qcr_dQdaH4-ihAIlVFA
+                    </a>
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    In our quest for understanding the field of video superresolution and making it work, we realized that most current methods only look at parts of the problem and there is a much larger scope in using a holistic approach. Streaming services such as Google&rsquo;s own stadia and the youtube platform can directly benefit from the current advances in superresolution but only if we solve it on all ends - data, model and algorithm. Google is in a unique position as it has all the components to solve this problem at scale.
+                </p>
+                <h2>
+                    What's next for
+                    <code>
+                        Super Resolution On The Edge
+                    </code>
+                </h2>
+                <ol>
+                    <li>
+                        We are currently looking into training a larger and diverse video super resolution model on datasets such as the Youtube-8M video dataset
+                    </li>
+                    <li>
+                        tensorflow&rsquo;s compression tools and the tensorflow.js toolkit will allows us to compress our model to a modest size and run it in real-time on resource-constrained devices such as mobile phones and ultrabooks.
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/priyamtejaswin/srote-ftw" rel="nofollow" target="_blank" title="https://github.com/priyamtejaswin/srote-ftw">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

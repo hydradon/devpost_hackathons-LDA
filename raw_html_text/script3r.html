@@ -1,0 +1,174 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="496629" data-title="The eDIT GUI" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/629/datas/original.png">
+                            <img alt="e.DIT &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/496/629/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The eDIT GUI
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    <strong>
+                        We love movies.
+                    </strong>
+                    We love watching them, we love talking about them, but most of all, we love making them. And anyone who's ever tried making a short film knows that it takes a
+                    <em>
+                        lot
+                    </em>
+                    of work to make even a 5 minute film. Films take a long time to plan, a long time to shoot, and a
+                    <em>
+                        very
+                    </em>
+                    long time to
+                    <strong>
+                        edit.
+                    </strong>
+                </p>
+                <p>
+                    Three of the four of us are editors. And as much as we love editing, the one thing we really hate about the process was
+                    <strong>
+                        organizing the footage,
+                    </strong>
+                    which requires us to look at every single piece of footage, scrub through the first few seconds to find the film slate, find out what scene and take the current shot is, and rename the clip accordingly.
+                </p>
+                <p>
+                    At best, we lose several hours organizing footage. At worst, we could miss out on an entire DAY of editing because of this.
+                </p>
+                <p>
+                    There had to be a better way.
+                </p>
+                <p>
+                    So we made one.
+                </p>
+                <h2>
+                    What e.DIT does
+                </h2>
+                <p>
+                    In the film world, the
+                    <strong>
+                        Digital Imaging Technician
+                    </strong>
+                    (DIT for short) handles footage organization. So our
+                    <strong>
+                        E
+                    </strong>
+                    lectronic Digital Imaging Technician (e.DIT for short) does exactly that. e.DIT is a piece of software we developed to go through footage, label it with its scene and take, and sort it into folders by scene. And even though it's in the very early development stages right now, we are excited to have a prototype up and running, with a 64% success rate.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Using a film slate is more or less a standardized practice in the film industry. If you wanna see how it's normally done in film sets, take a look here:
+                    <a href="https://youtu.be/bd7BPX8oEeE?t=2m1s" rel="nofollow">
+                        https://youtu.be/bd7BPX8oEeE?t=2m1s
+                    </a>
+                </p>
+                <p>
+                    Because of how formulaic slating is, we can reliably assume:
+                </p>
+                <ol>
+                    <li>
+                        The location will be mostly quiet since only a few people are allowed to talk in a film set once the camera starts rolling.
+                    </li>
+                    <li>
+                        We will actually
+                        <em>
+                            see
+                        </em>
+                        the slate at some point in the shot.
+                    </li>
+                    <li>
+                        We will hear the person using the slate (the 2nd AC) say "take" at some point, followed by a number which indicates the take.
+                    </li>
+                    <li>
+                        We will hear a number (and optionally a word) before the word "take" which indicates the scene.
+                    </li>
+                    <li>
+                        We will hear a loud spike in audio when the slate actually claps.
+                    </li>
+                </ol>
+                <p>
+                    We had access to the Microsoft Cognitive Services API, which included Cognitive Vision and Speech to Text. Initially we wanted to use Cognitive Vision to read the slate and extract the scene and take information, but because the slates in amateur productions are rarely in the camera's focus and because Cognitive Vision has some difficulty reading handwritten text, we opted to use the Bing Speech API.
+                </p>
+                <p>
+                    Because we knew that slating almost always happens at the beginning of every take, we pass the first 30 seconds to Bing Speech for analysis. Then, we search for the word "take" in those 30 seconds and if we find it, we check for the take number immediately after it and the scene number immediately before it. Reading the take was trivial since it was guaranteed to be a number right after the word "take." Reading the scene number was a little trickier because in the film world, when slating for scene "2D take 5," a 2nd AC can substitute saying the letter "D" for any word that starts with the letter D. So to read the scene number, we simply captured the word (or words) immediately before "take" but after a number, and appended the first letter of the first word to the end of the scene number. Afterwards, we label the shot and move on to the next shot selected.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We ran into numerous challenges during this project.
+                </p>
+                <ol>
+                    <li>
+                        Early on in the project, we ran into a lot of difficulty extracting the correct information from a string. It was especially difficult to pull the correct scene letter from the string since again, literally ANY word could be used as long as its first letter was the same as the scene letter. Combined with the Bing Speech API's tendency to output homophones of the target words we wanted ("too" instead of "two," "won" instead of "one," etc), it was very difficult to reliably extract the information we wanted from footage.
+                    </li>
+                    <li>
+                        The Bing Speech API initially had a LOT of trouble coming up with results that were close to the ones we were expecting. It would frequently output nonsensical words that were quite far from our expected outputs, so we wanted to "teach" it the correct format for slating. We created a custom language model for the Custom Speech API using 740,000 randomly generated yet "grammatically correct" slate phrases composed of random numbers, food, NATO alphabet words, and Pokemon names.
+                    </li>
+                    <li>
+                        The Bing Speech API isn't 100% accurate, so we would sometimes run into a file where we could only read one or two of the three fields we needed to accurately label these files. Thus, we came up with a way to label these "partial matches" through interpolation. We could reasonably assume that scene "2A take 1" would be shot before "2A take 2" which would also be shot before "2B take 1" and that those files would be inputted one after another. Thus, we wrote code that could could "fill in the gaps" depending on the known footage that was nearest to it. With this process, we can also figure out some "no matches," again depending on the context of the other footage around it.
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Not only are we proud that we made a tool that can save editors a lot of time during post production, we're also proud of all the things we learned while doing this project. This was our first experience in a hackathon and we learned things like how to get the Microsoft Custom Speech API to work in a C# application with a customized language model, how to design some basic UI for an application, and how to create something that merged our coding interests with our love for filmmaking.
+                </p>
+                <h2>
+                    What's next for e.DIT
+                </h2>
+                <p>
+                    As we made more and more progress with e.DIT, we became more and more excited because we really do believe it can be an amazing asset for editors. We will continue to develop and refine e.DIT in order to raise our 64% success rate to something higher, maybe even 100%.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            microsoft-cognitive-services-api
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Nbickford/Script3r" rel="nofollow" target="_blank" title="https://github.com/Nbickford/Script3r">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

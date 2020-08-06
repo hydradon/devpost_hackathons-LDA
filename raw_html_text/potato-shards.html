@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="881356" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/881/356/datas/original.png">
+                            <img alt="potato shards &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/881/356/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Potato Shards
+                </h1>
+                <h4>
+                    Potato Shards is a alternative shard-compatible staking module for Cosmos
+                </h4>
+                <p>
+                    Built for 2019 DeFi hackathon. This is a proof of concept implementation. See Future Work section.
+                </p>
+                <h3>
+                    Concept
+                </h3>
+                <p>
+                    This module allows you to launch a chain that where validators are selected from an Ethereum smart contract.
+Would be validators stake in on an Ethereum contract. The contract sorts and selects validators for each shard.
+This module reads the contract and reports the new set of validators to Tendermint.
+Shards can communicate with each other using IBC.
+                </p>
+                <h3>
+                    DeFi
+                </h3>
+                <p>
+                    Decentralizing existing financial products on blockchain is an important effort to remove the crucial, exploitable and unreliable element of trust for finance.
+However, if decentralization is as much a paradigm shift to technology as evangelists claim there should entirely new finance innovations out there that are incommensurable with anything in existing finance.
+In this regard, the existing blockchain economy has already introduce myriad new and unprecedented financial products.
+                </p>
+                <p>
+                    One such product is staking which is still VERY NEW. No PoS blockchain currently has the market cap of leading PoW chains and their behavior is highly dependent on initial stake distribution.
+The economics and behavior behind staking are largely unexplored. 
+Thus the claim is that staking should be considered a first class DeFi product and one that has huge amounts of unexplored potential.
+                </p>
+                <p>
+                    This project aims to create another mechanism for staking to demonstrate how simple it is to come up with new powerful configurations.
+                </p>
+                <p>
+                    In practice, sharded chains that select validators based on staking conditions in Ethereum have many use cases.
+It leverages security guarantees of Ethereum and speed of classical consensus (see hybrid consensus by Shi et. al).
+It is extremely simple for the average user to understand and builds on the most widely used smart contract platform.
+It allows for small and secure validator sets to run low-value chains securely.
+In particular, the inspiration for this idea was taken from free 2 play single player games that run on centralized servers (such as farmville).
+In this scenario, each user's game can thus be its own shard and anyone can stake in on the contract to run validator nodes and perhaps earn rewards in game in return.
+this is very promising use case for
+                    <code>
+                        potatoshards
+                    </code>
+                    and could largely replace centralized servers for this genre of games.
+                </p>
+                <p>
+                    As future work, the author of this project is also excited to use blockchain games that double as closed economies to explore and play with new radical and unprecedented markets.
+                </p>
+                <h3>
+                    Usage
+                </h3>
+                <p>
+                    You must first deploy the
+                    <code>
+                        potatostaking.sol
+                    </code>
+                    contract on Ethereum.
+                </p>
+                <p>
+                    Update potatoreader.go to contain the contract address, genesis block number, shard number, and ethereum RPC provider URL. 
+Next, simply incorporate this module into your project instead of
+                    <code>
+                        staking
+                    </code>
+                    module and your chain will use validators pulled from the Ethereum smart contract.
+Of course make sure you stake in validators on the eth smart contract first :).
+                </p>
+                <p>
+                    The genesis validator set is pulled directly from the smart contract.
+Note that potato-shards is currently not compatible
+                    <code>
+                        slashing
+                    </code>
+                    and
+                    <code>
+                        distributor
+                    </code>
+                    modules.
+                </p>
+                <p>
+                    There is no support for dynamic shard switching as a validator AFAIK so a single validator must run one node for each shard.
+If the staking contract does not reorganize validators frequently this can be done manually.
+                </p>
+                <h3>
+                    Future Work
+                </h3>
+                <p>
+                    This implementation is a proof of concept and has many missing features. It is intended as a template for a full implementation.
+                </p>
+                <p>
+                    It is intended that each shard connect to each other with IBC. This is left to the developer to implement it as they see fit but a standard base token transfer IBC between shards would be a good feature to have for this module.
+                </p>
+                <p>
+                    As noted in comments of potatostaking.sol, it's possible to implement slashing on the Ethereum smart contract.
+Perhaps a better way to do it is to relay on a bidirectional peg chain and IBC. Thus all slashing operations happen in the peg chain and users need not concern themselves with Ethereum transactions.
+                </p>
+                <p>
+                    It's reasonable to reward validators on the cosmos chain in the base token so interface for
+                    <code>
+                        potatoshards
+                    </code>
+                    should be updated to be compatible with
+                    <code>
+                        distributor
+                    </code>
+                </p>
+                <p>
+                    potatostaking.sol is a basic implementation and has many missing (important) features.
+It should be updated to an interface so that different validator selection criteria can be used based on need.
+                </p>
+                <h3>
+                    Notes
+                </h3>
+                <p>
+                    potatostaking.go is generated from potatostaking.abi using the go-ethereum abigen tool
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            cosmos
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/pdlla/potato-shards-defi-hackathon" rel="nofollow" target="_blank" title="https://github.com/pdlla/potato-shards-defi-hackathon">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

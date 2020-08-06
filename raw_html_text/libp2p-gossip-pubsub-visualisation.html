@@ -1,0 +1,189 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/jRBnead8Qss?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="829634" data-title="meshsim interface" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/829/634/datas/original.png">
+                            <img alt="Meshsim (libp2p gossipsub visualisation) &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/829/634/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                meshsim interface
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We were really intrigued by the presentation at web3 summit by Matthew Hodgson showcasing their meshsim tool used to visualize how matrix servers propagate messages in a delayed network by spinning up instrumented docker images on a local network. So we were immediately interested when the libp2p guys showed interest in extending the tool to be used in testing the gossip protocol.
+                </p>
+                <p>
+                    There are a lot of awesome products being built on libp2p and it would be great if this tool could help all those devs.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The app lets you create a graph representing nodes in a p2p network. The graph topology is reconstructed on the networking layer by introducing latency or bandwidth restrictions in the underlying network. After building a topology the nodes can then bootstrap a message-passing protocol and then message sending can be simulated from the UI with the ability to alter the message size.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Based on the meshim tool by [matrix], but heavily extended in order to support potentially any p2p client specification with little effort in the future by implementing a
+                    <code>
+                        Provider
+                    </code>
+                    . The UI was also upgraded to also include message send simulation which was done in a cumbersome way through shell scripts before.
+                </p>
+                <p>
+                    We also had to define an agent that connects to the libp2p daemon and communicate via protobuf messages. This control interface has to ensure that the network topology is reflected at the libp2p level in the peer definition.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Distributed systems are tricky to debug especially when you're running a python server that's connected with 10 docker images each running a python server of their own and a specific p2p node implementation (libp2p or synapse), and all talking to each other asynchronously with different failure modes.
+                </p>
+                <p>
+                    It was also hard at times to keep the whole system in our heads because we had to essentially create an abstraction layer over this and set tight boundaries between services and the provider abstraction layers.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    It works! It's a major overhaul of the existing project without introducing any breaking changes.
+It can also be easily extended to simulate more specific types of p2p networks and their interactions.
+Also if this really proves to be helpful to the folks building eth2.0 that would be most awesome.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Libp2p is pretty cool.
+                    </li>
+                    <li>
+                        Protobuf encoding isn't as straightforward as initially thought.
+                    </li>
+                    <li>
+                        Good planning is key.
+                    </li>
+                    <li>
+                        It's not straightforward to abstract/generalize something that wasn't written with that in mind
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Meshsim
+                </h2>
+                <ul>
+                    <li>
+                        Update readme
+                    </li>
+                    <li>
+                        Merge upstream
+                    </li>
+                    <li>
+                        Better node orchestration: wait for nodes to be only before applying network topology changes. Batch changes better.
+                    </li>
+                    <li>
+                        Better feedback of the network state in the UI
+                    </li>
+                    <li>
+                        Merge upstream
+                    </li>
+                    <li>
+                        More granular topic / room configuration
+                    </li>
+                    <li>
+                        Provider specific message simulation configuration
+                    </li>
+                    <li>
+                        Fine control over nodes / edges
+                    </li>
+                    <li>
+                        UI overhaul
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            libp2p
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            protobuf
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/valer-cara/meshsim" rel="nofollow" target="_blank" title="https://github.com/valer-cara/meshsim">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

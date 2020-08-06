@@ -1,0 +1,224 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/DiNRrfkIJtA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    As we came into Corwin Pavillion where all the hackathon event was held, we saw that the staff members kept track of the number of people inside the room due to the fire emergency safety issues. We could build something to help their hassles. When the crowd gets together, it's more problematic to the supervisors.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It takes a picture of the room every few seconds, and if the room is almost at a capacity, the service alerts the users (the staff members), and they can check the current status on our dashboard.
+                </p>
+                <ul>
+                    <li>
+                        Our service consists of three main components.
+                    </li>
+                    <li>
+                        Camera client: It keeps taking a picture of a room every few seconds, and save the image in Google Cloud Platform Storage, and send the image url to the server.
+                    </li>
+                    <li>
+                        Web client (dashboard): It shows the chart of the number of people inside the room over time, and the pictures of the room. It also allows the user to configure the room capacity.
+                    </li>
+                    <li>
+                        Server: It receives the url to the picture of the room. It detects the objects from the picture, and it saves the status of the room in database. Also, it serves the api consumed by the web client.
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <ul>
+                    <li>
+                        Our service infrastructure is mainly on Google Cloud Platform (GCP).
+                    </li>
+                    <li>
+                        Our service consists of three main components: camera client, server, and the web dashboard.
+                    </li>
+                    <li>
+                        Using openCV, we made the camera client with python script that takes a picture of the room every ten seconds using my laptop camera. Each time it takes a photo, it uploads the image file to GCP Storage, and sends the storage file public url to our server.
+                    </li>
+                    <li>
+                        The server was built with flask, python, openCV, Twilio API, and imageAI. As the server receives the image url, it detects the number of people inside the picture using Residual Neural Network model trained by imageai.org. Then, It stores the information in MySQL database hosted by GCP SQL. If the number of people in the room picture exceeds the 90% of the room capacity, it sends the warning text message to the users using Twilio API. The message contains the url link to the dashboard, so that they can check the room status right away.
+                    </li>
+                    <li>
+                        We used chart.js and jQuery to build Web Dashboard for users. It draws a graph of the number of people inside the room over time, and it shows the pictures of the room. It lets the user to configure the room capacity by calling REST API to the server.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        This is our first time participating in a hackathon, so we were totally lost at the beginning. We had to spend spend hours just brainstorming what to make.
+                    </li>
+                    <li>
+                        Both of us are not experts of the computer vision, so we did a lot of research to improve the precision of the object detections.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Our main objective was to help the hackathon supervisors to easily handle the safety issues inside the building, but as we develop this service, we realized that it has a lot of applications. This could be used to keep track of the number of people in line to the restaurants, museums, theater, and etc.
+                    </li>
+                    <li>
+                        While our team has only two members, we've successfully deployed our service within two days even though it's still the demonstration purpose.
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        We learned about setting up the infrastructures and how to get used to the new technology.
+                    </li>
+                    <li>
+                        We did a few pair programming that we were able to learn each other's own programming skills.
+                    </li>
+                    <li>
+                        We learned about openCV and computer vision. At first, we thought image detection could be done magically if we just use the library, but it wasn't. Most of the blog posts are still targeted to a specific objectives, and many of them needed some modifications. Nothing comes for free.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Headcounter
+                </h2>
+                <ul>
+                    <li>
+                        We still need to work on the object detection part. It was a lot better than the first try, but it still cannot recognize a lot of people when the resolution isn't great.
+                    </li>
+                    <li>
+                        Currently, the service only works for a single user, but we have to generalize it, so that a single server can host multiple users.
+                    </li>
+                    <li>
+                        The camera client runs on a laptop, but to be more efficient we rather make a program that runs on Android, so that we can easily deploy around the room.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chart-js">
+                                chart.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            imageai
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mysql">
+                                mysql
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rest
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://headcounter.appspot.com/" rel="nofollow" target="_blank" title="http://headcounter.appspot.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                headcounter.appspot.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

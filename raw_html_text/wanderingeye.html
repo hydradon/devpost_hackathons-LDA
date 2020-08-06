@@ -1,0 +1,216 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="539859" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/539/859/datas/original.jpeg">
+                            <img alt="WanderingEye &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/539/859/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="539766" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/539/766/datas/original.png">
+                            <img alt="WanderingEye &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/539/766/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="539787" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/539/787/datas/original.jpeg">
+                            <img alt="WanderingEye &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/539/787/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Image recognition of camera trap photos is a promising technology for monitoring the abundance and distribution of rare animal species. There are many platforms that provide image recognition service, each with its own strengths and weaknesses. Large conservation projects that monitor diverse sets of species are in need of generalized image recognition tools that leverage multiple platforms.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    WanderEye is a universal service layer that compiles the output from four computer vision APIs: Google Cloud Vision, Amazon Rekognition, ClarifAI, and IBM Watson. The main end goal of this product is to create a code pipeline for camera trap users or existing camera trap analysis apps such as SMART to query four image recognition APIs to receive compiled species identification data for large file sets. We provide also "composite output" which ranks the results across the four engines based on the certainty of the ID and the specificity of the output. Today, we present a demo that allows side by comparison of these computer vision algorithms for pre-processed training images.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Our team programmatically accessed the APIs for each of the four image recognition engines through either R or python. We standardized the output from each of the API to create a universal result for all images uploaded.
+                </p>
+                <p>
+                    To remove non-animal words from the image recognition output, we used text mining analysis in R to determine the cosine similarity of each output word to the word "animal", and then used trial and error to filter this score. We also cross referenced our list against a list of common mammals to account for the fact that specific animal words aren't always present in the dictionaries used for the text mining analysis.
+                </p>
+                <p>
+                    We ranked the ID terms across image platforms by creating an selection metric integrates the confidence of the image ID according to its engine and the specificity of the word relative to "animal" determined by calculating asymmetrical word similarity in R.
+                </p>
+                <p>
+                    To test the effectiveness of our composite output, we manually identified the animals in a set of 140 camera trap training images to species and family and noted color scale, number of animals, and time of day of each image.  We tested the the relative effectiveness of each engine in identifying images to species and family. We also evaluated if our composite data was better than use the best engine individually.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        Removing non-animal ID terms from image recognition service outputs
+                    </li>
+                    <li>
+                        API limits and fees
+                    </li>
+                    <li>
+                        Ecology specific APIs were difficult to &ldquo;crack&rdquo; and attempts at manipulating Microsoft Computer Vision API were not fruitful
+                    </li>
+                    <li>
+                        Creating a Training Dataset (and hoping that we were accurate in our manual identification!!)
+                    </li>
+                    <li>
+                        Prioritizing more specific animal terms over others (like &ldquo;leopard&rdquo; vs. &ldquo;cat&rdquo;)
+                    </li>
+                    <li>
+                        Had teammates using multiple platforms
+                    </li>
+                </ol>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Hacking 4 different APIs!
+                    </li>
+                    <li>
+                        Addressing the specificity of narrowing down word choices to animal-related terms
+                    </li>
+                    <li>
+                        Getting a demo up with only a 4 person team in less than 36 hours!
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    That looking at photos and trying to identify species is hard!
+                </p>
+                <h2>
+                    What's next for WanderingEye
+                </h2>
+                <ul>
+                    <li>
+                        Adding more APIs like iNaturalist, Microsoft Computer Vision, Extract Compare, Wild-ID and Camelot
+                    </li>
+                    <li>
+                        Creating a larger animal-related dictionary of terms to help better exclude irrelevant output words
+                    </li>
+                    <li>
+                        Conduct user interface research to learn which end user features are most valued Data Visualization features
+                    </li>
+                    <li>
+                        Implementing a real time pipeline for batch camera trap images
+                    </li>
+                    <li>
+                        Identifying images with partial limbs or blurry images is HARD!
+                    </li>
+                </ul>
+                <p>
+                    NOTE: All camera trap images are copyrights of the Wildlife Conservation Society (WCS) and may only be accessed and used for the sole purpose of this challenge.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            apis
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/r">
+                                r
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            r-shiny
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            text-mining
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://katieheineman-shiny-apps.shinyapps.io/WanderingEye/" rel="nofollow" target="_blank" title="https://katieheineman-shiny-apps.shinyapps.io/WanderingEye/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                katieheineman-shiny-apps.shinyapps.io
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/heineperson/ZooHackCleaned" rel="nofollow" target="_blank" title="https://github.com/heineperson/ZooHackCleaned">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/heineperson/CameraTrapWizard" rel="nofollow" target="_blank" title="https://github.com/heineperson/CameraTrapWizard">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

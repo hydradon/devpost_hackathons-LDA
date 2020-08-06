@@ -1,0 +1,200 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="763967" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/763/967/datas/original.jpg">
+                            <img alt="YOLObike &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/763/967/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="763968" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/763/968/datas/original.jpg">
+                            <img alt="YOLObike &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/763/968/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="764033" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/033/datas/original.jpg">
+                            <img alt="YOLObike &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/033/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="764034" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/034/datas/original.jpg">
+                            <img alt="YOLObike &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/764/034/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Bicycle riders sharing the road with vehicles are inherently at greater risk of injury than drivers. With all the sensors that have been outfitted on modern consumer automobiles for safety, we thought bicycles deserve the same consideration and features.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Much like modern automobiles, YOLObike uses a camera and LIDAR to scan the area behind the bicycle. The camera performs computer vision to identify vehicles and the LIDAR measures how far the detected vehicles are. You can think of it in polar coordinates, the origin is just behind the seat of the bike (where our sensors are located) and the camera provides theta while the LIDAR provides r. Using theta and r, LEDs on the handlebars (the UI) indicate the position of detected objects to the user. For demonstration purposes indoors, YOLObike reports the positions of people as well as vehicles, since humans are more easily maneuverable indoors :)
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    To process camera inputs, we use a pre-trained single shot detector designed to identify both pedestrians and vehicles. The program is running on a raspberry pi with an Intel Neural Compute Stick (NCS), to increase the frames per second. Coordinates of the objects detected (if any) are send over a serial connection to an Arduino on the handlebars of the bike. In parallel, the Arduino is scanning the LIDAR and camera by sweeping the motor they are on. By combining the motor angle with the coordinates of detected objects, the Arduino lights up the appropriate LEDs on the UI.
+                </p>
+                <p>
+                    YOLObike is completely battery-powered, and also broadcasts a Wifi network that allows the user to view the video stream. It is attached to the bike with hot glue and zip ties (no duct tape!). Enclosures and attachments are 3D printed.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    An inordinate amount of time was spent attempting to install software to train our own vision networks for the NCS. For instance, the raspberry pi didn't have sufficient RAM to run the compiler, even when allocating a portion of the SD card as swap space. Thomas' personal Ubuntu machine had dependency conflicts with packages used for his coursework so we didn't want to uninstall those. Finally we had to compromise and use pre-trained networks we found online. Additionally, we couldn't optimize said networks for our specific camera resolution or raspberry pi CPU, limiting our frames per second to less than half of what others claimed to have achieved with more system-specific tuning.
+                </p>
+                <p>
+                    A major bottleneck we couldn't overcome was that the raspberry pi has no USB3 ports. The NCS is USB3 capable but is speed restricted by the USB2 ports on the pi. We suspect this is the primary cause of latency in our system, which achieves about 5.5FPS. The Arduino main loop and LIDAR refresh faster than that but only receive camera updates at a maximum rate of 5.5Hz. With more time, we could find/build a faster interface with the NCS to the pi's unused ethernet port or GPIO.
+                </p>
+                <p>
+                    YOLObike is relatively power hungry between the motor and the neural network, leading to transient voltage spikes when the motor accelerates and decelerates. This forced us to use two separate battery banks so that the logic voltage remained steady despite the motor current demand. With more time we would have added additional regulation circuitry to one higher power battery.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud that we achieved the frames per second we did despite lacking access to most of the development tools Intel provides for its NCS. We literally unboxed the NCS the day before HopHacks began and didn't begin installing software until the hackathon was underway. Without it, users online report 0.5FPS on the raspberry pi CPU running object detection neural networks. Frankly we were caught unprepared to use the NCS under hackathon time constraints.
+                </p>
+                <p>
+                    Despite this, YOLObike is quite robust and flexible. It is straightforward to change the motor sweep range for the user's preferred zones/blind spots. The computer vision is completely abstracted away from the Arduino, meaning the behavior of the system can be easily changed using just the Arduino without having to worry about the behavior of the raspberry pi. It also contains additional hardware that can be used or not used according to the user's preference. A buzzer can indicate when a vehicle is detected in certain zones, and an additional sensor that measures the angle between the handlebars and body frame. It would therefore be easy to adjust the area YOLObike is observing based on the anticipated trajectory of the bike.
+                </p>
+                <p>
+                    Finally, we feel very lucky that Travis' homemade 3D printer didn't fail on any of its prints. It was extruding for almost the entire hackathon, and a failed print might have cost us a sensor mount or part of the UI.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    What can go wrong will go wrong, especially when working with hardware. In addition to the unexpected problems mentioned above, a few highlights include: the webcam isn't natively compatible with Linux, the raspberry pi began temperature throttling, and sometimes your hardware is so new that the forum posts from people with your problem are 2 days old and don't have answers yet. We also had some close calls - we are using every pin on the Arduino and only have 1 spare USB port.
+                </p>
+                <h2>
+                    What's next for YOLObike
+                </h2>
+                <p>
+                    One easy way to improve the system would be to use a camera with a wider field of view. This way we could capture the entire area behind the bike and only rotate the LIDAR as necessary. As previously mentioned there is also much room for improvement in the computer vision.
+                </p>
+                <p>
+                    A weakness of YOLObike is that the UI is fixed to the handlebars, meaning it may not always be in view of the user. We have a buzzer to help here, but a better solution is wireless integration with the biker's helmet. LEDs placed in the user's peripheral vision mean they won't need to look down to receive information from YOLObike. This would certainly be a fun challenge for future development
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/3dprinting">
+                                3dprinting
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cad
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            intel-movidius-neural-compute-stick
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lidar
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            servo-motors
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            single-shot-detection
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            solder
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/tchanxx/HophacksS2019" rel="nofollow" target="_blank" title="https://github.com/tchanxx/HophacksS2019">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

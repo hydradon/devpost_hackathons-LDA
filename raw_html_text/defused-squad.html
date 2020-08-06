@@ -1,0 +1,185 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We've seen a lot of new interest in the AR games department spurred on by the success of Pok&eacute;mon Go. It's proven, given something fun enough, people want excuses to go outside and explore their neighborhoods with friends and strangers alike. Defusal Squad hopes to offer a way to do just that!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Say you and four friends are outside and decide to spin up game,
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Player 1 goes to the website under the 'start game' screen. Fills out their name and a name for thier game room for others to connect to (herein referred to 'room name').  Currently hard-coded is a distance of about 0.1 mi for ease of testing, but in the future, this is also where player 1 would select the size of the geofence for the game.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Players 2-4 (there's no limit on the people, you can play with 1 to n people as long as as you select an area large enough for larger number of players) go under 'join game' and fill in thier player name and player 1s room name. In the background, this is making use of socket.io's rooms feature, which creates a web socket for every client and assigns all client to that room, so everyone in the room can recieve updates at the same time.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            On the game screen, you'll the info displayed up top (check screenshot) along with a toggle for map / chat. We incorporated Twillos IP Messaging client. There's one assigned to every room where the players can talk about the current mission. I had a little trouble making a seperate one for every room, so for now, it's a global chat for all sockets.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Step 1 of the game is to find the bomb. It's hidden somewhere in the entirety of the selected geofence area. There's no time limit, and the server sends you messages letting you know if you're getting hot/cold through the twillo ip messaging service (it's tied to player 1s geo location).
+                        </p>
+                    </li>
+                </ol>
+                <p>
+                    For the demo, this is all I was able to get to and you'll see a winning screen when you find the bomb, but the game has another major step.
+                </p>
+                <ol>
+                    <li>
+                        Once you find the bomb, a timer is set of, and the big geofence is split into a random number of smaller zones depending on how many players there are. N players equal (n-1) / 2 Max zones. 
+Because of the short length of the timer, players have to split into teams of 2-3 and hunt in thier smaller zone for a fragment of the key code which defused the bomb.
+                    </li>
+                </ol>
+                <p>
+                    Player 1 has to enter the codes into the bomb (which can only be done in the proximity of it). Other players message their codes through Twillos built in chat after they find themvand communicate with the rest of the team to help solve future puzzles.
+                </p>
+                <ol>
+                    <li>
+                        Either you defuse it in time with good team work and win, or it goes boom!
+                    </li>
+                </ol>
+                <h2>
+                    How I built it
+                </h2>
+                <ul>
+                    <li>
+                        W3C to fetch and monitor player locations
+                    </li>
+                    <li>
+                        Google Maps to draw on map for player and item locations
+                    </li>
+                    <li>
+                        SOCKET. IO to handle concurrent connections and allow multi-player
+                    </li>
+                    <li>
+                        nodejs for backend deployment
+                    </li>
+                    <li>
+                        materializecss components to give me a working if ugly front end.
+                    </li>
+                    <li>
+                        the server itself is hosted on aws to allow it to scale with more concurrent users
+                    </li>
+                </ul>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Socket.io docs left a lot to view  desired. Also as I was working alone, I had to stay up for close to 30 hours working on this fixing bug after bug. 
+I had to stop the demo short of the second phase because of time and also because of getting timer objects to work out in node and assigning them to rooms.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    First multi-player game I've built!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Learned a lot of sockets and used non get/post to communicate to server for the first time.
+                </p>
+                <h2>
+                    What's next for Defused Squad
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            Built custom sized geofences when starting a game, allowing games to be block wide, campus wide, city wide, etc
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Make there be puzzles for attaining the key codes, instead of giving them by proximity
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Incorporate persistent redis store instead of using a hack in memory dictionary to allow for better scalability
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Make the timer be dynamically set based on the size of the geofence, like x minutes based on number of zones and distance between furthest zone and bomb. Allows to scale to do cool things like state wide / country wide games that might last days / weeks.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Add in AR support using the camera to 'see' the bomb and keys.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Allow players to see public games where if a bomb has been found nearby (player set up a lobby and is hunting for bomb) they can hop in.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Maybe build native apps for iOS/android? Currently built on js web view which is easy to deploy but essentially a website and people like apps more.
+                        </p>
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

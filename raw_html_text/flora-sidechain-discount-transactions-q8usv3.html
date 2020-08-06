@@ -1,0 +1,185 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="830049" data-title="Discount Token Mechanics" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/830/049/datas/original.png">
+                            <img alt="Flora Sidechain | Discount Transactions &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/830/049/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Discount Token Mechanics
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="830073" data-title="Frame Signer Panel" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/830/073/datas/original.png">
+                            <img alt="Flora Sidechain | Discount Transactions &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/830/073/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Frame Signer Panel
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to provide users with an alternative to paying micro-transaction fees every time they interact with a dapp.
+                </p>
+                <p>
+                    Our solution applies research done by Sweetbridge and BlockScience
+                    <a href="https://sweetbridge.com/assets/docs/WP-Sweetbridge-Discount-Tokens.pdf" rel="nofollow">
+                        1
+                    </a>
+                    on "Discount Tokens" in the context of a public POA sidechain.  With a Discount Token we are able to offer users the ability to hold a token instead of paying transaction fees--while also providing a means for users to benefit from increased adoption and network utilization.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We have implemented a POA Ethereum network using Parity and Aura consensus. The sidechain is public and uses gas to moderate transaction inclusion.
+                </p>
+                <p>
+                    A discount validator service is deployed and granted authority to manage an on-chain certifier contract registered in the chain as the
+                    <code>
+                        service_transaction_checker
+                    </code>
+                    used by
+                    <a href="https://wiki.parity.io/Permissioning.html#how-it-works-3" rel="nofollow">
+                        Parity's built-in transaction permission system
+                    </a>
+                    . The discount validator monitors transactions and gas usage, and authorizes and de-authorizes accounts as their gas usage exceeds their discount allowance.
+                </p>
+                <p>
+                    To determine discount allowances the discount validator defines a discount period (e.g. 7 days) and aggregate discount value. For each discount period, the aggregate gas used in the previous period is used as an estimate for the gas that will be used in the forthcoming period, the aggregate discount value is multiplied by this amount and split among discount holders. For a given user and period, the user's discount allowance can be described by the formula
+                    <code>
+                        aggregate_gas_usage * aggregate_discount * (honey_balance / honey_supply) * min_gas_price
+                    </code>
+                    .
+                </p>
+                <p>
+                    At the end of a discount period, all discount allowances are recalculated and reset. Users may not accumulate or roll-over their unused discounts to future periods.
+                </p>
+                <p>
+                    The discount validator provides an api which can be accessed by signing providers like
+                    <a href="https://frame.sh" rel="nofollow">
+                        Frame
+                    </a>
+                    in order to show the user their current discount balance, and allow the signer to automatically utilize discounts when they are available. We have provided a patch to Frame to provide this functionality and illustrate how it could be implemented in other signing providers.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We like the approach of using a sidechain in order to provide a bit more control of the overall user experience, and we think that using a discount token model may help us reduce the under-utilization of applications by minimizing the mental overhead of performing micro-transactions on every button click and instead encouraging users to maximize the utility of their discounts by being more regularly engaged in decentralized applications.
+                </p>
+                <p>
+                    We also think that application of the of discount token model to transaction fees may also be attractive for option for developers seeking to onboard users using meta-transactions, as the model minimizes the risk associated with paying for transactions on behalf of users during the on-boarding process.
+                </p>
+                <h2>
+                    What's next for Flora
+                </h2>
+                <p>
+                    We would like to explore additional infrastructure options that are or will be available for EVM side-chains in the the near future. We are interested in exploring if we could use a similar model on a service like Skale, but benefit from the increased security of a random set of staked validators rather than simply a curated set of authorized validators. We would also consider how such a model might be leveraged in an application specific chain like Cosmos.
+                </p>
+                <p>
+                    Additionally  we would like to set up some supporting infrastructure like Bridges to Ethereum mainnet, provision a block explorer, and update the certifier contract so that the discount validator can be controlled by discount token holders through an Aragon app.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            frame
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            parity
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            poa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sidechain
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tokenbridge
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/1Hive/DiscountValidator" rel="nofollow" target="_blank" title="https://github.com/1Hive/DiscountValidator">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/1Hive/frame/tree/0.2" rel="nofollow" target="_blank" title="https://github.com/1Hive/frame/tree/0.2">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

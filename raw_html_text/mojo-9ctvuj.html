@@ -1,0 +1,166 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    From being a green transportation option, to helping people get exercise, to being much more affordable than driving a car, biking has a number of advantages. However, in a recent survey, when asked why they did not bike to work, over 65% of respondents cited 'safety concerns' as the most important factor. This is not unfounded -- in 2016, nearly four thousand cyclists were killed in road accidents.
+                </p>
+                <p>
+                    When our team looked at addressing this issue, we learned that visibility or unsafe road conditions played a role in over 85% of the crashes recorded.
+                </p>
+                <p>
+                    <img alt="Turn Signal" data-canonical-url="https://i.imgur.com/kJ4AGSu.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--xCjLGC----/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/kJ4AGSu.jpg">
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    MOJO is an integrated solution for making bicyclists safer.  A raspberry pi-based bike attachment functions as an ultra-bright weatherproof taillight, adding convenience and improving safety through the use of multiple strobe modes and intelligent turn and brake signals.  Using MOJO's turn and brake signals allows bicyclists to keep both hands on the handlebars, increasing controllability and braking authority compared to traditional signaling methods.  MOJO's built-in GPS makes bikes nearly impossible to misplace, as parking locations can be recorded and pushed to the cloud.  Additionally, MOJO's website combines GPS data with public safety records, enabling users to view their bike routes in the context of recorded road conditions and traffic accidents and thus plan safer commutes.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <h3>
+                    Bike Attachment
+                </h3>
+                <p>
+                    MOJO's bike attachment consists of a raspberry pi running raspbian stretch-lite and Circuit Python.  Circuit Python scripts are used to interface with the GPIO header for controlling an external GPS, a strip of ultra-bright SK6812 RGBW LEDs, a magnetometer/gyro/accelerometer, and a remote used for controlling turn signals.  Accelerometer data is used to create a "brake light" effect on the LED strip when the bike slows down, and gyro data is used to implement intelligent turn signals that automatically turn off after a turn is completed.
+                </p>
+                <p>
+                    The remote control for the bike attachment mounts to the handlebars, and consists of two buttons for triggering the left and right turn signals and a status LED.  The status LED indicates what mode the taillight is in (turning left, turning right, hazard lights, brake light, etc), allowing the user to confirm that their signal is functioning without taking their eyes off the road.  The GPS is used to log position information to the Raspberry Pi's SD card, and a Python script pushes GPS logs to the cloud using the Azure IoT suite as soon as an internet connection is detected.  Position updates can be quite frequent in urban areas or universities with public wifi networks, or can be scheduled to run only when the bike comes within range of a home or work wifi network at the end of a commute.  Optionally, an external cellular module can be added to the Pi for round-trip connectivity from just about anywhere.  MOJO's position data allows users to keep track of where they parked their bike, and can be used with MOJO's web suite to analyze road risks and plan safer routes.
+                </p>
+                <p>
+                    All of the external components of MOJO's bike attachment are waterproofed with silicone, and the housings are constructed from durable PETG plastic and sealed with TPU gaskets.  MOJO is IP64 water resistant and capable of handling the outdoor weather.
+                </p>
+                <p>
+                    <img alt="Internals of MOJO (white gasket for waterproofing)" data-canonical-url="https://i.imgur.com/LipW6S9.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--F_fEJnoW--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/LipW6S9.jpg">
+                    <img alt="Sensors and Level-Shifting Chip below Raspberry Pi Zero W" data-canonical-url="https://i.imgur.com/g4UJh2z.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--duFPRvhU--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/g4UJh2z.jpg">
+                </p>
+                <h3>
+                    Web Suite
+                </h3>
+                <p>
+                    MOJO's web suite allows riders to visualize the riding risks in their local area in order to better plan their routes.  Public safety data ranging from local crime rates to pavement quality to traffic accidents is compiled and rendered as a heatmap, allowing MOJO users to see the riskiest parts of their commutes and plan accordingly, whether it's slowing down to keep an extra close eye on a certain blind intersection or taking a different street altogether.
+                </p>
+                <p>
+                    <img alt="Web Tool Showing Accidents" data-canonical-url="https://i.imgur.com/eBxLpQv.png" src="https://res.cloudinary.com/devpost/image/fetch/s--P-SDAHxt--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/eBxLpQv.png">
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Some of our web integrations had difficulty working with third-party apps, and building hardware was extremely resource and time intensive.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud of the level of polish that we were able to build into our hardware prototype.  No breadboards, no duct tape, and basic waterproofing proved to be a challenge, but we think it looks pretty good!
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Despite not running Real Time Operating Systems, Raspberry Pi's are fantastic for embedded systems development!  Their incredibly high clock rate when compared to many embedded devices removes many of the issues with timing resolution, at least for basic tasks like I2C / SPI / UART communication, and there are ample tools for interfacing with a large variety of sensors.
+                </p>
+                <h2>
+                    What's next for MOJO
+                </h2>
+                <p>
+                    We'd like to continue improving our hardware and web platform; adding cellular connectivity to the bike attachment would allow it to upload data from more places, and solar panels could extend the life of the bike's battery while running MOJO.  The web platform could be expanded to auto-generate safer bike routes from the data it already has, making safe biking easier than ever.
+                </p>
+                <p>
+                    <a href="https://imgur.com/a/ZvvHxzc" rel="nofollow">
+                        More Images
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure">
+                                azure
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/azure-iot-suite">
+                                azure-iot-suite
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bash">
+                                bash
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/esri">
+                                esri
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/wix">
+                                wix
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/CoolNamesAllTaken/mojo-bike" rel="nofollow" target="_blank" title="https://github.com/CoolNamesAllTaken/mojo-bike">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://cahogan16.wixsite.com/mojo" rel="nofollow" target="_blank" title="https://cahogan16.wixsite.com/mojo">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                cahogan16.wixsite.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

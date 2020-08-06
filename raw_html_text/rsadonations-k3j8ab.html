@@ -1,0 +1,254 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    Purpose
+                </h1>
+                <p>
+                    The
+                    <a href="https://github.com/coventry/RSADonations/blob/master/contracts/RSADonations.sol" rel="nofollow">
+                        <code>
+                            RSADonations
+                        </code>
+                    </a>
+                    contract provides a way to send ETH to anyone with an RSA
+  keypair.
+                </p>
+                <h1>
+                    Background
+                </h1>
+                <p>
+                    Many more people own RSA keypairs than Ethereum addresses, and RSA public keys
+  tend to be publicly associated to real-world identities:
+                </p>
+                <ul>
+                    <li>
+                        Most websites' SSL uses an RSA keypair, and this can
+                        <a href="http://ec2-35-180-46-67.eu-west-3.compute.amazonaws.com:5000/ssl_key/python.org" rel="nofollow">
+                            easily be retrieved
+                        </a>
+                    </li>
+                    <li>
+                        Most heavy users of github have an RSA keypair, and this can
+                        <a href="https://api.github.com/users/coventry/keys" rel="nofollow">
+                            easily be retrieved
+                        </a>
+                    </li>
+                    <li>
+                        Many (perhaps most) GPG users have an RSA keypair
+                    </li>
+                </ul>
+                <p>
+                    Thus, being able to commit ETH to an RSA public key greatly broadens the scope
+  for Ethereum-based donations, and gives donees a trustworthy incentivize to
+  adopt Ethereum, i.e. in order to claim their donations.
+                </p>
+                <p>
+                    It happens that RSA cryptography can be done quite efficiently on the EVM, due
+  to the
+                    <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-198.md" rel="nofollow">
+                        modular exponentiation
+  precompile
+                    </a>
+                </p>
+                <h1>
+                    Current development state
+                </h1>
+                <ul>
+                    <li>
+                        <p>
+                            The contract is written, and the core components of it
+                            <a href="https://github.com/coventry/RSADonations/blob/master/test/RSADonations.js" rel="nofollow">
+                                have been tested.
+                            </a>
+                            Signature verification and claiming of donations are the next thing to test.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Methods for retrieving RSA public keys given domain names and github user
+profiles have been determined.
+                        </p>
+                    </li>
+                </ul>
+                <h1>
+                    Workflow
+                </h1>
+                <p>
+                    <code>
+                        RSADonations
+                    </code>
+                    commits ETH to an RSA public key, which can then be claimed by
+  the key owner by sending a message signed with the key.
+                </p>
+                <ol>
+                    <li>
+                        User specifies the real-world identity (domain name, github username, GPG
+ id.)
+                    </li>
+                    <li>
+                        The RSA public key for that identity is retrieved. (For hostnames' RSA keys, see
+                        <code>
+                            ssl_key
+                        </code>
+                        in
+                        <a href="https://github.com/coventry/RSADonations/blob/master" rel="nofollow">
+                            ./app/routes.py
+                        </a>
+                        , or try adjusting the last field of
+                        <a href="http://ec2-35-180-46-67.eu-west-3.compute.amazonaws.com:5000/ssl_key/python.org" rel="nofollow">
+                            this URL
+                        </a>
+                        , assuming the
+ service hasn't fallen over...)
+                    </li>
+                    <li>
+                        User specifies the amount of ETH to send, and how long to commit it for.
+ This is sent to
+                        <code>
+                            RSADonations#donateToNewPublicKey
+                        </code>
+                        along with the key, if
+ the contract doesn't already know about it, or
+                        <code>
+                            RSADonations#donateToKnownPublicKey
+                        </code>
+                        if it does.
+                    </li>
+                    <li>
+                        If the commitment deadline expires before the key owner claims the funds,
+ the original sender can recover them by sending a message to the
+                        <code>
+                            recoverDonation
+                        </code>
+                        method. This mitigates the risk of sending to a keypair for
+ which the private key has been lost.
+                    </li>
+                    <li>
+                        <p>
+                            The claimant constructs a message, signed with the RSA private key, and
+ containing
+                        </p>
+                        <ul>
+                            <li>
+                                a nonce
+                            </li>
+                            <li>
+                                the ethereum address to send the funds to
+                            </li>
+                            <li>
+                                size of reward for
+the transmitter of the message, which will be deducted from the funds
+                            </li>
+                            <li>
+                                the transmitter. Specifying this enables the claimant to retrieve their funds without
+already having ETH, and makes it cost-effective to run a service which
+sends such transactions.
+                            </li>
+                        </ul>
+                        <p>
+                            The message construction needs to access the private key. The page which
+ does this can operate offline, so that claimants can mitigate the risk of
+ exposing the private key to whatever extent they wish. The message can then be pasted in to the
+ aforementioned ethereum transmission service, which then sends it to the
+                            <code>
+                                claimDonation
+                            </code>
+                            method.
+                        </p>
+                    </li>
+                </ol>
+                <h1>
+                    Installation / deployment
+                </h1>
+                <ul>
+                    <li>
+                        Tested on ubuntu 18.04.
+                    </li>
+                    <li>
+                        <code>
+                            apt install openssl python-pip npm docker.io
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            pip install -r ./requirements.txt
+                        </code>
+                    </li>
+                    <li>
+                        Put a secret key (used for cookie/CSRF protection) in ~./app/secret_key.txt~.
+                    </li>
+                    <li>
+                        <code>
+                            npm install
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            docker pull ethereum/solc:0.5.2
+                        </code>
+                    </li>
+                    <li>
+                        <code>
+                            FLASK_APP=RSA_donations.py FLASK_DEBUG=1 flask run
+                        </code>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/truffle">
+                                truffle
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/coventry/RSADonations" rel="nofollow" target="_blank" title="https://github.com/coventry/RSADonations">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

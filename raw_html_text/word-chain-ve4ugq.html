@@ -1,0 +1,187 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/J7m9OEGndpQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="508416" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/416/datas/original.png">
+                            <img alt="Word Chain &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/508/416/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The game is based on the classical word game, that probably most of us have played in kinder-garden, at school, on gatherings with friends or on road-trips. Players take turns in coming up with words, from a specific category, that begin with the letter that the previous word ended. It's a fun way to build up and refresh your vocabulary.
+                </p>
+                <p>
+                    I thought that Alexa's VUI is a great fit for a game like word chain. Alexa can be a referee, validating the words are correct and not used, and it can be a fully qualified player that can play with us to build the longest word chain, or competing with us, depending on the mode.
+                </p>
+                <p>
+                    <strong>
+                        Note:
+                    </strong>
+                    in this text when speaking about Alexa in 3rd person, we mean the player that the voice interface is impersonating.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It allows the user to select the category that will be used for the word chain. We can also specify other people around us that will play, more players - more fun! After every player introduces themselves, including Alexa, we can select a game mode. 2 modes are supported, competitive and cooperative.
+                </p>
+                <p>
+                    In order to be more challenging, all words are shuffled from the beginning of the game, so Alexa will often pick different words in different games. In order to make games more interesting it also picks words by a specific algorithms, described in
+                    <a href="#challenges-i-ran-into" rel="nofollow">
+                        Challenges I ran into
+                    </a>
+                </p>
+                <p>
+                    If a player does not know a word, she or he can skip it's turn. If the game mode is competitive, skipping a turn will lead the player forfeiting the game. When there is only one player left or no other possible words to pick from the game is completed.
+                </p>
+                <p>
+                    Once a game is completed you will be presented with the whole word chain in the Alexa companion app. It is useful if you want to share your success or learn words that you were not able to guess.
+                </p>
+                <p>
+                    It also keeps track of the played games and can statistics for them can be presented, once you say Alexa, ask Word Chain to show me my stats.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    It is built with Node.js using the Alexa Skills Kit SDK, based on Amazon Lambda. It includes large list of words, for the following categories: countries, capitals, animals, fruits and vegetables, built up from Wikipedia and other open thesaurus web sites.
+                </p>
+                <p>
+                    Other than that, I am using classical string manipulation algorithms to pick the right and most appropriate words (see
+                    <a href="#challenges-i-ran-into" rel="nofollow">
+                        Challenges I ran into
+                    </a>
+                    )
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    There were few phases of the game that introduced interesting problems
+                </p>
+                <h3>
+                    In competitive mode Alexa could easily beat novice and intermediate players
+                </h3>
+                <p>
+                    This was caused mainly by the fact that she knows 100% of the thesaurus available for a given category. This would easily turn down players without even giving them a chance to learn new words.
+                </p>
+                <p>
+                    So how we solved it? We restricted Alexa's (the player) knowledge to a fraction of all the words, initially only 70% of all of them. With that she can validate any word said by a player, but she will not be able to use all of the words when it's her turn. This makes things more realistic and gives a chance to novice and intermediate players to become better. Now of course this will turn down the more skilled players, so we added this auto-configure option, once you beat Alexa, on the next game she will be better, using more available words, eg. 70% + 2%. When you win again, it will become 72% + 2% and so on up to 100%. The same when a player loses, Alexa will adjust it's available thesaurus.
+                </p>
+                <h3>
+                    In cooperative (and competitive) mode, Alexa picking a random word that satisfies the rules is not the best approach for a better and longer game
+                </h3>
+                <p>
+                    The target of this game is to have fun, to build a long word chain and learn new words. This is why the game should be a long as possible and why we built Alexa to pick the next word in such a fashion that it gives more options to the other players. E.g. if it can pick between two words, both starting with the right letter, then we should ask ourselves, if one is picked, how many options the player will have vs if we pick the other. This also includes checking already played words.
+                </p>
+                <p>
+                    Doing only this, however, led us to the next problem
+                </p>
+                <h3>
+                    In cooperative (and competitive) mode, Alexa picking the word that ends with a letter, that many other unused words start is also not the best option.
+                </h3>
+                <p>
+                    This can be very nicely shown in the countries category. There you can easily observe that a majority of the countries start with the letter 'A', but what's more interesting that almost all of them also end with the letter A. And in addition there are also quite a few other countries that also end with the letter A. That means that we can very easily end up in "A" letter words loop, that is hard to break out. We have ran thousands of simulations and games almost every-time end up after one have gone through all A words and have no other options left.
+                </p>
+                <p>
+                    So we solved it by learning about such words, and making Alexa drive the user to pick up other words, when it is possible. Inevitably we can end up in the "A" letter words loop. If possible we will try to break out. If not, then our best strategy is to call out all words until we run out of options.
+                </p>
+                <p>
+                    Of course it has been generalized this and is irrelevant of the category, we observe the properties of the thesaurus and make decisions based on this.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm proud that we were able to bring the classical word chain game to a next level with Alexa's Voice User Interface, while still allowing the flexibility of the original game where it can be played by any number of players and having the option of the two game modes, competitive and cooperative.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned how to build multi-step interactive VUI, how to wait for user input that could take longer than the usual answer timeout. How to be able to resume the interaction from any point and how to handle unexpected intents.
+                </p>
+                <h2>
+                    What's next for Word Chain
+                </h2>
+                <p>
+                    Word Chain definitely needs more categories, as we already got the feedback from users. I think that something valuable will be the option to create user-defined lists. This way you could engage your kids or friends to learn words in a certain area of interest while playing.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/tgeorgiev-Word-Chain/dp/B071RT4ZCZ/" rel="nofollow" target="_blank" title="https://www.amazon.com/tgeorgiev-Word-Chain/dp/B071RT4ZCZ/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.co.uk/tgeorgiev-Word-Chain/dp/B071RT4ZCZ/" rel="nofollow" target="_blank" title="https://www.amazon.co.uk/tgeorgiev-Word-Chain/dp/B071RT4ZCZ/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.co.uk
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,210 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="834059" data-title="init" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/834/059/datas/original.png">
+                            <img alt="MineTexter &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/834/059/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                init
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="834060" data-title="a classic " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/834/060/datas/original.png">
+                            <img alt="MineTexter &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/834/060/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                a classic
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="834061" data-title="game over! " href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/834/061/datas/original.png">
+                            <img alt="MineTexter &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/834/061/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                game over!
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I realized that my addiction to the Minesweeper app on my phone had become truly apparent. I decided to take action, and make a clone of my own!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    You text coordinates. The app lets you know if you got blown up. Hard reload, and you're back in action
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I started by looking for the right front end. I wanted something that could integrate with Flask, and using a react component felt like a bit overkill for my needs (though a React remix could be a great exercise for a future hack!). So, I poked around a bit with Plot.ly and MatPlotLib, but neither seemed to be grokking the way that I wanted. I had originally visualized doing a data viz dashboard, but p5 came out on top, due to its sheer simplicity. I wanted to build an app from concept to deployment, and I knew that higher power frameworks might leave me side-tracked, or trying to implement gimmicks for gimmick's sake.
+                </p>
+                <p>
+                    So, I built the p5 game engine for the front end, and then started wiring up the Flask back end. Once I got it to a browser-clicky-game place, I went to work integrating Twilio to handle the actions. After a bit of fussing about with delivering data from
+                    <em>
+                        immutable multi-dicts
+                    </em>
+                    to
+                    <code>
+                        (x, y)
+                    </code>
+                    coordinates in p5, the app was nearly done. The style is minimal, but it gets the job done, and it's clean. I left axes off of the graph for increased difficulty ;)
+                </p>
+                <p>
+                    I toyed with various mine concentrations to see how it effected the gameplay, and settled for about a 30% distribution. A future feature could be an adjustable board, with a variable number of mines.
+                </p>
+                <p>
+                    After the app was functioning to my liking locally, I started building out the containerized elements that were necessary for a Google Cloud deployment.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The p5.js library
+                    <em>
+                        is not
+                    </em>
+                    designed for event-driven programming. Navigating how the front end talked to the back end was challenging. Fortunately, p5 supports a
+                    <code>
+                        loadJSON
+                    </code>
+                    callback, but to implement a home-brew 'event loop', it is constantly making requests. Furthermore, delivering a payload from Twilio took a bit of figuring and experimentation.
+                </p>
+                <p>
+                    And then, there was the deployment fiasco. I come from an AWS background, but I figured I'd give GCloud a shot (cheaper, plus why not??). Implicitly, the GCloud AppEngine containerizes the service, and it was tricky to get the
+                    <code>
+                        app.yaml
+                    </code>
+                    to speak the right language with GCloud. However, I emerged victorious over the gunicorns, and managed to get the app booted into the cloud.
+                </p>
+                <p>
+                    As previously mentioned, the standard p5 library is extremely user-friendly, but also a bit limited when it comes to event handling. Figuring out how to program a minesweeper game without ridiculously repetitive code was a bit of a challenge, and fine tuning the details was, as always, a bit challenging.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    This was my first real foray into building a web application, and I'm super proud that I
+                    <em>
+                        actually finished it!
+                    </em>
+                    Flask was delightful to work with, and I'm eager to use it for building more microservices in the future.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a ton. I explored Flask and p5 and the Twilio API. I learned how to manage my ideas and develop a workflow. I met interesting, fun, and intelligent people, and had a great time.!
+                </p>
+                <h2>
+                    What's next for MineTexter?
+                </h2>
+                <p>
+                    A reload button, or better, an automatic canvas reset after
+                    <strong>
+                        game over
+                    </strong>
+                    . I would also like to build up a Battleships version of the application, as it is a similar game with similar mechanics, and could integrate pretty smoothly with my existing code. A leaderboard would be handy, but better than that, perhaps a full refactor using additional event-driven modules available from the p5 community.
+                </p>
+                <p>
+                    I am unsure how the mechanics of the game will break down or change with multiple users, or when more than one text is received simultaneously. I think that a simple queue implementation could reconcile this issue.
+                </p>
+                <p>
+                    Another useful feature would be a response mechanism, whereby the server would send a message back to the user after they've sent a message, with the updated game status. If this were sophisticated enough, it could omit the need for a UI altogether, though I think that the visual board is a nice touch.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jinja">
+                                jinja
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            p5.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://lowlyhumblestructure.appspot.com/" rel="nofollow" target="_blank" title="https://lowlyhumblestructure.appspot.com/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                lowlyhumblestructure.appspot.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

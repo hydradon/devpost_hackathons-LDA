@@ -1,0 +1,192 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="682711" data-title="Inital Logon and Register" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/682/711/datas/original.png">
+                            <img alt="InterPlanetary Desktops &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/682/711/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Inital Logon and Register
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="682712" data-title="Dashboard - Selecting a Virtual Desktop" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/682/712/datas/original.png">
+                            <img alt="InterPlanetary Desktops &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/682/712/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Dashboard - Selecting a Virtual Desktop
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Moving forward, single points of failure for our data and daily computing is becoming dangerous. The traditional metaphors of centralized servers and local storage will inevitably become obsolete in an age of ever growing data, and an ever growing threat to the data. 
+IPD, or InterPlanetary Desktops, is a decentralized, blockchain based method of storing and accessing secure and reliable virtual machines. IPD set out to solve the problems of centralized and vulnerable computing, while making use of new technologies that can better improve convenience, and security.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    IPD uses IPFS (InterPlanetary File System), a blockchain based technology, allowing for a secure, reliable, and a decentralized method of storing user data and operating system. A user's standard operating system (such as Ubuntu or Windows), is replaced with the IPD OS. IPD OS can load Virtual Machines from IPFS on the fly, meaning your data is never stored locally and vulnerably, but stored on the IPFS Blockchain.
+                </p>
+                <p>
+                    <strong>
+                        Effectively, you can access your personal virtual desktop from anywhere in the world, from any computer running the IPD Operating System.
+                    </strong>
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The centerpiece of IPD is IPFS, a blockchain based, peer to peer, decentralized storage system. A user's virtual machine is seamlessly uploaded and synced on IPFS, and loaded from any computer running the IPD Operating System.
+                </p>
+                <p>
+                    The IPD OS is derived from Ubuntu Linux, running a custom user interface written in Electron. This UI is run independently on the computer, using OpenBox and X11. The UI allows the user to login and access their virtual machine. The VM's themselves are run using QEMU/KVM, a fast and consistent virtualization platform. This means that a user's virtual desktop will run the same, regardless of the computer they are accessing it from.
+                </p>
+                <p>
+                    User's register their accounts from a Registry. A registry is a standalone node.js server that keeps track of registered users, and their virtual desktops (represented as IPFS hashs). There doesn't have to be any single registry, as users can choose a hosted solution, or run their own. The important data (this is, the VM image) is stored on IPFS.
+                </p>
+                <p>
+                    The registry is an important feature of IPD. A file uploaded to IPFS is referenced using a unique hash. If changes are made to a file, a new hash is generated. The registry keeps track of these hashs and let's the IPD OS load the correct one.
+                </p>
+                <p>
+                    The IPD reference registry is run on Azure. The Azure VM has a couple of roles, including running the registry, running the IPFS Daemon (ensuring fast delivery of VM images), and distributing "base" OS images (from which user images are derived from).
+                </p>
+                <p>
+                    <strong>
+                        That is: user VMs are stored (decentralized) on IPFS. From any computer running the IPD Operating System (based on Linux), from any place in the world, a user can run and access their virtual desktop by logging into a IPD Registry. The virtual desktop is fetched from IPFS and is run on QEMU/KVM. After they log out, the data is synced back with IPFS, ready to be accessed once again.
+                    </strong>
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    A big issue that we ran into was... NodeJS. Node is a great language, especially early on for rapid development of our idea, but later on the intricacies of the language start to become a real pain. Compared to other languages, JavaScript doesn't play well with different types. This is usually okay, even makes things easy, but becomes messy with larger applications. NodeJS/JavaScript errors are not very specific or helpful, meaning that debugging becomes a laborious task.
+The architecture of Electron is interesting aswell. There are 2 contexts, a "server" and "render", effectively meaning there is an isolated backend to the frontend. Running code and switching contexts can become tedious.
+                </p>
+                <p>
+                    Besides code, we only ran into a few issues. We spent some time on working on IPD OS. In the end we use the "nodm" display manager to launch OpenBox, which starts our UI frontend. 
+Another small issue we ran into was with registering our Azure VM. The Azure panel is quite slow at times, and we ran into one issue where a new virtual network wasn't being created with the new VM, causing the setup to hang.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    For us, the fact that we were able to pull this off in the timeframe given is, quite frankly, amazing. There was a lot to deal with, and an equal amount of debugging, but we have a (more or less) prototype that has everything we envisioned. 
+Another big accomplishment was in the efficiency in implementation. Rather than saving the full VM image to the blockchain, which would be slow (an image for Windows 10 is about 7GB), we use QEMU's Copy on Write feature. This means that images that are saved to the blockchain are simply the difference from the base image (that is, the user's custom data).
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned quite a broad range of topics. For one, we learned quite a bit about blockchains and IPFS. We also got much more familiar with NodeJS and Electron (and it's many quirks). Finally, we learned more about the architecture of a Linux-based OS, such as running a custom application on X11 on boot.
+                </p>
+                <h2>
+                    What's next for InterPlanetary Desktop
+                </h2>
+                <p>
+                    We believe IPD has a bright future ahead of it. For one, we will definitely refactor parts of the code that were written subpar (due to the time limitations). There are lots of little enhancements and tweaks we would do to improve the overall user experience. For example, a progress bar when fetching the users image from the blockchain.
+                </p>
+                <h2>
+                    How to install IPD OS Manually
+                </h2>
+                <p>
+                    Use the utility nodm to start IPD on boot from any Linux distribution.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/blockchain">
+                                blockchain
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            electron
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ipfs
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            kvm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/linux">
+                                linux
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            qemu
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/espisesh-hacks/northhacking.git" rel="nofollow" target="_blank" title="https://github.com/espisesh-hacks/northhacking.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/espisesh-hacks/northhacking-backend.git" rel="nofollow" target="_blank" title="https://github.com/espisesh-hacks/northhacking-backend.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

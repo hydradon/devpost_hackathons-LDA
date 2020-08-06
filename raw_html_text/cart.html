@@ -1,0 +1,257 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Nobody in the group was willing to offer up their car for automation. A grocery cart was our next best option. Thank you to Kroger for believing in a future that does not involve gross hands by letting us borrow one of theirs for a weekend.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    1) Gives you hope for the future
+                    <br>
+                    2) Follows you around a grocery store autonomously
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We borrowed a shopping cart and replaced the rear wheels with new ones mounted to 2 24V, 165RPM motors with worm drive gearboxes. 2 3S LiPo batteries provide power to the motor controllers, 12V buck converter, and voltage monitor through a distribution block.  The 12V buck converter provides power to a 12V DC inverter that allows us to run the Kinect from the standard AC wall adapter and charge the laptop that the C++ application runs on. Below is a list of hardware:
+                </p>
+                <ul>
+                    <li>
+                        1x Microsoft Kinect
+                    </li>
+                    <li>
+                        1x Laptop (Windows 10)
+                    </li>
+                    <li>
+                        1x Kinect power adapter
+                    </li>
+                    <li>
+                        1x AC inverter
+                    </li>
+                    <li>
+                        2x Uxcell 24V 165RPM motor
+                    </li>
+                    <li>
+                        2x DROK DC 5-36V 400W Dual Large Power MOS Transistor Driving Module
+                    </li>
+                    <li>
+                        1x Power distribution block
+                    </li>
+                    <li>
+                        1x Tobsun DC 24V to 12V 5A 60W DC-DC Converter Step Down Regulator Module
+                    </li>
+                    <li>
+                        1x Adafruit 2 wire Panel Voltmeter
+                    </li>
+                    <li>
+                        1x Adafruit Metro Mini
+                    </li>
+                    <li>
+                        2x Servo City 0.770" Pattern Set Screw Hubs 8mm Bore
+                    </li>
+                    <li>
+                        2x Servo City 4" Heavy Duty Wheel
+                    </li>
+                    <li>
+                        2x Fuse wire
+                    </li>
+                    <li>
+                        2x 3A Automotive blade fuses
+                    </li>
+                    <li>
+                        1x breadboard
+                    </li>
+                    <li>
+                        1x 12V car jack connector breakout
+                    </li>
+                    <li>
+                        Miscellaneous screws and wood
+                    </li>
+                    <li>
+                        Miscellaneous 22 and 10 AWG wire, jumper wires, ring terminals, and connectors
+                    </li>
+                </ul>
+                <p>
+                    Microsoft has an API for C++ for the Kinect, and we used that to pull data about the x,y, and z coordinates of the spine joint on the person it was tracking.  The C++ application then used this coordinate data to make decisions on the speed of both the motors, which was then sent to an Arduino over serial.  The Arduino maps this commanded speed to a usable duty cycle and sends a PWM signal to the motor controllers.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Most of the challenges encountered with the project involved communicating between the computer and Arduino.  We needed to communicate over serial to the Arduino through the C++ application, and we managed to find a third party library that allowed us to send the serial data we needed.  We then had to format the data so we could 1) update the motors quickly and 2) make sure we had accurate data on the receiving end to ensure the Arduino interprets the computers commands correctly.
+                    <br>
+                </p>
+                <p>
+                    In terms of hardware, we had no idea if the motors would even move the cart because in order to get cheap motors, you have to settle for no specifications about what you&rsquo;re buying.  Thankfully that worked, and the motor controllers held up.  The Kinect has a proprietary connector that splits into data for to the computer over USB, and power to a 12V wall adapter.  We wound up taking our base 24V battery power, stepping it down to 12V through a buck converter, feeding that into a 12V car inverter that inverts it up to 110V AC, at which point the wall adapter rectifies and steps it down to 12V DC.
+                    <br>
+                </p>
+                <p>
+                    The Kinect API also took some time to figure out, but eventually we were able to get data from it very consistently.  We originally implemented bang-bang control for proof of concept and initial testing, and then upgraded to proportional control to make tracking better.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        The opportunity to go to MHacks
+                    </li>
+                    <li>
+                        The fact that it works
+                    </li>
+                    <li>
+                        That the motors move the cart forward
+                    </li>
+                    <li>
+                        We averaged 6 to 7 hours of sleep
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        What it feels like to be a father
+                    </li>
+                    <li>
+                        How to complete a project in a weekend
+                    </li>
+                    <li>
+                        Integrating software and hardware
+                    </li>
+                    <li>
+                        Serial communication with C++ sucks
+                    </li>
+                </ul>
+                <h2>
+                    What's next for cart++
+                </h2>
+                <p>
+                    Autonomous strollers? Desk chairs? Moving dollies?
+                </p>
+                <p>
+                    We started building a web application that would allow store owners to track and manage their fleet of grocery carts, eliminating grocery cart borrowing. Unfortunately, this means we would hack our hack, making it no longer possible :(
+                </p>
+                <p>
+                    Eventually we want it to shop for you...
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/adafruit">
+                                adafruit
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            batteries
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            clr
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            inverter
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/kinect">
+                                kinect
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lipo
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            metromini
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            motors
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pwm
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ricky-and-morty
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sleep
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

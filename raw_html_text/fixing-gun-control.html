@@ -1,0 +1,200 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I have a friend who decided to go to Australia for their post grad, and another friend who is insistent that when she has kids she's going to home school them.  Both of them had the same reasoning - when they look up headlines of American education, the headlines of the great accomplishments are overshadowed by the news of school shootings and other gun violence.
+                </p>
+                <p>
+                    Whether we want to admit it or not, gun violence has a profoundly negative impact on education, particularly in America.
+                </p>
+                <p>
+                    On the other hand, I personally love guns, and own several.  I went to college in Georgia, where going to the range was a social thing to do.  I'm also HUGE into privacy and civil liberties, and a lot of the proposed legislation to cut down on gun violence attempt to do so at the cost of massive government overreach in both my minds and that of others.
+                </p>
+                <p>
+                    Because of those reasons, I decided to take on a project to use technology to fix one particularly controversial type of proposed gun control at the moment - universal background checks.  That is to say requiring a background check for all gun purchases, even private ones.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    To understand what the big deal is with this implementation, it's important to look at the concerns that the pro-gun community has.  I have my own thoughts on the matter, but to get more diverse opinions, I reached out on Thursday to The Truth About Guns, one of the largest pro-gun blogs on the internet.  They hosted it Friday as their "Question of the Day", and the response was monumental.  For a blog that normally gets 30-40 comments per article, my question received an order of magnitude more feedback
+                    <a href="currently%20approaching%20300%20comments" rel="nofollow">
+                        http://www.thetruthaboutguns.com/2015/10/daniel-zimmerman/question-of-the-day-whats-wrong-with-universal-background-checks/
+                    </a>
+                    .
+                </p>
+                <p>
+                    Sifting through the comments, it's clear there are a few big trends in the concerns people have:
+                </p>
+                <ol>
+                    <li>
+                        The fear that, given a collection of guns what guns were transferred to what people, the government can trivially form a "registry", or a large list of every gun that everyone owns.  There is a fear that this could lead to confiscation.
+                    </li>
+                    <li>
+                        Issues with what a "transfer" is defined as.  Nobody wants to do a background check on their son to give them a gun for their birthday, or to not be able to take a friend to the shooting range and let them use your gun without becoming a criminal.
+                    </li>
+                    <li>
+                        Needing to go to a gun shop to have a check done is really hard for some people.  Either they live far away, or don't have the free time to do it.
+                    </li>
+                    <li>
+                        The fact that some states require you to pay for a check, even if it's for a private transfer.
+                    </li>
+                </ol>
+                <p>
+                    So, I set out to (and I feel succeeded in) addressing all of these issues.  Here's how the system works:
+                </p>
+                <ol>
+                    <li>
+                        The user (a person selling a gun to someone) goes to the site.  They are presented with a web form that has multiple sections.  The top section is the buyer information, the next is the seller information, and the last is the firearm information.  The two people fill out the form together, and then, upon hitting submit, the magic happens.
+                    </li>
+                    <li>
+                        The data is partitioned in the browser into "public" and "private" data.  The public data is the information required to do the background check (name &amp; SSN/drivers license of the buyer).  The private data is all other information pertaining to the sale (the seller information, gun serial number, type, etc.)
+                    </li>
+                    <li>
+                        The first thing that happens is that an RSA keypair is generated.
+                    </li>
+                    <li>
+                        The keypair is used to encrypt all of the private data, and represent it as a base64 string.
+                    </li>
+                    <li>
+                        The public data is also stringified and encoded in Base64 to make the next steps easier.
+                    </li>
+                    <li>
+                        The keypair is then used to create a CSR - a certificate signing requests.  This is what you make and send to certificate authorities for them to give you a signed certificate for your website.  The public data is stored in the common name field, and the private in the organizational unit (hacky, but works, and those fields aren't really needed for this anyways).
+                    </li>
+                    <li>
+                        The browser then uploads ONLY the CSR to the server (the private key that was used to encrypt the private data is never sent).
+                    </li>
+                    <li>
+                        The server uses the public, unencrypted data from the CSR to perform the background check on the buyer.  Currently this is just a mock function, but can easily be replaced with the real query if this were to be adopted.
+                    </li>
+                    <li>
+                        If the check comes back clean, the server uses a root CA certificate that it maintains to sign the CSR, and returns the signed certificate to the user.
+                    </li>
+                    <li>
+                        On successful check, the browser downloads both the signed certificate and the private key to the user's hard drive.
+                    </li>
+                </ol>
+                <p>
+                    In this manner, the certificate can act as a receipt, which can be validated that it was issued by the government using the CA they maintain, if the gun is later used in a crime.  The seller can present the receipt, and it's authenticity can be proven.  And then, using the private key that was generated, the seller can decrypt the private information, and further prove that the check that was conducted did in fact apply to the gun in question.
+                </p>
+                <p>
+                    All the private information, including the seller, gun serial numbers, and even the number of guns sold is encrypted from the government eyes.  This makes it nearly impossible to form a registry.
+                </p>
+                <p>
+                    In addition, since all the security code is in the frontend, the site can be audited and monitored by groups like the ACLU to ensure it doesn't change.
+                </p>
+                <p>
+                    Of course, when it comes to politics, technology can't be a complete solution.  Here is the corresponding legislature that I propose to match this system, to make it effective.
+                </p>
+                <ul>
+                    <li>
+                        Sharply increase penalties for not having a background check done for a private sale, if the gun is used in a crime (perhaps an accomplice charge)
+                    </li>
+                    <li>
+                        Do not make the check mandatory, that's unenforceable, and will then lead to the issues around the definition of "transfer" and similar complaints
+                    </li>
+                    <li>
+                        Allow the check to be on the open internet, so anyone can freely use it.
+                    </li>
+                    <li>
+                        Agree to (as the current law states), delete buyer information within 24 hours of a successful check.
+                    </li>
+                </ul>
+                <p>
+                    With these changes in place, we can hopefully see an actual decrease in illicit gun purchases.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    Super simple (minus the crypto) - it's a javascript frontend, and a Go based backend.  It's really just a web form, so other than getting the cryptography libraries to play nice there wasn't too much to figure out.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Having never done javascript before, I took on some of the weirdest, and quirkiest bits of the language.  File uploads, turning javascript variables into downloadable files entirely in-browser, weird stream objects coming from the fetch API, etc.  It definitely had me, and the mentors, scratching our heads at points.  And it doesn't help that any time you're dealing with cryptography all the error messages are (intentionally) vague.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It works :)
+                </p>
+                <p>
+                    It's not much of a looker, being pretty much just a form, but it works!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Javascript is just as god-awful of a language as I remember it being 5 years ago.  I'm going to go back to my server side coding now.
+                </p>
+                <h2>
+                    What's next for Fixing Firearm Background Checks
+                </h2>
+                <p>
+                    Publicity and hopefully even legislation changes.  This is a hotly debated topic at the moment, so the former shouldn't be hard.  Getting anyone to actually accept a compromise solution to a controversial problem on the other hand...  I'm ready for the flood of hate mail from both sides.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            cryptography
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/twrobel3/UBC-PoC" rel="nofollow" target="_blank" title="https://github.com/twrobel3/UBC-PoC">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://privatetransfer.club" rel="nofollow" target="_blank" title="http://privatetransfer.club">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                privatetransfer.club
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,184 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/TRdKgbFzYlA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="858977" data-title="Direction Search" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/858/977/datas/original.png">
+                            <img alt="SMapS &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/858/977/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Direction Search
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="858976" data-title="Direction Display" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/858/976/datas/original.png">
+                            <img alt="SMapS &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/858/976/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Direction Display
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <h3>
+                    The Problem
+                </h3>
+                <p>
+                    As students, we know how challenging it is to navigate to places without GPS routing. Many people don't have access to data due to circumstances, such as finance. When lost, people need a convenient and reliable way to get directions to their destination.
+                </p>
+                <h3>
+                    The Solution
+                </h3>
+                <p>
+                    As an international team, we feel it is important to explore the world and connect to the places around us. When in a new region, it is inconvenient to navigate to your destination, especially when lacking resources, such as an internet connection, without incurring heavy expenses. With SMapS, we can connect people to places without the internet.
+                </p>
+                <h2>
+                    What It Does
+                </h2>
+                <p>
+                    SMapS gets Google Maps directions without an internet connection via internal SMS requests.
+                </p>
+                <h2>
+                    How We Built It
+                </h2>
+                <p>
+                    The project has two main components: the
+                    <strong>
+                        Google Cloud/Twilio backend
+                    </strong>
+                    written in Node.js and the
+                    <strong>
+                        Android client
+                    </strong>
+                    in Android Studio.
+                </p>
+                <h3>
+                    Backend
+                </h3>
+                <p>
+                    To create the backend, we used a combination of Google Cloud Functions and Twilio Cloud Communications. In Twilio, we set up a phone number to route SMS inputs to our Google Cloud Function via a Webhook. The Function, written in Node.js, then parses the input and passes it into Google Maps Places and Directions APIs. After the web requests are resolved, we encode the directions text and use Twilio again to send the SMS response messages back to the request sender.
+                </p>
+                <h3>
+                    Client
+                </h3>
+                <p>
+                    To facilitate SMS communication, we used the SMSManager module to send and receive text messages. The client sends an encoded text with GPS information and search queries to the backend, and is eventually passed back the encoded directions. The client then parses the directions and displays them in an easy-to-use UI.
+                </p>
+                <h2>
+                    Challenges We Ran Into
+                </h2>
+                <p>
+                    We were most challenged by the limitations of SMS messages themselves. At our work station, where reception is poor, sent SMS messages can take up to a minute before being received by the client. This is especially true with messages that are longer than 160 characters since these are broken into multiple messages and sent consecutively. From Twilio, a combination of limited credits, limitations from international texting, and required verification of phone numbers also presented us challenges. Finally, we encountered and solved regex problems in both encoding and parsing messages in order to compress and optimize communications.
+                </p>
+                <h2>
+                    Accomplishments That We're Proud Of
+                </h2>
+                <p>
+                    Even though we were faced with many challenges, we successfully implemented a functional client-server communication model via SMS. Via efficient Google Cloud API calls in Node.js and successful interception of an Android phone's SMS client, we built a communications network that functions without internet. Although our application is limited to GPS routing, this communications model can be applied ubiquitously where internet is inaccessible. This is especially impactful for people in regions with difficult economic circumstances.
+                </p>
+                <h2>
+                    What We Learned
+                </h2>
+                <p>
+                    Through this project, we learned how different components of software systems are integrated. From the backend to the client, we overcame difficult challenges to design and implement a functional system. Various technical skills we learned include SMS interception in Android, the Google Cloud SDK and its components such as Google Cloud Functions and Google Maps API, Node.js, and UI/UX elements in Android. We also learned other skills such as agile development, feature delegation, and quick prototyping.
+                </p>
+                <h2>
+                    What's Next for SMapS
+                </h2>
+                <p>
+                    In the future, we hope to offer a choice of destination from a selection when conducting a general search. Currently, we are only active on Android, but we hope to port to iOS and other platforms. As discussed in the challenges we ran into, sending and receiving SMS messages consumed a lot of time, so we plan to compress the SMS messages to improve runtime. In addition, we need to upgrade our Twilio account so that anyone can text the Twilio number. Finally, we would like to implement even better UX/UI like a loading indicator for better communication and access.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-directions">
+                                google-directions
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-places">
+                                google-places
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/mast0rbill/SMapS" rel="nofollow" target="_blank" title="https://github.com/mast0rbill/SMapS">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

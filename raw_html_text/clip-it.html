@@ -1,0 +1,161 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="879671" data-title="Clip It's home page" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/671/datas/original.png">
+                            <img alt="Clip It &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/671/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Clip It's home page
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="879847" data-title="Highlights of the given video URL!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/847/datas/original.png">
+                            <img alt="Clip It &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/847/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Highlights of the given video URL!
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="879676" data-title="An annotated graph of part of a sample VOD. The orange indicates message frequency; red is the rolling median; and magenta is the difference" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/676/datas/original.png">
+                            <img alt="Clip It &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/879/676/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                An annotated graph of part of a sample VOD. The orange indicates message frequency; red is the rolling median; and magenta is the difference
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We are both avid esports fans, and the League of Legends world championship is happening now! This inspired us to create Clip It, a tool that can programmatically create highlight reels of Twitch streams in a matter of seconds.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Clip It allows you to find the highlights of your favorite streams. Given the URL for a video, it finds the highlights by tracking two key metrics:
+1) Local spikes in chat message frequency (i.e. the equivalent of volume level in Twitch chat). We keep a rolling median of the number of messages sent in consecutive 30-second windows; and window that is significantly higher than the local median could be of interest!
+2) Sentiment magnitude of the chat messages. To detect this, we used Google Cloud Platform's natural language processing-based sentiment analysis API, which returns sentiment score (i.e. positive or negative) and sentiment magnitude (how positive or negative). We focused on just sentiment magnitude, as that will pick out an interesting and wide variety of events, from controversial to exciting moments! Once again, we track local spikes in sentiment magnitude compared to the rolling median to find clips of interest.
+                </p>
+                <p>
+                    We then look at the product of the differences between each metric and its rolling median--the clips with the highest value for this number therefore have large spike in both metrics. We return the timestamps with the highest values to make our highlight reel!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We get Twitch chat data with the twitch-python API, and then analyze it with GCP's NLP API as well as our own statistical algorithm in Python. We host the backend server with Python + Flask. The frontend is in HTML + Javascript, connected to backend with Socket IO.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    -Integrating the front- and back-end proved difficult.
+-Finding the right way to track interesting events was a difficult choice to make.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    Implementing NLP was a cool accomplishment, as neither of us had tried using it before! We're also pleased with how closely the statistical analysis can track interesting moments of the stream--watching our first set of highlights was really gratifying.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    -The power and versatility of GCP
+-Usage of Socket IO and the Twitch API
+                </p>
+                <h2>
+                    What's next for Clip It
+                </h2>
+                <p>
+                    -Consider audio levels of the stream (in mp4 form) for even better highlights?
+                </p>
+                <p>
+                    You can try clipit at
+                    <a href="http://clipit.space" rel="nofollow">
+                        http://clipit.space
+                    </a>
+                    ! If you don't have a VOD in mind, we recommend twitch.tv/videos/502873475 . It was a great match!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            gcp
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twitch">
+                                twitch
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://clipit.space" rel="nofollow" target="_blank" title="http://clipit.space">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                clipit.space
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,147 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to do a hardware hack that was cool and challenging. We also wanted to do an IoT based project, as well as implement detection tasks for a robot. This is how we narrowed our focus to a voice-controlled drone that detects intruders.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    An autonomous drone that takes voice commands from Amazon Alexa in order to fly. The drone is able to fly through any area with voice guidance such as a home, and detect intruders based off of a convolutional neural network that can classify members of a home.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    There are two main components to our drone, the actual drone hardware itself, and the Amazon Alexa backend. The first we spent assembling and preparing the drone to be interfaced to AWS IoT. This consisted of soldering ESCs to a power distribution board, assembling the frame, and wiring our motors and other peripherals as well as creating a link from a Raspberry Pi 3 to our Pixhawk flight controller. In order to send commands from the Raspberry Pi to the Pixhawk, we used FlytOS, an API built on top of ROS that abstracts away many of the difficulties in sending motor commands to the drone using ROS. This allowed us to focus more on building a robust backend. The last nights were spent creating the AWS backend. First we created an Alexa skill, that took input from the user, in this case voice commands to direct the drone to land, move forward/backward/left/right, or hold its position. After creating the Alexa skill, we added another AWS Lambda function to communicate with our AWS IoT thing shadow. Finally, we created a Python script on the Raspberry Pi that used Paho MQTT, and subscribed to our thing shadow topic. Additionally, the Python script on the Rpi 3 sent flight commands to the drone using FlytOS after reading the state of the thing shadow. Finally, we needed to get the facial detection working properly. To do this, we used tensorflow, using transfer learning to speed up training times with the builtin Inception V3 net. We then trained the classifier with around 100 pictures of faces for two of our team members. The net performed very well. In order to get a videostream for the tensorflow backend, we created an Android App that took the videostream from the phone, and sent the individual frames to our local machine running the CNN for inference. The machine then communicated through another lambda function that sent a message to Alexa if it detected a known member.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We had major issues in getting the AWS backend working, as well as getting all the Alexa Lambda functions to work properly. It was especially frustrating getting a lambda function to update an AWS IoT thing shadow, because one would expect the AWS environment to work pretty seamlessly. We had many issues with setting the correct permissions before we finally resolved the issue.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are all glad to know that we actually completed the drone, as it seemed as if everything was not going to work by the end of the day.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Everyone learned a great deal about the AWS environment as well as how MQTT works. We also were able to create hardware very quickly, and we had a great deal of challenges that we had to overcome along the way.
+                </p>
+                <h2>
+                    What's next for Intruder Identification Drone
+                </h2>
+                <p>
+                    We plan on making the voice commands more robust, and adding some more advanced features for the drones flight. Ideally, a consumer should ideally be able to say "scan" to Alexa, and the drone should fly through the house and detect any intruders that potentially don't look like family members, or other inhabitants of the household.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            drone
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/khmurakami/Calhacks4.0/settings" rel="nofollow" target="_blank" title="https://github.com/khmurakami/Calhacks4.0/settings">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://drive.google.com/open?id=0B8MH_8fqr-a9emdqUnctNU5nWjA" rel="nofollow" target="_blank" title="https://drive.google.com/open?id=0B8MH_8fqr-a9emdqUnctNU5nWjA">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                drive.google.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://drive.google.com/open?id=0B8MH_8fqr-a9TFhhZEI3UDhBc1k" rel="nofollow" target="_blank" title="https://drive.google.com/open?id=0B8MH_8fqr-a9TFhhZEI3UDhBc1k">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                drive.google.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://drive.google.com/open?id=0B8MH_8fqr-a9dW50a2ZuSEdkT3c" rel="nofollow" target="_blank" title="https://drive.google.com/open?id=0B8MH_8fqr-a9dW50a2ZuSEdkT3c">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                drive.google.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

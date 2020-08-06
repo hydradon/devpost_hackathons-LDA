@@ -1,0 +1,139 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/2wcSjBOqNiE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="717807" data-title="Facial Detection and Recognition Successfully Working" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/717/807/datas/original.png">
+                            <img alt="Cognition &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/717/807/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Facial Detection and Recognition Successfully Working
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="717813" data-title="Rendering a Demo Video with detection and recognition" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/717/813/datas/original.png">
+                            <img alt="Cognition &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/717/813/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Rendering a Demo Video with detection and recognition
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I have long been interested in machine learning and recently new research has suggested that a new type of machine learning networks, called CapsuleNetworks, could provide much better performance in object recognition. I wanted to build a face and object recognition engine that was built around machine learning that would easily allow me to add new object and faces while also being able to upgrade the machine learning network as I do research in the future on Capsule Networks.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Cognition is more of a recognition engine than a utility. By default it works off of the default webcam and captures live input and attempts to find my face (or any face for that matter), however it has more functionality than this. It can also be fed a file (video or photo) and apply the same machine learning comparisons and computer vision technology. Additionally if set to collect mode, it forgoes the machine learning aspect and just uses computer vision to collect mostly clean data to later train the Convolutional Neural Network that powers the rest of Cognition.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I built Cognition using python, opencv, and keras, with references to the academic paper,
+                    <a href="https://arxiv.org/pdf/1710.09829.pdf" rel="nofollow">
+                        "Dynamic Routing Between Capsules" by Geoffrey Hinton, Sara Sabour, and Nicholas Frosst
+                    </a>
+                    . First I take an image and run it against an opencv model to detect if a face is present. If found the frame is cleaned and processed in (mostly) real time. Once it has done so it compares the processed face data agains a nerual network model trained using my face and outputs if it has found me.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Neural Networks and Computer Vision (particularly with custom datasets) was an entirely new concept to me before starting this to I had a bit of a hard time figuring out how to get my data into a form where it could be processed. Additionally developing a model with enough accuracy that could train on my limited computational resources was tough, however I was able to overcome that by supplying my own data (3000 images) and using random mild image transformations to produce a model that has 80% accuracy and only takes an hour to train.
+                </p>
+                <p>
+                    On big challenge that I am still facing is that I am using a binary-crossentropy loss model. Essentially this means my program can identify when someone is standing in frame and when I am not standing in frame. I would need to create a much more advanced categorical-crossentropic loss model to be able to be able to classify more things. Additionally because the data I provided it for myself had to be automated so it could be submitted in time, I did not have time to make sure it was varied enough to differentiate between me and someone else so it frequently identifies all faces as me. This could be easily changed with more/better data or a switch to a categorical-crossentropic model.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was able to teach myself quite a bit about machine learning including creating my own dataset, developing a better model, operating on essentially no data (by what is commonly used), and also creating a working prototype that not only functions, but helped me contribute to its own development through image cleaning and processing.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned about different types of machine learning models and the different technical challenges of building them. I also did a little bit of research into the next generation of machine learning Capsule Networks, and I learned how to function by operating on vectors rather than MaxPooled pixels. Additionally I learned about the importance of having reliable training data, and how complex it is to develop and train a good working model.
+                </p>
+                <h2>
+                    What's next for Cognition
+                </h2>
+                <p>
+                    Moving forward I would like to make a lot of changes. First of all cognition exists as a series of scripts and making it portable requires lots of changes to physical code. I would like to build an api-like front end so that I can interface and do testing with future versions better as well as letting other people use what I built. I also need to train custom opencv models for detecting faces. I am currently using an open source cascade for my detection, but it could be much more accurate with a better vision cascade. I also want to add cascades for more types of objects and allow my model to train multiple types of things and faces. Finally, most complex of all, I want to replace the current Convolutional Neural Network with a CapsuleNetwork. If done successfully, cognition would be able to identify more objects with less training data as well as being able to view images at angles for better recognition probabilities. This would require a lot of time and research as well as increase the training time, but it is definitely feasible and I look forward to doing it.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/carsonwoods/cognition" rel="nofollow" target="_blank" title="https://github.com/carsonwoods/cognition">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

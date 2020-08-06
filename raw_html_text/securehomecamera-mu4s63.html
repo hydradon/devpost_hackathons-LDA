@@ -1,0 +1,108 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    <strong>
+                        Security is Important
+                    </strong>
+                    I am genuinely very interested and passionate about security as a whole. I aspire to work in digital forensics and incident response and I really wanted to work on something that would help protect people throughout the world.
+                    <strong>
+                        Computer Vision is a growing technology
+                    </strong>
+                    I  have always wanted to learn more about computer vision and how we could try to simulate our perception by understanding the cognition that allows us to make decisions based on what we see.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    It connects the python script to a camera, which in the case of this demo, is my handy dandy webcam. It then perceives the first frame as it would be as soon as the owner leaves and thus the frame should be still. By comparing frames, the camera detects whether there was a gradual overall change, a sudden change, and uses human recognition algorithms to make the decision whether a human had moved across the screen, which could be a potential break in. When it happens it also marks the date and time of the incident and a short 5 to 10 second clip and saves it for future viewing and evidence if it is needed. __ it should be encrypted (a later challenge) __ It takes all of this information and also in the future will use the face recognition to detect common people and not flag those frames.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    <strong>
+                        OpenCV
+                    </strong>
+                    (
+                    <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/OpenCV_Logo_with_text_svg_version.svg/750px-OpenCV_Logo_with_text_svg_version.svg.png" rel="nofollow">
+                        https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/OpenCV_Logo_with_text_svg_version.svg/750px-OpenCV_Logo_with_text_svg_version.svg.png
+                    </a>
+                    )
+OpenCV is a python library that has a lot of great computer visualization tools. I used the tools to capture video, do frame subtraction analysis, and run the camera through haar cascade datasets, which include both positive and negative images, to build a classifier, which was also a great tool within this library. I would say the bulk of my work this weekend has been learning how to use OpenCV. I then utilized django framework to build it a very simple interface and make categorized models so that each user could access individual folders of their individual suspicious frames.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    <strong>
+                        AES Encryption
+                    </strong>
+                    Security is very important to me, so I have spent many, many hours trying to get AES 256 bit CBC encryption to work. Because I was storing mini avi files, which are 640*480*3 matrices, storing them in a database would have been highly inefficient. I decided to store them in a filesystem, but I thought that I had to encrypt them. The encryption was very difficult because the inputs needed to be divisible by 16 bit blocks and avi files have a very inconsistent tendency. There was also even more trouble, because even a slight mistake in the encryption messed with the codec. There is a frame of my attempt at the encryption algorithm in views.py.
+(
+                    <a href="https://upload.wikimedia.org/wikipedia/commons/d/d3/Cbc_encryption.png" rel="nofollow">
+                        https://upload.wikimedia.org/wikipedia/commons/d/d3/Cbc_encryption.png
+                    </a>
+                    )
+                    <strong>
+                        Streaming video through UDP to web browser
+                    </strong>
+                    I wanted to integrate the video stream as part of a web app and so I attempted to stream the video through django using both UDP and TCP. It was very difficult to do and later I realized that it may not be the most efficient either,
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I am very proud of my ability to try learning computer vision, which I had no prior experience with, and my ability to utilize the tools to make the technology practical.
+I am also proud of the effort I put into the encryption algorithms. I may not have gotten them to work with the avi files, but it was interesting to see them work with text files and strings.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned that there are still many very interesting ways to use the technology we have and this hackathon was a great opportunity for me to explore a realm of computer science I have never seen or used before
+                </p>
+                <h2>
+                    What's next for SecureHomeCamera
+                </h2>
+                <p>
+                    I would really like to continue working on it. I would like to implement the script to a camera module on a Raspberry pi and solve this encryption problem. I haven't made much of any progress on the front end so I am also looking to making that look much nicer and I plan on tuning the Haar cascades to be much more accurate.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/django">
+                                django
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

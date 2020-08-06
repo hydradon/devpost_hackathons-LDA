@@ -1,0 +1,306 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/0n3OX4XOxv0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3>
+                    Inspiration
+                </h3>
+                <p>
+                    Introducing the Plug &amp; Play BOT, a ready-to-use UiPath workflow that can be integrated easily with any project across different customers that too without any modification.
+                </p>
+                <p>
+                    Need of reusable components across multiple projects/customers inspired me to create the Plug 'N' Play BOT for SAP Login &amp; Logout using UiPath which can be run across all SAP systems having SAP Logon 740 Release.
+                </p>
+                <h3>
+                    What it does?
+                </h3>
+                <p>
+                    It performs following actions - Login, Screen Navigation &amp; Logout on SAP. These are the most basic functionality we need to automate every time we work on SAP application.
+                </p>
+                <p>
+                    BOT sends out email notification to the recipients updated in config file for the below 2 exception scenarios:
+                </p>
+                <ol>
+                    <li>
+                        Failed to launch SAP - path of the "SAP Logon.exe" may differ from system to system. Hence, user need to verify/update the path in config file.
+                        <br>
+                    </li>
+                    <li>
+                        SAP Password Expired - in this case, user need to update the password stored in Orchestrator or Windows Credential Manager.
+                        <br>
+                    </li>
+                </ol>
+                <p>
+                    Also, it works across different SAP environments (Test/Prod&hellip; etc) just by updating the environment in settings tabs of Config.xlsx.
+                </p>
+                <h3>
+                    How I built it?
+                </h3>
+                <p>
+                    Created it using the concept of Robotic Enterprise Framework (REFramework). It can be run standalone or can be integrated with any project.
+                </p>
+                <p>
+                    Login id &amp; password is retrieved from Orchestrator by default. If Orchestrator is not available, then the BOT will prompt user to enter username &amp; password (secured string format) and store it in Windows Credential Manager. 
+(FYI &ndash; It is a one-time activity. BOT will read username &amp; password from windows vault from the next run.)
+                </p>
+                <p>
+                    Configured the BOT to read the following details from "Config.xlsx" file to make it re-usable:
+                </p>
+                <ol>
+                    <li>
+                        SAP Logon Exe Path - stores the path of "SAP Logon.exe"
+                        <br>
+                    </li>
+                    <li>
+                        SAP Environment Name or SID - stores the full name of SAP environment (e.g. ABC Test System [ABC])
+                        <br>
+                    </li>
+                    <li>
+                        SAP Environment Type (Test/Production) - stores the type of environment (e.g. Test, Production..etc.)
+                        <br>
+                    </li>
+                    <li>
+                        To recipients email address - stores recipient email address to be marked in 'To' section for success/exception scenario
+                        <br>
+                    </li>
+                    <li>
+                        Cc recipients email address - stores recipient email address to be marked in 'Cc' section for success/exception scenario
+                        <br>
+                    </li>
+                    <li>
+                        SAP Test Login - stores Asset/Credential name of the test environment
+                        <br>
+                    </li>
+                    <li>
+                        SAP Prod Login - stores Asset/Credential name of the production environment
+                        <br>
+                    </li>
+                </ol>
+                <p>
+                    Successfully tested the execution for different customers. It works very well without any change in code.
+                </p>
+                <h3>
+                    What's Next?
+                </h3>
+                <p>
+                    Publish it under the centralized umbrella called as BOT Factory or Market Place which can be easily downloaded by the RPA professionals having access to it.
+                </p>
+                <h3>
+                    How to use SAP Login reusable Plug &amp; Play workflow?
+                </h3>
+                <p>
+                    Filename: SAP Login.xaml
+                </p>
+                <p>
+                    (A) Pre-requisite:
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        Download the complete project repository
+                    </li>
+                </ol>
+                <p>
+                    (B) Update Config.xlsx:
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        Validate the path of SAP system stored in &ldquo;Data\Config.xlsx&rdquo;
+                        <br>
+                    </li>
+                    <li>
+                        To switch the SAP environment between Test and Production, update the SAP Environment Name or SID and SAP Environment Type stored in settings tab of &ldquo;Data\Config.xlsx&rdquo;
+                        <br>
+                    </li>
+                    <li>
+                        If using Orchestrator, then create below 2 assets to store the credentials: (optional step)
+                        <br>
+                        3.1. SAPLogin_Test - to store the username &amp; password of Test/QAT environment
+                        <br>
+                        3.2. SAPLogin_Prod - to store the username &amp; password of Production environment
+                    </li>
+                </ol>
+                <p>
+                    (C) Invoke: Integration with existing project
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        Use Invoke Workflow activity in your project sequence/workflow
+                        <br>
+                    </li>
+                    <li>
+                        Click import arguments
+                        <br>
+                        2.1. Optional: Pass Config (Data Dictionary) variable to the input argument in_Config, if you are using ReFramework
+                    </li>
+                </ol>
+                <p>
+                    (D) Run: Standalone execution
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        To Run standalone: Open &ldquo;SAP Login.xaml&rdquo; -&gt; hit run
+                        <br>
+                    </li>
+                </ol>
+                <h3>
+                    How to use SAP Logout Plug &amp; Play workflow?
+                </h3>
+                <p>
+                    Filename: SAP Logout.xaml
+                </p>
+                <p>
+                    (A) Pre-requisite:
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        Download the complete project repository
+                        <br>
+                    </li>
+                    <li>
+                        Login to SAP system (manual/automated)
+                    </li>
+                </ol>
+                <p>
+                    (B) Invoke: Integration with existing project
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        Use Invoke Workflow activity in your project sequence/workflow
+                    </li>
+                </ol>
+                <p>
+                    (C) Run: Standalone execution
+                    <br>
+                </p>
+                <ol>
+                    <li>
+                        To Run standalone: Open &ldquo;SAP Logout.xaml&rdquo; -&gt; hit run
+                    </li>
+                </ol>
+                <h3>
+                    Project repository details:
+                </h3>
+                <ol>
+                    <li>
+                        /Data/Config.xlsx
+                        <br>
+                    </li>
+                    <li>
+                        /Framework/CloseAllApplications.xaml
+                        <br>
+                    </li>
+                    <li>
+                        /Framework/GetAppCredentials.xaml
+                        <br>
+                    </li>
+                    <li>
+                        /Framework/InitAllApplications.xaml
+                    </li>
+                    <li>
+                        /Framework/InitAllSettings.xaml
+                    </li>
+                    <li>
+                        /Framework/KillAllProcesses.xaml
+                        <br>
+                    </li>
+                    <li>
+                        /Framework/TakeScreenshot.xaml
+                        <br>
+                    </li>
+                    <li>
+                        Main.xaml
+                        <br>
+                    </li>
+                    <li>
+                        SAP Login.xaml
+                        <br>
+                    </li>
+                    <li>
+                        SAP Logout.xaml
+                    </li>
+                    <li>
+                        SAP Goto Main Screen.xaml
+                        <br>
+                    </li>
+                    <li>
+                        Send Email.xaml
+                    </li>
+                    <li>
+                        project.json
+                    </li>
+                </ol>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            reframework
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            roboticenterpriseframework
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            roboticprocessautomation
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            rpa
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sapautomation
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            uipath
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/imranloon123/PlugnPlayBot-SAPLoginLogout.git" rel="nofollow" target="_blank" title="https://github.com/imranloon123/PlugnPlayBot-SAPLoginLogout.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

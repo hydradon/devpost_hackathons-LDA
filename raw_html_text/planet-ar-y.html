@@ -1,0 +1,423 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/wTf6i7jGX70?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="583693" data-title="planet.AR.y" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/693/datas/original.jpg">
+                            <img alt="planet.AR.y &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/693/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                planet.AR.y
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="583467" data-title="Unity + Vuforia AR Interface" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/467/datas/original.jpg">
+                            <img alt="planet.AR.y &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/467/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Unity + Vuforia AR Interface
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="583380" data-title="App running on iOS" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/380/datas/original.png">
+                            <img alt="planet.AR.y &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/380/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                App running on iOS
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Ever since we were young children, we wanted to explore the universe as we both had a common passion for space and astronomy. Originally, we thought of creating a voice driven skill that took advantage of Amazon&rsquo;s Alexa Voice Service that told stories to children. However, we realized there were two essential flaws with this idea. The first was that stories required little to no user interaction and we really wanted to harness the potential of using voice with Amazon Alexa. The second main flaw was that as humans, we are better visual learners than we are auditory (nearly 7 times more)!  To solve this, we created a dynamic augmented reality experience that immerses children in a new environment and helps them learn about the solar system and satisfy their curiosity.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Users can download and launch the app which will be available on the Google Play Store and the Apple App Store. The app presents an augmented reality interface and projects a window into the solar system using the rear camera of the device. The skill then interfaces with this app and allows users to ask questions about the planet they are looking at, including its distance to the sun, some brief information about the planet, and more interesting details.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    The process of building this application was quite tedious and challenging, but it can be broken up into various modules.
+                </p>
+                <ol>
+                    <li>
+                        <p>
+                            Load Unity and Vuforia and create models of all the planets with an ImageTarget that maps the planets to each other and a reference frame.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Create an Alexa Skill in the Skill Builder portal and define the interaction models as well as the intent schema. This sets up the framework for the behavior of our skill.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Create a Node.JS server that interfaces with the Amazon Alexa and translates the various intents into requests that can be passed on.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Create another intermediary server that interfaces with both the Unity application and the Alexa skill by using HTTP requests to pass data between the phone and Alexa.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Deploy the Node.JS servers onto a cloud based platform service such as Heroku that can run web apps from a stable and fast server.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Step 1: Create a Unity application using Vuforia
+                </h2>
+                <p>
+                    The first step is to install Unity with the Vuforia package which allows for the creation of augmented and virtual reality apps. On the Vuforia website, you can generate a database with an image target that renders your content on top of a specified image, which it uses as a reference point. In this case, we used a picture of a rocketship to go along with the space theme.  Next, we had to download 3D models of all planets and position them accurately relative to each other.
+                </p>
+                <h2>
+                    Step 2: Building the Alexa Skill
+                </h2>
+                <p>
+                    The next step was to create the skill in the Alexa Skill builder. We had to write out all the utterances for our skill and define the intent schema in order to create the backbone of our skill. This was fairly straightforward as it takes you step by step through the process.
+                </p>
+                <h2>
+                    Step 3: The NodeJS Alexa Facing Skill
+                </h2>
+                <p>
+                    We decided not to use Lambda and instead create our own custom HTTP server that interfaces with the Amazon Echo. To do so, we used Node.JS and Express as well as a variety of other modules to make this task simpler. The server handles a variety of intent requests and returns a response after sending an HTTP request to the middle server which will be discussed in the next step.
+                </p>
+                <h2>
+                    Step 4: The Intermediary Server
+                </h2>
+                <p>
+                    In order to link the Alexa skill to the Unity application, we created another HTTP server that acted as a bridge between the phone and Unity application. The server sent HTTP requests to the Unity Application, which then responded with the nearest planet relative to the camera using a custom C# script. The server also responds to the Alexa Skill Server.
+                </p>
+                <h2>
+                    Step 5: Deploying to Heroku
+                </h2>
+                <p>
+                    We decided to deploy our Node.JS servers on heroku in order to give it a static url as well as ensure that our servers stayed up. You have to create a file called Procfile.txt, and inside type:
+                </p>
+                <pre class="language-nolang"><code>web server.js
+</code></pre>
+                <p>
+                    Then, it&rsquo;s as simple as posting the project on a Github repository and setting Heroku up to follow any commits made in that repository.
+                </p>
+                <h2>
+                    How to use it
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            Enable the Alexa Skill by asking Alexa to enable Reality Planets.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Download the companion app from the link below or from the link Alexa will send to your phone.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Ask Alexa to pair your phone and enter the code it gives you in the app you downloaded.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Open the image down below on another device or print it out.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Use the app to point at the picture and display the planets.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Ask Reality Planets about the planet to get information about it.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            Unity does not support hosting an HTTP server that can handle incoming requests and it was extremely difficult to transfer information between the phone and the intermediary server.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            To establish a link between the Unity application and the Alexa skill, we needed a way to know which instance of the app was making requests in order to delivery information to the correct device.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We had trouble with Unity resolving some Vuforia components, preventing us from working on multiple computers and merging our changes.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            When creating 3D models of all the planets, we had trouble resolving their textures and did not know how to create .mat (material) files that could be used.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            During testing we had issues using a tunneling reverse proxy (ngrok) as it repeatedly crashed and was unstable for our uses.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            The C# environment that Unity uses caused us some troubles as we had never used it previously.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Our Heroku requests often failed because the servers were set to fall asleep after a set time period
+                        </p>
+                    </li>
+                </ol>
+                <h3>
+                    Challenge 1 Fix:
+                </h3>
+                <p>
+                    We solved this by creating two different servers that could handle HTTP requests and allowed for the information from the Unity application (Planet) to be passed on to the Alexa skill. This was then processed through the various intents for each piece of information we wanted to deliver to the user (planet description, orbit time, diameter, and distance).
+                </p>
+                <h3>
+                    Challenge 2 Fix:
+                </h3>
+                <p>
+                    We used a server to bridge Alexa and the app in order to generate a unique UID that paired both of them in their own isolated instance. Alexa creates a one time alphanumeric seven character sequence that it then prompts the user to enter. This initiates a link between the two.
+                </p>
+                <h3>
+                    Challenge 3 Fix:
+                </h3>
+                <p>
+                    We were forced to use only one computer to run Unity on as it would compile properly on others.
+                </p>
+                <h3>
+                    Challenge 4 Fix:
+                </h3>
+                <p>
+                    We fixed this issue by learning how to convert satellite jpg or png images into that specific file type so that the .obj files would accept them as an overlay and so the planets would appear in color.
+                </p>
+                <h3>
+                    Challenge 5 Fix:
+                </h3>
+                <p>
+                    We deployed to Heroku to mitigate the issues we had with ngrok.
+                </p>
+                <h3>
+                    Challenge 6 Fix:
+                </h3>
+                <p>
+                    We learned the nuances of the language and restarted Unity which fixed a lot of the issues.
+                </p>
+                <h3>
+                    Challenge 7 Fix:
+                </h3>
+                <p>
+                    We used a Heroku App called Kaffeine to ping it every 30 minutes and keep it always running.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ol>
+                    <li>
+                        <p>
+                            We learned how to interface Unity and Alexa, which was very tricky and can help in future projects.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            We gained mastery of HTTP requests and NodeJS, as there were a lot of moving parts and requests that needed to be routed properly.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            A lot of the code for the servers and Unity can be repurposed for augmented reality applications that require connection to other platforms.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Creating apps that work on other important platforms. We learned how to create an iOS app using Xcode for the first time.
+                        </p>
+                    </li>
+                </ol>
+                <h2>
+                    VUI Design for the Alexa Skill + Unity Application and the Javascript servers involved
+                </h2>
+                <p>
+                    <img alt="VUI" data-canonical-url="https://i.imgur.com/oRKxu6D.jpg" src="https://res.cloudinary.com/devpost/image/fetch/s--5by_S4Y9--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/oRKxu6D.jpg">
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    How to make a great Alexa skill that is accessible to all children and being able to provide a new way to learn about planets that was unique and not previously integrated with a voice platform. We also learned about the various hurdles that needed to be overcome to build a successful skill.
+                </p>
+                <h2>
+                    What's next for planet.AR.y
+                </h2>
+                <p>
+                    We hope to add different planets, moons, solar systems, and animate various orbits. Our skill can continue to grow as scientists increase their knowledge of space, allowing for fresh content to be added.
+                </p>
+                <h3>
+                    iOS version coming soon! (App is ready but not published currently)
+                </h3>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android-studio">
+                                android-studio
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/augmented-reality">
+                                augmented-reality
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/blender">
+                                blender
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--2">
+                                c#
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/unity">
+                                unity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/vuforia">
+                                vuforia
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/xcode">
+                                xcode
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://play.google.com/store/apps/details?id=io.paperplane.rajb.planetary" rel="nofollow" target="_blank" title="https://play.google.com/store/apps/details?id=io.paperplane.rajb.planetary">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                play.google.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://science.ksc.nasa.gov/shuttle/missions/sts-83/images/high/KSC-97EC-0574.jpg" rel="nofollow" target="_blank" title="https://science.ksc.nasa.gov/shuttle/missions/sts-83/images/high/KSC-97EC-0574.jpg">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                science.ksc.nasa.gov
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.amazon.com/dp/B078S4J8PL/ref=cm_cr_ryp_prd_ttl_sol_0" rel="nofollow" target="_blank" title="https://www.amazon.com/dp/B078S4J8PL/ref=cm_cr_ryp_prd_ttl_sol_0">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

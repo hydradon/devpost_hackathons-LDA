@@ -1,0 +1,74 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Gaming computers are expensive and not everyone has access to such hardware given their prohibitive cost. However, many people would still like to be able to enjoy playing games at very high settings. Rather than requiring the user to spend the money to buy the hardware only to play games, the user is able to use the services of Amazon's servers to run the game and stream it to their PC at a much lower hourly rate (at the time, approximately $0.75/hr, allowing for over 1300 hours of gameplay for the same cost as a $1,000 gaming computer).
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Essentially, the system uses the hardware available from Amazon's EC2 service to do the necessary computations to render and run the game in high fidelity, then uses Steam's built-in streaming service to stream the video to your computer, giving you the giving you a high end gaming experience without the high end equipment necessary.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The EC2 server is a GPU server running Windows Server 2012 R2. On the server, Nvidia graphics drivers (Nvidia Grid) are installed, as well as Steam and any games that are going to be played. Both the server and the client computer are connected to a network via Hamachi, ZeroTier, or any similar program. The client computer is then able to open Steam and stream games from the server, given that the games are installed on the server. While running the game, the server encodes the video using the GPU (since it is faster than using the CPU) using H 256 codec, sends it to the client using Steam's streaming service, which the client then decodes, so the client essentially only needs to be able to decode the video.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The system requires a reasonable amount of bandwidth in order to be able to stream the full quality of the game and avoid pixelation, so the Hopkins WiFi was presenting an issue since the video sometimes freezes in addition to the 100-200+ milliseconds for the video to arrive from the server, resulting in a poor user experience. In order to alleviate these issues, we enabled hardware encoding and worked on optimizing the use of Nvidia Grid.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <h2>
+                    What I learned
+                </h2>
+                <h2>
+                    What's next for Cloud Gaming
+                </h2>
+                <p>
+                    The system could be optimized by using software like FFmpeg to better manage the video being sent from the server to the client. Additionally, due to the virtualization of the graphics cards, performance is limited to that of a single card. Ideally, there would be some way to utilize multiple graphics cards to further improve performance.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-ec2">
+                                amazon-ec2
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/nvidia">
+                                nvidia
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/steam">
+                                steam
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

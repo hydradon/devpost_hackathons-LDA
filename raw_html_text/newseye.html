@@ -1,0 +1,265 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Most news sites today are built to attract viewership through flashy media ads and video content. However, for a visually impaired user, this makes navigating the site and finding relevant content extremely difficult. Screen readers are not built to handle this and the sites themselves are not designed with them in mind. Furthermore, few developers on these sites are asked to cater to these needs as they drive fewer clicks through revenue.
+                </p>
+                <p>
+                    Rather than make it the onus of each of these publication sites to do this job, we decided that we could set up a standardized, streamlined, and accessibility-driven portal to allow readers to effectively navigate to the content that they read. We do this through the help of natural language processing and computer vision.
+                </p>
+                <p>
+                    Once the user has been successfully led to the article that they want to read through the guidance of this featurized metadata, we then ultimately redirect the user to the main origin site so that the user can both enjoy the article in its original context and the makers of the site and writers of the article get their due credit.
+                </p>
+                <h2>
+                    Walkthrough
+                </h2>
+                <h4>
+                    The what
+                </h4>
+                <p>
+                    We've built a full-stack solution that is capable of fetching current news articles from all major publications (i.e. WSJ, New York Times, Fox News, Wired, CNN, etc.). It then fetches the raw text for these articles and then passes them through a summarizer that synthesizes the article into one sentence. This sentence is then fed to the screen readers as they traverse these articles through the FE React.JS app that we have made. Furthermore, we also run computer vision algorithms on the images from these articles so that those who cannot see the images can still understand the tone and overall idea the photographer was attempting to capture.
+                </p>
+                <h4>
+                    The how
+                </h4>
+                <p>
+                    In a nutshell, our BE service is responsible for coalescing the information from all the different APIs we interface with to understand as much as possible about an articles semantic and visual data. We then send these features back in a well-formatted manner for the FE to receive. The FE then uses a combination of the accessibility-friendly Stardust UI Framework, in combination with aria HTML tags and accessibility minded website design, to offer an experience that is delightful and friendly to users regardless of their visual capabilities.
+                </p>
+                <h4>
+                    The why
+                </h4>
+                <p>
+                    It is news streamlined and distilled.
+From every source.
+For everybody.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <h4>
+                    NewsAPI - Current news
+                </h4>
+                <h4>
+                    NewsPlease - Scrape the text from article urls
+                </h4>
+                <h4>
+                    IBM Watson - Computer vision to featurize the images
+                </h4>
+                <h4>
+                    Aylien - Summarize the article
+                </h4>
+                <h4>
+                    Amazon Lambda, ElastiCache, API Gateway
+                </h4>
+                <h4>
+                    Stardust UI Framework
+                </h4>
+                <h4>
+                    React.JS
+                </h4>
+                <h4>
+                    Node
+                </h4>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        API costs were extremely high for the types of algorithms we were trying to run on the cloud. NLP and, particularly, CV algorithms are heavy on the servers and as such, the SaaS providers charge a premium for them. We've tried to ameliorate some of these costs by using a server level cache for our results using Amazon ElastiCache.
+                    </li>
+                    <li>
+                        Caching also helped us overcome our next big obstacle which was performance. Running these algorithms in real-time, especially on non top-tier server really takes a lot of time and has a strong negative impact on UX. As we can anticipate a user's clicks for news, we can run cron jobs on a scheduled basis that constantly keep our cache refreshed and available for the next customer.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to successfully integrate 4 different APIs into a demoable product. It was a huge uphill battle understanding the intricacies of each of these APIs, not to mention the countless other alternatives we explored and decided against or gave up on because of recurring issues. Furthermore, linking them together on a BE that is running on multiple different micro-service as Lambda functions and storing results in ElastiCache means that the request are passing through quite a large number of moving pieces in the newseye network before reaching our FE web app. We are proud that we were able to set this up to work and communicate with one another in the first place, and from there on, the mission of the project drove us to finalizing it in a productizable project.
+                </p>
+                <p>
+                    Interfacing with Aylien's text summarization and Watson's computer vision APIs through Amazon Lambda were great forays into applying ML algorithms in real-world production environments. Finally, connecting all of this data back through accessible, clean Stardust UI components was a sobering reminder that the data garnered from lengthy articles and processed by advanced algorithms can still be distilled into an easy-to-understand manner that anyone can use.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        How to deploy microservices on the Amazon Lambda stack
+                    </li>
+                    <li>
+                        How to use expensive ML algorithms in a performant, cost-efficient manner
+                    </li>
+                    <li>
+                        How to design and build accessible, screen reader friendly components
+                    </li>
+                </ul>
+                <h2>
+                    What's next for newseye
+                </h2>
+                <p>
+                </p>
+                <li>
+                    Expanding our ability to cache our BEs with more news sites that we have learned from
+                </li>
+                <li>
+                    Adding the abilities to navigate by categories of articles
+                </li>
+                <li>
+                    Making the caching run as a headless service
+                </li>
+                <li>
+                    Cache the computer vision processing
+                </li>
+                <p>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-ec2">
+                                amazon-ec2
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-elasticache">
+                                amazon-elasticache
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/aria">
+                                aria
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            axios
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/aylien">
+                                aylien
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            jest
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            news-api
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pymemcache
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/react">
+                                react
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            react-router
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/requests">
+                                requests
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            stardust
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/typescript">
+                                typescript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            wattson-computer-vision
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

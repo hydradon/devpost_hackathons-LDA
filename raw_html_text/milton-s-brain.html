@@ -1,0 +1,172 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I'm a brain function analyst who likes to teach... and program.  I'm also interested in how people learn and how we process natural language.  I helped teach a middle school class on the brain and after learning about this competition, I decided wanted to use that experience to create a new Skill.  Since I have experience with brainwave data analysis and a bunch of data I've collected on myself, I thought it would be cool to take kids through some of that information, giving them perspective on brain function.  (In my original class, I actually did an EEG demonstration, showing them 3D data representations in real time - what is known as LORETA).
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    The game is structured as a list of
+                    <strong>
+                        locations
+                    </strong>
+                    which you visit and learn about.  There are paths you can follow by saying, "next", as well as choice points.  These are based on what we know about the actual connectivity of the brain.  There are also '
+                    <strong>
+                        facts
+                    </strong>
+                    ' that you can learn by asking for information on a '
+                    <strong>
+                        topic
+                    </strong>
+                    '.  There are currently 23 topics including:'Alpha waves', 'Beta waves', 'Brainwaves', 'Cortex', 'Kim Peek', 'Neuron', 'Brain structure', 'Lobes of the Brain', 'Brain fat', 'The knee jerk', 'Brain function', 'Memory', 'Procedural Memory', 'Henry Molaison', 'Lateralization', 'Seizures', and 'Color blindness'.
+                </p>
+                <p>
+                    At any time, you can ask "
+                    <strong>
+                        how am I doing?
+                    </strong>
+                    " or "score"  to find out how many of the locations and facts you have covered.  You can also ask for '"
+                    <strong>
+                        help
+                    </strong>
+                    " which will give you information about your options, as well as list a location and a fact you haven't heard yet.  The easiest way to get new facts or locations is to tell Alexa, "
+                    <strong>
+                        you pick
+                    </strong>
+                    ."  She likes that.
+                </p>
+                <p>
+                    The program tracks all the places and facts you visit, and will change the message you get at different locations depending on what you have visited.  This is designed so that I can use more general and simpler terms early in play, moving to more complex and detailed terms later.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The code is over 2000 lines of
+                    <strong>
+                        Javascript
+                    </strong>
+                    , aimed at running on
+                    <strong>
+                        Node
+                    </strong>
+                    on Amazon Lambda.  There are more lines of JSON files that contain the locations and facts and their messages.  There is also a set of rules that define what level of message to speak depending on what milestones have been covered previously.  I designed some utility functions to verify the relationships between all the datafiles, as well as some command line functions to manually add elements the speech interaction model.
+                </p>
+                <p>
+                    User data is stored on Amazon
+                    <strong>
+                        DynamoDB
+                    </strong>
+                    .  I did unit testing with Mocha and used Amazon's
+                    <a href="https://github.com/alexa/alexa-cookbook/tree/master/testing/TestFlow" rel="nofollow">
+                        testflow
+                    </a>
+                    program to do integration testing.  You can find the changes I made to the Alexa SDK to run a local instance of DyanmoDB in PR #242 on
+                    <a href="https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs/pull/242" rel="nofollow">
+                        Github
+                    </a>
+                    , although that is hopefully fixed and irrelevant by the time you read this.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    The main challenge I had was that the project is
+                    <em>
+                        big
+                    </em>
+                    .  I still haven't included a fourth of the topics I envisioned from the class I taught.  Being responsible, I wanted to make sure I had literature citations for any fact I included.  There was  a lot of detail work going typos in text or checking the specific ways things are said, like pronouncing 'conduct' as a verb (moving) instead of a noun (behavior).  I created the sound effects myself (and that could be better!).  The interaction of levels of knowledge affecting description of locations is a bit complicated and has subtle differences based on wording.  If you are looking at a fact and say, "next" it gives you more info whereas when you are looking at a location and say, "next" you move along your story line.  The "more info" command will deepen the level of information whether it is location or fact.  I went through several iterations of deciding how I wanted each type of wording to process each of these types of distinctions.  I am still having issues with the getting the word recognition model that Amazon provides to initiate Intents the way I want.
+                </p>
+                <p>
+                    I've made Alexa skills before, but this is the first time I created any unit tests as part of development.  I also had to make changes in the Alexa SDK to allow use of a local DynamoDB instance for my local testing - I felt I had to have a test harness I could run without using the Internet.  I'm finding there are a lot of small tools that could accelerate development, but you have to build them yourself.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It works in basic form and passed Amazon certification!  It took three passes, and I'm grateful that Devpost extended the certification deadline.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    A lot!  Especially about balancing priorities.
+                </p>
+                <h2>
+                    What's next for Milton's Brain
+                </h2>
+                <p>
+                    I really want to encourage an understanding of how the brain places constraints on behavior, as I see so many people have challenges recognizing the amount of work different that tasks are for different people.  I believe I  can achieve this through adding more relevant facts and information. I also want to encourage a respect for the layers of history that build our knowledge, as we are currently faced with stories of "fake news" and a loss of confidence in the scientific method.  I believe this can also be addressed with the proper education.  You will see there are a lot of stories about who and how we acquired our current understanding of the brain, and I'd like to expand this.
+                </p>
+                <p>
+                    More information will be available at
+                    <a href="http://emotrics.com/miltonsbrain/" rel="nofollow">
+                        http://emotrics.com/miltonsbrain/
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            alexa-sdk
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            amazon-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dalexa-skills&amp;field-keywords=Milton%27s+brain" rel="nofollow" target="_blank" title="https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dalexa-skills&amp;field-keywords=Milton%27s+brain">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

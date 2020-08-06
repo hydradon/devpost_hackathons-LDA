@@ -1,0 +1,255 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/m7Xdi0qf9S0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="559603" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/559/603/datas/original.png">
+                            <img alt="Vid2Mesh &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/559/603/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="559659" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/559/659/datas/original.png">
+                            <img alt="Vid2Mesh &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/559/659/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <ul>
+                    <li>
+                        Object recognition software (YOLO, etc.)
+                    </li>
+                    <li>
+                        3D modeling solutions (Agisoft, Autodesk 123d Catch)
+                    </li>
+                    <li>
+                        Tensortube (from last year&rsquo;s hackathon)
+                    </li>
+                </ul>
+                <h2>
+                    Goals
+                </h2>
+                <ul>
+                    <li>
+                        Input a video and end up with 3D models of objects within the video
+                    </li>
+                    <li>
+                        Practice good hacking skills and teach freshman
+                    </li>
+                </ul>
+                <h2>
+                    How it works
+                </h2>
+                <ul>
+                    <li>
+                        Users who visit our website are met with a text input box for a YouTube url. When this url is submitted, our site uses PAFY to download the video for processing.
+                        <a href="https://github.com/mps-youtube/pafy" rel="nofollow">
+                            PAFY
+                        </a>
+                    </li>
+                    <li>
+                        Our backend down-samples this video of various objects to a specified framerate, providing a still image JPEG dataset. The down-sampling rate can be adjusted to balance speed (computation time) and performance (model clarity).
+                    </li>
+                    <li>
+                        YOLO, a real-time object detection program, is used to identify objects within the input video. Following the detection of these objects, the objects are cut out from the video, while their bounding boxes are removed. Ultimately, folders are created containing images of each object from various angles.
+                        <a href="https://pjreddie.com/darknet/yolo/" rel="nofollow">
+                            YOLO
+                        </a>
+                        <a href="https://arxiv.org/abs/1612.08242" rel="nofollow">
+                            YOLO
+                        </a>
+                    </li>
+                    <li>
+                        The openMVG library is run on each object to create point clouds using photogrammetry.
+                        <a href="https://github.com/openMVG/openMVG" rel="nofollow">
+                            openMVG
+                        </a>
+                    </li>
+                    <li>
+                        The MVE library is used on each point cloud to add density and provide a surface mesh that can be interpreted as a colorized 3D model.
+                        <a href="https://github.com/simonfuhrmann/mve" rel="nofollow">
+                            MVE
+                        </a>
+                    </li>
+                    <li>
+                        The website then uploads this 3D model to SketchFab, which is used to embed the model in a returned webpage for the user.
+                        <a href="https://sketchfab.com/developers" rel="nofollow">
+                            sketchfab
+                        </a>
+                        <br>
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Two of our team members are first semester freshmen. Coordinating development environments on top of this inexperience was our first challenge. We spent most of the first night teaching and synchronizing.
+                    </li>
+                    <li>
+                        We used a multiple environment and language specific libraries which would not run natively on our computers. This led us to use Docker containers.
+                    </li>
+                    <li>
+                        Two of the steps in our pipeline have large computation times, especially at a high performance level. Testing incrementally was challenging, and producing demo-ready results took a long time.
+                    </li>
+                    <li>
+                        After we finished the majority of our pipeline, we were still struggling with the modeling software failing on our image sets. This was a large technical challenge to work out the exact requirements in terms of EXIF metadata and resolution to produce a model.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    It works
+                </p>
+                <h2>
+                    What's next for Vid2Mesh
+                </h2>
+                <ul>
+                    <li>
+                        Train YOLO to identify very specific objects for very specific purposes. Example: Train YOLO to identify a wide variety of medications straight off the shelf, serving to simplify the process of healthcare facilities ordering from manufacturers.
+                    </li>
+                    <li>
+                        Improve multi-object modeling to prevent errors in videos with multiple objects of the same type.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c">
+                                c
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/docker">
+                                docker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mve
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            openmvg
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            pafy
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sketchfab">
+                                sketchfab
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            yolo
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://www.4dudesmodeling.com" rel="nofollow" target="_blank" title="http://www.4dudesmodeling.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                www.4dudesmodeling.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://skfb.ly/69QO9" rel="nofollow" target="_blank" title="https://skfb.ly/69QO9">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                skfb.ly
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

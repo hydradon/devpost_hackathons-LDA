@@ -1,0 +1,294 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="533797" data-title="Air Map" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/533/797/datas/original.png">
+                            <img alt="Air Map &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/533/797/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Air Map
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="536895" data-title="Air Quality Visualization" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/536/895/datas/original.png">
+                            <img alt="Air Map &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/536/895/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Air Quality Visualization
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="537013" data-title="Mobility Insights" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/013/datas/original.png">
+                            <img alt="Air Map &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/537/013/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Mobility Insights
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Background
+                </h2>
+                <p>
+                    Word wide, air pollution remains a major problem, taking years off people's life and currently available air quality measurements show us just how bad this problem is. Below is a snapshot taken today from
+                    <a href="http://aqicn.org" rel="nofollow">
+                        http://aqicn.org
+                    </a>
+                </p>
+                <p>
+                    <img alt="Pollution Map" data-canonical-url="https://i.imgur.com/y4sFzsr.png" src="https://res.cloudinary.com/devpost/image/fetch/s--1YwUmCkI--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/y4sFzsr.png">
+                </p>
+                <p>
+                    While these rough air quality measurements give a general idea of the environmental health of a greater region and we can perhaps choose which cities or countries to visit or avoid, they do not provide the kind of detail that would allow us to improve our situations in our day to day lives such as avoiding a particularly polluted route or attraction. For this we need much more data for out local surroundings.
+                </p>
+                <p>
+                    When trying to improve air quality, as we are learning in California, as progress that is made, it becomes much more difficult to make further reductions in air pollution. Because of this, we wanted to find a way not only to show where the pollution is, but also provide insights that could help others decide what changes to make within a region to improve air quality.
+                </p>
+                <h2>
+                    Description
+                </h2>
+                <p>
+                    Our project tackles three steps for improving air quality including taking measurements, displaying the data, and comparing it against trends in mobility.
+                </p>
+                <p>
+                    In order to gather more air quality data, since the currently available sets we found were not sufficient, we decided to use a simple and inexpensive Arduino BLE control board connected to an air quality sensor. This sensor can be mounted to vehicle license plate and connect over Bluetooth to the driver's phone so transmit air quality data over a range of locations and make it publicly available in Verizon's
+                    <strong>
+                        ThingSpace
+                    </strong>
+                    .
+                </p>
+                <p>
+                    We used the air quality gathered to generate a
+                    <strong>
+                        MapQuest
+                    </strong>
+                    heat map to clearly show where heavy pollution is detected within a particular region. This allows residents to avoid pollution and improve their health when making decisions such as choose which routes to take on their morning workout or selecting a park to visit with their kids.
+See code below for how we did it.
+                </p>
+                <p>
+                    In addition to making people aware of the air quality around them, we also provide insight into how to improve it. Using the
+                    <strong>
+                        Arity
+                    </strong>
+                    mobility trends APIs we were able to provide information within a region about the movement of automobiles, a primary cause of air pollution. In our display, a user can select the zip code of their region of concern and get information about how many people are traveling to their or from their location at a particular time as well as where they are coming from or returning to.
+                </p>
+                <p>
+                    This information combine with air quality by location can help people identify patterns that might lead them to finding ways of reducing pollution. For example, if too many people are driving to the park for the weekend for BBQs and increasing pollution, our application can help determine if the best solution is a bus route and where to put it, more efficient BBQs, or a new park closer to the visitors' homes.
+                </p>
+                <p>
+                </p>
+                <pre class="language-nolang"><code>&lt;script type="text/javascript"&gt;
+        window.onload = function() {
+        L.mapquest.key = 'ptRSvWh2aIMDbujho7QWivyfDHrtvKFY';
+        var baseLayer = L.mapquest.tileLayer('map');
+
+        var map = L.mapquest.map('map', {
+        center: [39.7392, -104.9903],
+        layers: L.mapquest.tileLayer('map'),
+        zoom: 11
+        });
+
+        //Some Example Air Quality Points
+        var addressPoints = [
+        [39.7392, -104.9903, "571"],
+        [39.7869090667, -104.9194, "486"],
+        [39.7894207167, -104.91947, "807"],
+        [39.7927369333, -104.91943, "899"],
+        [39.70585105, -104.91943, "1273"],
+        [39.7064188833, -104.919456833, "1258"],
+        [39.70584715, -104.9463564333, "1279"],
+        [39.7033391333, -104.9244005667, "1078"],
+        [39.7061991333, -104.9492620333, "1309"],
+        [39.7058955167, -104.9445613167, "1261"],
+        [39.78888045, -104.99146475, "734"],
+        [39.7950811333, -104.91079175, "928"],
+        [39.78909235, -104.9922956333, "740"],
+        [39.7889259667, -104.9938591667, "759"],
+        [39.7876576333, -104.9859563833, "687"],
+        [39.75392, -104.9603, "571"],
+        [39.76869090667, -104.9394, "486"],
+        [39.78894207167, -104.95947, "807"],
+        [39.7227369333, -104.98943, "899"],
+        [39.73585105, -104.98943, "1273"],
+        [39.7276576333, -104.9459563833, "687"]
+        ];
+
+        map.addControl(L.mapquest.control());
+
+        addressPoints = addressPoints.map(function (addressPoint) { return [addressPoint[0], addressPoint[1]]; });
+
+//ADD DATA TO MAPQUEST HEAT MAP
+L.heatLayer(addressPoints).addTo(map);
+
+function httpGetAsync(theUrl, callback)
+{
+var xmlHttp = new XMLHttpRequest();
+xmlHttp.onreadystatechange = function() { 
+if (xmlHttp.readyState == 4 &amp;&amp; xmlHttp.status == 200)
+callback(xmlHttp.responseText);
+}
+xmlHttp.open("GET", theUrl, true);
+xmlHttp.send(null);
+}
+
+//UPLOAD DATA FROM THINGSPACE
+httpGetAsync("https://thingspace.io/get/dweets/for/medical-yard", function(responseText) {
+var data = JSON.parse(responseText).with
+for (var i = 0; i &lt; data.length; i++) {
+if (data[i].content.your_longitude != null) {
+console.log(data[i].content.your_latitude);
+console.log(data[i].content.your_longitude);
+console.log(data[i].content.mouse_x);
+addressPoints.push([data[i].content.your_latitude, data[i].content.your_longitude, data[i].content.mouse_x])
+}
+}
+});
+
+//GET INSIGHTS FROM ACRITY
+document.getElementById("outbound").addEventListener("click", function() {
+var zip = document.getElementById("zip").value;
+httpGetAsync("https://api-beta.arity.com/shared-mobility-insights/v1/zip-codes/" + zip + "/origin-zip-codes?tripType=Personal&amp;startDayOfWeek=Monday&amp;startHour=11&amp;duration=10", function(responseText) {
+var end = JSON.parse(responseText).destinationZipCode.centroid;
+var start = JSON.parse(responseText).originZipCodes;
+L.marker([end.lat, end.lng], {
+icon: L.mapquest.icons.flag({
+primaryColor: '#22407F',
+secondaryColor: '#3B5998',
+shadow: true,
+size: 'lg',
+symbol: 'End'
+}),
+draggable: false
+}).bindPopup('Denver, CO').addTo(map);
+for (var i = 1; i &lt; start.length; i++) {
+if (((start[i].tripPercentage * 100) + '').slice(0, ((start[i].tripPercentage * 100) + '').indexOf(".")) == '0') {
+L.marker([start[i].centroid.lat, start[i].centroid.lng], {
+icon: L.mapquest.icons.via({
+primaryColor: '#98593B',
+secondaryColor: '#22407F',
+size: 'md'
+}),
+draggable: false
+}).bindPopup((start[i].tripPercentage * 100) + ' Percent').addTo(map);
+} else {
+L.marker([start[i].centroid.lat, start[i].centroid.lng], {
+icon: L.mapquest.icons.flag({
+primaryColor: '#22407F',
+secondaryColor: '#98593B',
+shadow: true,
+size: 'sm',
+symbol: ((start[i].tripPercentage * 100) + '').slice(0, ((start[i].tripPercentage * 100) + '').indexOf("."))
+}),
+draggable: false
+}).bindPopup((start[i].tripPercentage * 100) + ' Percent').addTo(map);
+}
+}
+});
+});
+
+document.getElementById("inbound").addEventListener("click", function() {
+var zip = document.getElementById("zip").value;
+httpGetAsync("https://api-beta.arity.com/shared-mobility-insights/v1/zip-codes/" + zip + "/destination-zip-codes?tripType=Personal&amp;startDayOfWeek=Monday&amp;startHour=11&amp;duration=10", function(responseText) {
+var start = JSON.parse(responseText).originZipCode.centroid;
+var end = JSON.parse(responseText).destinationZipCodes;
+L.marker([start.lat, start.lng], {
+icon: L.mapquest.icons.flag({
+primaryColor: '#22407F',
+secondaryColor: '#3B5998',
+shadow: true,
+size: 'lg',
+symbol: 'Start'
+}),
+draggable: false
+}).bindPopup('Denver, CO').addTo(map);
+for (var i = 1; i &lt; end.length; i++) {
+if (((end[i].tripPercentage * 100) + '').slice(0, ((end[i].tripPercentage * 100) + '').indexOf(".")) == '0') {
+L.marker([end[i].centroid.lat, end[i].centroid.lng], {
+icon: L.mapquest.icons.via({
+primaryColor: '#98593B',
+secondaryColor: '#22407F',
+size: 'md'
+}),
+draggable: false
+}).bindPopup((end[i].tripPercentage * 100) + ' Percent').addTo(map);
+} else {
+L.marker([end[i].centroid.lat, end[i].centroid.lng], {
+icon: L.mapquest.icons.flag({
+primaryColor: '#22407F',
+secondaryColor: '#98593B',
+shadow: true,
+size: 'sm',
+symbol: ((end[i].tripPercentage * 100) + '').slice(0, ((end[i].tripPercentage * 100) + '').indexOf("."))
+}),
+draggable: false
+}).bindPopup((end[i].tripPercentage * 100) + ' Percent').addTo(map);
+}
+}
+});
+});
+
+document.getElementById("clear").addEventListener("click", function() {
+location.reload();
+});
+}
+&lt;/script&gt;
+</code></pre>
+                <p>
+                </p>
+                <p>
+                    Inbound Mobility Trends
+    Outbound Mobility Trends
+    
+    Clear
+                </p>
+                <p>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/arduino">
+                                arduino
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mapquest">
+                                mapquest
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

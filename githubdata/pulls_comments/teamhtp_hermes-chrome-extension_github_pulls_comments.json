@@ -1,0 +1,446 @@
+[
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228322120",
+        "pull_request_review_id": 168570961,
+        "id": 228322120,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODMyMjEyMA==",
+        "diff_hunk": "@@ -0,0 +1,133 @@\n+const defaultOptions = {\n+  encryptKey: {\n+    title: 'Store keys encrypted using master password',\n+    info: 'Enabling this option will encrypt your secret key using your master password. This is neccessary for enabling Chrome sync storage.',\n+    type: 'boolean',\n+    default: false,\n+    value: false,\n+    disabled: (options) => {\n+      return options.masterPassword.value.length == 0;\n+    },\n+    onUpdate: (options) => {\n+      if (options.encryptKey.value && workingKeyPair.secretKey) {\n+        storageLocation.remove('secretKey');\n+        storageLocation.set({\n+          encryptedSecretKey: HermesCrypto.encryptSecret(workingKeyPair.secretKey, workingMasterPassword)\n+        });\n+      }\n+    }\n+  },\n+  masterPassword: {\n+    title: 'Master password',\n+    info: 'Your master password is used to encrypt your secret key. Anyone can pretend to be you if they have access to your master password and your encrypted secret key.',\n+    type: 'hash',\n+    default: '',\n+    value: '',\n+    onUpdate: (options) => {\n+      if (options.masterPassword.value === 'unknown' && !options.encryptKey.value) {\n+        // Value is 'unknown' (not stored) and encryptKey is disabled\n+        // Set password back to default\n+        options.masterPassword.value = options.masterPassword.default;\n+      }\n+      else if (options.masterPassword.value === options.masterPassword.default && options.encryptKey.value) {\n+        // Value is default (not set) and encryption key is enabled\n+        // Set password to 'unknown'\n+        options.masterPassword.value = 'unknown';\n+      }\n+    },\n+    onSave: (options) => {\n+      if (!options.rememberMasterPassword) {\n+        workingMasterPassword = options.masterPassword.value;\n+        options.masterPassword.value = 'unknown';\n+      }\n+    }\n+  },\n+  rememberMasterPassword: {\n+    title: 'Remember master password',\n+    info: 'Enabling this option means you will never have to input your master password when you want to use Hermes. Hermes will store hash of your password in local storage. This hash will never be stored in Chrome sync storage.',\n+    type: 'boolean',\n+    default: true,\n+    value: true,\n+    disabled: (options) => {\n+      return options.masterPassword.value.length == 0;\n+    }\n+  },\n+  keyStorageLocation: {\n+    title: 'Secret key storage location',\n+    info: 'Choose where you want your secret key to be stored. Choosing Chrome sync means Google will have access to your encrypted secret key, but never your master password.',\n+    type: 'selection',\n+    options: ['Local', 'Chrome sync'],\n+    default: 0,\n+    value: 0\n+  }\n+};\n+let options = {};\n+let storageLocation = chrome.storage.lcoal;\n+\n+function resetOptions() {\n+  chrome.storage.local.set({ options: {} });\n+  queryOptions(() => {});\n+}\n+\n+function queryOptions(callback) {\n+  chrome.storage.local.get(['options'], (result) => {\n+    for (var optionKey in defaultOptions) {\n+      options[optionKey] = result.options[optionKey] || defaultOptions[optionKey];",
+        "path": "src/chromium/backgroundOptions.js",
+        "position": null,
+        "original_position": 75,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "695c67d72ba857abe600154ea6cbfdc851a9ec66",
+        "user": {
+            "login": "cata85",
+            "id": 11954699,
+            "node_id": "MDQ6VXNlcjExOTU0Njk5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/11954699?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/cata85",
+            "html_url": "https://github.com/cata85",
+            "followers_url": "https://api.github.com/users/cata85/followers",
+            "following_url": "https://api.github.com/users/cata85/following{/other_user}",
+            "gists_url": "https://api.github.com/users/cata85/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/cata85/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/cata85/subscriptions",
+            "organizations_url": "https://api.github.com/users/cata85/orgs",
+            "repos_url": "https://api.github.com/users/cata85/repos",
+            "events_url": "https://api.github.com/users/cata85/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/cata85/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`Error in response to storage.get: TypeError: Cannot read property 'encryptKey' of undefined`",
+        "created_at": "2018-10-25T20:25:17Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228322120",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228322120"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228322120"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228322790",
+        "pull_request_review_id": 168571824,
+        "id": 228322790,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODMyMjc5MA==",
+        "diff_hunk": "@@ -1,40 +1,44 @@\n-chrome.runtime.onInstalled.addListener(() => {\n-  generateAndStoreKeyPair();\n-});\n+let currentTabId;\n+let tabIcons = {};\n+let workingKeyPair = {};\n+let workingMasterPassword = '';\n \n-function generateAndStoreKeyPair() {\n+function checkAndGenerateKeysLocalStorage() {\n+  chrome.storage.local.get(['publicKey', 'secretKey'], (result) => {\n+    if (typeof result.secretKey === 'undefined') {\n+      generateAndStoreKeyPairLocalStorage();\n+    }\n+    else {\n+      workingKeyPair.secretKey = result.secretKey;\n+      var publicKey = result.publicKey;\n+      if (typeof publicKey === 'undefined') {\n+        publicKey = HermesCrypto.encodeBase64(HermesCrypto.generateKeyPairFromSecretKey(HermesCrypto.decodeBase64(result.secretKey)).publicKey);\n+      }\n+      workingKeyPair.publicKey = publicKey;\n+    }\n+  });\n+}\n+\n+function generateAndStoreKeyPairLocalStorage() {\n   const keyPair = HermesCrypto.generateKeyPair();\n   keyPair.publicKey = HermesCrypto.encodeBase64(keyPair.publicKey);\n   keyPair.secretKey = HermesCrypto.encodeBase64(keyPair.secretKey)",
+        "path": "src/chromium/background.js",
+        "position": null,
+        "original_position": 29,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "695c67d72ba857abe600154ea6cbfdc851a9ec66",
+        "user": {
+            "login": "cata85",
+            "id": 11954699,
+            "node_id": "MDQ6VXNlcjExOTU0Njk5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/11954699?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/cata85",
+            "html_url": "https://github.com/cata85",
+            "followers_url": "https://api.github.com/users/cata85/followers",
+            "following_url": "https://api.github.com/users/cata85/following{/other_user}",
+            "gists_url": "https://api.github.com/users/cata85/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/cata85/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/cata85/subscriptions",
+            "organizations_url": "https://api.github.com/users/cata85/orgs",
+            "repos_url": "https://api.github.com/users/cata85/repos",
+            "events_url": "https://api.github.com/users/cata85/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/cata85/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "semicolon",
+        "created_at": "2018-10-25T20:27:34Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228322790",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228322790"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228322790"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228327566",
+        "pull_request_review_id": 168577659,
+        "id": 228327566,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODMyNzU2Ng==",
+        "diff_hunk": "@@ -0,0 +1,139 @@\n+const defaultOptions = {\n+  encryptKey: {\n+    title: 'Store keys encrypted using master password',\n+    info: 'Enabling this option will encrypt your secret key using your master password. This is neccessary for enabling Chrome sync storage.',\n+    type: 'boolean',\n+    default: false,\n+    value: false,\n+    disabled: (options) => {\n+      return options.masterPassword.value.length == 0;",
+        "path": "src/chromium/backgroundOptions.js",
+        "position": 9,
+        "original_position": 9,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "fae9a4c694b368062713b94a676b51d13adf3bdf",
+        "user": {
+            "login": "cata85",
+            "id": 11954699,
+            "node_id": "MDQ6VXNlcjExOTU0Njk5",
+            "avatar_url": "https://avatars3.githubusercontent.com/u/11954699?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/cata85",
+            "html_url": "https://github.com/cata85",
+            "followers_url": "https://api.github.com/users/cata85/followers",
+            "following_url": "https://api.github.com/users/cata85/following{/other_user}",
+            "gists_url": "https://api.github.com/users/cata85/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/cata85/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/cata85/subscriptions",
+            "organizations_url": "https://api.github.com/users/cata85/orgs",
+            "repos_url": "https://api.github.com/users/cata85/repos",
+            "events_url": "https://api.github.com/users/cata85/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/cata85/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "`Error in event handler for runtime.onMessage: TypeError: Cannot read property 'value' of undefined` Got this when I generated a new key.",
+        "created_at": "2018-10-25T20:42:58Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228327566",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "NONE",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228327566"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228327566"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228329800",
+        "pull_request_review_id": 168580560,
+        "id": 228329800,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODMyOTgwMA==",
+        "diff_hunk": "@@ -0,0 +1,139 @@\n+const defaultOptions = {\n+  encryptKey: {\n+    title: 'Store keys encrypted using master password',\n+    info: 'Enabling this option will encrypt your secret key using your master password. This is neccessary for enabling Chrome sync storage.',\n+    type: 'boolean',\n+    default: false,\n+    value: false,\n+    disabled: (options) => {\n+      return options.masterPassword.value.length == 0;",
+        "path": "src/chromium/backgroundOptions.js",
+        "position": 9,
+        "original_position": 9,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "fae9a4c694b368062713b94a676b51d13adf3bdf",
+        "user": {
+            "login": "tma02",
+            "id": 4529158,
+            "node_id": "MDQ6VXNlcjQ1MjkxNTg=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/4529158?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/tma02",
+            "html_url": "https://github.com/tma02",
+            "followers_url": "https://api.github.com/users/tma02/followers",
+            "following_url": "https://api.github.com/users/tma02/following{/other_user}",
+            "gists_url": "https://api.github.com/users/tma02/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/tma02/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/tma02/subscriptions",
+            "organizations_url": "https://api.github.com/users/tma02/orgs",
+            "repos_url": "https://api.github.com/users/tma02/repos",
+            "events_url": "https://api.github.com/users/tma02/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/tma02/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Could I get steps to reproduce? Was unable to reproduce by\r\n\r\n1. Loading extension on fresh Chrome\r\n2. Navigating to https://twitter.com\r\n3. Opening dev tools\r\n4. Generating new secret keys\r\n\r\nIcon update functionality remained as well, which leads me to believe this is the root of #11 ",
+        "created_at": "2018-10-25T20:50:17Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228329800",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228329800"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228329800"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        },
+        "in_reply_to_id": 228327566
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228330041",
+        "pull_request_review_id": 168580883,
+        "id": 228330041,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODMzMDA0MQ==",
+        "diff_hunk": "@@ -0,0 +1,139 @@\n+const defaultOptions = {\n+  encryptKey: {\n+    title: 'Store keys encrypted using master password',\n+    info: 'Enabling this option will encrypt your secret key using your master password. This is neccessary for enabling Chrome sync storage.',\n+    type: 'boolean',\n+    default: false,\n+    value: false,\n+    disabled: (options) => {\n+      return options.masterPassword.value.length == 0;",
+        "path": "src/chromium/backgroundOptions.js",
+        "position": 9,
+        "original_position": 9,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "fae9a4c694b368062713b94a676b51d13adf3bdf",
+        "user": {
+            "login": "tma02",
+            "id": 4529158,
+            "node_id": "MDQ6VXNlcjQ1MjkxNTg=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/4529158?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/tma02",
+            "html_url": "https://github.com/tma02",
+            "followers_url": "https://api.github.com/users/tma02/followers",
+            "following_url": "https://api.github.com/users/tma02/following{/other_user}",
+            "gists_url": "https://api.github.com/users/tma02/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/tma02/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/tma02/subscriptions",
+            "organizations_url": "https://api.github.com/users/tma02/orgs",
+            "repos_url": "https://api.github.com/users/tma02/repos",
+            "events_url": "https://api.github.com/users/tma02/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/tma02/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Did you mess with updateOptions() or the options in any way during testing?",
+        "created_at": "2018-10-25T20:51:08Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228330041",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "MEMBER",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228330041"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228330041"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        },
+        "in_reply_to_id": 228327566
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228730876",
+        "pull_request_review_id": 169074724,
+        "id": 228730876,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODczMDg3Ng==",
+        "diff_hunk": "@@ -12,16 +12,12 @@ var latestReceivedMessage = {\n   text: ''\n };\n \n-chrome.storage.local.get(['publicKey', 'secretKey'], (result) => {\n-  keyPair.publicKey = result.publicKey;\n-  keyPair.secretKey = result.secretKey;\n-});\n+chrome.runtime.sendMessage({ action: 'getKeyPair' });",
+        "path": "src/chromium/twitter.js",
+        "position": null,
+        "original_position": 8,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "3ad7c1d02eabeca8878de445ab8d82c331fb7ba3",
+        "user": {
+            "login": "dominictassio",
+            "id": 4950604,
+            "node_id": "MDQ6VXNlcjQ5NTA2MDQ=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/4950604?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/dominictassio",
+            "html_url": "https://github.com/dominictassio",
+            "followers_url": "https://api.github.com/users/dominictassio/followers",
+            "following_url": "https://api.github.com/users/dominictassio/following{/other_user}",
+            "gists_url": "https://api.github.com/users/dominictassio/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/dominictassio/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/dominictassio/subscriptions",
+            "organizations_url": "https://api.github.com/users/dominictassio/orgs",
+            "repos_url": "https://api.github.com/users/dominictassio/repos",
+            "events_url": "https://api.github.com/users/dominictassio/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/dominictassio/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "Move the sendMessage call to after the addListener call on line 17.",
+        "created_at": "2018-10-28T00:45:46Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228730876",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228730876"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228730876"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228730899",
+        "pull_request_review_id": 169074759,
+        "id": 228730899,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODczMDg5OQ==",
+        "diff_hunk": "@@ -38,19 +34,44 @@ function getMySecretKey() {\n }\n \n function encryptMessage(message) {\n-  return HermesCrypto.encryptMessage(message, getTheirPublicKey(), getMySecretKey());\n+  var encryptedMessage = '';\n+  try {\n+    encryptedMessage = HermesCrypto.encryptMessage(message, getTheirPublicKey(), getMySecretKey());\n+  }\n+  catch(e) {\n+",
+        "path": "src/chromium/twitter.js",
+        "position": null,
+        "original_position": 28,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "3ad7c1d02eabeca8878de445ab8d82c331fb7ba3",
+        "user": {
+            "login": "dominictassio",
+            "id": 4950604,
+            "node_id": "MDQ6VXNlcjQ5NTA2MDQ=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/4950604?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/dominictassio",
+            "html_url": "https://github.com/dominictassio",
+            "followers_url": "https://api.github.com/users/dominictassio/followers",
+            "following_url": "https://api.github.com/users/dominictassio/following{/other_user}",
+            "gists_url": "https://api.github.com/users/dominictassio/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/dominictassio/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/dominictassio/subscriptions",
+            "organizations_url": "https://api.github.com/users/dominictassio/orgs",
+            "repos_url": "https://api.github.com/users/dominictassio/repos",
+            "events_url": "https://api.github.com/users/dominictassio/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/dominictassio/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "```suggestion\r\n    return false;\r\n```",
+        "created_at": "2018-10-28T00:47:33Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228730899",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228730899"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228730899"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        }
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228731228",
+        "pull_request_review_id": 169075150,
+        "id": 228731228,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIyODczMTIyOA==",
+        "diff_hunk": "@@ -0,0 +1,139 @@\n+const defaultOptions = {\n+  encryptKey: {\n+    title: 'Store keys encrypted using master password',\n+    info: 'Enabling this option will encrypt your secret key using your master password. This is neccessary for enabling Chrome sync storage.',\n+    type: 'boolean',\n+    default: false,\n+    value: false,\n+    disabled: (options) => {\n+      return options.masterPassword.value.length == 0;",
+        "path": "src/chromium/backgroundOptions.js",
+        "position": 9,
+        "original_position": 9,
+        "commit_id": "267b791136f9cc76d993cabc698ae746b6dc3ba9",
+        "original_commit_id": "fae9a4c694b368062713b94a676b51d13adf3bdf",
+        "user": {
+            "login": "dominictassio",
+            "id": 4950604,
+            "node_id": "MDQ6VXNlcjQ5NTA2MDQ=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/4950604?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/dominictassio",
+            "html_url": "https://github.com/dominictassio",
+            "followers_url": "https://api.github.com/users/dominictassio/followers",
+            "following_url": "https://api.github.com/users/dominictassio/following{/other_user}",
+            "gists_url": "https://api.github.com/users/dominictassio/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/dominictassio/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/dominictassio/subscriptions",
+            "organizations_url": "https://api.github.com/users/dominictassio/orgs",
+            "repos_url": "https://api.github.com/users/dominictassio/repos",
+            "events_url": "https://api.github.com/users/dominictassio/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/dominictassio/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "I could not reproduce this error. We should address this at a later time if it ever shown to be reproducible.",
+        "created_at": "2018-10-28T01:10:16Z",
+        "updated_at": "2018-10-28T01:14:45Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228731228",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/228731228"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/10#discussion_r228731228"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/10"
+            }
+        },
+        "in_reply_to_id": 228327566
+    },
+    {
+        "url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/230093331",
+        "pull_request_review_id": 170750353,
+        "id": 230093331,
+        "node_id": "MDI0OlB1bGxSZXF1ZXN0UmV2aWV3Q29tbWVudDIzMDA5MzMzMQ==",
+        "diff_hunk": "@@ -0,0 +1,83 @@\n+var eventHandlers = {};\n+var myGroupmeId = -1;\n+\n+eventHandlers['groupMessageService.create'] = (event) => {\n+  var messageToSend = event.data.a.text;\n+  if (getTheirPublicKey().length != 0 && !downgraded) {\n+    var groupId = event.data.r.group.id;\n+    var message = event.data.a.text;\n+    messageToSend = `HERMES_A:${encryptMessage(message)}\\nHERMES_B:${encryptMessageForSelf(message)}`;\n+    event.data.a.text = messageToSend;\n+    event.data.r.lastMessage.text = messageToSend;\n+  }\n+  else {",
+        "path": "src/chromium/groupme.js",
+        "position": null,
+        "original_position": 13,
+        "commit_id": "f94619030032a66ec8af275c12810c3e1f23ce54",
+        "original_commit_id": "6089e6ba07877b39565d01884c12f5a877561c7b",
+        "user": {
+            "login": "dominictassio",
+            "id": 4950604,
+            "node_id": "MDQ6VXNlcjQ5NTA2MDQ=",
+            "avatar_url": "https://avatars2.githubusercontent.com/u/4950604?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/dominictassio",
+            "html_url": "https://github.com/dominictassio",
+            "followers_url": "https://api.github.com/users/dominictassio/followers",
+            "following_url": "https://api.github.com/users/dominictassio/following{/other_user}",
+            "gists_url": "https://api.github.com/users/dominictassio/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/dominictassio/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/dominictassio/subscriptions",
+            "organizations_url": "https://api.github.com/users/dominictassio/orgs",
+            "repos_url": "https://api.github.com/users/dominictassio/repos",
+            "events_url": "https://api.github.com/users/dominictassio/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/dominictassio/received_events",
+            "type": "User",
+            "site_admin": false
+        },
+        "body": "No need for an empty else condition, should be removed.",
+        "created_at": "2018-11-01T15:53:04Z",
+        "updated_at": "2018-11-02T00:14:56Z",
+        "html_url": "https://github.com/TeamHTP/hermes-chrome-extension/pull/20#discussion_r230093331",
+        "pull_request_url": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/20",
+        "author_association": "CONTRIBUTOR",
+        "_links": {
+            "self": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/comments/230093331"
+            },
+            "html": {
+                "href": "https://github.com/TeamHTP/hermes-chrome-extension/pull/20#discussion_r230093331"
+            },
+            "pull_request": {
+                "href": "https://api.github.com/repos/TeamHTP/hermes-chrome-extension/pulls/20"
+            }
+        }
+    }
+]

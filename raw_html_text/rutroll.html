@@ -1,0 +1,274 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="698688" data-title="The chrome extension in action" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/688/datas/original.png">
+                            <img alt="RuTroll &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/688/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                The chrome extension in action
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="698687" data-title="Training accuracy curve" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/687/datas/original.png">
+                            <img alt="RuTroll &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/698/687/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Training accuracy curve
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Overview
+                </h1>
+                <p>
+                    We will briefly describe the three contributions of our project:
+                </p>
+                <ol>
+                    <li>
+                        A fully functional, twitter augmenting chrome extension that protects the user against foreign propaganda
+                    </li>
+                    <li>
+                        A home-brewed machine learning model comparable to state of the art results on classification of Russian-troll tweets
+                    </li>
+                    <li>
+                        A curated and labeled open source dataset of over 250,000 Russian and non-Russian troll tweets for machine learning tasks
+                    </li>
+                </ol>
+                <h2>
+                    Introduction
+                </h2>
+                <p>
+                    This past Wednesday, Twitter released a dataset of over 10 million tweets thought to belong to foreign propaganda machines. Along this vein, we thought it apt to focus on a very current and real issue: protecting our democracy.
+                </p>
+                <h2>
+                    Chrome Extension
+                </h2>
+                <p>
+                    We built a chrome extension which modifies the user's twitter experience by highlighting tweets that are suspected to be Russian troll tweets. This was all written in javascript and utilized Google's AutoML, which we trained on data we collected. The extension highlight's tweets that the model we learned thought as "highly russian" (above 90% confidence), and furthermore censors their potentially offensive profile picture.
+                </p>
+                <h2>
+                    Data and Model
+                </h2>
+                <p>
+                    The bulk of our data comes from
+                    <a href="https://github.com/fivethirtyeight/russian-troll-tweets" rel="nofollow">
+                        the website fivethirtyeight
+                    </a>
+                    , which released a dataset of over 1.4 million tweets known to have come from botnets or Russian trolls. For normal, non-malicious tweet data, we used
+                    <a href="https://www.kaggle.com/c/twitter-sentiment-analysis2" rel="nofollow">
+                        kaggle's sentiment analysis dataset
+                    </a>
+                    . We combine the data into a single training file, described later.
+                </p>
+                <p>
+                    We wanted to see if we would be able to beat Google's AutoML framework (why not?), so we built our own neural network that classifies the tweets--to surprisingly good results.
+                </p>
+                <p>
+                    Our model is a ten-layer fully connected neural network built with the abstracted
+                    <code>
+                        tf.layers
+                    </code>
+                    api, with layer widths
+                    <code>
+                        [1024, 1024, 512, 256, 256, 128, 64, 32]
+                    </code>
+                    (motivated by [1], which argues that layer-wise homogeneity can help with learning). We were unable to beat the model's accuracy with further model engineering.
+                </p>
+                <h2>
+                    Preprocessing
+                </h2>
+                <p>
+                    We extract only the tweets and classes of each tweet in
+                    <em>
+                        process.py
+                    </em>
+                    . We have conveniently provided the reader a labeled dataset with
+                    <em>
+                        over
+                    </em>
+                    250k tweets from Russian and non-Russian sources, stored as
+                    <code>
+                        tweets.csv
+                    </code>
+                    . These tweets have had punctuation and some stop words removed, and are machine learning--ready.
+                </p>
+                <p>
+                    We make heavy use of sklearn's
+                    <code>
+                        CountVectorizer
+                    </code>
+                    object, which allows us to transform a tweet into a fixed
+                    <code>
+                        [5000, 1]
+                    </code>
+                    length vector, based on unigrams and bigrams of each tweet. We keep only the 5000 most occuring instances of words for classification, due to memory constraints on our training hardware.
+                </p>
+                <h2>
+                    Training and Overview of Results
+                </h2>
+                <p>
+                    Our best holdout validation accuracy is
+                    <code>
+                        0.91
+                    </code>
+                    , compared to Google's AutoML score of
+                    <code>
+                        0.94
+                    </code>
+                    precision (AutoML does not report holdout validation accuracy). This is a great result, and proves that even without extensive preprocessing, feature selection, model engineering, and hyperparameter tuning (we only had a gtx1060 and 24 hours), we are able to get close to state of the art grid search algorithms. Our surprising accuracy implies the data we collected must hold very meaningful intrinsic differences between our chosen classes.
+                </p>
+                <p>
+                    We optimize mean squared error using
+                    <code>
+                        tf.GradientDescentOptimizer
+                    </code>
+                    , having obtained better results with simple gradient descent than with
+                    <code>
+                        tf.softmax_cross_entropy_with_logits_v2
+                    </code>
+                    ,
+                    <code>
+                        tf.AdamOptimizer
+                    </code>
+                    , or
+                    <code>
+                        tf.AdagradOptimizer
+                    </code>
+                    . Results for different optimizers are presented below:
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th>
+                                Validation Acc (5 Run Average)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                GradDesc
+                            </td>
+                            <td>
+                                0.905118087
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                AdaGrad
+                            </td>
+                            <td>
+                                0.904162557
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Adam
+                            </td>
+                            <td>
+                                0.866541337
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h2>
+                    Difficulties
+                </h2>
+                <p>
+                    Each task had it's own difficulty. Since we were a team of three, each of us focused on a different part of the problem (and were equally stumped). Spending 5 hours stuck on a single API call in javascript is not something we want to experience again, but we are extremely grateful we stuck it through to have a working product. Furthermore, training our own NLP model was very rewarding, as it is the first time any of us has worked with text and Tensorflow.
+                </p>
+                <h2>
+                    References
+                </h2>
+                <p>
+                    [1] Rudolph, S. (1997). On topology, size and generalization of non-linear feed-forward neural networks. Neurocomputing, 16(1), pp.1-22.
+                </p>
+                <p>
+                    <a href="https://github.com/sid-devic/RuTroll" rel="nofollow">
+                        github
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            automl
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chrome">
+                                chrome
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-nlp
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/sid-devic/RuTroll" rel="nofollow" target="_blank" title="https://github.com/sid-devic/RuTroll">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

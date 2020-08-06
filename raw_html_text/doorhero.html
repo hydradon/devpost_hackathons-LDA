@@ -1,0 +1,179 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="583162" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/162/datas/original.jpg">
+                            <img alt="DoorHero &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/162/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <div class="alert-box alert">
+                            This image is currently processing. Please be patient...
+                        </div>
+                        <img alt="DoorHero &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="https://devpost-challengepost.netdna-ssl.com/assets/defaults/software-d4334efb72013df43784baffede9d379.gif">
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="583164" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/164/datas/original.jpg">
+                            <img alt="DoorHero &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/583/164/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We wanted to learn about machine learning. There are thousands of sliding doors made by Black &amp; Decker and they're all capable of sending data about the door. With this much data, the natural thing to consider is a machine learning algorithm that can figure out ahead of time when a door is broken, and how it can be fixed. This way, we can use an app to send a technician a notification when a door is predicted to be broken. Since technicians are very expensive for large corporations, something like this can save a lot of time, and money that would otherwise be spent with the technician figuring out if a door is broken, and what's wrong with it.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    DoorHero takes attributes (eg. motor speed) from sliding doors and determines if there is a problem with the door. If it detects a problem, DoorHero will suggest a fix for the problem.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    DoorHero uses a Tensorflow Classification Neural Network to determine fixes for doors. Since we didn't have actual sliding doors at the hackathon, we simulated data and fixes. For example, we'd assign high motor speed to one row of data, and label it as a door with a problem with the motor, or we'd assign normal attributes for a row of data and label it as a working door.
+                </p>
+                <p>
+                    The server is built using Flask and runs on
+                    <a href="https://floydhub.com" rel="nofollow">
+                        Floydhub
+                    </a>
+                    . It has a Tensorflow Neural Network that was trained with the simulated data. The data is simulated in an Android app. The app generates the mock data, then sends it to the server. The server evaluates the data based on what it was trained with, adds the new data to its logs and training data, then responds with the fix it has predicted.
+                </p>
+                <p>
+                    The android app takes the response, and displays it, along with the mock data it sent.
+                </p>
+                <p>
+                    In short, an Android app simulates the opening and closing of a door and generates mock data about the door, which is sends everytime the door "opens", to a server using a Flask REST API. The server has a trained Tensorflow Neural Network, which evaluates the data and responds with either "No Problems" if it finds the data to be normal, or a fix suggestion if it finds that the door has an issue with it.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The hardest parts were:
+                </p>
+                <ul>
+                    <li>
+                        Simulating data (with no background in sliding doors, the concept of sliding doors sending data was pretty abstract).
+                    </li>
+                    <li>
+                        Learning how to use machine learning (turns out this isn't so easy) and implement tensorflow
+                    </li>
+                    <li>
+                        Running tensorflow on a live server.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        A lot about modern day sliding doors
+                    </li>
+                    <li>
+                        The basics of machine learning with tensorflow
+                    </li>
+                    <li>
+                        Discovered floydhub
+                    </li>
+                </ul>
+                <h2>
+                    What we could have improve on
+                </h2>
+                <p>
+                    There are several things we could've done (and wanted to do) but either didn't have time or didn't have enough data to. ie:
+                </p>
+                <ul>
+                    <li>
+                        Instead of predicting a fix and returning it, the server can predict a set of potential fixes in order of likelihood, then send them to the technician who can look into each suggestion, and select the suggestion that worked. This way, the neural network could've learned a lot faster over time. (Currently, it adds the predicted fix to its training data, which would make for bad results
+                    </li>
+                    <li>
+                        Instead of having a fixed set of door "problems" for the door, we could have built the app so that in the beginning, when the neural network hasn't learned yet, it asks the technician for input after everytime the fix the door (So it can learn without data we simulated as this is what would have to happen in the normal environment)
+                    </li>
+                    <li>
+                        We could have made a much better interface for the app
+                    </li>
+                    <li>
+                        We could have added support for a wider variety of doors (eg. different models of sliding doors)
+                    </li>
+                    <li>
+                        We could have had a more secure (encrypted) data transfer method
+                    </li>
+                    <li>
+                        We could have had a larger set of attributes for the door
+                    </li>
+                    <li>
+                        We could have factored more into decisions (for example, detecting a problem if a door opens, but never closes).
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/android">
+                                android
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/java">
+                                java
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

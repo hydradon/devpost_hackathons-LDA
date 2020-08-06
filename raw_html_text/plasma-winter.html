@@ -1,0 +1,191 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/lcc9viLBSnA?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Important!
+                </h1>
+                <p>
+                    Demo will be here
+                    <code>
+                        https://plasma-winter.io
+                    </code>
+                    , but it's only active when my laptop is on, so wait for on-stage demo!
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <ul>
+                    <li>
+                        Power of SNARKs
+                    </li>
+                    <li>
+                        Our "The Game of SNARKs" ETH Berlin submission
+                    </li>
+                    <li>
+                        Vitalik's post on ethresear.ch
+                    </li>
+                    <li>
+                        ZCash's work for zkSNARKs
+                    </li>
+                </ul>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    We've used our extended "bellman" proof system from zCash extended for BN256 curve to implement an "Update" gadget circuit. It does the following:
+                </p>
+                <ul>
+                    <li>
+                        Use contract calldata to solve data availability problem resolution. Hashes it using sha256 to make public data commitment
+                    </li>
+                    <li>
+                        Use three public inputs: old balance tree root hash, new balance tree root hash, commitment to public data
+                    </li>
+                    <li>
+                        Internally use a witness of transaction data and signatures to:
+                        <ul>
+                            <li>
+                                Prove that sender's and recipient account exist in a tree with particular associated public key, balance and nonce
+                            </li>
+                            <li>
+                                Check transaction signature on sender's public key, parse data, check "nonce" and "good until block" fields
+                            </li>
+                            <li>
+                                Decrement sender's balance, increment recipient's balance, update collected fee
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Recalculate a root hash and use it as an intermediate one for the next transaction
+                    </li>
+                    <li>
+                        First intermediate root is the old balance tree root hash
+                    </li>
+                    <li>
+                        Final intermediate root is enforced to be equal to new balance tree root hash
+                    </li>
+                    <li>
+                        Internally public data is hashed using sha256 and enforced equal to commitment to public data
+                    </li>
+                </ul>
+                <h2>
+                    How we built it
+                </h2>
+                <ul>
+                    <li>
+                        zCash's "sapling-crypto" is a great example of how gadgets can be implemented
+                    </li>
+                    <li>
+                        An implementation of BN256 curve for it was our previous work, it's public along with other stuff
+                        <a href="https://github.com/matterinc/sapling-crypto" rel="nofollow">
+                            here
+                        </a>
+                    </li>
+                    <li>
+                        Implement the gadget using the Peddersen hash that was implemented by zCash already
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        Rust.....
+                    </li>
+                    <li>
+                        We were very lucky to have someone for UI
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        It works and we've made tests, performance and transaction cost estimation
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Experience with Rust and large zkSNARKs implementation
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Plasma Winter
+                </h2>
+                <ul>
+                    <li>
+                        Make "deposit" and "exit" gadgets
+                    </li>
+                    <li>
+                        Implement a "disaster" protocol in case of disappearance of an operator (when operator stops to process user's "deposit" and "exit" requests)
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            rust
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/solidity">
+                                solidity
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            vue
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/gluk64/gluk64.github.io" rel="nofollow" target="_blank" title="https://github.com/gluk64/gluk64.github.io">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/matterinc/plasma_winter" rel="nofollow" target="_blank" title="https://github.com/matterinc/plasma_winter">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

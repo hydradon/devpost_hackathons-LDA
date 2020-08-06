@@ -1,0 +1,84 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <p>
+                    Discord is a multi-platform chat client that allows users to setup "servers" hosted by Discord. Users can then invite their friends to these server to form chat groups with multiple channel. For example, my classmates and I use Discord to discuss schoolwork with separate channels for each class.
+                </p>
+                <p>
+                    The goal of my project was to create a bot for Discord that could be used host text-adventure games in the style of the classic multi-user dungeons. However, I scaled back my prospects due to the limited time-frame of the project.
+                </p>
+                <p>
+                    I approached this problem by first setting up a simple bot using the Discord.js module for NodeJS. I created listeners for all events associated with the module and logged when these events occurred. In an effort to create a cache, I also saved all the received to a database using MongoDB, which was chosen for the ease with which it could be integrated into a NodeJS application.
+                </p>
+                <p>
+                    With a basic bot ready, I setup a Discord server just for this project. The channel
+                    <code>
+                        announcements
+                    </code>
+                    and
+                    <code>
+                        achievements
+                    </code>
+                    were intended to be used to share news relating to the server and bot, and to publicly post player achievements in the games. A
+                    <code>
+                        general
+                    </code>
+                    discussion channel was created to allow off-topic, but moderated discussion. A
+                    <code>
+                        lobby
+                    </code>
+                    channel was created as a place for players to form groups/parties before joining a game room. The
+                    <code>
+                        game-room
+                    </code>
+                    channels are where the bot hosts the games. The permissions in these channels are strictly controlled to only allow the bot and the currently "focused" player to send messages. This prevents spam and distractions from the game. I intended to hide these channels from player who were not in them, but Discord keeps temporary information that detracted from the experience.
+                </p>
+                <p>
+                    To join a game room, the player needs only supply the
+                    <code>
+                        !join
+                    </code>
+                    command in the lobby channel. The bot will then give the player the appropriate permissions to use the game room.
+                </p>
+                <p>
+                    The game data is also stored within the MongoDB database using a simple state-machine to control the flow of the game. For example a "Message" node, instructs the bot to send a message, while a "Combat" node instructs the bot to start combat with all involved parties. Creating and expanding game content is as simple as adding new states and action node to the stored documents.
+                </p>
+                <p>
+                    At the moment, gameplay is rather bland with only a short demo adventure available, "The Skeleton King's Crypt". Due to time constraints and fundamental design flaws, the combat is automated without user input. Although not included in the demo, the player can choose various paths through the dungeon.
+                </p>
+                <p>
+                    In the future, I want to redesign the bot the fix a few fundamental flaws. It would be my hope to turn into something me and my friends could use to have some fun between classes.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            discord.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/mongodb">
+                                mongodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

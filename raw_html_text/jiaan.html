@@ -1,0 +1,118 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The world is a dangerous place, and isolating ourselves behind walls and cages in the name of safety obstructs crucial moments of cultural exchange. Workplace violence traditionally follows this destructive pattern in statistically high-crime locations. Gas stations, outlet malls, bodegas, and express stores install obstructive cages between customers and their workers to enhance safety. The move improves workplace safety, but at a significant cost to the community. Jiaan is an opportunity to change traditional reactions, workplace culture, and community for the better. The intelligent security system identifies threat in real-time and allows for action to be made on that threat. My goal is to reduce and ultimately eliminate prolonged violent encounters that would otherwise require the employee to notify authorities after the fact.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Jiaan detects and classifies objects in a live feed and measures a cumulative threat level that will trigger a configured response. Should the system detect an elevated threat level as a result of the presence of a handgun, a notification may be immediately delivered to authorities, security agencies, management, and even to on-site employees. The system significantly reduces the time it takes for personnel and / or authorities to be notified of a potentially violent encounter while also disseminating threat notifications to increase on-site awareness.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    A fine-tuned model was trained off the VGG16 Reduced model using Single Shot MultiBox Object Detection on 2.6GB of annotated images that depicted both violent and non-violent interactions. Once the model was producing satisfactory results for this project, the custom model was optimized with Intel's DeepLearning Toolkit and ported to the DeepLens device.
+                </p>
+                <p>
+                    The micro services on Amazon's Lambda Functions were developed in Python to preprocess, interpret, and act on the live feed from the DeepLens device to measure a threat level driven by a calculation of the accuracy of the object detected and the classification of the object.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    I ran into three significant challenges developing Jiaan ( and roughly three dozen minor challenges ) that had to be overcome. The first challenge was identifying an optimal network to accurately and efficiently detect and predict the classification of multiple objects within a single image. The first pass at building this project utilized CNN object classification that was unable to accurately predict one or more threats within a single image. This resulted in greater research and more extensive model building for this project to implement a Single Shot MultiBox Detection network.
+                </p>
+                <p>
+                    The second challenge was planning training cycles with unique datasets for the project. Training required acquiring a significant collection of new assets, annotating those assets, and training the model on those assets. Collecting and annotating a measurable data set required 100+ hours of manual work. Training the model on the assets took 500+ hours, which had to be mitigated with cost.
+                </p>
+                <p>
+                    Navigating around some of the issues with Intel's model optimizer and inference engine consumed a lot of time that would otherwise have been spent on enhancements. Much of the final week was spent reverse engineering Intel's framework, fixing bugs in the optimizer, and flashing the DeepLens device. The experience, however, proved educational, and I now have a detailed understanding of Intel's deep learning toolset.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        Building a functional SSD r-CNN-driven model
+                    </li>
+                    <li>
+                        Broadening the scope of my knowledge to include mxnet and SageMakers' APIs with only prior experience with OpenCV and Numpy
+                    </li>
+                    <li>
+                        Acquiring a greater understanding of the technologies underlying Greengrass, DeepLens, and Sagemaker
+                    </li>
+                    <li>
+                        Uncanny patience while annotating 1000s of images
+                    </li>
+                </ul>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Building an intelligent application driven by DeepLens, or any ML project, is as much of a project management task as it is a development task. There are a number of variables that affect resource capacity and may result in unexpected downtime that must be addressed as part of planning.
+                </p>
+                <h2>
+                    What's next for Jiaan
+                </h2>
+                <p>
+                    Jiaan will be expanded to include a broader scope of threat classifications suitable for a live environment where it can be implemented and donated to the community.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            deeplens
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            greengrass
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/sagemaker">
+                                sagemaker
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            ssd
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

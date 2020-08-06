@@ -1,0 +1,166 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/6pe6P4X0c0A?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="620868" data-title="Chat in Progress" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/868/datas/original.png">
+                            <img alt="Support Chat &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/868/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Chat in Progress
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="620869" data-title="Reports" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/869/datas/original.png">
+                            <img alt="Support Chat &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/869/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Reports
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="620870" data-title="Live Chat" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/870/datas/original.png">
+                            <img alt="Support Chat &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/870/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Live Chat
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="620871" data-title="Completed chat with sentiment analysis" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/871/datas/original.png">
+                            <img alt="Support Chat &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/620/871/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Completed chat with sentiment analysis
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    This app is targeted for use in a customer-support contact center. I wanted to provide a seamless user experience for Agents using Appian as their case management system to participate in real-time chat with end users. The new web-content field in Appian 18.1 made this possible! I leverage Twilio Chat Apis to power the real time messaging and security.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    In this app, and end-user initiates a chat by starting an Appian action. This action calls a process model that creates a private chat room for that end user along with the case. The support agents group will now have an Appian task available to join the room for that case. The first agent to accept the task joins the room and participates in the chat from within an Appian Task Form. When the chat is complete, the agents dispositions the task and data is available for reporting. When viewing the chat history, all messages are available to view, along with a sentiment analysis rating powered by Google Cloud API for Natural Language processing.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The core of the chat functionality is built using Twilio Chat APIs. I built a lightweight Node.js Express app to provide a stateless container for the Chat UI - this is what gets embedded in the Appian Web Content field. The Appian Process Model that creates the case and chat channel uses Twilio APIs to create a unique and private channel for the case, and add the end user to be able to enter the channel. The channel UID is written to the Appian business database for future use.  I use standard Appian Task assignment functionality for targeting the Agent group. The Process Model for the agent task calls Twilio APIs to join the agent user to the private channel. Twilio API calls are also used for writing system-generated chat messages when users join and leave the room. Chat history is built as an entity-backed Appian Record. Chat messages are retrieved in real-time again via Twilio-API with appropriate paging. Additionally, Google Cloud APIs are used in real time to process each message that the end user sent for sentiment analysis, and Appian Dynamic SAIL is used to display a visual indicator of that sentiment.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Paging of results for message history was a challenge, especially since message data is stored on Twilio servers and not in the Appian database. Twilio's APIs support paging but the format of request data doesn't align perfectly with appian dataSubset. Additionally, since I'm displaying advanced UI using an Editable Grid, natural grid paging isn't available, so custom Appian paging controls needed to be built in SAIL.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm very happy with the security that's built in this app - being able to dynamically create the private chat channels and only add the appropriate users as they join. I'm also happy with being able to perform and display the sentiment analysis data in real time for data that is completely external to Appian.
+I think this is a great example of expanded dynamic UI that the web content field will enable for Appian going forward.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    There are definitely some pros and cons for keeping data such as message history on the external services. The way this system is currently implemented, there is no duplication of data, but the ability to aggregate and report on this data is limited.
+                </p>
+                <h2>
+                    What's next for Support Chat
+                </h2>
+                <p>
+                    Expansions of functionality for this app will include:
+                </p>
+                <ul>
+                    <li>
+                        Case classification to target subsets of agents
+                    </li>
+                    <li>
+                        Aggregation of sentiment data, such as average sentiment per user
+                    </li>
+                    <li>
+                        Non-Appian interface for initiating and participating in chat as end-user
+                    </li>
+                    <li>
+                        Real-time indication of sentiment
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            appian
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/twilio">
+                                twilio
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

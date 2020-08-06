@@ -1,0 +1,154 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/wXrTQzskJLE?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Across the Internet, hundreds of thousands of sites rely on Google's reCaptcha system for defense against bots (in fact, Devpost uses reCaptcha when creating an new account). After a Google research team demonstrated a near
+                    <a href="https://pdfs.semanticscholar.org/ceef/94e5e9b6188e9aca558efcf92e57ec987bc4.pdf" rel="nofollow">
+                        complete defeat
+                    </a>
+                    of the text reCaptcha in 2012, the reCaptcha system evolved to rely on audio and image challenges, historically more difficult challenges for automated systems to solve. Google has continually iterated on its design, releasing a newer and more powerful version as recently as just this year. Successfully demonstrating a defeat of this captcha system would spell significant vulnerability for a huge number of popular sites.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Our unCaptcha system has attack capabilities written for both the image captcha and the audio captcha (it is far more accurate with the audio captcha). Using browser automation software, we can interact with the target website and engage with the captcha, parsing out the necessary elements to begin the attack. We rely primarily on the audio captcha attack - by properly identifying spoken numbers, we can pass the reCaptcha programmatically and fool the site into thinking our bot is a human.
+                </p>
+                <h4>
+                    Background
+                </h4>
+                <p>
+                    Google's reCaptcha system uses an advanced risk analysis system to determine programmatically how likely a given user is to be a human or a bot. It takes into account your cookies (and by extension, your interaction with other Google services), the speed at which challenges are solved, mouse movements, and (obviously) how successfully you solve the given task. As the system gets increasingly suspicious, it delivers increasingly difficult challenges, and requires the user to solve more of them. Researchers have already identified minor weaknesses with the reCaptcha system - 9 days of legitimate (ish) interaction with Google's services is usually enough to lower the system's suspicion level significantly. However, we were interested in a more complete defeat of the system, so we designed a two-prong attack on the captcha's dual components - the audio captcha and the image captcha.
+                </p>
+                <h4>
+                    Audio
+                </h4>
+                <p>
+                    The format of the audio captcha is a varied-length series of numbers spaced out read aloud at varied speeds, pitches, and accents through background noise. To attack this captcha, the audio payload is identified on the page and downloaded. Using a number of different models, we process the captcha and ensemble the results to probabilistically to enumerate the most likely string of numbers. These numbers are then organically typed into the captcha, and the captcha is completed. From initial testing, we have seen 92%+ accuracy in individual number identification, and 65%+ accuracy in defeating the audio captcha in its entirety.
+                </p>
+                <h4>
+                    Images
+                </h4>
+                <p>
+                    The format of the image captcha is a single tiled image of varied dimensions of varied contents. Sometimes it is a singular image divided by the reCaptcha GUI into 4x4 squares, with a task for the user to identify which squares contain a certain object (such as street signs). In other formats (2x4, 3x3), the images tiles are all different images, and the user simply must select which images conform to a specific label (such as, "identify the images of mountains"). To attack this, unCaptcha interacts with the captcha to extract the image payload and target text. Synonyms of the target text are first enumerated, and then the dimensions of the captcha are calculated based on the captcha's HTML formatting. Using this, the image is divided into its sub-images, and these subimages are processed individually to determine their images. After performing more organic mouse movements, these clicks are then sent to the browser to attempt to solve the image captcha. Although our image recognition has had a very high accuracy rate, the synonym approach often results in many false positives.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    We ran into significant challenges in the image recognition, initial browser automation, and connecting the full suite of attacks. Image recognition is particularly difficult on a single image that is split up. For this challenge, we must identify squares that contain a specific object (street sign, store front, etc.). Typically, the object is split across two sub-images, which makes classification extremely difficult for bots, but it is still easy for humans.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're proud to demonstrate a successful attack against Google's audio reCaptcha system! After many hours of fine tuning, we managed to create a model that successfully identified individual numbers ~95% of time and passed the entire reCaptcha audio challenge ~65% of the time. This represents a
+                    <em>
+                        significant
+                    </em>
+                    defeat of the captcha system.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about browser security, and more advanced defenses against bots. We learned about browser automation, image recognition, audio recognition, and python project architecture. We also learned to focus on the weak point of security. Although we started by attacking the image challenge, we realized that the audio challenge would be an easier attack vector. In about half the time, we managed to create an model that performed better at the audio challenge than the image challenge.
+                </p>
+                <h2>
+                    What's next for unCaptcha
+                </h2>
+                <p>
+                    Improving the natural language processing portion of the image recognition system will help reduce the false positive rate of the image attack. By incorporating more advanced NLP concepts, we should be able to significantly increase our accuracy. Additionally, applying additional audio pre-processing to the captcha will help reduce errors in identification.
+                </p>
+                <p>
+                    More work is required to break the image challenge of reCaptcha. We have considered a more thoroughly testing of the sub-images by grouping according to adjacency, however this could prove to timeout due to the large amount of query time.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/clarifai">
+                                clarifai
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ffmpeg">
+                                ffmpeg
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-cloud">
+                                google-cloud
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-speech-recognition
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            houndify
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/selenium">
+                                selenium
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            sox
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            witai
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,155 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/2AlZXpM6FLw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="545161" data-title="Neural network my model is based off of" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/545/161/datas/original.png">
+                            <img alt="Hydra - Distributed Deep Learning for Video Analysis &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/545/161/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Neural network my model is based off of
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="545185" data-title="Two clients working together analyze a video. The server (right) uses the data sent to it by the clients to classify the video as violent." href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/545/185/datas/original.png">
+                            <img alt="Hydra - Distributed Deep Learning for Video Analysis &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/545/185/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Two clients working together analyze a video. The server (right) uses the data sent to it by the clients to classify the video as violent.
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    <strong>
+                        Watch the attached YouTube video, it covers everything
+                    </strong>
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The amount of video content on the web is exponentially increasing and even companies like Google and Facebook are struggling to process and moderate all of it. AI/Deep Learning has made advancements in automated detection but models are still too resource intensive to run on these scales. My idea was that I could radically redefine parts of these models and make it possible to distribute the computation to users watching the videos.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Hydra breaks up a neural network (image below) and then distributes part of it to users watching videos. The model then runs in the background of the user's browser, analyzes frames from the video using their chunk of the network, and then sends these processed intermediate results back to the server. The server can then operate on these results in a manner which is both more memory efficient, less computationally intensive, and more scalable than if it had ran the model by itself.
+                </p>
+                <p>
+                    The neural network I based my model off of
+                    <a href="https://arxiv.org/pdf/1709.06531v1.pdf" rel="nofollow">
+                        Arxiv Paper PDF
+                    </a>
+                    :
+                    <br>
+                    <img alt="Network" data-canonical-url="https://i.imgur.com/JhNfiMI.png" src="https://res.cloudinary.com/devpost/image/fetch/s--IuySZpBL--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/JhNfiMI.png">
+                </p>
+                <p>
+                    The Convolutional NN the client gets (I actually completely replaced this network with another, more on it below):
+                    <br>
+                    <img alt="CNN" data-canonical-url="https://i.imgur.com/McBpAxY.png" src="https://res.cloudinary.com/devpost/image/fetch/s--1v0qJwpH--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/McBpAxY.png">
+                </p>
+                <p>
+                    The Recurrent NN the server operates:
+                    <br>
+                    <img alt="RNN" data-canonical-url="https://i.imgur.com/UxNNuqh.png" src="https://res.cloudinary.com/devpost/image/fetch/s--zScymle3--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/https://i.imgur.com/UxNNuqh.png">
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    The server is coded in Python with Keras (a high-level API for TensorFlow) as the neural network framework. The client is coded in Javascript with Keras.js (a Javascript port of Keras). The client and server communicate through websockets to ensure fast, direct communication. I managed to find a pre-trained model for the CNN but for the RNN I had to download a video dataset, preprocess all the data, code the neural network scaffold based off the research paper, and train it myself. The original CNN in the paper was actually a network called AlexNet which is 200MB and thus would not work in a web setting. I modified an efficient CNN made for mobile devices called SqueezeNet which comes in at 600KB and made this entire project possible.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    This was definitely one of the most technically difficult projects I've ever had to do and it didn't help that I decided to do it without a team. The CNN part of the model had to be implemented exactly the same using two different languages and frameworks, if one of the CNNs had differed at all from the other one it would have broken the entire model and made all my training useless. Another challenge I faced was that there was no guarantee that swapping out AlexNet with SqueezeNet would even work. I was in uncharted territory and couldn't follow the research paper whenever I ran into a problem.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Implementing and training a neural network is never easy, especially when implementing straight from a research paper combined with the fact that a large chunk of it has been replaced with a completely different model. I was especially proud when my model started accurately classifying the videos I was passing in as up until that point I didn't even know if this was possible.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Don't try to implement a neural network across languages, it sucks.
+                </p>
+                <h2>
+                    What's next for Hydra - Distributed Deep Learning for Video Analysis
+                </h2>
+                <p>
+                    Hydra is a technology which will only keep improving in the future. Models will keep getting more accurate and efficient and hardware will keep becoming more optimized for neural network loads. As user's computational/network bandwidth grows they'll be able to run larger and more powerful models opening the door for more powerful analytics. I only trained my network to detect violence but the model can easily be extended to detect things like nudity, drug usage, and possibly even criminal activity.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            keras.js
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            websocket
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

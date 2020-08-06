@@ -1,0 +1,186 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="424649" data-title="the banner" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/424/649/datas/original.png">
+                            <img alt="notifi.click &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/424/649/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                the banner
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The dash buttons are incredibly powerful -- a $5 button that after a bit of hacking can be used as a trigger for anything on the internet. We saw this power and set to work on Notifi. Lets use tech for good.
+                </p>
+                <p>
+                    Want to make a panic button for when your elderly parents fall over? No problem, get a text and notification whenever the button is pressed.
+                </p>
+                <p>
+                    Want 3 different buttons to ask for help from various devs at work? Cool, register them, enter custom messages and anyone can listen to you.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <h3>
+                    Server-Side
+                </h3>
+                <p>
+                    Inside an AWS VPC, with an API gateway to access two Lambda cloud functions:
+                </p>
+                <ul>
+                    <li>
+                        notification producer registration - Python
+                    </li>
+                    <li>
+                        dash button press router - Python
+                    </li>
+                </ul>
+                <p>
+                    State is stored on a Redis server running on EC2.
+                </p>
+                <p>
+                    notifi.click is built on EC2 using Caddy for managed TLS (LetsEncrypt) and Websocket proxying (exposing API.notify.click as a secure Websocket endpoint)
+                </p>
+                <h3>
+                    Notification producer side
+                </h3>
+                <p>
+                    Our dash ARP request interceptions are built using pcap, we intercept the requests and; using socket.io and Express, communicate with a local web app.
+                </p>
+                <p>
+                    The local web app then sends requests to our AWS API gateway which routes them to the previous mentioned Lambdas.
+                </p>
+                <h3>
+                    Notification consumer side
+                </h3>
+                <p>
+                    This is what you see on notifi.click, using socket.io we communicate between the front and back end, sending notifications when a message is sent.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Dash buttons require you to be on the same subnet to intercept requests, we had to make an impromptu wifi network using a variety of terrible, terrible hacks.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    It actually works! We've made an abstract product that can use any number of dash buttons to send custom messages, any number of people can listen to these messages, either through our SSL secured web app or through text notifications thanks to Twilio.
+                </p>
+                <h2>
+                    What's next for notifi.click
+                </h2>
+                <p>
+                    Rewrite the core code to be more maintainable and more readable, package it in a nice node module and send it out to the world.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            amazon-dash-buttons
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-api-gateway
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-ec2
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            aws-lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            letsencrypt
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://notifi.click" rel="nofollow" target="_blank" title="https://notifi.click">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                notifi.click
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

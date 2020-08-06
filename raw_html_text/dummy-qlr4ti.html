@@ -1,0 +1,120 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    In a nutshell...
+                </h2>
+                <p>
+                    This web app allows a user to enter her/his trip's origin and destination and instantly receive a recommendation for the safest route to take. This decision for the 'safest' route is based on historical crime statistics of all the neighborhoods in Philadelphia.
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Many people walk around the city - they walk back home from parties and dinners at night, to parks, coffee shops, and grocery stores during different times of the day, and to school and work. Like any big city, Philly has its safe and unsafe spots, and people often do not know if a specific neighborhood is safe to pass by during a certain time of the day. We wanted to address this challenge and designed a lightweight web application that makes the 'best-route' decision for you so that you can reach home SAFEphilLY.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We used the
+                    <a href="https://www.opendataphilly.org/dataset/crime-incidents" rel="nofollow">
+                        Crime Incidents
+                    </a>
+                    Open Dataset for the city of Philadelphia and ran a
+                    <a href="http://docs.opencv.org/2.4/doc/tutorials/ml/introduction_to_svm/introduction_to_svm.html" rel="nofollow">
+                        support vector machine
+                    </a>
+                    classifier (with an RBF kernel) to perform supervised learning on the crime statistics. Based on our learning algorithm (which we implement in Python using the
+                    <a href="http://scikit-learn.org/stable/" rel="nofollow">
+                        scikit-learn
+                    </a>
+                    toolkit), we came up with a confidence parameter for the safety of a specific neighborhood at a specific hour of the day.
+                </p>
+                <p>
+                    Next, we implement the same learning algorithm for any route and give it a risk level based on previous crime statistics for the regions it goes through. To provide the user the 'safest path', we do this for multiple routes from the origin to the destination given by the user. We pull this set of routes from the Google Maps API and use a few statistic measures to come up with the 'safest' route from this set. Finally, we plot this route on the map for the user to see.
+                </p>
+                <p>
+                    The front-end is built with
+                    <a href="https://www.polymer-project.org/1.0/" rel="nofollow">
+                        Polymer
+                    </a>
+                    , a lightweight framework that can work even on low-internet speeds. All the ML and statistics work is done on the remote server and we ensure our front-end is as lightweight as possible.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    While Polymer was easy to work with and get started, we had some trouble working with Google Polymer due to its limited functionality as some of the Google Maps functions we needed to use were not available or difficult to use in the elements in Polymer. We also struggled with building a stable and user-friendly web app due to time constraints.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We were able to have our frontend and backend components working and giving the expected results. We are proud of our current implementation of the app which suggests the safest route based on crime statistics and time of the day. We also induced a bias in the ML algorithm towards more 'dangerous' crimes - i.e. we trained our algorithm to favor homicide and personal assaults over thefts and minor crimes. This improved the accuracy and authenticity of our results. We studied the dataset
+                    <em>
+                        very
+                    </em>
+                    closely to understand trends and the nuances that we needed to account for in our algorithm.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned to use machine learning algorithms on publicly available data to draw new associations that could be valuable to the public. We also learned to use Google Polymer to make elegant and lightweight apps quickly.
+                </p>
+                <h2>
+                    What's next for SAFEphilLY
+                </h2>
+                <p>
+                    We would like to improve the user experience with SAFEphilLY and also port it to Android and iOS platforms. We would also like to explore the potential of integrating with cab services such as Uber and Lyft based on the time of the day and the past history of crime in the area.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/google-maps">
+                                google-maps
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            google-polymer
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scikit-learn">
+                                scikit-learn
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/adityavishwanath/SAFEphilLY" rel="nofollow" target="_blank" title="https://github.com/adityavishwanath/SAFEphilLY">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

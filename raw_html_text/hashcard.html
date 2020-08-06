@@ -1,0 +1,141 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Payment is something that is a part of almost everything we do,
+                    <em>
+                        especially
+                    </em>
+                    in a city. Whether you're going out to eat, or visiting some attraction, or purchasing groceries, you almost always have to pay. In recent years we've seen a massive growth in interest in cryptocurrencies.
+                </p>
+                <p>
+                    Theoretically, using cryptocurrency for everyday purchases and payments should be more convenient and secure compared to conventional payment methods. What we realized, however, was that cryptocurrency's use in the general public is held back by a two major limitations:
+                </p>
+                <ul>
+                    <li>
+                        Inaccessibility-- it's hard to
+                        <em>
+                            obtain
+                        </em>
+                        cryptocurrency. Online exchanges require ID, and have lots of hoops to jump through that make it inconvenient to obtain cryptocurrencies. Mining requires sophisticated hardware and large investment.
+                    </li>
+                    <li>
+                        Lack of purchase power-- it's hard to
+                        <em>
+                            spend
+                        </em>
+                        cryptocurrency. Not many places that accept cryptocurrency as a form of payment.
+                    </li>
+                </ul>
+                <p>
+                    We decided to focus on the first limitation. By making cryptocurrency more accessible, we could help bring cryptocurrency to the masses, rather than to a small population of investors.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    HashCard is our proposal to offer "gift card"-esque items in physical retailers which can be loaded with cryptocurrency, just like you'd load a gift card with money. Physical cards would be distributed to retailers with a public-private key pair printed as QR-codes (the private key would be covered with a scratch off material or security sticker). A variety of coins would be offered- Bitcoin, Ethereum, Litecoin, and the likes.
+                </p>
+                <p>
+                    If someone wants to purchase cryptocurrency, they'd bring the card to the cashier and pay for however much they wanted to purchase (plus a small fee). The address on that physical card would then be sent the amount of cryptocurrency the buyer purchased, at the current exchange price. This purchaser could then load this address onto their cryptocurrency wallet on their phone, using the private key printed on the card after removing the scratch off or security sticker.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    Our backend consists of a PostgreSQL database that keeps track of cards that have been manufactured so they can later be looked up to be funded. A Scala application handles this process of funding cards after they have been purchased.
+                </p>
+                <p>
+                    A Go application accepts requests from card processing services (see below) and regularizes the data to be passed to the Scala application for fulfillment.
+                </p>
+                <p>
+                    We simulated point-of-sales and card processing services using a simple web page that spoofed requests which model what a card processing service would send to us.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        <strong>
+                            Finding Information About Card Processors
+                        </strong>
+                        : Card processing services are these large networks that manage essentially all gift-card type traffic between merchants (brick and mortar stores) and suppliers (companies producing/managing the gift-card type products). These networks are very large and there is very limited information publicly available. We ran into lots of "login walls" and were unable to contact anyone at these companies. These networks mostly deal with other large businesses, not with student hackers!
+                    </li>
+                    <li>
+                        <strong>
+                            JavaScript
+                        </strong>
+                        : We had difficulty getting some inline functions working on our demo webpage, which took a while to debug.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        <strong>
+                            Cross platform integration
+                        </strong>
+                        : Integrating different platforms is hard. We managed to integrate a Go webserver and request consolidator with a Scala backend. This type of integration let us make the most of these technologies where they are strongest.
+                    </li>
+                    <li>
+                        <strong>
+                            "Black box" spoofing
+                        </strong>
+                        : Without an actual card processor API to even look at, let alone use, we had to guess at how to best simulate what went on between the point of sale and our servers being sent information.
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        <strong>
+                            How gift cards actually work behind the scenes
+                        </strong>
+                        ! The information isn't readily available, but after some digging it's pretty interesting.
+                    </li>
+                    <li>
+                        <strong>
+                            Programmatically handling cryptocurrencies
+                        </strong>
+                        - there are TONS of libraries for cryptocurrencies, and we explored quite a few of them to find which we would use. We also had to look into how to look up current exchange prices and the likes.
+                    </li>
+                </ul>
+                <h2>
+                    What's next for HashCard
+                </h2>
+                <p>
+                    We are actually planning to explore the possibility of making HashCard a reality. We'd like to look into more details about how to get into contact with card processing networks and manufacturing these physical cards in bulk. The biggest limitation at this point would be funding- the startup costs could be quite high for this venture.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/go">
+                                go
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/scala">
+                                scala
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

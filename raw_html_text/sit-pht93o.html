@@ -1,0 +1,274 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    +TITLE: sit: Simple Interactive Testing
+                </h1>
+                <h1>
+                    +AUTHOR: Team: 404 Team_Name_Not_Found
+                </h1>
+                <p>
+                    Hack UMass IV, 2016
+                </p>
+                <p>
+                    Team Members:
+                </p>
+                <ul>
+                    <li>
+                        Lukas Lazarek
+                    </li>
+                    <li>
+                        Owen McCormack
+                    </li>
+                    <li>
+                        Gordon Wu
+                    </li>
+                    <li>
+                        <p>
+                            Christopher Gibbs
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Summary
+Effective testing requires time and planning to adequately check for a
+code correctness. Strong design principals require developers to
+determine test cases before, during, and after the development
+process.
+Simple Interactive Testing (hereafter referred to as "sit") was
+created with the goal of easing and simplifying unit testing, removing
+all but the most insignificant barriers of entry.
+                        </p>
+                    </li>
+                </ul>
+                <p>
+                    Sit is inspired partially by Doxygen, a tool that generates
+documentation, and the Boost Unit Test Framework library, a set of
+tools for testing code and constructing testing suites in C++. Sit
+generates unit tests for C++ functions from formatted documentation
+comments above a function definition. Each comment specifies a type of
+test to run along with relevant input and expected output information
+in a compact and succinct format. Invoking sit with a C++ code file
+produces a corresponding file containing test code, ready to test your
+code.
+                </p>
+                <ul>
+                    <li>
+                        Example
+Assume that you have a function named addTwoInts that
+takes in two integers and returns their sum. In order to test this
+function with sit, you could add a comment above its definition similar
+to this:
+                    </li>
+                </ul>
+                <h1>
+                    +BEGIN_SRC C++
+                </h1>
+                <p>
+                    // &gt;&gt;&gt; test: 7 20 @ 27
+int addTwoInts(int a, int b){
+return a + b;
+}
+                </p>
+                <h1>
+                    +END_SRC
+                </h1>
+                <p>
+                    In the sample above, "&gt;&gt;&gt;" is used to indicate the start of a sit test
+case comment. After that is the keyword, shown to be "test" here,
+which tells what type of test to create. Next are the input arguments
+for the test case, and, separated by an '@' is the expected output.
+Therefore, at its core, sit creates this test by checking that the
+following statement is true:
+                </p>
+                <p>
+                    : addTwoInts(7, 20) == 27
+                </p>
+                <ul>
+                    <li>
+                        Overview
+                    </li>
+                </ul>
+                <p>
+                    ** Types of Tests
+Sit is capable of running three different types of tests depending on
+the keyword invoked. The first is "test", which takes in values for
+the inputs and the expected output of the function after passing those
+values.
+                </p>
+                <p>
+                    Next is "test-exn", which checks that the tested function invocation
+raises a given exception.This includes the ability to specify what
+type of exception should be expected as well as even what the expected
+error message should be.
+                </p>
+                <p>
+                    Finally, "test-input" may be used to test the side-effects of function
+invocation.It takes in the input values that you would like to check
+after calling the function, any initial setup conditions, and the
+expected values of the inputs once the function has been executed.
+This feature allows sit to test functions that are not purely
+functional, an important feature in a language as heavily
+object-oriented as C++. By specifying both what exactly to inspect and
+allowing arbitrary commands to precede execution, sit attains a high
+level of flexibility that allows developers to easily test procedures
+whose functionality extends beyond explicit input and output.
+                </p>
+                <p>
+                    *** Syntax specification
+**** test
+: &gt;&gt;&gt; test: input1 input2 ... @ (setup commands)* @ output
+E.g:
+: &gt;&gt;&gt; test: 1 @ 5
+: &gt;&gt;&gt; test: -5 2 300 @ 42
+: &gt;&gt;&gt; test: 2 4 @ (x = 5) @ 1
+                </p>
+                <p>
+                    These tests perform simple checking that the given inputs produce the given results.
+                </p>
+                <p>
+                    **** test-exn
+: &gt;&gt;&gt; test-exn: input1 input2 ... @ (setup commands)* @ exception_type exception_message
+E.g:
+: &gt;&gt;&gt; test-exn: 0 @ cstr "input must be positive"
+: &gt;&gt;&gt; test-exn: -42 @ std::invalid_argument
+                </p>
+                <p>
+                    These tests check that the given inputs raise the specified exception.
+                </p>
+                <p>
+                    ***** Notes
+                </p>
+                <ul>
+                    <li>
+                        Exception_type of =cstr= is equivalent to "const char*"
+                    </li>
+                </ul>
+                <p>
+                    **** test-input
+: &gt;&gt;&gt; test-input: lvalue1 lvalue2 ... @ (setup commands)* @ rvalue1 rvalue2 ...
+E.g:
+: &gt;&gt;&gt; test-input: foo.x foo.y @ (foo = Foo()) (foo.x = 2) (foo.y = 55) @ 4 11
+: &gt;&gt;&gt; test-input: *p @ (int x = 5) (p = &amp;x) @ 10
+                </p>
+                <p>
+                    ***** Notes
+                </p>
+                <ul>
+                    <li>
+                        Setup commands are most useful in combination with these test types
+                    </li>
+                    <li>
+                        Arguments to the the function may only be specified via setup commands, and argument values may be set by simply setting the argument as if it were a variable.
+                        <ul>
+                            <li>
+                                For example, a function with the signature =int foo(int x)= may specify the value of argument =x= by providing the setup command: =(x = 5)=
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            Be aware of the code specified in setup commands: invalid, erroneous, or illogical setup commands may prevent compilation of the entire testing suite
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Invocation
+: python3 sit.py 
+Invoke sit by providing it with a source file named "source_file.cpp" and it will produce another source file named "source_file_tests.cpp" in the same directory. This contains the testing suite for the original source file.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Demo Instructions
+Included in this repository is an example source code file (example_code.cpp) that demonstrates each form of syntax in a practical setting. To run sit on the file and compile the resulting test suite, simply invoke
+: make sit
+in the root directory of the repository. Doing so will create an executable file named "test" which may be invoked to run the testing suite corresponding to the example code file. Two of the tests in example_code.cpp are deliberately designed to fail so as to display the format used when tests fail.
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            Future features
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            =test-interactive=: Interactive unit test generation
+                        </p>
+                        <ul>
+                            <li>
+                                Analyze function arguments to predict edge and standard cases
+                            </li>
+                            <li>
+                                Prompt for expected behavior in those cases
+                            </li>
+                            <li>
+                                Generate tests based on such interactive sessions
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p>
+                            =test-prop=: Property based testing
+                        </p>
+                        <ul>
+                            <li>
+                                In the spirit of QuickCheck, specify general properties or relationships that your function should hold
+                            </li>
+                            <li>
+                                Automatically generate large suites testing those properties
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/makefile">
+                                makefile
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/LLazarek/sit" rel="nofollow" target="_blank" title="https://github.com/LLazarek/sit">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

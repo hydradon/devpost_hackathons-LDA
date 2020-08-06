@@ -1,0 +1,185 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/Vkcnyc17HVI?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    This project inspired me because of the problems I've faced with conventional CI/CD platforms like Jenkins, Bamboo, Teamcity.
+                </p>
+                <ol>
+                    <li>
+                        Agents were java/other applications running on a VM with no isolation between the build and the agent, sometimes causing hard to reproduce issues.
+                    </li>
+                    <li>
+                        Agent machines needed to be customized with differing capabilities (SDKs, versions, libraries, resources like cpu/mem, etc). This is complex, usually requiring your OPS team to setup, maintain.
+                    </li>
+                    <li>
+                        Binding builds to specific agents which have the required capabilities is wasteful, as you must wait for an idle agent with your requirements before your build would run.
+                    </li>
+                    <li>
+                        An agent is no longer "untouched" after the first build it runs. State changes between builds can cause unexpected failures or worse, false-successes (unless the machine was reprovisioned after every build, not an easy or cheap thing to do).
+                    </li>
+                    <li>
+                        Build agents require licensing which can be very expensive (in addition to the hardware).
+                    </li>
+                    <li>
+                        Build agents are often underutilized. Either idle, or running builds that have many steps and can take awhile, while not fully utilizing all CPU/Mem/IO/Network resources.
+                    </li>
+                    <li>
+                        There are several online options like Travis, Circle, but those services have other constraints such as available memory, maximum concurrency, and other things that you may not be able to necessarily do (like, the ability to access private resources on the company network). Also, you can take advantage of scaling the cloud VMs (such as in AWS) that host your Swarm to save even more money.
+                    </li>
+                </ol>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    SwarmCI is CI extension as well as (future) a stand-alone CI/CD platform. You can use SwarmCI to extend an existing CI system (Bamboo, TeamCity, Jenkins, etc) with a few steps:
+                </p>
+                <ol>
+                    <li>
+                        Setup a Docker Swarm.
+                    </li>
+                    <li>
+                        Converting existing build tasks, stages, and jobs to a single
+                        <code>
+                            .swarmci
+                        </code>
+                        file.
+                    </li>
+                    <li>
+                        Configure a single task in your build to run a single command to delegate work to your Docker Swarm:
+                    </li>
+                </ol>
+                <p>
+                    <code>
+                        python -m swarmci
+                    </code>
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    SwarmCI was built to be simple and lightweight above all else. The
+                    <code>
+                        .swarmci
+                    </code>
+                    file outlines the stages, jobs, and tasks. Stages are run sequentially, jobs within a stage are run in parallel using multiple threads, each of which creates a container in the Swarm, with an infinite sleep loop entrypoint. The tasks within the job are then run using
+                    <code>
+                        docker exec
+                    </code>
+                    against the running container, with stdout being captured and returned to the user.
+                </p>
+                <p>
+                    The future plans are to:
+                </p>
+                <ol>
+                    <li>
+                        User Interface (running in the Swarm)
+                    </li>
+                    <li>
+                        Workers (running in the Swarm)
+                    </li>
+                    <li>
+                        A persistence layer (read database)
+                    </li>
+                </ol>
+                <p>
+                    With the above components, setup and running jobs is even simpler, as you don't need to install any python packages, instead you are running swarmCI as services within the Docker Swarm. Running jobs consists of making an HTTP API call to kick things off.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Initially, the system looked complicated, with many moving parts. As I continued to play with Docker 1.12 swarm features, it became clear that we could simplify everything down to 1 component, and in the future, it would be as few as 3 components.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    SwarmCI solves many of the problems found in conventional CI/CD platforms.
+                </p>
+                <ol>
+                    <li>
+                        Build tasks are run within a docker container, the image of which provided by the user, completely isolated from build agent and the rest of the host. In addition, the starting state of a build does not change between builds, as containers aren't reused.
+                    </li>
+                    <li>
+                        The Docker image in which tasks are run within is provided by the user, thus, it can be completely customized. Never wait for an idle agent that has your requirements, or for the OPS team to configure an agent with new requirements for you.
+                    </li>
+                    <li>
+                        Resource waste is decreased because builds run on the Swarm. As long as a node on the Swarm has the available CPU/Memory requirements for your build, your build runs. Scale your Swarm down to keep waste to a minimum, and scale it up as demand requires it.
+                    </li>
+                    <li>
+                        With the SwarmCI as a extension, you can get isolated, distributed, parallel build tasks without sacrificing the use of additional build agents from your existing platform.
+                    </li>
+                </ol>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Mainly, that Docker is really awesome!
+                </p>
+                <h2>
+                    What's next for SwarmCI
+                </h2>
+                <p>
+                    The stand-alone CI/CD platform will require:
+                </p>
+                <ul>
+                    <li>
+                        User-Interface
+                    </li>
+                    <li>
+                        Build Manager(s) on the Swarm
+                    </li>
+                    <li>
+                        Data Persistence Backend
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ghostsquad/swarmci" rel="nofollow" target="_blank" title="https://github.com/ghostsquad/swarmci">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

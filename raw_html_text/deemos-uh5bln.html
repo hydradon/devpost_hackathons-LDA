@@ -1,0 +1,197 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="848308" data-title="Logo" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/308/datas/original.png">
+                            <img alt="Deemos &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/308/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Logo
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="848318" data-title="extension screenshot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/318/datas/original.png">
+                            <img alt="Deemos &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/318/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                extension screenshot
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="848319" data-title="website screenshot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/319/datas/original.png">
+                            <img alt="Deemos &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/848/319/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                website screenshot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    When we were in the residential college commons watching Youtube videos in the lounge, we had a tough time getting to share all the videos that equally appealed to all of us. Therefore, we thought of creating this website/Chrome Extension to help us fairly decide which videos to watch.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Deemos is a web based application with server side, client side and a Google Chrome extension all working together to generate a queue of videos hand selected by each person in the group. This queue of videos can be voted on by each person in the group to determine the order in which the videos will be played. To use the application, one of the computers will download the google chrome extension, which provides a room code for all your friends to join. Everyone will join the application by inputting the room code into deemos.herokuapp.com. Once the room code has been entered, each person will have their own search bar to look up their favorite videos and a queue to place all the videos they want to watch and vote on the videos that other people have suggested. The google chrome extension will automatically play the videos at the top of the queue.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We started with a simple Express.js template that we generated using WebStorm. We chose to use Node.js because it allowed us to write the client, server side, and extension in the same language, which greatly simplified development. On the back end, each room code maps to a Session object that contained the host endpoint, the member endpoints, and all of the data concerning the votes and video requests of the members (since the room code is an integer, this is all stored as an array). The client/server communication is handled almost entirely by WebSockets, and we differentiated the messages by a "type" field in each one.
+                </p>
+                <p>
+                    On the front end, we used Bootstrap for a good portion of the UI, particularly the buttons and text inputs. We reused a custom view manager to handle switching between different views of the website and extension, since this is a single-page application. The search function was done using the Youtube Data API, which we used to obtain not only the video IDs but also the titles and thumbnails. The YouTube videos are played on a separate window from the extension, automatically running through the queue processed by the server. The front end's JavaScript is actually built using Browserify in order to require modules in the same was as in Node.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    The greatest challenge faced in building the app was getting YouTube to autoplay continuously: autoplay on Chrome requires user interaction beforehand. On the one hand, putting embeds within the extension did not work because YouTube embeds refused to play in them. On the other hand, running a separate tab/window using a popup extension, while possible, opened a whole can of worms involving cross-origin permissions, extension communication, and the like. Hence, we used a new-tab extension instead with a separate tab for the video, where we used
+                    <code>
+                        postMessage
+                    </code>
+                    combined with a single webpage that consists solely of a youtube embed and a JS script to update the embed to achieve autoplay, barring the very first video.
+                </p>
+                <p>
+                    Also since some of the members on the team were new to github and javascript, it was challenging to sync up the knowledge of all the team members and get us to work together. There were lots of merge conflicts as the newer members tried things that did not work which conflicted with the work of the other members.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    What we are most proud of in regards to Deemos is the fact that we were able to get a functional project hosted on Heroku in the short amount of time that we had. Without the luxury of a long-term time span, we have to plan what we were to do carefully, as one major mistake could severely set us back an hour or more.
+We are also proud of the way we were able to handle ourselves as a team. In such a short amount of time, it is crucial to have good communication and task distribution. We were able to understand the strengths and weaknesses of each member and put them on the tasks where they could learn the most and also be the most effective. Also, we are proud of the growth in our knowledge of essential technical skills such as git and effective JS/HTML.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    Since some of the members were new to github and software development, we learned the overall aspects that are involved in creating a working project from scratch. For example, we learned how to utilize github repositories and branches effectively in order to collaborate across four different backgrounds. We also worked through the front end and back end of a program and learned about the nuances that go into their integration.
+                </p>
+                <h2>
+                    What's next for Deemos
+                </h2>
+                <p>
+                    For one thing, Rice's 11 residential colleges could sure use Deemos in their commons, both for entertainment during servery dinners and to distract people from the bland taste of the same ol' campus food. Looking further, however, we wish to one day sell Deemos to hospitality companies, convention centers, etc. and broaden the scope of Deemos from YouTube to both other video-streaming sites and other forms of entertainment, most notably music.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css3">
+                                css3
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/express-js">
+                                express.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html5">
+                                html5
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/websockets">
+                                websockets
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/youtube">
+                                youtube
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://deemos.herokuapp.com" rel="nofollow" target="_blank" title="http://deemos.herokuapp.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                deemos.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/koreancopypasta/deemos" rel="nofollow" target="_blank" title="https://github.com/koreancopypasta/deemos">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,253 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/9n1RuXDK6Bw?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Tired of manually typing equations into LaTeX? Why can&rsquo;t writing equations be as simple as saying them to your computer. Well now it can! We present an approach which is real-time, smart and natural for humans. Our method is powered by a voice assistant that runs completely on device.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Using
+                    <a href="https://makers.snips.ai/kit/" rel="nofollow">
+                        Snips&rsquo; Maker Kit
+                    </a>
+                    and
+                    <a href="https://console.snips.ai" rel="nofollow">
+                        Software Tools
+                    </a>
+                    we perform real time ASR (Acoustic Speech Recognition) and NLU (Natural Language Understanding) in order to interpret a set of commands by the user. These include:
+                </p>
+                <ul>
+                    <li>
+                        Creating polynomial functions
+                    </li>
+                    <li>
+                        Creating trigonometric functions
+                    </li>
+                    <li>
+                        Writing the integral and derivative of above functions
+                    </li>
+                    <li>
+                        Creating 2D matrices
+                    </li>
+                    <li>
+                        Computing matrix multiplication and matrix inversion
+                    </li>
+                    <li>
+                        Plot polynomial functions
+The identified intents (e.g. write_polynomial) and corresponding slots/entities (e.g. max order and coefficients) are passed to a server which displays the corresponding LaTeX syntax along with a preview of the expression.
+                    </li>
+                </ul>
+                <p>
+                    This workflow allows the user to dictate common functions and simply copy and paste the corresponding LaTeX code.
+With more time, we would have added additional support for more complicated functions and cumbersome LaTeX entries such as tables.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We trained the Snips&rsquo; kit for different types of intents using their console. The training examples were given in natural language with specific slots/entities to be identified. For example, to identify intent Integral, following training examples were used
+                </p>
+                <ul>
+                    <li>
+                        Can you integrate the function
+                        <strong>
+                            z cubed
+                        </strong>
+                        (function) which has a lower limit
+                        <strong>
+                            10
+                        </strong>
+                        (lower_bound) and an upper limit
+                        <strong>
+                            30
+                        </strong>
+                        (upper_bound)
+                    </li>
+                    <li>
+                        integrate
+                        <strong>
+                            x squared
+                        </strong>
+                        (function) from
+                        <strong>
+                            0
+                        </strong>
+                        (lower_bound) to
+                        <strong>
+                            20
+                        </strong>
+                        (upper_bound)
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Function
+                    </strong>
+                    ,
+                    <strong>
+                        lower_bound
+                    </strong>
+                    and
+                    <strong>
+                        upper_bound
+                    </strong>
+                    are the slots that have to be filled for the intent
+                    <strong>
+                        Integral
+                    </strong>
+                    .
+Similarly, we train other intents
+                </p>
+                <ul>
+                    <li>
+                        Getting polynomial function
+                    </li>
+                    <li>
+                        Getting trigonometric functions
+                    </li>
+                    <li>
+                        Derivative of functions
+                    </li>
+                    <li>
+                        Creating Matrices
+                    </li>
+                </ul>
+                <p>
+                    The trained model is dumped to the maker kit and is ready to be used with speech recognition. The python script on the board runs this model taking input from onboard microphone. The user is asked for inputs and also provided with constant feedback for the different operations being performed using speakers. This mode of interaction is very natural for us, human beings.
+                </p>
+                <p>
+                    Once the required intents and slots are detected, maker kit sends a post request to user&rsquo;s computer, where a server handles the request to generate a Latex script. The script is used to render the corresponding pdf. We use PyLatex for generating the Latex.
+Our current implementation provides both the latex and rendered pdf display to users.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        As observed with all the hardware related projects, memory is a crucial resource. Due to limited memory we couldn&rsquo;t install latex on the board.
+                    </li>
+                    <li>
+                        Our current implementation does work well with limited training data but more examples will enhance and make our model even more robust.
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <ul>
+                    <li>
+                        Prototype quickly with a hardware
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <ul>
+                    <li>
+                        Latex compilation and formatting.
+                    </li>
+                    <li>
+                        Snips console and maker kit
+                    </li>
+                </ul>
+                <h2>
+                    What's next for Speak2Tex
+                </h2>
+                <ul>
+                    <li>
+                        Creating an education tool by extending this voice assistance in school setting.
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/latex">
+                                latex
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/raspberry-pi">
+                                raspberry-pi
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            snips
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/pauarge/voice-latex" rel="nofollow" target="_blank" title="https://github.com/pauarge/voice-latex">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://console.snips.ai/store/en/skill_1MVZWyKDdx8d" rel="nofollow" target="_blank" title="https://console.snips.ai/store/en/skill_1MVZWyKDdx8d">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                console.snips.ai
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

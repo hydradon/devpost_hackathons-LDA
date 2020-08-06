@@ -1,0 +1,298 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/fLjYKyRDDu0?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602803" data-title="Text Area Image Cleanup" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/803/datas/original.PNG">
+                            <img alt="ReadToMe &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/803/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Text Area Image Cleanup
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="602846" data-title="Adding Audio card to IOT Resources" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/846/datas/original.PNG">
+                            <img alt="ReadToMe &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/602/846/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Adding Audio card to IOT Resources
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    The inspiration behind ReadToMe came from my kids. Specifically, my younger two who are 3 and 5. Both kids love books, but they aren&rsquo;t reading by themselves yet. I wanted to create something that they could use to still enjoy reading, even when a parent isn&rsquo;t available to read to them.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    ReadToMe works by using deep learning and computer vision combined with services available in AWS. Just show the DeepLens a page you want it to read, and it reads it out loud.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    As simple as the workflow sounds, there were many challenges that had to be overcome to get this to work. These are the individual problems I needed to solve.
+                </p>
+                <ul>
+                    <li>
+                        Determine when a page that needs to be read is in the camera frame
+                    </li>
+                    <li>
+                        Isolate the Text Block and clean up the image using OpenCV
+                    </li>
+                    <li>
+                        Perform OCR (Optical Character Recognition)
+                    </li>
+                    <li>
+                        Transform text into audio
+                    </li>
+                    <li>
+                        Play back the audio through speakers
+                    </li>
+                </ul>
+                <p>
+                    Each one of the above steps introduced unexpected challenges, (some of which made me question if I would be able to finish this project in time!)
+                </p>
+                <h3>
+                    Determining when a page that needs to be read is in the camera frame
+                </h3>
+                <p>
+                    For the DeepLens to be able to read a page, it needed some way to know if there is something in the camera frame to read. This is where the deep learning model was used.
+                </p>
+                <p>
+                    I looked online but could not find a pre trained model that was able to classify a page in a book. As a result, I knew I would need to train a model with new data to classify this type of object.
+                </p>
+                <p>
+                    To get training data, I did a quick search online to try and find images of children&rsquo;s books. I found tons of images of book covers, but practically nothing showing someone holding the book in the correct orientation for me to be able to train with. I needed images of the actual pages with text on them. Fortunately, I have four young kids, and they have hundreds of children&rsquo;s books. So, one night I grabbed about forty books, and started taking lots of pictures of myself holding the different books in different orientations, lighting, and with my hand occluding different parts of the page.
+                </p>
+                <p>
+                    During this process, I started to realize that the blocks of text in these children&rsquo;s books varied greatly. Sometimes the text was white on black, or sometimes black on white. Other times it was colored text on different colored backgrounds. Sometimes the text ran along the bottom of the page, and some books had text all over the page with no logical flow. So, I decided to narrow my focus and only capture images of books that had text in a &ldquo;somewhat normal&rdquo; positioning. I figured that if I tried to get too broad of a dataset that I would end up with a model that thought everything was a block of text. Down the road maybe I can experiment with more varied types of data but for this project I decided to limit it.
+                </p>
+                <p>
+                    After I captured the data, I used
+                    <a href="https://github.com/tzutalin/labelImg" rel="nofollow">
+                        labelImg
+                    </a>
+                    to generate the Pascal VOC xml files that would be used in training.
+At this point, I got stuck trying to figure out how to get my data formatted correctly to be trained with MXNet. I found a few examples using TensorFlow and so that is the road I went down. I figured if I finished the project, I could always go back and get it working using MXNet if I had extra time at the end.
+I was able to follow one of the examples I found on YouTube and ended up with a working model that I could use to detect text on a page.
+                </p>
+                <h3>
+                    Perform Optical Character Recognition
+                </h3>
+                <p>
+                    I was surprised how easy it was to integrate
+                    <a href="https://github.com/tesseract-ocr/" rel="nofollow">
+                        Tesseract
+                    </a>
+                    into the project. Just install it on the device and pip install the python package and then the workflow was really just a single function call. You provide an image to process, and it just spits out text. I was originally going to use a separate Lambda function with Tesseract installed to perform the OCR, but I ended up just including it in my main Lambda function because it was simpler and cut down on traffic to and from AWS. The actual OCR didn&rsquo;t seem to take up too much compute power and compared to the round trip to AWS, the time seemed to be comparable. Plus, now I am doing more "at the edge" which is more efficient and costs less.
+                </p>
+                <p>
+                    There was one gotcha with Tesseract. It is very picky about the image quality. I had to spend a considerable amount of effort figuring out how to clean up the images enough to get a clean read. It also wants you to have the text almost completely horizontal, (which is pretty much impossible considering I want preschool aged children to be able to use this thing)
+I used OpenCV for most of this image pre-processing and after a number of iterations, I was able to produce images that were plain black and white text with minimal noise. This was key to getting this project to work. The end results were better that I expected, however, there is still room for improvement in this area.
+                </p>
+                <h3>
+                    Transform text into audio
+                </h3>
+                <p>
+                    This step was the easiest of the whole project. Once I could get audio to play on the device, I was able to encapsulate this logic into a single function call which simply calls AWS Polly to generate the audio file. I never write the file to disk, I just feed the byte stream to the audio library and discard it when it&rsquo;s done playing. I do have a few static mp3 files that are played on startup of the Green Grass service. I use the audio files to speak instructions to the user so they know how to use the device. I figure there was no reason to call Polly to generate this speech as it never changes so I generated them ahead of time and deploy it with the Lambda. (I love how easy it is to integrate existing AWS services into my projects!)
+                </p>
+                <h3>
+                    Play back the audio through speakers
+                </h3>
+                <p>
+                    Green Grass requires you to explicitly authorize all the hardware that your code has access too. One way you can configure this through the Group Resources section in the AWS IOT console. Once configured, you deploy these settings to the DeepLens which results in a JSON file getting deployed greengrass directory on the to the device.
+                </p>
+                <p>
+                    To enable Audio playback through your Lambda, you need to add two resources. The sound card on the DeepLens is located at the path
+                    <strong>
+                        &ldquo;/dev/snd/&rdquo;
+                    </strong>
+                    . You need to add both
+                    <strong>
+                        &ldquo;/dev/snd/pcmC0D0p&rdquo;
+                    </strong>
+                    and
+                    <strong>
+                        &ldquo;/dev/snd/controlC0&rdquo;
+                    </strong>
+                    in order to play sound.
+                </p>
+                <p>
+                    As an aside, You will need to re-add these resources every time you deploy a project to the device. At the time of this writing, Green Grass overwrites the resources file with a pre-configured
+                    <strong>
+                        group.json
+                    </strong>
+                    whenever you deploy a project to DeepLens.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I was very happy with the end results of this project. In spite of having a full-time job and four kids, I was able to create something really cool and get it to actually work reasonably well in just a couple months. I have more ideas for future projects with this device and am excited to keep learning.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    Before diving into this project, I had no experience with Deep Learning or AI in general. I have always been interested in the topic but it always seemed to unapproachable to "normal developers". 
+I have discovered, through this process, that it is possible to to create real useful deep learning projects without a PhD in math, and that with enough effort, and patience anyone with a decent development background can start using it.
+                </p>
+                <h2>
+                    What's next for Read To Me
+                </h2>
+                <p>
+                    I have a few ideas for improving the project. One feature I would like to add is the ability to translate the text that is read. (I signed up for early access to Amazon&rsquo;s new Translate service but haven&rsquo;t yet been approved.)
+I also plan to continue to improve my model to see if I can increase the model accuracy a bit as well as make it work with a broader range of books.
+                </p>
+                <p>
+                    Lastly, the text image cleanup function function, which feeds directly into Tesseract, can be improved. Specifically, it would be beneficial to be able to rotate and or warp the image before sending it to Tesseract. That way when a child isn&rsquo;t holding the book correctly, it could still read the text. Motion blur was also a definite issue I had to contend with in image cleanup. If the book isn&rsquo;t held very still for a few seconds, the image is just to blurry for the OCR to work. I have read about various techniques to solve this problem, like using image averaging over multiple frames, or applying different filters to the image to smooth out the pixels. I am sure that it's possible to achieve a better/faster outcome but it's tricky working on a resource constrained device.
+                </p>
+                <h2>
+                    Helpful Resources
+                </h2>
+                <p>
+                    There were many online resources that helped me along the way but these links proved to be the most helpful.
+                </p>
+                <p>
+                    (In no particular order)
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://becominghuman.ai/an-introduction-to-the-mxnet-api-part-1-848febdcf8ab" rel="nofollow">
+                            https://becominghuman.ai/an-introduction-to-the-mxnet-api-part-1-848febdcf8ab
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://gluon.mxnet.io/chapter08_computer-vision/object-detection.html?highlight=ssd" rel="nofollow">
+                            http://gluon.mxnet.io/chapter08_computer-vision/object-detection.html?highlight=ssd
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/apache/incubator-mxnet/blob/master/example/image-classification/README.md" rel="nofollow">
+                            https://github.com/apache/incubator-mxnet/blob/master/example/image-classification/README.md
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/zhreshold/mxnet-ssd" rel="nofollow">
+                            https://github.com/zhreshold/mxnet-ssd
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://pythonprogramming.net/introduction-use-tensorflow-object-detection-api-tutorial/" rel="nofollow">
+                            https://pythonprogramming.net/introduction-use-tensorflow-object-detection-api-tutorial/
+                        </a>
+                    </li>
+                </ul>
+                <p>
+                    <strong>
+                        Also, many thanks to all the participants in the forums answering questions and especially to the AWS DeepLens team for getting my unstuck numerous times! :)
+                    </strong>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            deeplens
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            mxnet
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/opencv">
+                                opencv
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tensorflow
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            tesseract-ocr
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/alexschultz/ReadToMe" rel="nofollow" target="_blank" title="https://github.com/alexschultz/ReadToMe">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://gistlog.co/alexschultz/607a3a5a7f1197cc594c537b025b6fe8" rel="nofollow" target="_blank" title="https://gistlog.co/alexschultz/607a3a5a7f1197cc594c537b025b6fe8">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                gistlog.co
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

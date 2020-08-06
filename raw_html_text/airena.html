@@ -1,0 +1,189 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="373138" data-title="In-game screenshot" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/373/138/datas/original.png">
+                            <img alt="Airena &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/373/138/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                In-game screenshot
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>
+                    (Note: if the heroku server is down, it's probably because it exceeded quota. You can still run it by cloning the git repo)
+                </p>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've always loved the idea of writing an AI bot to challenge or fight others. I think it's a super fun way to learn to program and feels empowering. I always wanted to host a "St. Olaf vs Carleton Bot Wars" sort of thing, but none of the available tools really make it easy. That's mainly because:
+                </p>
+                <ul>
+                    <li>
+                        You can't challenge individual people or groups. You can only upload your code to fight in the global leaderboards.
+                    </li>
+                    <li>
+                        You can't easily play the game as a human, or play against your own bot as a human player.
+                    </li>
+                    <li>
+                        Most games are grid-based. (Which is ideal for developing AI, but is often not what the real world looks/feels like)
+                    </li>
+                </ul>
+                <p>
+                    So I set out to make something that should be: simple, flexible and tangible. I wanted something that
+                    <strong>
+                        does not obscure the process of writing code
+                    </strong>
+                    . No one writes a perfect algorithm from scratch on their first try. Programming is an iterative process. It's very important for beginners to see that to understand how talented programmers do what they do and how they got to where they are. * My tool will be highlighting, rather than obscuring, the process of writing code.*
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Airena (pronounced Eye-reen-a) is a multiplayer game, a teaching tool and a (prototype of a) platform. It's a space shooter that you can play as a human. You can immediately click on the code button to write up your bot and watch it take over. Joining the game is as easy as opening the link.
+                </p>
+                <p>
+                    <img alt="http://i.imgur.com/QFCeb4A.gif" data-canonical-url="http://i.imgur.com/QFCeb4A.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--VR5w4WrW--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/QFCeb4A.gif">
+                    <img alt="http://i.imgur.com/Umh1XM2.gif" data-canonical-url="http://i.imgur.com/Umh1XM2.gif" src="https://res.cloudinary.com/devpost/image/fetch/s--BPCryr8f--/c_limit,f_auto,fl_lossy,q_auto:eco,w_900/http://i.imgur.com/Umh1XM2.gif">
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used CreateJS for manipulating the canvas and vector graphics. I used CodeMirror for the in-browser code editor. I'm using NodeJS with Socket.io for the networking. The game runs the Javascript code you supply it in an isolated container so you can't interfere with the game itself. All you can do is return which key to press next. You have access to some data about the world, such as your position and the positions of other players.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    Not having really done a proper multiplayer/networking game before definitely made it a challenge to figure out how to connect and sync multiple users across the world. It was even more challenging to figure out how to allow anyone to run their own AI bot on the fly.
+                </p>
+                <p>
+                    I also spent a lot of time thinking about a game that would be simple enough to implement but still provide enough interesting challenge/strategy to be played by humans and AI.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <ul>
+                    <li>
+                        This is definitely the easiest and fastest way to write code for an AI bot and see immediate results (all within a browser!)
+                    </li>
+                    <li>
+                        Variables and state information persist even though the code gets recompiled at every keystroke!
+                    </li>
+                    <li>
+                        The server keeps track of every player's code and state in its own isolated container, separate from the global state.
+                    </li>
+                    <li>
+                        The live-coding-server logic is more or less decoupled, making it easy to repurpose for any other game or simulation for teaching purposes. (Imagine it being as easy as: import the plugin, define which function you want users you to be able to live-edit, and a code button pops up that allows users to play with the code in real time!)
+                    </li>
+                </ul>
+                <p>
+                    Despite how simple this game is, this would actually be pretty close to a real setting where you might implement AI because of the game state is continuous (not grid based). If we wanted to teach people about techniques such localization, we could omit sending the current player's position and have them use the common techniques to locate themselves on the map.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    I learned a lot about writing networked code, and thinking about decisions such as what logic goes on the server and what can be kept on the client. I also learned about how Javascript can be executed as a separate process within Nodejs (using the VM built in library) and about all the different ways of capturing and isolating an environment. (I'm currently taking a Programming Languages class so it felt highly relevant here!)
+                </p>
+                <p>
+                    I had also never used CreateJS before. I could have used Phaser, which is a library specifically built for games, and it probably would have been a lot easier, but I decided to use CreateJS because I hadn't used it before and because it's built to be more general (to support any rich interactive content on the web, not just games) I thought it would be a good tool to know.
+                </p>
+                <h2>
+                    What's next for Airena
+                </h2>
+                <p>
+                    I want to do two main things:
+                </p>
+                <p>
+                    One is to further develop the game to make it more fun and interested to write AI for. One thing I'd love to add is the ability to release "minions", so you're no longer able to play very effectively as a single human. Then you can feel/see the power of programming. Perhaps a way to store and share code snippets that do various kinds of behaviors.
+                </p>
+                <p>
+                    The other is to clean up and publish the live coding server as a standalone, to encourage more people to experiment with this idea, because I very much believe in learning by doing, I think by making it easy to implement this we could improve learning materials and show more people how fulfilling and exciting writing code really is!
+                </p>
+                <p>
+                    Source:
+                    <a href="https://github.com/OmarShehata/Airena" rel="nofollow">
+                        https://github.com/OmarShehata/Airena
+                    </a>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/create-js">
+                                create.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/socket-io">
+                                socket.io
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://airena.herokuapp.com" rel="nofollow" target="_blank" title="https://airena.herokuapp.com">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                airena.herokuapp.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://omarshehata.me:8080/" rel="nofollow" target="_blank" title="http://omarshehata.me:8080/">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                omarshehata.me
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/OmarShehata/Airena" rel="nofollow" target="_blank" title="https://github.com/OmarShehata/Airena">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

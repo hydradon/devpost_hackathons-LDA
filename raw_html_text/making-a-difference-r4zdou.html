@@ -1,0 +1,245 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/7TOrLDKVJWQ?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I've been a big fan of the WeThePeople project since the Obama Administration released it in 2011. The platform allows citizens to create and sign petitions on
+                    <a href="https://petitions.whitehouse.gov" rel="nofollow">
+                        petitions.whitehouse.gov
+                    </a>
+                    . Once a petitions reaches 100,000 signatures it becomes eligible for an official response from the White House. With the change in administration, I was happy to see that this system continued to be used and garner official responses from the Oval Office. When Amazon announced the Tech for Good competition, I realized it would be a great opportunity to apply with WeThePeople for an API key. Once I got approved and received an API key, I created a skill that would enable petition discovery, voice-based signing, and ongoing tracking of signed petitions. I think this is a fantastic chance to increase direct line access to the White House!
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Users who enable the skill can search for top petitions on issues that matter to them. Once they find an issue that they want to support, they can ask Alexa to sign it for them. In order to sign petitions, users must link their Amazon account, giving the skill access to their name and email. After a user has signed a petition, they can check the skill for updates about their signed petitions, and can be sent official responses once released by the White House.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    I used
+                    <a href="https://serverless.com/" rel="nofollow">
+                        serverless
+                    </a>
+                    as a framework to develop the skill. The process was much easier than when I built my last skill in 2015 by constantly uploading .zip files to AWS Lambda directly. Serverless makes describing a deployment and managing your Lambda functions simple. As an example, here's my
+                    <code>
+                        serverless.yml
+                    </code>
+                    file, which completely describes the access and connections that need to be made on AWS:
+                </p>
+                <pre class="language-yml"><code>service: makingADifference
+
+provider:
+name: aws
+runtime: nodejs8.10
+region: us-east-1
+iamRoleStatements:
+- Effect: "Allow"
+Action:
+- dynamodb:Query
+- dynamodb:Scan
+- dynamodb:GetItem
+- dynamodb:PutItem
+- dynamodb:UpdateItem
+- dynamodb:DeleteItem
+Resource: "arn:aws:dynamodb:us-east-XXX:table/MakingADifference"
+
+functions:
+makingADifference:
+handler: handler.makingADifference
+alexaSkill: amzn1.ask.skill.XXX
+</code></pre>
+                <p>
+                    I used DynamoDB to persist simple key/value user state. A major pro-tip if you're building a skill in Node.js:
+                    <strong>
+                        use the
+                        <a href="https://www.npmjs.com/package/ask-sdk" rel="nofollow">
+                            alexa-sdk
+                        </a>
+                        library
+                    </strong>
+                    . It has features that make things like storing state pretty mindless. My mind was blown when I saw how easy it was to
+                    <a href="https://ask-sdk-for-nodejs.readthedocs.io/en/latest/Managing-Attributes.html" rel="nofollow">
+                        connect DynamoDB for user attribute storage
+                    </a>
+                    .
+                </p>
+                <p>
+                    The user can also share petitions after they have been signed. I connected to SendGrid and used dynamic templates to send these sharable messages.
+                </p>
+                <p>
+                    After I finished the skill, I spent as much time testing it as I did building it. I found that I needed to create a few "undocumented" intents. An example of this is I heard one of my test users saying "Go back", so I built an intent that lets users traverse lists of petitions in the opposite direction, even though they would never know about this functionality in the skill unless they asked for it.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    One of the biggest challenges I ran into was search. The search on the WeThePeople API is basic: the search term
+                    <em>
+                        must
+                    </em>
+                    show up in the title for it to return a result. This made it very difficult to find petitions in an expected way. As a consequence, I built my own local search that would override a WeThePeople API if it matched a popular category. Here's the function that gets run periodically to create those search categories:
+                </p>
+                <pre class="language-javascript"><code>
+'use strict';
+
+const apiBase = 'https://api.whitehouse.gov/v1/';
+const request = require('request');
+const fs = require('fs');
+
+function getTopPetitions (cb) {
+const url = apiBase + 'petitions?limit=100&amp;isSignable=1&amp;sortBy=signature_count&amp;sortOrder=desc';
+request.get(url, (err, resp, body) =&gt; {
+if (err) return cb(err);
+try {
+const petitions = JSON.parse(body);
+return cb(null, petitions.results);
+} catch (e) {
+return cb(e);
+}
+});
+}
+
+const categoryOverride = {
+'Economy &amp;amp; Jobs': 'the economy',
+'Innovation: Arts &amp;amp; Technology': 'the arts',
+'Budget &amp;amp; Taxes': 'taxes'
+};
+
+module.exports = (cb) =&gt; {
+getTopPetitions((err, petitions) =&gt; {
+if (err) return cb(err);
+let categoryMap = {};
+petitions.map(p =&gt; {
+let categories = p.issues.map(i =&gt; { return (categoryOverride[i.name] || i.name.split('&amp;amp;')[0].trim()).toLowerCase(); });
+categories.forEach(c =&gt; {
+categoryMap[c] = (categoryMap[c] || []).concat([{
+id: p.id,
+title: p.title,
+signatureCount: p.signatureCount,
+url: p.url
+}]);
+});
+});
+return fs.writeFile('./topSearches.json', JSON.stringify(categoryMap), cb);
+});
+};
+</code></pre>
+                <p>
+                    This function created a flat .json file with all the top petitions matched to a category tag added by users when they create the petition. If the search term given by the user matched any of these categories, I load from the local search instead of using the WeThePeople API search.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    I'm most proud of the general UX of this skill.
+                </p>
+                <p>
+                    There are a lot of edge cases when it comes to the petitions. For example, there are many petitions that got created and didn't get quite enough support, so closed without response. In these cases, you can't actually sign the petition. The issue is still important to the user, so instead they get sent an email summary of the petition that they can share, and maybe the petition will be reopened (or they can create a new one!)
+                </p>
+                <p>
+                    I also spent a lot of time thinking through the UX around how you iterate through lists of petitions without getting confused or losing your place. Even when I thought I structured the copy in a way that made sense to me, the people who helped me test could easily find where I fell short. There aren't any books and not many articles on Voice UX, so it's definitely learn-as-you-go!
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    There is a petition to
+                    <a href="https://petitions.whitehouse.gov/petition/erect-statue-paul-flart-washington-dc-near-white-house" rel="nofollow">
+                        erect a statue to Paul Flart
+                    </a>
+                    a security guard who
+                    <a href="https://www.vice.com/en_us/article/vbjkg3/this-security-guard-filmed-all-his-farts-for-six-months-and-went-viral" rel="nofollow">
+                        filmed his farts for 6 months
+                    </a>
+                    before getting fired.
+                </p>
+                <h2>
+                    What's next for Making a Difference
+                </h2>
+                <p>
+                    If Making a Difference ends up having a pulse, I will be building out a much more robust alerting system, so that people can get periodic email updates about their petitions' progress and know when there are any updates available. I will also work on improving the way that petitions can be shared between multiple Alexa users, so that you can see the issues that matter to your family and friends as well.
+                </p>
+                <p>
+                    Thank you for your consideration!
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            dynamodb
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            serverless
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://skills-store.amazon.com/deeplink/dp/B07GPQJT1B?deviceType=app&amp;share&amp;refSuffix=ss_copy" rel="nofollow" target="_blank" title="https://skills-store.amazon.com/deeplink/dp/B07GPQJT1B?deviceType=app&amp;share&amp;refSuffix=ss_copy">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                skills-store.amazon.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

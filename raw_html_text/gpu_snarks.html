@@ -1,0 +1,207 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I was inspired by Louis Guthmann at EthCC who said that even the biggest Zero-knowledge companies do not use GPU's to accelerate their Proofs. I thought that we can easily change that by executing the slowest (and highly parallelizable) on a graphics card.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    GPU-Snark executes the Fast Fourier Transformation on Finite Elements for Snarks.
+It is several times faster than the existing CPU implementation Libsnark (used by ZCash).
+It is fully templated, so it can calculate different datatypes. 
+The Interface matches the interface of
+                    <a href="https://github.com/scipr-lab/libsnark/tree/master/libsnark" rel="nofollow">
+                        Libsnark
+                    </a>
+                    and
+                    <a href="https://github.com/zkcrypto/bellman" rel="nofollow">
+                        Bellman
+                    </a>
+                    which makes it easy to use GPU-Snark instead of
+                    <a href="https://github.com/scipr-lab/libfqfft/tree/master/libfqfft" rel="nofollow">
+                        Libfft
+                    </a>
+                    for the fourier transformation. 
+It can also be used for
+                    <a href="https://github.com/scipr-lab/dizk/blob/master/src/main/java/algebra/fft/FFTAuxiliary.java" rel="nofollow">
+                        DIZK
+                    </a>
+                    The implementation is in CUDA so it can only run on NVIDIA Graphics Cards.
+                </p>
+                <h2>
+                    How I built it &amp; Challenges I ran into
+                </h2>
+                <p>
+                    I've started Friday evening and build the first version without compiling it since I do not have a Nvidia GPU in my Laptop. I tried to set up a AWS Student account to test it in the cloud but Amazon was a bit slow.
+In the end I got access to a university server to test and benchmark GPU-Snark.
+                </p>
+                <h2>
+                    What's next for GPU_Snarks
+                </h2>
+                <p>
+                    Next Steps for GPU_Snarks are cleanup of the code, with more time I can probably make it even more efficient, Proper integration into [Libsnark] and
+                    <a href="https://github.com/zkcrypto/bellman" rel="nofollow">
+                        Bellman
+                    </a>
+                    . 
+Porting the code to OpenCL.
+Proper Open Source Licensing. 
+Looking for other parts in Snarks that can be executed in a highly parallel fashion.
+                </p>
+                <h2>
+                    Benchmarks
+                </h2>
+                <p>
+                    My benchmarks were run on a 
+CPU Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz runs with 8 threads
+                </p>
+                <p>
+                    GPU: GTX 1080
+                </p>
+                <table class="responsive">
+                    <thead>
+                        <tr>
+                            <th>
+                                Constraints
+                            </th>
+                            <th>
+                                Constraints
+                            </th>
+                            <th>
+                                GPU
+                            </th>
+                            <th>
+                                CPU
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                2^16
+                            </td>
+                            <td>
+                                65536
+                            </td>
+                            <td>
+                                0.32 s
+                            </td>
+                            <td>
+                                0.21 s
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2^20
+                            </td>
+                            <td>
+                                1048576
+                            </td>
+                            <td>
+                                0.33 s
+                            </td>
+                            <td>
+                                4.40 s
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2^22
+                            </td>
+                            <td>
+                                4194304
+                            </td>
+                            <td>
+                                0.43 s
+                            </td>
+                            <td>
+                                18.03 s
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2^25
+                            </td>
+                            <td>
+                                33554432
+                            </td>
+                            <td>
+                                10.57 s
+                            </td>
+                            <td>
+                                tbd*
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2^28
+                            </td>
+                            <td>
+                                268435456
+                            </td>
+                            <td>
+                                227.25 s
+                            </td>
+                            <td>
+                                tbd*
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p>
+                    <em>
+                        2^28 the CPU implementation was not finished after over 4 hours on 8 cores.
+Which suggests a speedup of over *
+                    </em>
+                    60x** for the GPU implementation.
+                </p>
+                <p>
+                    2^28 took around 1.8GB of Memory on the GPU
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/c--3">
+                                c++
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            cuda
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/MariusVanDerWijden/gpusnark" rel="nofollow" target="_blank" title="https://github.com/MariusVanDerWijden/gpusnark">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

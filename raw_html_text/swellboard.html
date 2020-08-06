@@ -1,0 +1,193 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="728601" data-title="Full Board Overview" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/728/601/datas/original.png">
+                            <img alt="SwellBoard &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/728/601/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Full Board Overview
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="728603" data-title="Metrics over time" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/728/603/datas/original.png">
+                            <img alt="SwellBoard &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/728/603/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Metrics over time
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="728604" data-title="Comparison to find the next best hyperparameters" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/728/604/datas/original.png">
+                            <img alt="SwellBoard &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/728/604/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Comparison to find the next best hyperparameters
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Swellboard
+                </h1>
+                <p>
+                    Recently, different best practices to version and track machine learning experiments have been proposed. These software packages wrap around the experiment's code and persist all relevant information for reproducibility (see for example mlflow and sacred). Swellboard bases on one of these open source projects:
+                    <a href="https://github.com/IDSIA/sacred" rel="nofollow">
+                        sacred
+                    </a>
+                    from IDSIA in Switzerland. Swellboard makes the metrics, configurations and relationship between the two accessible by making selection and filtering of experiments simple and providing powerful means of plotting. By comparison, we provide actionable insights in terms of new configurations to try for an experiment.
+                </p>
+                <h2>
+                    Technicalities
+                </h2>
+                <p>
+                    Swellboard works with a MongoDB that has been filled by sacred experiments (for our demo we ran one some older personal projects). Swellboard has a RESTful backend to serve an angular frontend. While the backend is built in python with flask and connects to the MongoDB, the frontend is based on
+                    <a href="d3js.org" rel="nofollow">
+                        d3
+                    </a>
+                    within angular and related frameworks.
+                </p>
+                <h3>
+                    Sacred best practice for using Swellboard
+                </h3>
+                <p>
+                    Each experiment should be the run for a particular model. Therefore,
+we expect a particular addition to the configuration. The easiest way
+is to run all experiments using
+                    <code>
+                        with swell
+                    </code>
+                    and define the variable
+tag within the named configuration.
+                </p>
+                <pre class="language-python"><code>@ex.named_config
+def swell():
+model_tag = "Neural Network"
+</code></pre>
+                <p>
+                    Several experiments can have the same tag and would ideally
+conform to the same structure. For example, the tag
+                    <em>
+                        Neural Network
+                    </em>
+                    would group all runs that have been finished using a neural
+network model and make them easily comparable. This allows
+for simpler structuring of the visualization and selection
+of runs and experiments.
+                </p>
+                <p>
+                    Further, we allow for a benchmark of final performance metrics
+and correlation with parameters of the run. For this to work
+properly, the experiment's main should return the
+metrics of interest. The configuration is automatically used
+without further adjustment. To return final metrics, the
+main of sacred should look as follows
+                </p>
+                <pre class="language-python"><code>@ex.automain  # or just main
+def experiment(**kwargs)
+...
+# run model and collect metrics and artifacts as usual
+return {
+'acc': x,
+'max-acc': max(xs)
+'val-acc': y,
+'metric_1': z
+}
+</code></pre>
+                <p>
+                    Ideally, all experiments under one group of model tags should
+return the same final metrics to get the most of the comparison.
+                </p>
+                <h3>
+                    Last Commit
+                </h3>
+                <p>
+                    <code>
+                        fd5b990e77ebec31cb032a2c579b6d268e0d9ab6
+                    </code>
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/html">
+                                html
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/typescript">
+                                typescript
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/AlexImmer/SwellBoard" rel="nofollow" target="_blank" title="https://github.com/AlexImmer/SwellBoard">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

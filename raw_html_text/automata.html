@@ -1,0 +1,268 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="278057" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/057/datas/original.PNG">
+                            <img alt="Automata &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/057/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="278182" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/182/datas/original.jpg">
+                            <img alt="Automata &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/182/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="278183" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/183/datas/original.png">
+                            <img alt="Automata &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/183/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="278186" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/186/datas/original.png">
+                            <img alt="Automata &ndash; screenshot 4" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/278/186/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h1>
+                    Automata
+                </h1>
+                <p>
+                    A pluggable framework to tie together independently created devices
+                </p>
+                <h1>
+                    How it works
+                </h1>
+                <p>
+                    When the app is started it looks in a directory for plugins. These plugins are how Automata does everything. They are designed to be api end points that communicate with your devices. A plugin exports these endpoints via an Expressjs router, the loader then attaches these endpoints to /api. The plugin writer then creates a UI that will be displayed on the homepage. In my case I wrote 4 plugins. A spark broker, a lights module, a relay module, and a weaved module. The spark broker handles all the communication between the lights and relay modules and the Spark cloud, as it requires a login, that way each module doesn't have to maintain a login with the server. The weaved plugin communicates with a url, in my case, bypassing the weaved infrastructure, talking directly to the api on the weaved device.
+                </p>
+                <p>
+                    What I really like about this is that each person can write their own plugins or remix a plugin and adapt it to the hardware they have designed or to hardware that exists on the market. As long as the other device is accessible on the internet, Automata can talk to it.
+                </p>
+                <h2>
+                    Plugin API
+                </h2>
+                <p>
+                    Plugins should export the following methods:
+                </p>
+                <ul>
+                    <li>
+                        load(options)
+                    </li>
+                    <li>
+                        initilize()
+                    </li>
+                    <li>
+                        loadRoutes()
+                    </li>
+                    <li>
+                        registerStaticFolders(pluginDir) (Optional)
+                    </li>
+                    <li>
+                        registerStyles(pluginDir) (optional)
+                    </li>
+                    <li>
+                        registerScripts(pluginDir) (optional)
+                    </li>
+                </ul>
+                <p>
+                    The pluginDir above will likely be optimized out in a later release
+                </p>
+                <p>
+                    The idea is that all internal methods will be accessable via an express
+  router and exported via loadRoutes
+                </p>
+                <p>
+                    Plugins not ready for prime-time can be disabled by appending '.disabled' to
+the end of the folder
+                </p>
+                <h2>
+                    Plugin list
+                </h2>
+                <p>
+                    A list of plugins designed to work with Automata:
+                </p>
+                <ul>
+                    <li>
+                        <a href="https://github.com/ohnoitsyou/automata-pirelay" rel="nofollow">
+                            pirelay
+                        </a>
+                        - Controller for a RasPi based relay board (currently not implemented)
+                    </li>
+                    <li>
+                        <a href="https://github.com/ohnoitsyou/automata-spark" rel="nofollow">
+                            Spark
+                        </a>
+                        - An interface for communicating with Spark {core, photon, electron} devices
+                    </li>
+                    <li>
+                        <a href="https://github.com/ohnoitsyou/automata-rgb-light" rel="nofollow">
+                            RGB Spark
+                        </a>
+                        - A Spark based RGB lamp
+                    </li>
+                    <li>
+                        <a href="https://github.com/ohnoitsyou/automata-relay" rel="nofollow">
+                            Spark relay
+                        </a>
+                        - A spark controlled relay outlet, similar to the Weaved
+                    </li>
+                    <li>
+                        <a href="https://github.com/ohnoitsyou/automata-weaved" rel="nofollow">
+                            Weaved
+                        </a>
+                        - A basic controller for the Weaved IoT device
+                    </li>
+                </ul>
+                <h1>
+                    History
+                </h1>
+                <p>
+                    I started the RBG spark light at HACKUMBC in the Fall of 2014. I designed a very basic API to control the device and get functionality working. My
+                    <a href="https://blog.ohnoitsyou.net/hackumbc/" rel="nofollow">
+                        blog post
+                    </a>
+                    about the hack.
+Christmas of 2014 I built the
+                    <a href="https://blog.ohnoitsyou.net/spark-automata/" rel="nofollow">
+                        second device
+                    </a>
+                    , my relay board. At this point I still don't have a UI, I am controlling everything from my phone via the Tinker app.
+Shortly there after I started working on the web UI. I began finishing up college and the project fell by the wayside.
+Spring 2015 I spent some time at
+                    <a href="https://blog.ohnoitsyou.net/bitcamp/" rel="nofollow">
+                        Bitcamp
+                    </a>
+                    working on making the backend pluggable.
+During this IoT hackathon I worked on building out the plugin loader, 3 device plugins and all of the UI and associated functionality. I started to add websockets support but struggled to get all those moving pieces together.
+The site has basic-auth support via Passport.js, and could support many different auth methods.
+I have 2 pieces of 'custom' hardware, spark/photon devices with custom firmware and a weaved IoT device controllable from the UI.
+                </p>
+                <p>
+                    I have lots of plans for this framework. My RBG lamp is coming along nicely, the LED's are mounted, I need to mount the electronics and add wall mounting hardware.
+I'm really happy with my relay board, and am thinking I should build a few more.
+The Weaved device is really cool. I'm using in a very basic way but I have some future plans for it.
+I have a
+                    <a href="https://blog.ohnoitsyou.net/weather-station/" rel="nofollow">
+                        weather station
+                    </a>
+                    project in the wings and also a garage control project on hold as well.
+                </p>
+                <p>
+                    Normally there is a username and password on the website. To facilitate judging, I am going to remove the authentication.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/css">
+                                css
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/handlebars-js">
+                                handlebars.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            home-automation
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            iot
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/particle">
+                                particle
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            weaved
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/ohnoitsyou/automata" rel="nofollow" target="_blank" title="https://github.com/ohnoitsyou/automata">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="http://automata.ohnoitsyou.net" rel="nofollow" target="_blank" title="http://automata.ohnoitsyou.net">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                automata.ohnoitsyou.net
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

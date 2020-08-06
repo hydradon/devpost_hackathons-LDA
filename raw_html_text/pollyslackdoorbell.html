@@ -1,0 +1,155 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/VZvtWHr_mfI?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    I was challenged by our leadership to build an Alexa app to greet incoming guests for client meetings.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    A webcam on a laptop runs motion detection software and uploads still images to S3.
+A lambda function is triggered on upload to detect any faces and if a match to a a known guest is found, it puts this information into a DynamoDB table.    Step Functions coordinates multiple face detection.
+                    <br>
+                    This function also calls a Slack integration to a channel setup on the same laptop.
+This is configured on the laptop to play a Polly audio utterance of 'Alexa, Greet our guests!'
+The utterance triggers a nearby Echo Dot with our custom skill installed.  This skill calls a lambda function to  read the current guests DynamoDB table and plays a custom greeting for each guest.
+                </p>
+                <h2>
+                    How I built it
+                </h2>
+                <p>
+                    This is built entirely in AWS with many of their managed and server less compute services.
+                </p>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <p>
+                    There are no push notifications with Alexa/Echo.  This lead me to come up with the rather unconventional workaround of having a Slack bot announce the Alexa command audibly and trigger the Alexa skill to greet guests coming in the door.
+Also, the motion detection software I used created unnecessary lag in the capture and upload of images.
+                </p>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <p>
+                    Getting one bot to 'talk' to another in a rather unique way.
+                </p>
+                <h2>
+                    What I learned
+                </h2>
+                <p>
+                    AWS Step Functions are a useful too, but not particularly performant.
+                    <br>
+                    Additionally, after discussing this project with the AWS Rekognition team, Step Functions can be replaced using a Collection to compare all faces at once.
+                </p>
+                <h2>
+                    What's next for PollySlackDoorBell
+                </h2>
+                <p>
+                    Refactor the code to use a dynamic Known Guests Dynamo DB table, and use Rekognition Collections for multiple face comparison.  Also would like to build a front-end to make it simpler for end-users to update faces/greetings.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/alexa">
+                                alexa
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            lambda
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            polly
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/rekognition">
+                                rekognition
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            s3
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/slack">
+                                slack
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            step-functions
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/jrquint/alexia-doorbell.git" rel="nofollow" target="_blank" title="https://github.com/jrquint/alexia-doorbell.git">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

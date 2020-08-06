@@ -1,0 +1,194 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li>
+                        <div class="flex-video">
+                            <iframe allowfullscreen="allowfullscreen" allowscriptaccess="always" class="video-embed" frameborder="0" height="371" mode="transparent" src="https://www.youtube.com/embed/OGDyD7C34Ss?enablejsapi=1&amp;hl=en_US&amp;rel=0&amp;start=&amp;version=3&amp;wmode=transparent" type="text/html" webkitallowfullscreen="true" width="660" wmode="transparent">
+                            </iframe>
+                        </div>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416804" data-title="System Architecture" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/804/datas/original.png">
+                            <img alt="Reginald &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/804/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                System Architecture
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416818" data-title="Sample Usage (Private)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/818/datas/original.png">
+                            <img alt="Reginald &ndash; screenshot 2" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/818/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Sample Usage (Private)
+                            </i>
+                        </p>
+                    </li>
+                    <li class="text-center">
+                        <a data-lightbox="416820" data-title="Sample Usage (Public)" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/820/datas/original.png">
+                            <img alt="Reginald &ndash; screenshot 3" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/416/820/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Sample Usage (Public)
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We want to give users insight into how they are perceived by others in the chat community. This knowledge allows users to adjust their online behavior before relational problems arise. We created Reginald to ensure Slack communities remain fun, healthy, and functioning. It is our hope that Reginald aids in building better and stronger relationships in chat communities all over the world.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Reginald analyzes Slack chat history to provide users with an overview of how their in-chat behavior is perceived by other users. Metrics returned include participation, positivity, negativity, and conceit. The metrics are calculated using only the last 1000 posts in the current channel. This means a user's scores will be different in each channel and will dynamically change over time.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <ul>
+                    <li>
+                        Reginald is built using Node.js on AWS Lambda.
+                    </li>
+                    <li>
+                        We designed Reginald with a microservices architecture in mind. There are six microservice Lambda functions in total - one for each metric (positivity, negativity, participation, conceit), one for the "gateway", and one to handle OAuth.
+                    </li>
+                    <li>
+                        Lambda functions that need to be external are served using AWS API Gateway.
+                    </li>
+                    <li>
+                        AWS DynamoDB is used for persistence.
+                    </li>
+                    <li>
+                        The
+                        <a href="https://serverless.com/" rel="nofollow">
+                            Serverless
+                        </a>
+                        framework is used to automate the creation of AWS resources.
+                    </li>
+                    <li>
+                        The
+                        <a href="https://www.npmjs.com/package/sentiment" rel="nofollow">
+                            Sentiment
+                        </a>
+                        library aids in calculating metrics.
+                    </li>
+                </ul>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <ul>
+                    <li>
+                        We ran into issues with AWS Lambda's "cold" start time (
+                        <a href="http://stackoverflow.com/a/34216756" rel="nofollow">
+                            Link
+                        </a>
+                        for reference). Slack enforces a hard 3 second timeout for responses to slash commands. Reginald responds well within that timeout when the Lambda functions are "hot" (average time is ~700ms), but if the Lambda functions are "cold" the response could exceed the timeout. To overcome this issue we created a separate Lambda function whose purpose is to ping the main service functions to keep them "hot".
+                    </li>
+                </ul>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We are proud of all of the functionality and performance we were able to achieve with Reginald v1.0.
+                </p>
+                <h2>
+                    What's next for Reginald
+                </h2>
+                <ul>
+                    <li>
+                        Reginald has been submitted and is currently under review to be added to the
+                        <a href="https://slack.com/apps" rel="nofollow">
+                            Slack App Directory
+                        </a>
+                    </li>
+                    <li>
+                        Dynamic responses using natural language processing
+                    </li>
+                    <li>
+                        Different metric options
+                    </li>
+                    <li>
+                        More accurate metric algorithms
+                    </li>
+                </ul>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-dynamodb">
+                                amazon-dynamodb
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/node-js">
+                                node.js
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/asmith60/slackbot-reginald" rel="nofollow" target="_blank" title="https://github.com/asmith60/slackbot-reginald">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,170 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h1>
+                    YADQL
+                </h1>
+                <h2>
+                    Yet Another Database Query Language
+                </h2>
+                <h4>
+                    A Blockchain Database Query Language
+                </h4>
+                <p>
+                    (pronounced YA-di-CAL, like radical but with a Y)
+                </p>
+                <h3>
+                    Concept
+                </h3>
+                <p>
+                    IoT devices, in and of themselves, present a serious security risk in the manner that data is saved and transmitted between the various devices owned by a single person or entity. Using a smart contract running on the Ethereum blockchain, we propose the creation of an identity-provable, decentralized, transparent, and private encrypted database which shares common information and configuration between IoT devices, allowing complete control of an entity&rsquo;s personal data.
+                </p>
+                <h3>
+                    Components
+                </h3>
+                <p>
+                    Parser
+                </p>
+                <p>
+                    Functions
+                </p>
+                <p>
+                    Rust? (familiar with parser already, just for QL)
+                </p>
+                <p>
+                    Config File for IOT Device (Web3 Provider, ETH acc, etc)
+                </p>
+                <p>
+                    Private Data Security for all IOT Devices
+                </p>
+                <p>
+                    You will need some OpenPGP client (gpg works fine) installed for encryption purposes.
+                </p>
+                <h3>
+                    Grammar
+                </h3>
+                <p>
+                    <code>
+                        Insert [x] [y];
+                    </code>
+                    <code>
+                        Delete [x];
+                    </code>
+                    <code>
+                        Update [x] [y];
+                    </code>
+                    <code>
+                        Read [x];
+                    </code>
+                </p>
+                <h3>
+                    Identity
+                </h3>
+                <p>
+                    User identity will be a mechanic by which public keys are connected and assigned to a single user. An identity will be a data structure maintained by the smart contract that essentially logs a list of all public keys associated with an identity.
+                </p>
+                <h3>
+                    Under the Hood
+                </h3>
+                <p>
+                    When a user adds a device to their identity on the YADQL smart contract, their client creates an RSA public/private keypair and registers the public key with the smart contract. When the device registers some piece of configuration data d, the data is packaged into a structure of the configuration:
+                </p>
+                <pre class="language-nolang"><code>(
+                'operation': '',
+    &lsquo;key&rsquo;: &lsquo;&rsquo;,
+    &lsquo;value&rsquo;: &lsquo;&rsquo;,
+)
+</code></pre>
+                <p>
+                    Which is then RSA-encrypted and hashed, and signed by the device. The smart contract essentially acts as a ledger of all hashed and signed changes to every user&rsquo;s device configurations. Upon download, the client verifies each signature by using the known public keys for the user&rsquo;s identity, thereby determining which items it cares about. The verifiable hashes are decrypted and applied transactionally to the current local state of the device. If the device
+                    <em>
+                        A
+                    </em>
+                    cannot locally decrypt the data, it determines which device (
+                    <em>
+                        B
+                    </em>
+                    ) owns the public key and requests the specific data be decrypted. Device
+                    <em>
+                        B
+                    </em>
+                    transmits the data back to device
+                    <em>
+                        A
+                    </em>
+                    , now re-encrypted for device
+                    <em>
+                        A
+                    </em>
+                    . Creation of OpenPGP keys will be up to the system or individual provisioning the device, and by default the system will look for a GPG key associated with the user's identity email.
+                </p>
+                <h3>
+                    Use Cases
+                </h3>
+                <h4>
+                    Transmission of Small Pieces of Configuration Data Between IoT devices
+                </h4>
+                <h3>
+                    Immediate Issues
+                </h3>
+                <ul>
+                    <li>
+                        Performance. It&rsquo;s doubtful that our first version will have achieved a speed which may be considered acceptable.
+                    </li>
+                </ul>
+                <h3>
+                    Future Ideas
+                </h3>
+                <ul>
+                    <li>
+                        Add multiple layers of identity proof to verify access to an identity from a new device.
+                    </li>
+                    <li>
+                        Create mobile apps to explore an identity's data on the blockchain.
+                    </li>
+                </ul>
+                <h3>
+                    Notes
+                </h3>
+                <p>
+                    Unit testing will require a local keypair created with the email address
+                    <code>
+                        test@radical-yadql.io
+                    </code>
+                    .
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag">
+                            rust
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/Romulus10/YADQL" rel="nofollow" target="_blank" title="https://github.com/Romulus10/YADQL">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

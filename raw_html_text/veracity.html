@@ -1,0 +1,158 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    We were inspired by the robustness of the IBM-Watson Bluemix algorithm.  Specifically, sentiment and emotion analysis were features we felt would be useful for our original purpose of identifying aggressive and nasty tweets to curb cyber-bullying.  That led us to develop a very interesting statistical technique whose applications we were interested in exploring.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    At it's core, our hack is a statistical method for developing a profile corresponding to human produced text.  It employs techniques from linear algebra to analyze N-dimensional Euclidean spaces containing vectors of text attributes.  In this specific application, our hack allows a Google Chrome user to select a hotel or travel review and identify if it is fake.  Specifically the user can right click on the text of a review, where that text is passed into our python scripts using flask.  Chrome subsequently opens a new tab containing the text and whether or not the review is likely fraudulent. 
+Interestingly, this was not the original focus of the method we developed. Initially, we wanted to characterize tweets as aggressive or passive by pulling data from notably aggressive twitter accounts, in order to address issues related to online harassment. However, this application proved to be far from ideal, since the text analysis on the short strings from tweets that often contained links to images was often unsatisfactory or unreliable. Consequently, we decided to look for other large sets of data that could be used to build statistical profiles. We stumbled upon text files from a Cornell researcher that contained paid-for (fraudulent) travel reviews and real travel reviews, sorted into positive and negative. After loading these data files into the script, we found that the system was able to successfully identify fraudulent reviews, which was surprising given the fact that all of the reviews were written by people, and we sometimes had a hard time distinguishing fraudulent from real by hand.
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    This back-end of this hack was built in python.  Utilizing the API's from IBM-Watson Bluemix, and numpy, which includes matrix operations, we implemented 6-dimensional correlation techniques on the values resulting from alchemy(python library from IBM).  These were numerical values for joy, disgust, fear, anger, sadness, and sentiment value for the text.  From these values, each review is assigned a vector with the six corresponding values for each emotion.  We trained the program by reading 100 known fake reviews and 100 known real reviews, positive and negative, for a total of 400 source reviews (data from Cornell researchers).  For each of the data sets, we created a mean vector that contained as its elements the mean of each attribute outputted from the Bluemix algorithm.
+                </p>
+                <p>
+                    To get a meaningful interpretation of the distance of a sample vector from the model vector developed from the source reviews,  we used the Mahalanobis distance.  The Mahalanobis distance is a way of analyzing the probability that a vector in N-dimensional Euclidean space belongs to a given set (in this case either a fake or real review), that relies on a covariance matrix.  Due to the computationally intensive nature of certain matrix operations, we first pre-processed the large sets of input data and produced simple binary output files that could be efficiently loaded by the python script incorporated in the front end to process text in close to real time.
+                </p>
+                <p>
+                    In order to implement our hack on the front-end we set up an Amazon web server.  This server utilized flask, which allowed us to run python scripts on the server that we created.  It communicates with data obtained from our Chrome extension and passes it as an argument into our python function to produce an output informing the user of the probability that the selected review is fraudulent. For this particular implementation, a user simply selects a review as a block of text, right clicks, and chooses VeraCity, the name we gave to the extension. The server then produces and serves a page with the selected text and a blurb indicating whether the review was judged as fair or fraudulent, and to what extent.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    One challenge we ran into was learning to use an Amazon web server for the first time.  Another challenge was using Flask for the first time. We also created our first chrome extension ever. We experienced compatibility issues between python 2 and python 3 on the web server. We had to register for Bluemix 8 times.
+                </p>
+                <p>
+                    Another major challenge we faced was deciding how to compare a sample data to the large amounts of source data we started with. We only had experience with mean and standard deviation in 1 dimension going into this project, so we had to research and leverage our knowledge of linear algebra to make things work in 6 dimensions. In this process, we also had to learn a lot about numpy to make things work in Python.
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're proud of how adaptable our statistical technique was. We think it is a testament to our attempts to understand the background of the problem we were trying to solve and the preliminary research we did into statistics that our model was able to work well for travel reviews even though we did not consider that as an application going in to this project. We're also proud of being able to get a simple web server going and getting a Chrome extension working even though we had never done anything like that in the past.
+                </p>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned a lot about Python, web servers, and javascript, and the challenges involved in getting different parts of a project to work together. We also learned about how statistics can work in many dimensions with a lot of input data. Further, we learned about implementing interesting and powerful APIs like Bluemix into our programs.
+                </p>
+                <h2>
+                    What's next for VeraCity
+                </h2>
+                <p>
+                    This specific application is interesting, but it might not be the be-all end-all for this statistical technique, especially since the source of our data is the powerful IBM Bluemix system.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/amazon-web-services">
+                                amazon-web-services
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bluemix">
+                                bluemix
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/chrome">
+                                chrome
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/ibm-watson">
+                                ibm-watson
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/javascript">
+                                javascript
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/json">
+                                json
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            linear-algebra
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/numpy">
+                                numpy
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            statistics
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="https://github.com/bfogels1/VeraCity" rel="nofollow" target="_blank" title="https://github.com/bfogels1/VeraCity">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                github.com
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

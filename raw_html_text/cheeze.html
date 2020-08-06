@@ -1,0 +1,207 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    Take a photo when you smile
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <h2>
+                    How I built it
+                </h2>
+                <h2>
+                    Challenges I ran into
+                </h2>
+                <h2>
+                    Accomplishments that I'm proud of
+                </h2>
+                <h2>
+                    What I learned
+                </h2>
+                <h2>
+                    What's next for Cheeze
+                </h2>
+                <p>
+                    &lt;?php
+    //get json from javascript
+    $image_data = "";
+    $json_image = file_get_contents('php://input');
+    $image = json_decode('image', $json_image);
+                </p>
+                <pre class="language-nolang"><code>//send request to find the joy persent
+
+//echo 'Hi there';
+
+//send the smiling pic to client
+$array_image = array ('image' =&gt; $image_data);
+$json_image = json_encode($array_image);
+//echo "GetSmilingPhoto($json_image)";
+</code></pre>
+                <p>
+                    ?&gt;
+                </p>
+                <p>
+                    CheeseCam!
+                </p>
+                <pre class="language-nolang"><code>&lt;script&gt;
+
+
+                var apiKey = "AIzaSyBmd3CqCjETNhx-WrABPRPUbdBvr8R3sbk";
+    var CV_URL = "https://vision.googleapis.com/v1/images:annotate?key=" + apiKey;
+
+
+    window.addEventListener("DOMContentLoaded", function() {
+    var canvas = document.getElementById("canvas"),
+    context = canvas.getContext("2d"),
+    result = document.getElementById("result"),
+    resultContext = result.getContext("2d");
+
+    video = document.getElementById("video"),
+    videoObj = { "video": true },
+    timer = setInterval(function CapturePhoto(){
+    context.drawImage(video, 0, 0, 500, 375);
+    var data = canvas.toDataURL('image/png');
+
+    //alert('Before request');
+    var request = {
+    requests: [{
+    image: {
+    content: data
+    },
+    features: [{
+    type: "FACE_DETECTION",//send data to backend php
+    maxResults: 200
+    }]
+    }]
+    };
+    //alert('After request');
+
+    $('$result').text('Loading');
+</code></pre>
+                <p>
+                    //                    var xmlhttp = new XMLHttpRequest( );
+//                    xmlhttp.open("POST", CV_URL, true);
+//                    xmlhttp.onload =  function () {
+//                        alert("OK open request");
+//                    }
+//                    xmlhttp.setRequestHeader("application/json", "application/x-www-form-urlencoded");
+//                    xmlhttp.send(JSON.stringify(request));
+//                    alert('Request sent');
+                </p>
+                <pre class="language-nolang"><code>                $.post({
+                                                                                url: CV_URL,
+                    data: JSON.stringify(request),
+                    contentType: 'application/json'
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                    alert('Failed to send request!');
+                    $('#results').text('ERRORS: ' + textStatus + ' ' + errorThrown);
+                    }).done(displayJSON);
+                    } , 1000);
+
+                    errBack = function(error) {
+                    if("object" === typeof window.console){
+                    console.log("Video capture error: ", error.code);
+                    }
+                    };
+
+                    if(navigator.getUserMedia) { // Standard
+                    navigator.getUserMedia(videoObj, function(stream) {
+                    video.src = stream;
+                    video.play();
+                    }, errBack);
+                    } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+                    navigator.webkitGetUserMedia(videoObj, function(stream){
+                    video.src = window.webkitURL.createObjectURL(stream);
+                    video.play();
+                    }, errBack);
+                    }
+
+
+                    function displayJSON(data) {
+                    var contents = JSON.stringify(data, null, 4);
+                    alert(contents);
+
+
+                    $("#results").text(contents);
+                    }
+
+                    function  GetSmilingPhoto(data) {
+                    setTimeout()
+                    var image = new Image();
+                    image.src =  data.image;
+                    resultContext.drawImage(image, 0, 0);
+                    DownloadImage()
+
+                    }
+                    function DownloadImage(link, filename) {
+                    link.href = document.getElementById(result).toDataURL();
+                    link.download = filename;
+                    }
+
+                    document.getElementById("snap").addEventListener("click", function() {
+                    context.drawImage(video, 0, 0, 500, 375);
+                    });
+
+    }, false);
+&lt;/script&gt;
+</code></pre>
+                <p>
+                </p>
+                <p>
+                </p>
+                #video {
+                width: 500px;
+                height: 375px;
+                background-color: #666;
+    }
+
+    #canvas{
+    width:500px;
+    height: 375px;
+    position: relative;
+    top:-380px;
+    right:-500px;
+    padding-left: 100px;
+    }
+
+    /*#result{*/
+    /*background-color: aquamarine;*/
+    /*position: relative;*/
+    /*top: -300px;*/
+    /*right: -300px;*/
+    /*}*/
+
+    #snap{
+
+    position: relative;
+    bottom: -100px;
+    }
+    #results{
+
+    position: relative;
+    top:300px;
+    }
+
+
+
+
+
+    
+    Snap Photo
+                <p>
+                    <code>
+                    </code>
+                </p>
+                <p>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

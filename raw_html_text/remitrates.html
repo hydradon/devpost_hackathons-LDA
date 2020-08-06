@@ -1,0 +1,201 @@
+﻿<html>
+    <head>
+    </head>
+    <body>
+        <div class="large-9 columns" id="app-details-left">
+            <div id="gallery">
+                <ul>
+                    <li class="text-center">
+                        <a data-lightbox="588685" data-title="Compare RationalFX, TransferWise, Western Union, XE, and Xoom at http://remitrat.es!" href="https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/588/685/datas/original.PNG">
+                            <img alt="RemitRates &ndash; screenshot 1" class="software_photo_image image-replacement" onerror="this.onerror=null;this.src='https://devpost-challengepost.netdna-ssl.com/assets/defaults/thumbnail-placeholder-42bcab8d8178b413922ae2877d8b0868.gif';" src="//challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/588/685/datas/gallery.jpg">
+                        </a>
+                        <span class="expand-tag">
+                            <i class="fas fa-expand">
+                            </i>
+                        </span>
+                        <p>
+                            <i>
+                                Compare RationalFX, TransferWise, Western Union, XE, and Xoom at http://remitrat.es!
+                            </i>
+                        </p>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h2>
+                    Inspiration
+                </h2>
+                <p>
+                    A few days ago, I (Santi) had to send some money to family in Colombia - I ended up using Western Union, which wasn't a great experience. The remittances industry is not very transparent, and it is often not clear what is that best service to use -- that's why we decided to build RemitRates.
+                </p>
+                <h2>
+                    What it does
+                </h2>
+                <p>
+                    Given where you're sending money from and to, and how much money your sending, RemitRates tells you which service gives you the best rates. Right now, you can compare rates from RationalFX, TransferWise, Western Union, XE, and Xoom -- and we're planning to add even more after the hackathon!
+                </p>
+                <h2>
+                    How we built it
+                </h2>
+                <p>
+                    We've got a Flask backend deployed on Heroku that takes care of most of the heavy lifting. The frontend -- built on JQuery and Bootstrap -- sends the user's request (a tuple of their source country, target country, and amount to send) to an API endpoint on the backend. The backend then runs through all the services we support, and scrapes / requests the required data from each website.
+                </p>
+                <h2>
+                    Challenges we ran into
+                </h2>
+                <p>
+                    Our first challenge was an assumption we'd made that each of these services lets you "convert money from
+                    <em>
+                        currency
+                    </em>
+                    A to
+                    <em>
+                        currency
+                    </em>
+                    B," so we built our UI and API around passing currencies around. We soon realized that lots of these services only let you "send money from
+                    <em>
+                        country
+                    </em>
+                    A to
+                    <em>
+                        country
+                    </em>
+                    B," and since there's no one-to-one mapping from currencies to countries (it's one-to-many -- thanks, Eurozone!), we had to rebuild around a country-centered model. (Luckily, the inverse many-to-one mapping from countries to currencies is easier to deal with.)
+                </p>
+                <p>
+                    The biggest challenge was definitely scraping: a lot of these services make it very difficult to programatically get their rates. We tried to use Selenium (it turned out that headless Chrome is hard to deploy) and Casper.js (it turned out that interfacing a Node library with our Flask app was difficult) but neither of them worked in the end. In the end, we got one method working consistently: mocking the GET requests that websites make to their services to show rates to potential customers, and then parsing the returned data. This is easy when the server returns a nice JSON dictionary, and a bit harder when it's HTML -- for the latter case we resorted to the BeautifulSoup HTML parsing library.
+                </p>
+                <p>
+                    Finally, we tried to deploy the Flask app on an Ubuntu server with Apache; after unsuccessfully spending a few hours trying to get that to work (Linux permissions,
+                    <em>
+                        sigh
+                    </em>
+                    ), we switched to Heroku. That made everything a lot easier!
+                </p>
+                <h2>
+                    Accomplishments that we're proud of
+                </h2>
+                <p>
+                    We're super proud...
+                </p>
+                <ul>
+                    <li>
+                        That we got the services that we were able to scrape to work -- once those started coming online one by one, it was super exciting!
+                    </li>
+                    <li>
+                        Of the UI, which we think looks good and is easy to use.
+                    </li>
+                    <li>
+                        That the site also looks great on mobile.
+                    </li>
+                    <li>
+                        Of our name and domain -- we think RemitRates, at
+                        <a href="http://remitrat.es" rel="nofollow">
+                            remitrat.es
+                        </a>
+                        sounds pretty great!
+                    </li>
+                    <li>
+                        That we're going to demo!
+                    </li>
+                </ul>
+                <h2>
+                    What we learned
+                </h2>
+                <p>
+                    We learned that... deployment shouldn't be underestimated. This is definitely something we'll focus more on earlier in all our future projects, since once you've got a good deployment pipeline set up, it's wonderful -- but rushing to get it working the afternoon before the deadline isn't very fun.
+                </p>
+                <h2>
+                    What's next for RemitRates
+                </h2>
+                <p>
+                    We'd like to add more services! Also, many of these services have affiliate links -- so we can potentially make money off the website by converting the links to the services in the comparison table to referral links.
+                </p>
+            </div>
+            <div class="" id="built-with">
+                <h2>
+                    Built With
+                </h2>
+                <ul class="no-bullet inline-list">
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/beautiful-soup">
+                                beautiful-soup
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/bootstrap">
+                                bootstrap
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag">
+                            casper
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/flask">
+                                flask
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/heroku">
+                                heroku
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jinja">
+                                jinja
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/jquery">
+                                jquery
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/python">
+                                python
+                            </a>
+                        </span>
+                    </li>
+                    <li>
+                        <span class="cp-tag recognized-tag">
+                            <a href="https://devpost.com/software/built-with/requests">
+                                requests
+                            </a>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <nav class="app-links section">
+                <h2>
+                    Try it out
+                </h2>
+                <ul class="no-bullet" data-role="software-urls">
+                    <li>
+                        <a href="http://remitrat.es" rel="nofollow" target="_blank" title="http://remitrat.es">
+                            <i class="ss-icon ss-link">
+                            </i>
+                            <span>
+                                remitrat.es
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>
