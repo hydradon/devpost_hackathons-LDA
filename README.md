@@ -17,6 +17,21 @@ Then, for each project, I used latent Dirichlet Allocation (LDA) to automaticall
 
 I applied topic modeling on each of the above sections to find out the main topics mentioned.
 
+### The spiders
+
+1. [devpost](./devpost): visits all projects at devpost/software/trending and crawls for all metadata. Output: [all_projects_raw.csv](./dataset/all_projects_raw.csv)
+
+2. [devpost_hackathon](./devpost_hackathon): visits all hackathon pages extracted from the metadata of the projects and crawls for hackathon metadata. Output: [all_hackathons_raw.csv](./dataset/all_hackathons_raw.csv)
+
+3. [devpost_app_page](./devpost_app_page): visits all project pages and saves their HTMLs. Output is stored on figshare: https://figshare.com/s/73a5686bf6b1670092d4
+
+4. [dev_proj_desc_local](./dev_proj_desc_local): crawls the offline HTML pages (obtained above) and parses the text description into 7 sections as described in the previous part. Output: [proj_description_raw_local.csv](./dataset/proj_description_raw_local.csv)
+
+5. [devpost_hack_num_submission](./devpost_hack_num_submission): crawls the hackathon pages and retrieves the number of submissions. Output: [all_hackathons_numsub.csv](./dataset/all_hackathons_numsub.csv) 
+
+
+
+
 ### Datasets
 
 Three initial datasets can be downloaded at: https://figshare.com/s/73a5686bf6b1670092d4
