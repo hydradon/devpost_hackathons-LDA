@@ -2,7 +2,6 @@ import pandas as pd
 import os
 import numpy as np
 
-# df_apps = pd.read("../dataset/all_project_cleaned.csv")
 df_apps = pd.read_csv("../dataset/all_projects_cleaned.csv")
 df_hackathons = pd.read_csv("../dataset/all_hackathons_cleaned.csv")
 

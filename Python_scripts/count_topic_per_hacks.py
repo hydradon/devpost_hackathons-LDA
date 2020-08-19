@@ -5,7 +5,7 @@ import os
 section = "txt_whats_next"
 num_topic = 25
 
-docs = pd.read_csv("../dataset/dorminant_" + str(num_topic) + "_topics_" + section + "_doc.csv", encoding="utf-8-sig")
+docs = pd.read_csv("../dataset/dominant_" + str(num_topic) + "_topics_" + section + "_doc.csv", encoding="utf-8-sig")
 topic = 15 #0, 10, 6, 9, 5
 
 # get only topic 0

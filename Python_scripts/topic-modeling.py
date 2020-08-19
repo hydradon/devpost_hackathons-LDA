@@ -210,7 +210,7 @@ df_dominant_topic = df_dominant_topic.explode("Hackathon_Url")
 temp = df_dominant_topic.drop(columns = ["Document_No", "Text", "Topic_Perc_Contrib", "Keywords", "Project_Url"])
 temp.drop_duplicates(inplace=True) # Rationale: 2 projects, 1 topic, 1 hackathon => 2 rows => only count the topic as one 
 
-# Find the counts of dorminant topics across hackathon
+# Find the counts of dominant topics across hackathon
 topic_hackathons_count = temp["Dominant_Topic"].value_counts().to_frame()
 topic_hackathons_count = pd.DataFrame({'Topic_Num'      : topic_hackathons_count.index, 
                                        'Hackathon_Count': topic_hackathons_count.Dominant_Topic})
@@ -250,7 +250,7 @@ def process_topic_distribution(df_topic_sents_keywords, ispopular, num_hackathon
     # Do hackathon counts
     temp = df_topic_sents_keywords.drop(columns = ["Text", "Topic_Perc_Contrib", "Keywords", "Project_Url"])
     temp.drop_duplicates(inplace=True)
-    # Find the counts of dorminant topics across hackathon
+    # Find the counts of dominant topics across hackathon
     topic_hackathons_count = temp["Dominant_Topic"].value_counts()
     topic_hackathons_count_df = topic_hackathons_count.to_frame()
     topic_hackathons_count_df = pd.DataFrame({'Topic_Num'      : topic_hackathons_count_df.index, 

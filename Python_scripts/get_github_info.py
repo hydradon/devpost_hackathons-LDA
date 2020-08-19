@@ -5,9 +5,7 @@ import os
 import json
 import csv
 
-# all_projects = pd.read_csv("../dataset/all_projects_cleaned.csv")
 all_projects = pd.read_csv("../dataset/all_project_ended_hack_with_git_repo.csv")
-# all_projects = pd.read_csv("./fix.csv")
 # all_projects.dropna(subset=['hackathon_urls'], inplace=True)
 print("{} softwares submitted to a hackathon.".format(len(all_projects)))
 
