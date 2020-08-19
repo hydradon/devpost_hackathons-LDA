@@ -30,3 +30,11 @@
 [all_project_ended_hack_with_git_repo.csv](all_project_ended_hack_with_git_repo.csv): metadata of projects that provide github/gitlab links (total: 39,471 rows).
 
 [all_project_with_git_info.csv](all_project_with_git_info.csv): same as above but with additional information about their git repos (number of commits, number of issues, etc.) (total: 39,471 rows).
+
+
+## IV. Miscellaneous
+
+Github links that are actually a group of repositories:
+
+[repo_group_first_half.csv](repo_group_first_half.csv)
+[repo_group_2nd_half.csv](repo_group_first_half.csv)
